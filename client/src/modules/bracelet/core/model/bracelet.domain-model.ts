@@ -45,4 +45,12 @@ export namespace BraceletDomainModel {
     limit: number
     totalPages: number
   }
+
+  export type PaginatedAllBraceletsDto = {
+    items: BraceletOverviewDto[]
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+  }
 }

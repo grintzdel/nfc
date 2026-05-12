@@ -15,6 +15,7 @@ import { DisableBraceletUseCase } from './application/use-cases/disable-bracelet
 import { DeleteBraceletUseCase } from './application/use-cases/delete-bracelet/delete-bracelet.use-case'
 import { GetAvailableBraceletsUseCase } from './application/use-cases/get-available-bracelets/get-available-bracelets.use-case'
 import { GetPaginatedBraceletsByEventUseCase } from './application/use-cases/get-paginated-bracelets-by-event/get-paginated-bracelets-by-event.use-case'
+import { GetPaginatedBraceletsUseCase } from './application/use-cases/get-paginated-bracelets/get-paginated-bracelets.use-case'
 import { BraceletService } from './application/services/bracelet.service'
 import { BraceletController } from './presentation/controllers/bracelet.controller'
 import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
@@ -43,6 +44,8 @@ export function createBraceletModule(
   let getAvailableUC: GetAvailableBraceletsUseCase | null = null
   let getPaginatedByEventUC: GetPaginatedBraceletsByEventUseCase | null = null
 
+  const getPaginatedUC = new GetPaginatedBraceletsUseCase(braceletRepository)
+
   const service = new BraceletService(
     createUC,
     createFromOrderUC,
@@ -53,6 +56,7 @@ export function createBraceletModule(
     activateUC,
     disableUC,
     deleteUC,
+    getPaginatedUC,
   )
   const controller = new BraceletController(service)
 

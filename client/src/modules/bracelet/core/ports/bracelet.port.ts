@@ -10,6 +10,12 @@ export interface IBraceletPort {
     limit: number
     search?: string
   }): Promise<BraceletDomainModel.PaginatedBraceletsDto>
+  getPaginated(params: {
+    page: number
+    limit: number
+    status?: string
+    search?: string
+  }): Promise<BraceletDomainModel.PaginatedAllBraceletsDto>
   getById(id: string): Promise<BraceletDomainModel.BraceletOverviewDto>
   assign(id: string, dto: BraceletDomainModel.AssignBraceletDto): Promise<BraceletDomainModel.BraceletOverviewDto>
   disable(id: string): Promise<BraceletDomainModel.BraceletOverviewDto>

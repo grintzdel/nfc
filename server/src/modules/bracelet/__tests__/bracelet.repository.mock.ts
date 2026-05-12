@@ -18,6 +18,8 @@ export class BraceletRepositoryMock implements IBraceletRepository {
   findAllByEventIdAndStatus_calledWith: { eventId: string; status: BraceletStatus } | null = null
   findPaginatedByEventId_result: PaginatedResult<BraceletEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
   findPaginatedByEventId_calledWith: { eventId: string; page: number; limit: number; search?: string } | null = null
+  findPaginated_result: PaginatedResult<BraceletEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  findPaginated_calledWith: { page: number; limit: number; status?: BraceletStatus; search?: string } | null = null
   findAllByUserId_result: BraceletEntity[] = []
   countByStatus_result = 0
   countByEventId_result = 0
@@ -71,6 +73,16 @@ export class BraceletRepositoryMock implements IBraceletRepository {
   }): Promise<PaginatedResult<BraceletEntity>> {
     this.findPaginatedByEventId_calledWith = params
     return this.findPaginatedByEventId_result
+  }
+
+  async findPaginated(params: {
+    page: number
+    limit: number
+    status?: BraceletStatus
+    search?: string
+  }): Promise<PaginatedResult<BraceletEntity>> {
+    this.findPaginated_calledWith = params
+    return this.findPaginated_result
   }
 
   async findAllByUserId(_userId: string): Promise<BraceletEntity[]> { return this.findAllByUserId_result }

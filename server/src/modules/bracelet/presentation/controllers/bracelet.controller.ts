@@ -28,6 +28,28 @@ export class BraceletController {
     } catch (e) { next(e) }
   }
 
+  async getPaginated(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || 20
+      const status = typeof req.query.status === 'string' && req.query.status
+        ? (req.query.status as BraceletStatus)
+        : undefined
+      const search = typeof req.query.search === 'string' ? req.query.search : undefined
+      const paged = await this.braceletService.getPaginated({ page, limit, status, search })
+      res.json({
+        success: true,
+        data: {
+          items: paged.items.map((b) => new BraceletResponseDto(b)),
+          total: paged.total,
+          page: paged.page,
+          limit: paged.limit,
+          totalPages: paged.totalPages,
+        },
+      })
+    } catch (e) { next(e) }
+  }
+
   async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const bracelet = await this.braceletService.getById(req.params.id as string)

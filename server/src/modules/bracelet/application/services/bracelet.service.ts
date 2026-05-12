@@ -9,6 +9,7 @@ import { AssignBraceletUseCase } from '../use-cases/assign-bracelet/assign-brace
 import { ActivateBraceletUseCase } from '../use-cases/activate-bracelet/activate-bracelet.use-case'
 import { DisableBraceletUseCase } from '../use-cases/disable-bracelet/disable-bracelet.use-case'
 import { DeleteBraceletUseCase } from '../use-cases/delete-bracelet/delete-bracelet.use-case'
+import { GetPaginatedBraceletsUseCase } from '../use-cases/get-paginated-bracelets/get-paginated-bracelets.use-case'
 import { OrderEntity } from '@modules/order/domain/entity/order.entity'
 
 export class BraceletService {
@@ -22,6 +23,7 @@ export class BraceletService {
     private readonly activateBraceletUseCase: ActivateBraceletUseCase,
     private readonly disableBraceletUseCase: DisableBraceletUseCase,
     private readonly deleteBraceletUseCase: DeleteBraceletUseCase,
+    private readonly getPaginatedBraceletsUseCase: GetPaginatedBraceletsUseCase,
   ) {}
 
   create(input: CreateBraceletInput): Promise<BraceletEntity> {
@@ -34,6 +36,10 @@ export class BraceletService {
 
   getAll(status?: BraceletStatus): Promise<BraceletEntity[]> {
     return this.getAllBraceletsUseCase.execute(status)
+  }
+
+  getPaginated(params: { page: number; limit: number; status?: BraceletStatus; search?: string }): Promise<PaginatedResult<BraceletEntity>> {
+    return this.getPaginatedBraceletsUseCase.execute(params)
   }
 
   getById(id: string): Promise<BraceletEntity> {
