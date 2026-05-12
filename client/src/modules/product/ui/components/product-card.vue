@@ -20,7 +20,7 @@ function handleAddToCart() {
 <template>
   <RouterLink
     :to="`/product/${product.slug}`"
-    class="group flex flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-gradient-to-b from-pulse-surface to-pulse-bg shadow-[0_8px_30px_rgba(124,58,237,0.08)] transition-all hover:border-violet-500/30 hover:shadow-[0_8px_30px_rgba(124,58,237,0.2)]"
+    class="group flex flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-gradient-to-b from-pulse-surface to-pulse-bg shadow-[0_8px_30px_rgba(124,58,237,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:shadow-[0_16px_40px_rgba(124,58,237,0.25)]"
   >
     <!-- Image -->
     <div class="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-pulse-surface to-pulse-bg">

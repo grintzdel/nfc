@@ -77,7 +77,7 @@ function formatDateRange(startsAt: string, endsAt: string): string {
         <Card
           v-for="p in participations"
           :key="p.id"
-          class="flex flex-col gap-4 border-white/10 bg-[#0F172A]"
+          class="flex flex-col gap-4 border-white/10 bg-[#0F172A] transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-500/10"
         >
           <CardContent class="flex flex-1 flex-col gap-3 p-5">
             <!-- Event header -->

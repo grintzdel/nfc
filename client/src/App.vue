@@ -9,7 +9,32 @@ const noLayout = computed(() => route.meta.noLayout === true)
 
 <template>
   <AppLayout v-if="!noLayout">
-    <router-view :key="route.fullPath" />
+    <router-view v-slot="{ Component }">
+      <transition name="page" mode="out-in">
+        <component :is="Component" :key="route.fullPath" />
+      </transition>
+    </router-view>
   </AppLayout>
-  <router-view v-else :key="route.fullPath" />
+  <router-view v-else v-slot="{ Component }">
+    <transition name="page" mode="out-in">
+      <component :is="Component" :key="route.fullPath" />
+    </transition>
+  </router-view>
 </template>
+
+<style>
+/* Subtle fade + slight upward slide on route change. mode="out-in" makes it sequential
+   (old fades out → new fades in), which feels more natural than crossfade for full pages. */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 160ms ease-out, transform 160ms ease-out;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+</style>

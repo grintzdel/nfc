@@ -31,12 +31,14 @@ const label = computed(() => {
 <template>
   <a
     :href="href"
-    class="flex items-center justify-between gap-3 rounded-xl border border-violet-900/40 bg-slate-900/60 px-4 py-4 transition-colors hover:border-violet-500 hover:bg-slate-900"
+    class="group flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-violet-900/40 bg-gradient-to-br from-slate-900/80 to-slate-900/40 px-4 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-400/60 hover:from-slate-900 hover:to-slate-900/70 hover:shadow-lg hover:shadow-violet-500/20"
   >
     <span class="flex items-center gap-3">
-      <span class="rounded-lg bg-violet-500/15 p-2 text-violet-300"><LinkIcon :type="link.type" /></span>
+      <span class="rounded-lg bg-violet-500/15 p-2 text-violet-300 transition-colors duration-300 group-hover:bg-violet-500/30 group-hover:text-violet-200">
+        <LinkIcon :type="link.type" />
+      </span>
       <span class="font-medium text-slate-100">{{ label }}</span>
     </span>
-    <ChevronRight class="h-4 w-4 text-slate-500" />
+    <ChevronRight class="h-4 w-4 text-slate-500 transition-all duration-300 group-hover:translate-x-1 group-hover:text-violet-300" />
   </a>
 </template>
