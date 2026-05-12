@@ -7,6 +7,7 @@ import { useGetAllUsers } from '@/modules/user/ui/hooks/queries/query/use-get-al
 import { useInviteTeamMember } from '@/modules/team/ui/hooks/queries/mutation/use-invite-team-member'
 import { useRevokeTeamMember } from '@/modules/team/ui/hooks/queries/mutation/use-revoke-team-member'
 import { TeamRole } from '@/modules/team/core/model/team.domain-model'
+import { TableSkeleton } from '@/ui/skeleton'
 import InviteTeamDialog from './invite-team-dialog.vue'
 
 const props = defineProps<{ eventId: string }>()
@@ -156,9 +157,7 @@ function initials(name: string): string {
         </div>
       </div>
 
-      <div v-if="isLoading && memberRows.length === 0" class="flex h-32 items-center justify-center">
-        <p class="text-sm text-slate-400">Chargement…</p>
-      </div>
+      <TableSkeleton v-if="isLoading && memberRows.length === 0" :rows="4" :columns="4" />
     </template>
 
     <InviteTeamDialog

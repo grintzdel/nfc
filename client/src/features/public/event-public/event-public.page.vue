@@ -7,6 +7,7 @@ import EventPublicDescription from '@/modules/event/ui/components/event-public-d
 import EventNotAvailable from '@/modules/event/ui/components/event-not-available.vue'
 import EventRegistrationForm from '@/modules/event/ui/components/event-registration-form.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
+import { Skeleton } from '@/ui/skeleton'
 import { Users } from 'lucide-vue-next'
 
 const route = useRoute()
@@ -35,7 +36,14 @@ const fillPercent = computed(() => {
   <div class="min-h-screen bg-background px-6 py-10 lg:px-20">
     <div class="mx-auto flex w-full max-w-5xl flex-col gap-8">
       <Card v-if="isLoading">
-        <CardContent class="p-6 text-center text-muted-foreground">Chargement…</CardContent>
+        <CardContent class="flex flex-col gap-4 p-6">
+          <Skeleton class="h-8 w-2/3" />
+          <Skeleton class="h-4 w-1/2" />
+          <div class="grid grid-cols-1 gap-4 pt-2 lg:grid-cols-2">
+            <Skeleton class="h-32 w-full" />
+            <Skeleton class="h-32 w-full" />
+          </div>
+        </CardContent>
       </Card>
       <EventNotAvailable v-else-if="isError || !data" />
       <template v-else>

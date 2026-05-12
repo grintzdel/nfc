@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue'
 import { Pagination } from '@/ui/pagination'
+import { TableSkeleton } from '@/ui/skeleton'
 import { useGetPaginatedCheckInsByEvent } from '@/modules/check-in/ui/hooks/queries/query/use-get-paginated-check-ins-by-event'
 import { InteractionType } from '@/modules/check-in/core/model/check-in.domain-model'
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
@@ -112,9 +113,7 @@ const lastCheckInRelative = computed(() => {
           <div class="w-[120px] px-4 py-3 text-sm text-slate-400">{{ row.zoneName ?? '—' }}</div>
         </div>
 
-        <div v-if="isLoading && items.length === 0" class="flex h-32 items-center justify-center">
-          <p class="text-sm text-slate-400">Chargement…</p>
-        </div>
+        <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="4" />
 
         <Pagination
           v-if="paged"

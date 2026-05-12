@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Card, CardContent } from '@/ui/card'
+import { Skeleton } from '@/ui/skeleton'
 import { useGetNfcByNfcId } from '@/modules/nfc/ui/hooks/queries/query/use-get-nfc-by-id'
 import { NfcBraceletNotActiveError } from '@/modules/nfc/core/errors/nfc.error'
 import NfcProfileHero from '@/modules/nfc/ui/components/nfc-profile-hero.vue'
@@ -35,7 +36,13 @@ const errorVariant = computed<'not-active' | 'network'>(() =>
 
     <div class="relative mx-auto flex w-full max-w-md flex-col gap-6">
       <Card v-if="isLoading">
-        <CardContent class="p-6 text-center text-muted-foreground">Chargement…</CardContent>
+        <CardContent class="flex flex-col items-center gap-4 p-6">
+          <Skeleton class="h-20 w-20 rounded-full" />
+          <Skeleton class="h-5 w-2/3" />
+          <Skeleton class="h-3 w-1/2" />
+          <Skeleton class="mt-2 h-10 w-full" />
+          <Skeleton class="h-10 w-full" />
+        </CardContent>
       </Card>
       <NfcErrorState v-else-if="isError" :variant="errorVariant" />
       <template v-else-if="data">

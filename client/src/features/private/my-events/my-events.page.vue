@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { Calendar, MapPin, Pencil, ExternalLink, ShoppingBag } from 'lucide-vue-next'
 import { Card, CardContent } from '@/ui/card'
 import { Button } from '@/ui/button'
+import { CardSkeleton } from '@/ui/skeleton'
 import { useGetMyParticipations } from '@/modules/participant/ui/hooks/queries/query/use-get-my-participations'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
 
@@ -44,9 +45,7 @@ function formatDateRange(startsAt: string, endsAt: string): string {
         <p class="text-sm text-slate-400">Retrouvez ici tous les événements auxquels vous êtes inscrit.</p>
       </header>
 
-      <div v-if="isLoading" class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">
-        Chargement…
-      </div>
+      <CardSkeleton v-if="isLoading" :count="6" />
 
       <div
         v-else-if="isError"

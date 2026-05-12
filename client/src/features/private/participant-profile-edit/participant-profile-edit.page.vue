@@ -5,6 +5,7 @@ import { toast } from 'vue-sonner'
 import { ScanLine } from 'lucide-vue-next'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
+import { Skeleton } from '@/ui/skeleton'
 import { useGetParticipantById } from '@/modules/participant/ui/hooks/queries/query/use-get-participant-by-id'
 import { useGetBraceletById } from '@/modules/bracelet/ui/hooks/queries/query/use-get-bracelet-by-id'
 import { useUpdateParticipantProfile } from '@/modules/participant/ui/hooks/queries/mutation/use-update-participant-profile'
@@ -105,7 +106,12 @@ async function handleSave(): Promise<void> {
       </header>
 
       <Card v-if="isLoading">
-        <CardContent class="p-6 text-center text-muted-foreground">Chargement…</CardContent>
+        <CardContent class="flex flex-col gap-4 p-6">
+          <Skeleton class="h-5 w-1/3" />
+          <Skeleton class="h-10 w-full" />
+          <Skeleton class="h-10 w-full" />
+          <Skeleton class="h-24 w-full" />
+        </CardContent>
       </Card>
 
       <Card v-else-if="isError">

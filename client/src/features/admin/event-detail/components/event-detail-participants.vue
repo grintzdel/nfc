@@ -3,6 +3,7 @@ import { computed, ref, toRef, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Search, ExternalLink, Link as LinkIcon } from 'lucide-vue-next'
 import { Pagination } from '@/ui/pagination'
+import { TableSkeleton } from '@/ui/skeleton'
 import { useGetPaginatedParticipantsByEvent } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants-by-event'
 import { useGetAvailableBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-available-bracelets'
 import { useAttachBracelet } from '@/modules/participant/ui/hooks/queries/mutation/use-attach-bracelet'
@@ -165,9 +166,7 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
       </div>
 
       <!-- Loading -->
-      <div v-if="isLoading && items.length === 0" class="flex h-32 items-center justify-center">
-        <p class="text-sm text-slate-400">Chargement…</p>
-      </div>
+      <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
 
       <!-- Pagination -->
       <Pagination
