@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Search, SlidersHorizontal, Download, Plus, Eye, Pencil, MoreHorizontal } from 'lucide-vue-next'
+import { Search, SlidersHorizontal, Download, Plus, Eye, Pencil, MoreHorizontal, Calendar } from 'lucide-vue-next'
 import { Pagination } from '@/ui/pagination'
+import { EmptyState } from '@/ui/empty-state'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
 
@@ -201,9 +202,13 @@ function statusClass(status: string): string {
         </div>
 
         <!-- Empty state -->
-        <div v-if="data && data.items.length === 0" class="flex h-40 items-center justify-center">
-          <p class="text-sm text-slate-400">Aucun evenement trouve</p>
-        </div>
+        <EmptyState
+          v-if="data && data.items.length === 0"
+          :icon="Calendar"
+          title="Aucun événement trouvé"
+          :description="search ? 'Essayez une autre recherche ou un autre filtre.' : 'Créez votre premier événement pour démarrer.'"
+          size="sm"
+        />
       </div>
     </div>
 

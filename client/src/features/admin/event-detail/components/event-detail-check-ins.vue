@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue'
+import { ScanLine } from 'lucide-vue-next'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetPaginatedCheckInsByEvent } from '@/modules/check-in/ui/hooks/queries/query/use-get-paginated-check-ins-by-event'
 import { InteractionType } from '@/modules/check-in/core/model/check-in.domain-model'
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
@@ -80,9 +82,13 @@ const lastCheckInRelative = computed(() => {
 
     <!-- Table -->
     <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-      <div v-if="paged && paged.total === 0" class="flex h-40 items-center justify-center">
-        <p class="text-sm text-slate-300">Aucun check-in enregistré.</p>
-      </div>
+      <EmptyState
+        v-if="paged && paged.total === 0"
+        :icon="ScanLine"
+        title="Aucun check-in enregistré"
+        description="Les check-ins apparaîtront ici dès la première interaction sur place."
+        size="sm"
+      />
 
       <template v-else>
         <div class="overflow-x-auto">

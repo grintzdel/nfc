@@ -5,6 +5,7 @@ import { Calendar, MapPin, Pencil, ExternalLink, ShoppingBag } from 'lucide-vue-
 import { Card, CardContent } from '@/ui/card'
 import { Button } from '@/ui/button'
 import { CardSkeleton } from '@/ui/skeleton'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetMyParticipations } from '@/modules/participant/ui/hooks/queries/query/use-get-my-participations'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
 
@@ -56,18 +57,20 @@ function formatDateRange(startsAt: string, endsAt: string): string {
 
       <!-- Empty state -->
       <Card v-else-if="participations.length === 0" class="border-white/10 bg-[#0F172A]">
-        <CardContent class="flex flex-col items-center gap-4 py-12 text-center">
-          <Calendar class="h-12 w-12 text-slate-500" />
-          <div class="flex flex-col gap-1">
-            <h2 class="text-lg font-semibold text-slate-50">Aucune inscription pour le moment</h2>
-            <p class="text-sm text-slate-400">Explorez les événements disponibles ou commandez votre bracelet Pulse.</p>
-          </div>
-          <RouterLink to="/shop">
-            <Button>
-              <ShoppingBag class="mr-2 h-4 w-4" />
-              Voir la boutique
-            </Button>
-          </RouterLink>
+        <CardContent class="p-0">
+          <EmptyState
+            :icon="Calendar"
+            title="Aucune inscription pour le moment"
+            description="Explorez les événements disponibles ou commandez votre bracelet Pulse."
+            size="md"
+          >
+            <RouterLink to="/shop">
+              <Button>
+                <ShoppingBag class="mr-2 h-4 w-4" />
+                Voir la boutique
+              </Button>
+            </RouterLink>
+          </EmptyState>
         </CardContent>
       </Card>
 

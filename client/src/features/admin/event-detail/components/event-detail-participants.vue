@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, toRef, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Search, ExternalLink, Link as LinkIcon } from 'lucide-vue-next'
+import { Search, ExternalLink, Link as LinkIcon, Users } from 'lucide-vue-next'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetPaginatedParticipantsByEvent } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants-by-event'
 import { useGetAvailableBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-available-bracelets'
 import { useAttachBracelet } from '@/modules/participant/ui/hooks/queries/mutation/use-attach-bracelet'
@@ -90,10 +91,13 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
     </div>
 
     <!-- Empty state -->
-    <div v-if="hasNoResults" class="flex h-40 flex-col items-center justify-center gap-1 text-center">
-      <p class="text-sm text-slate-300">Aucun participant inscrit pour cet événement.</p>
-      <p class="text-xs text-slate-500">Lien public : /events/{{ eventId }}</p>
-    </div>
+    <EmptyState
+      v-if="hasNoResults"
+      :icon="Users"
+      title="Aucun participant inscrit"
+      description="Partagez le lien public de l'événement pour recueillir les inscriptions."
+      size="sm"
+    />
 
     <template v-else>
       <div class="overflow-x-auto">

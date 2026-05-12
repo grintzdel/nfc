@@ -6,6 +6,7 @@ import AdminLayout from '@/ui/layout/admin-layout.vue'
 import StatCard from '@/ui/components/stat-card.vue'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetPaginatedParticipants } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants'
 import { useGetParticipantsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-participants-count'
 
@@ -111,9 +112,13 @@ function initials(name: string): string {
         </div>
 
         <!-- Empty -->
-        <div v-if="paged && paged.total === 0" class="flex h-40 items-center justify-center">
-          <p class="text-sm text-slate-400">Aucun participant trouvé.</p>
-        </div>
+        <EmptyState
+          v-if="paged && paged.total === 0"
+          :icon="Users"
+          title="Aucun participant trouvé"
+          :description="search ? 'Essayez une autre recherche.' : 'Les participants apparaîtront ici dès leur première inscription.'"
+          size="sm"
+        />
 
         <template v-else>
           <div class="overflow-x-auto">

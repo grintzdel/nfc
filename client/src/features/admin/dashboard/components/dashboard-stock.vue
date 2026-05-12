@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { TriangleAlert, Truck, CalendarClock, Plus } from 'lucide-vue-next'
+import { TriangleAlert, Truck, CalendarClock, Plus, Package } from 'lucide-vue-next'
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
+import { EmptyState } from '@/ui/empty-state'
 
 const props = defineProps<{
   data?: AnalyticsDomainModel.BraceletStockStatsDto
@@ -19,8 +20,8 @@ function formatDate(dateStr: string): string {
 <template>
   <div class="flex w-full flex-col justify-between gap-4 rounded-lg border border-white/10 bg-[#0F172A] p-5 xl:w-[380px]">
     <!-- Empty state -->
-    <div v-if="!data" class="flex h-60 items-center justify-center text-sm text-slate-400">
-      Aucune donnee de stock
+    <div v-if="!data" class="flex h-60 items-center justify-center">
+      <EmptyState :icon="Package" title="Aucune donnée de stock" size="sm" />
     </div>
 
     <template v-else>

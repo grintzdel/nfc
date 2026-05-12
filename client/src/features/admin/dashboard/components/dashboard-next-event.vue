@@ -11,6 +11,7 @@ import {
   MonitorPlay,
 } from 'lucide-vue-next'
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
+import { EmptyState } from '@/ui/empty-state'
 
 defineProps<{
   data?: AnalyticsDomainModel.NextEventStatsDto
@@ -28,7 +29,12 @@ function formatDate(dateStr: string): string {
   >
     <!-- Empty state -->
     <div v-if="!data?.event" class="flex h-60 items-center justify-center">
-      <p class="text-sm text-slate-400">Aucun événement à venir</p>
+      <EmptyState
+        :icon="Calendar"
+        title="Aucun événement à venir"
+        description="Créez votre prochain événement depuis la page Événements."
+        size="sm"
+      />
     </div>
 
     <template v-else>

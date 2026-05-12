@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { VisSingleContainer, VisDonut, VisTooltip, VisDonutSelectors } from '@unovis/vue'
+import { PieChart } from 'lucide-vue-next'
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
+import { EmptyState } from '@/ui/empty-state'
 
 const props = defineProps<{
   data?: AnalyticsDomainModel.InteractionsStatsDto
@@ -40,7 +42,7 @@ const donutTooltipTriggers = {
 
     <template v-if="!donutData.length">
       <div class="flex h-36 items-center justify-center">
-        <span class="text-sm text-slate-400">Aucune donnee</span>
+        <EmptyState :icon="PieChart" title="Aucune donnée" size="sm" />
       </div>
     </template>
 

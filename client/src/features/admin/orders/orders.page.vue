@@ -6,6 +6,7 @@ import AdminLayout from '@/ui/layout/admin-layout.vue'
 import StatCard from '@/ui/components/stat-card.vue'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { TableSkeleton } from '@/ui/skeleton'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetAllOrders } from '@/modules/order/ui/hooks/queries/query/use-get-all-orders'
 import { useUpdateOrderStatus } from '@/modules/order/ui/hooks/queries/mutation/use-update-order-status'
 import { OrderStatus } from '@/modules/order/core/model/order.domain-model'
@@ -120,9 +121,13 @@ function formatDate(dateStr: string): string {
           </div>
         </div>
 
-        <div v-if="!isLoading && filteredItems.length === 0" class="flex h-32 items-center justify-center">
-          <p class="text-sm text-slate-400">Aucune commande dans cette catégorie.</p>
-        </div>
+        <EmptyState
+          v-if="!isLoading && filteredItems.length === 0"
+          :icon="ShoppingBag"
+          title="Aucune commande dans cette catégorie"
+          description="Les commandes apparaîtront ici dès le premier achat."
+          size="sm"
+        />
 
         <template v-else>
           <div class="overflow-x-auto">

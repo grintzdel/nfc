@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, toRef, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Search, ExternalLink } from 'lucide-vue-next'
+import { Search, ExternalLink, Watch } from 'lucide-vue-next'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetPaginatedBraceletsByEvent } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets-by-event'
 import { useDisableBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-disable-bracelet'
 import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
@@ -79,9 +80,13 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
     </div>
 
     <!-- Empty state -->
-    <div v-if="hasNoResults" class="flex h-40 items-center justify-center">
-      <p class="text-sm text-slate-300">Aucun bracelet attribué à cet événement.</p>
-    </div>
+    <EmptyState
+      v-if="hasNoResults"
+      :icon="Watch"
+      title="Aucun bracelet attribué"
+      description="Aucun bracelet n'a encore été attaché à un participant pour cet événement."
+      size="sm"
+    />
 
     <template v-else>
       <div class="overflow-x-auto">

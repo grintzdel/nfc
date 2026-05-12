@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, toRef } from 'vue'
 import { toast } from 'vue-sonner'
-import { UserPlus, CheckCircle2, Clock } from 'lucide-vue-next'
+import { UserPlus, CheckCircle2, Clock, Users } from 'lucide-vue-next'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetTeamByEvent } from '@/modules/team/ui/hooks/queries/query/use-get-team-by-event'
 import { useGetAllUsers } from '@/modules/user/ui/hooks/queries/query/use-get-all-users'
 import { useInviteTeamMember } from '@/modules/team/ui/hooks/queries/mutation/use-invite-team-member'
@@ -100,9 +101,13 @@ function initials(name: string): string {
     </div>
 
     <!-- Empty -->
-    <div v-if="memberRows.length === 0 && !isLoading" class="flex h-32 items-center justify-center">
-      <p class="text-sm text-slate-400">Aucun membre d'équipe pour cet événement.</p>
-    </div>
+    <EmptyState
+      v-if="memberRows.length === 0 && !isLoading"
+      :icon="Users"
+      title="Aucun membre d'équipe"
+      description="Invitez des managers ou du staff pour collaborer sur cet événement."
+      size="sm"
+    />
 
     <template v-else>
       <div class="overflow-x-auto">

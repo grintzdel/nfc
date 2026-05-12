@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { Plus, Star, Pencil, Trash2 } from 'lucide-vue-next'
+import { Plus, Star, Pencil, Trash2, Package } from 'lucide-vue-next'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
 import { useCreateProduct } from '@/modules/product/ui/hooks/queries/mutation/use-create-product'
 import { useUpdateProduct } from '@/modules/product/ui/hooks/queries/mutation/use-update-product'
@@ -93,9 +94,13 @@ function formatEur(value: number): string {
       </div>
 
       <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-        <div v-if="!isLoading && items.length === 0" class="flex h-40 items-center justify-center">
-          <p class="text-sm text-slate-400">Aucun produit. Créez le premier.</p>
-        </div>
+        <EmptyState
+          v-if="!isLoading && items.length === 0"
+          :icon="Package"
+          title="Aucun produit"
+          description="Créez votre premier produit pour démarrer le catalogue."
+          size="sm"
+        />
 
         <template v-else>
           <div class="overflow-x-auto">

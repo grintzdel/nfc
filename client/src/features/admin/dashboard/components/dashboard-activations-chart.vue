@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { VisXYContainer, VisStackedBar, VisAxis, VisTooltip, VisStackedBarSelectors } from '@unovis/vue'
+import { BarChart3 } from 'lucide-vue-next'
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
+import { EmptyState } from '@/ui/empty-state'
 
 const props = defineProps<{
   data?: AnalyticsDomainModel.ActivationsByYearDto
@@ -34,7 +36,7 @@ const barTooltipTriggers = {
     <h2 class="text-base font-semibold text-slate-50">Activations bracelets NFC</h2>
 
     <div v-if="!data || data.months.length === 0" class="flex h-56 items-center justify-center">
-      <span class="text-sm text-slate-400">Aucune donnee</span>
+      <EmptyState :icon="BarChart3" title="Aucune donnée" size="sm" />
     </div>
 
     <div v-else class="h-56">

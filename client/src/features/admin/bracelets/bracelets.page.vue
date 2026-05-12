@@ -8,6 +8,7 @@ import AdminLayout from '@/ui/layout/admin-layout.vue'
 import StatCard from '@/ui/components/stat-card.vue'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
+import { EmptyState } from '@/ui/empty-state'
 import { useGetPaginatedBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets'
 import { useCreateBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-create-bracelet'
 import { useGetBraceletsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-bracelets-count'
@@ -169,12 +170,13 @@ function formatDate(dateStr: string): string {
         </div>
 
         <!-- Empty -->
-        <div
+        <EmptyState
           v-if="paged && paged.total === 0"
-          class="flex h-40 items-center justify-center"
-        >
-          <p class="text-sm text-slate-400">Aucun bracelet trouvé.</p>
-        </div>
+          :icon="Watch"
+          title="Aucun bracelet trouvé"
+          :description="search ? 'Essayez une autre recherche.' : 'Créez votre premier bracelet pour démarrer.'"
+          size="sm"
+        />
 
         <template v-else>
           <div class="overflow-x-auto">

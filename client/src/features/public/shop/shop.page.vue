@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Loader2 } from 'lucide-vue-next'
+import { Loader2, Package } from 'lucide-vue-next'
 import ShopHero from './components/shop-hero.vue'
 import ShopAdvantages from './components/shop-advantages.vue'
 import EnterpriseCta from './components/enterprise-cta.vue'
 import ShopCta from './components/shop-cta.vue'
 import ProductCard from '@/modules/product/ui/components/product-card.vue'
 import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
+import { EmptyState } from '@/ui/empty-state'
 
 const { data: products, isLoading, isError } = useGetProducts()
 </script>
@@ -33,10 +34,13 @@ const { data: products, isLoading, isError } = useGetProducts()
         </div>
 
         <!-- Empty -->
-        <div v-else-if="!products?.length" class="flex flex-col items-center justify-center gap-4 py-32">
-          <span class="text-5xl">📦</span>
-          <p class="text-lg text-slate-400">Aucun produit disponible pour le moment.</p>
-        </div>
+        <EmptyState
+          v-else-if="!products?.length"
+          :icon="Package"
+          title="Aucun produit disponible"
+          description="Revenez plus tard ou contactez-nous pour une offre sur-mesure."
+          size="lg"
+        />
 
         <!-- Grid -->
         <div v-else class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
