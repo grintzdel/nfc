@@ -9,6 +9,7 @@ import type { ISupplyOrderPort } from '@/modules/supply-order/core/ports/supply-
 import type { IAnalyticsPort } from '@/modules/analytics/core/ports/analytics.port'
 import type { ICartPort } from '@/modules/cart/core/ports/cart.port'
 import type { IOrderPort } from '@/modules/order/core/ports/order.port'
+import type { INfcPort } from '@/modules/nfc/core/ports/nfc.port'
 import { getSharedHttpClient } from '@/modules/shared/http/http-client'
 import { ProductHttpAdapter } from '@/modules/product/core/adapters/product.adapter.http'
 import { AuthHttpAdapter } from '@/modules/auth/core/adapters/auth.adapter.http'
@@ -21,6 +22,7 @@ import { SupplyOrderHttpAdapter } from '@/modules/supply-order/core/adapters/sup
 import { AnalyticsHttpAdapter } from '@/modules/analytics/core/adapters/analytics.adapter.http'
 import { CartHttpAdapter } from '@/modules/cart/core/adapters/cart.adapter.http'
 import { OrderHttpAdapter } from '@/modules/order/core/adapters/order.adapter.http'
+import { NfcHttpAdapter } from '@/modules/nfc/core/adapters/nfc.adapter.http'
 
 export type Dependencies = {
   productPort: IProductPort
@@ -34,6 +36,7 @@ export type Dependencies = {
   analyticsPort: IAnalyticsPort
   cartPort: ICartPort
   orderPort: IOrderPort
+  nfcPort: INfcPort
 }
 
 export function createDependencies(): Dependencies {
@@ -56,5 +59,6 @@ export function createDependencies(): Dependencies {
     analyticsPort: new AnalyticsHttpAdapter(httpClient),
     cartPort: new CartHttpAdapter(httpClient),
     orderPort: new OrderHttpAdapter(httpClient),
+    nfcPort: new NfcHttpAdapter(httpClient),
   }
 }

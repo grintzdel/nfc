@@ -25,6 +25,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     { path: '/events/:slug', name: 'event-public', component: () => import('./pages/events-public/page.vue') },
+    {
+      path: '/p/:nfcId',
+      name: 'nfc-profile',
+      component: () => import('./pages/p/page.vue'),
+      meta: { noLayout: true },
+    },
     { path: '/admin', redirect: '/admin/dashboard' },
     {
       path: '/admin/dashboard',
