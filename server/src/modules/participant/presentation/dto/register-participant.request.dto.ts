@@ -1,5 +1,6 @@
 import { AppError } from '@shared/errors/app.error'
-import type { ParticipantProfile } from '../../domain/entity/participant.entity'
+import type { ParticipantProfile, ProfileLink } from '../../domain/entity/participant.entity'
+import { parseProfileLinks } from './profile-link.parser'
 
 export class RegisterParticipantRequestDto {
   eventId: string
@@ -12,12 +13,13 @@ export class RegisterParticipantRequestDto {
     if (typeof profile.displayName !== 'string' || !profile.displayName.trim()) {
       throw new AppError(400, 'profile.displayName is required')
     }
+    const links: ProfileLink[] = profile.links !== undefined ? parseProfileLinks(profile.links) : []
     this.eventId = body.eventId
     this.profile = {
       displayName: profile.displayName,
       role: typeof profile.role === 'string' ? profile.role : null,
-      linkedinUrl: typeof profile.linkedinUrl === 'string' ? profile.linkedinUrl : null,
       bio: typeof profile.bio === 'string' ? profile.bio : null,
+      links,
     }
   }
 }

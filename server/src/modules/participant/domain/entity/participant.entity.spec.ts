@@ -1,4 +1,18 @@
+import { ProfileLinkType } from '../constants/profile-link-type.constant'
 import { ParticipantEntity } from './participant.entity'
+
+const baseProps = {
+  id: 'p-1',
+  userId: 'user-1',
+  eventId: 'event-1',
+  braceletId: null,
+  profile: { displayName: 'Alice', role: null, bio: null, links: [] },
+  registeredAt: new Date(),
+  checkedInAt: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  deletedAt: null,
+}
 
 describe('ParticipantEntity', () => {
   describe('create()', () => {
@@ -6,7 +20,7 @@ describe('ParticipantEntity', () => {
       const p = ParticipantEntity.create({
         userId: 'user-1',
         eventId: 'event-1',
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
       })
       expect(p.userId).toBe('user-1')
       expect(p.eventId).toBe('event-1')
@@ -15,26 +29,25 @@ describe('ParticipantEntity', () => {
       expect(p.deletedAt).toBeNull()
       expect(p.registeredAt).toBeInstanceOf(Date)
       expect(p.profile.role).toBeNull()
-      expect(p.profile.linkedinUrl).toBeNull()
       expect(p.profile.bio).toBeNull()
+      expect(p.profile.links).toEqual([])
     })
 
-    it('should default optional profile fields to null when not provided', () => {
+    it('should default links to [] when omitted', () => {
       const p = ParticipantEntity.create({
         userId: 'user-1',
         eventId: 'event-1',
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
+        // links intentionally omitted to exercise the `?? []` default in create()
+        profile: { displayName: 'Alice', role: null, bio: null } as never,
       })
-      expect(p.profile.role).toBeNull()
-      expect(p.profile.linkedinUrl).toBeNull()
-      expect(p.profile.bio).toBeNull()
+      expect(p.profile.links).toEqual([])
     })
 
     it('should throw when userId is missing', () => {
       expect(() =>
         ParticipantEntity.create({
           eventId: 'event-1',
-          profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
+          profile: { displayName: 'Alice', role: null, bio: null, links: [] },
         }),
       ).toThrow('userId is required')
     })
@@ -43,7 +56,7 @@ describe('ParticipantEntity', () => {
       expect(() =>
         ParticipantEntity.create({
           userId: 'user-1',
-          profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
+          profile: { displayName: 'Alice', role: null, bio: null, links: [] },
         }),
       ).toThrow('eventId is required')
     })
@@ -53,7 +66,7 @@ describe('ParticipantEntity', () => {
         ParticipantEntity.create({
           userId: 'user-1',
           eventId: 'event-1',
-          profile: { displayName: '', role: null, linkedinUrl: null, bio: null },
+          profile: { displayName: '', role: null, bio: null, links: [] },
         }),
       ).toThrow('displayName is required')
     })
@@ -62,18 +75,7 @@ describe('ParticipantEntity', () => {
   describe('attachBracelet()', () => {
     it('should set braceletId and update updatedAt', () => {
       const before = new Date(Date.now() - 1000)
-      const p = ParticipantEntity.fromProps({
-        id: 'p-1',
-        userId: 'user-1',
-        eventId: 'event-1',
-        braceletId: null,
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
-        registeredAt: before,
-        checkedInAt: null,
-        createdAt: before,
-        updatedAt: before,
-        deletedAt: null,
-      })
+      const p = ParticipantEntity.fromProps({ ...baseProps, updatedAt: before, createdAt: before, registeredAt: before })
       p.attachBracelet('bracelet-1')
       expect(p.braceletId).toBe('bracelet-1')
       expect(p.updatedAt.getTime()).toBeGreaterThan(before.getTime())
@@ -84,18 +86,7 @@ describe('ParticipantEntity', () => {
   describe('checkIn()', () => {
     it('should set checkedInAt and update updatedAt', () => {
       const before = new Date(Date.now() - 1000)
-      const p = ParticipantEntity.fromProps({
-        id: 'p-1',
-        userId: 'user-1',
-        eventId: 'event-1',
-        braceletId: null,
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
-        registeredAt: before,
-        checkedInAt: null,
-        createdAt: before,
-        updatedAt: before,
-        deletedAt: null,
-      })
+      const p = ParticipantEntity.fromProps({ ...baseProps, updatedAt: before, createdAt: before, registeredAt: before })
       expect(p.isCheckedIn()).toBe(false)
       p.checkIn()
       expect(p.checkedInAt).toBeInstanceOf(Date)
@@ -104,11 +95,11 @@ describe('ParticipantEntity', () => {
   })
 
   describe('updateProfile()', () => {
-    it('should patch profile fields', () => {
+    it('should patch displayName, role, and bio', () => {
       const p = ParticipantEntity.create({
         userId: 'user-1',
         eventId: 'event-1',
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
       })
       p.updateProfile({ displayName: 'Bob', role: 'Speaker', bio: 'Short bio' })
       expect(p.profile.displayName).toBe('Bob')
@@ -120,9 +111,92 @@ describe('ParticipantEntity', () => {
       const p = ParticipantEntity.create({
         userId: 'user-1',
         eventId: 'event-1',
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
       })
       expect(() => p.updateProfile({ displayName: '   ' })).toThrow('displayName cannot be empty')
+    })
+
+    it('should accept updateProfile with 3 valid links', () => {
+      const p = ParticipantEntity.create({
+        userId: 'user-1',
+        eventId: 'event-1',
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
+      })
+      p.updateProfile({
+        links: [
+          { type: ProfileLinkType.LINKEDIN, url: 'https://linkedin.com/in/alice', label: null },
+          { type: ProfileLinkType.GITHUB, url: 'https://github.com/alice', label: null },
+          { type: ProfileLinkType.WEBSITE, url: 'https://alice.dev', label: null },
+        ],
+      })
+      expect(p.profile.links).toHaveLength(3)
+    })
+
+    it('should throw Invalid link type for unknown type', () => {
+      const p = ParticipantEntity.create({
+        userId: 'user-1',
+        eventId: 'event-1',
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
+      })
+      expect(() =>
+        p.updateProfile({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          links: [{ type: 'fax' as any, url: 'https://example.com', label: null }],
+        }),
+      ).toThrow('Invalid link type')
+    })
+
+    it('should throw Invalid link URL for non-https URL on non-email type', () => {
+      const p = ParticipantEntity.create({
+        userId: 'user-1',
+        eventId: 'event-1',
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
+      })
+      expect(() =>
+        p.updateProfile({
+          links: [{ type: ProfileLinkType.WEBSITE, url: 'ftp://bad.com', label: null }],
+        }),
+      ).toThrow('Invalid link URL')
+    })
+
+    it('should throw Invalid link URL for non-mailto URL on email type', () => {
+      const p = ParticipantEntity.create({
+        userId: 'user-1',
+        eventId: 'event-1',
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
+      })
+      expect(() =>
+        p.updateProfile({
+          links: [{ type: ProfileLinkType.EMAIL, url: 'https://example.com', label: null }],
+        }),
+      ).toThrow('Invalid link URL')
+    })
+
+    it('should throw Maximum 10 links allowed for 11 links', () => {
+      const p = ParticipantEntity.create({
+        userId: 'user-1',
+        eventId: 'event-1',
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
+      })
+      const links = Array.from({ length: 11 }, (_, i) => ({
+        type: ProfileLinkType.WEBSITE,
+        url: `https://example${i}.com`,
+        label: null,
+      }))
+      expect(() => p.updateProfile({ links })).toThrow('Maximum 10 links allowed')
+    })
+
+    it('should throw Custom link requires a label for custom type with null label', () => {
+      const p = ParticipantEntity.create({
+        userId: 'user-1',
+        eventId: 'event-1',
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
+      })
+      expect(() =>
+        p.updateProfile({
+          links: [{ type: ProfileLinkType.CUSTOM, url: 'https://custom.com', label: null }],
+        }),
+      ).toThrow('Custom link requires a label')
     })
   })
 
@@ -131,7 +205,7 @@ describe('ParticipantEntity', () => {
       const p = ParticipantEntity.create({
         userId: 'user-1',
         eventId: 'event-1',
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
+        profile: { displayName: 'Alice', role: null, bio: null, links: [] },
       })
       expect(p.isDeleted()).toBe(false)
       p.softDelete()
@@ -141,32 +215,22 @@ describe('ParticipantEntity', () => {
 
     it('should not overwrite deletedAt if already set', () => {
       const firstDeletion = new Date(Date.now() - 10000)
-      const p = ParticipantEntity.fromProps({
-        id: 'p-1',
-        userId: 'user-1',
-        eventId: 'event-1',
-        braceletId: null,
-        profile: { displayName: 'Alice', role: null, linkedinUrl: null, bio: null },
-        registeredAt: new Date(),
-        checkedInAt: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        deletedAt: firstDeletion,
-      })
+      const p = ParticipantEntity.fromProps({ ...baseProps, deletedAt: firstDeletion })
       p.softDelete()
       expect(p.deletedAt).toBe(firstDeletion)
     })
   })
 
   describe('toJSON()', () => {
-    it('should serialize all props', () => {
+    it('should serialize all props including links', () => {
       const now = new Date()
+      const links = [{ type: ProfileLinkType.LINKEDIN, url: 'https://linkedin.com/in/alice', label: null }]
       const p = ParticipantEntity.fromProps({
         id: 'p-1',
         userId: 'user-1',
         eventId: 'event-1',
         braceletId: null,
-        profile: { displayName: 'Alice', role: 'VIP', linkedinUrl: null, bio: null },
+        profile: { displayName: 'Alice', role: 'VIP', bio: null, links },
         registeredAt: now,
         checkedInAt: null,
         createdAt: now,
@@ -178,6 +242,7 @@ describe('ParticipantEntity', () => {
       expect(json.userId).toBe('user-1')
       expect(json.profile.displayName).toBe('Alice')
       expect(json.profile.role).toBe('VIP')
+      expect(json.profile.links).toEqual(links)
       expect(json.braceletId).toBeNull()
     })
   })

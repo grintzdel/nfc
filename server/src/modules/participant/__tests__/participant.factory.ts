@@ -10,7 +10,7 @@ export function createParticipantPropsFixture(overrides: Partial<ParticipantEnti
     userId: `user-${counter}`,
     eventId: `event-${counter}`,
     braceletId: null,
-    profile: { displayName: `Participant ${counter}`, role: null, linkedinUrl: null, bio: null },
+    profile: { displayName: `Participant ${counter}`, role: null, bio: null, links: [] },
     registeredAt: now,
     checkedInAt: null,
     createdAt: now,

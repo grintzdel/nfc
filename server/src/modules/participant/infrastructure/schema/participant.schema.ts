@@ -1,4 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose'
+import { ProfileLinkType } from '../../domain/constants/profile-link-type.constant'
+
+export interface ProfileLinkSubdoc {
+  type: string
+  url: string
+  label: Nullable<string>
+}
 
 export interface ParticipantDocument extends Document {
   userId: string
@@ -7,8 +14,8 @@ export interface ParticipantDocument extends Document {
   profile: {
     displayName: string
     role: Nullable<string>
-    linkedinUrl: Nullable<string>
     bio: Nullable<string>
+    links: ProfileLinkSubdoc[]
   }
   registeredAt: Date
   checkedInAt: Nullable<Date>
@@ -17,12 +24,21 @@ export interface ParticipantDocument extends Document {
   updatedAt: Date
 }
 
+const profileLinkSchema = new Schema(
+  {
+    type: { type: String, enum: Object.values(ProfileLinkType), required: true },
+    url: { type: String, required: true },
+    label: { type: String, default: null },
+  },
+  { _id: false },
+)
+
 const profileSchema = new Schema(
   {
     displayName: { type: String, required: true },
     role: { type: String, default: null },
-    linkedinUrl: { type: String, default: null },
     bio: { type: String, default: null },
+    links: { type: [profileLinkSchema], default: [] },
   },
   { _id: false },
 )

@@ -16,7 +16,7 @@ describe('RegisterParticipantUseCase', () => {
   const validInput = {
     userId: 'user-1',
     eventId: 'event-1',
-    profile: { displayName: 'Alice', role: null as Nullable<string>, linkedinUrl: null as Nullable<string>, bio: null as Nullable<string> },
+    profile: { displayName: 'Alice', role: null as Nullable<string>, bio: null as Nullable<string>, links: [] },
   }
 
   beforeEach(() => {

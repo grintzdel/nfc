@@ -11,8 +11,8 @@ function toEntity(doc: ParticipantDocument): ParticipantEntity {
     profile: {
       displayName: doc.profile.displayName,
       role: doc.profile.role,
-      linkedinUrl: doc.profile.linkedinUrl,
       bio: doc.profile.bio,
+      links: doc.profile.links,
     },
     registeredAt: doc.registeredAt,
     checkedInAt: doc.checkedInAt,

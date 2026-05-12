@@ -55,6 +55,7 @@ async function seed(): Promise<void> {
   await UserModel.create([
     { email: 'admin@gmail.com', password: adminPassword, firstName: 'admin', lastName: 'admin', role: 'admin' },
     { email: 'user@pulse.io', password: hashedPassword, firstName: 'Jean', lastName: 'Dupont', role: 'customer' },
+    { email: 'marie@pulse.demo', password: hashedPassword, firstName: 'Marie', lastName: 'Dubois', role: 'customer' },
   ])
 
   await ProductModel.create([
@@ -272,6 +273,63 @@ async function seed(): Promise<void> {
 
   const [festivalLyon, salonParis, techConf, hackathon] = events
 
+  // ─── Demo event (pulse-demo-2026 / demo-nfc-001) ──
+  const marieUser = await UserModel.findOne({ email: 'marie@pulse.demo' })
+  if (!marieUser) throw new Error('Marie demo user not found after seed')
+
+  const [demoEvent] = await EventModel.create([
+    {
+      name: 'Pulse Demo 2026',
+      slug: 'pulse-demo-2026',
+      description: 'Demo event for the NFC public flow',
+      venueName: 'Station F',
+      venueAddress: '5 Parvis Alan Turing, Paris',
+      city: 'Paris',
+      startsAt: daysFromNow(30),
+      endsAt: daysFromNow(31),
+      capacity: 500,
+      staffCount: 10,
+      status: EventStatus.UPCOMING,
+      ownerId: String(admin._id),
+      createdAt: new Date(),
+    },
+  ])
+
+  const [demoBracelet] = await BraceletModel.create([
+    {
+      nfcId: 'demo-nfc-001',
+      status: BraceletStatus.ACTIVE,
+      userId: String(marieUser._id),
+      eventId: String(demoEvent!._id),
+      productId: null,
+      orderId: null,
+      activatedAt: new Date(),
+      deletedAt: null,
+    },
+  ])
+
+  await ParticipantModel.create([
+    {
+      userId: String(marieUser._id),
+      eventId: String(demoEvent!._id),
+      braceletId: String(demoBracelet!._id),
+      profile: {
+        displayName: 'Marie Dubois',
+        role: 'Product Designer @ Pulse',
+        bio: 'Product Designer passionnée par les interfaces et l\'innovation. J\'aime connecter les gens via des expériences mémorables.',
+        links: [
+          { type: 'linkedin', url: 'https://linkedin.com/in/marie-dubois', label: null },
+          { type: 'github', url: 'https://github.com/mariedubois', label: null },
+          { type: 'custom', url: 'https://calendly.com/marie-dubois', label: 'Calendly' },
+        ],
+      },
+      registeredAt: new Date(),
+      checkedInAt: null,
+      deletedAt: null,
+      createdAt: new Date(),
+    },
+  ])
+
   // ─── Bracelets ────────────────────────────────────
   // We need bracelets created in current AND last month for comparison stats
   // Also activations spread across all 12 months of the year for the bar chart
@@ -368,7 +426,7 @@ async function seed(): Promise<void> {
       profile: {
         displayName: `Participant ${i + 1}`,
         role: i < 3 ? 'Speaker' : 'Attendee',
-        linkedinUrl: null,
+        links: [],
         bio: null,
       },
       registeredAt: date,
@@ -387,7 +445,7 @@ async function seed(): Promise<void> {
       profile: {
         displayName: `Participant LM ${i + 1}`,
         role: 'Attendee',
-        linkedinUrl: null,
+        links: [],
         bio: null,
       },
       registeredAt: date,

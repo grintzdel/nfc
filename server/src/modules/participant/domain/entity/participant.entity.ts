@@ -1,8 +1,16 @@
+import { ProfileLinkType } from '../constants/profile-link-type.constant'
+
+export interface ProfileLink {
+  type: ProfileLinkType
+  url: string
+  label: Nullable<string>
+}
+
 export interface ParticipantProfile {
   displayName: string
   role: Nullable<string>
-  linkedinUrl: Nullable<string>
   bio: Nullable<string>
+  links: ProfileLink[]
 }
 
 export interface ParticipantEntityProps {
@@ -18,6 +26,28 @@ export interface ParticipantEntityProps {
   deletedAt: Nullable<Date>
 }
 
+const VALID_LINK_TYPES = Object.values(ProfileLinkType) as string[]
+const URL_REGEX = /^https?:\/\/.+/
+const MAILTO_REGEX = /^mailto:.+@.+\..+$/
+const MAX_LINKS = 10
+
+function validateLink(link: ProfileLink): void {
+  if (!VALID_LINK_TYPES.includes(link.type)) throw new Error(`Invalid link type: ${link.type}`)
+  if (link.type === ProfileLinkType.EMAIL) {
+    if (!MAILTO_REGEX.test(link.url)) throw new Error('Invalid link URL (email must be mailto:)')
+  } else if (!URL_REGEX.test(link.url)) {
+    throw new Error(`Invalid link URL: ${link.url}`)
+  }
+  if (link.type === ProfileLinkType.CUSTOM && (!link.label || !link.label.trim())) {
+    throw new Error('Custom link requires a label')
+  }
+}
+
+function validateLinks(links: ProfileLink[]): void {
+  if (links.length > MAX_LINKS) throw new Error(`Maximum ${MAX_LINKS} links allowed`)
+  for (const link of links) validateLink(link)
+}
+
 export class ParticipantEntity {
   private constructor(private readonly props: ParticipantEntityProps) {}
 
@@ -25,6 +55,9 @@ export class ParticipantEntity {
     if (!props.userId) throw new Error('userId is required')
     if (!props.eventId) throw new Error('eventId is required')
     if (!props.profile?.displayName) throw new Error('displayName is required')
+
+    const links = props.profile.links ?? []
+    validateLinks(links)
 
     const now = new Date()
     return new ParticipantEntity({
@@ -35,8 +68,8 @@ export class ParticipantEntity {
       profile: {
         displayName: props.profile.displayName,
         role: props.profile.role ?? null,
-        linkedinUrl: props.profile.linkedinUrl ?? null,
         bio: props.profile.bio ?? null,
+        links,
       },
       registeredAt: props.registeredAt ?? now,
       checkedInAt: props.checkedInAt ?? null,
@@ -54,7 +87,7 @@ export class ParticipantEntity {
   get userId(): string { return this.props.userId }
   get eventId(): string { return this.props.eventId }
   get braceletId(): Nullable<string> { return this.props.braceletId }
-  get profile(): ParticipantProfile { return { ...this.props.profile } }
+  get profile(): ParticipantProfile { return { ...this.props.profile, links: [...this.props.profile.links] } }
   get registeredAt(): Date { return this.props.registeredAt }
   get checkedInAt(): Nullable<Date> { return this.props.checkedInAt }
   get createdAt(): Date { return this.props.createdAt }
@@ -83,8 +116,11 @@ export class ParticipantEntity {
       this.props.profile.displayName = partial.displayName
     }
     if (partial.role !== undefined) this.props.profile.role = partial.role
-    if (partial.linkedinUrl !== undefined) this.props.profile.linkedinUrl = partial.linkedinUrl
     if (partial.bio !== undefined) this.props.profile.bio = partial.bio
+    if (partial.links !== undefined) {
+      validateLinks(partial.links)
+      this.props.profile.links = [...partial.links]
+    }
     this.props.updatedAt = new Date()
     return this
   }
@@ -96,5 +132,7 @@ export class ParticipantEntity {
     }
   }
 
-  toJSON(): ParticipantEntityProps { return { ...this.props, profile: { ...this.props.profile } } }
+  toJSON(): ParticipantEntityProps {
+    return { ...this.props, profile: { ...this.props.profile, links: [...this.props.profile.links] } }
+  }
 }
