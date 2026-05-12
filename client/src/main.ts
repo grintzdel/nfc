@@ -74,6 +74,18 @@ const router = createRouter({
       component: () => import('./pages/admin/participants/page.vue'),
       meta: { noLayout: true, requiresAdmin: true },
     },
+    {
+      path: '/admin/products',
+      name: 'admin-products',
+      component: () => import('./pages/admin/products/page.vue'),
+      meta: { noLayout: true, requiresAdmin: true },
+    },
+    {
+      path: '/admin/orders',
+      name: 'admin-orders',
+      component: () => import('./pages/admin/orders/page.vue'),
+      meta: { noLayout: true, requiresAdmin: true },
+    },
   ],
   scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) return savedPosition
