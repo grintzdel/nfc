@@ -1,0 +1,70 @@
+import { Request, Response, NextFunction } from 'express'
+import { ParticipantService } from '../../application/services/participant.service'
+import { ParticipantResponseDto } from '../dto/participant.response.dto'
+import { RegisterParticipantRequestDto } from '../dto/register-participant.request.dto'
+import { UpdateParticipantProfileRequestDto } from '../dto/update-participant-profile.request.dto'
+import { AttachBraceletRequestDto } from '../dto/attach-bracelet.request.dto'
+
+export class ParticipantController {
+  constructor(private readonly participantService: ParticipantService) {}
+
+  async register(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const dto = new RegisterParticipantRequestDto(req.body as Record<string, unknown>)
+      const participant = await this.participantService.register({
+        userId: req.user!.userId,
+        eventId: dto.eventId,
+        profile: dto.profile,
+      })
+      res.status(201).json({ success: true, data: new ParticipantResponseDto(participant) })
+    } catch (e) { next(e) }
+  }
+
+  async getMyParticipations(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const participants = await this.participantService.getMyParticipations(req.user!.userId)
+      res.json({ success: true, data: participants.map((p) => new ParticipantResponseDto(p)) })
+    } catch (e) { next(e) }
+  }
+
+  async getByEvent(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const participants = await this.participantService.getByEvent(req.params.eventId as string)
+      res.json({ success: true, data: participants.map((p) => new ParticipantResponseDto(p)) })
+    } catch (e) { next(e) }
+  }
+
+  async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const participant = await this.participantService.getById(req.params.id as string)
+      res.json({ success: true, data: new ParticipantResponseDto(participant) })
+    } catch (e) { next(e) }
+  }
+
+  async updateProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const dto = new UpdateParticipantProfileRequestDto(req.body as Record<string, unknown>)
+      const participant = await this.participantService.updateProfile(
+        req.params.id as string,
+        req.user!.userId,
+        dto.toPartialProfile(),
+      )
+      res.json({ success: true, data: new ParticipantResponseDto(participant) })
+    } catch (e) { next(e) }
+  }
+
+  async attachBracelet(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const dto = new AttachBraceletRequestDto(req.body as Record<string, unknown>)
+      const participant = await this.participantService.attachBracelet(req.params.id as string, dto.braceletId)
+      res.json({ success: true, data: new ParticipantResponseDto(participant) })
+    } catch (e) { next(e) }
+  }
+
+  async unregister(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      await this.participantService.unregister(req.params.id as string, req.user!.userId)
+      res.status(204).send()
+    } catch (e) { next(e) }
+  }
+}

@@ -1,0 +1,48 @@
+import { ParticipantEntity, ParticipantProfile } from '../../domain/entity/participant.entity'
+import { RegisterParticipantUseCase, RegisterParticipantInput } from '../use-cases/register-participant/register-participant.use-case'
+import { GetParticipantByIdUseCase } from '../use-cases/get-participant-by-id/get-participant-by-id.use-case'
+import { GetMyParticipationsUseCase } from '../use-cases/get-my-participations/get-my-participations.use-case'
+import { GetParticipantsByEventUseCase } from '../use-cases/get-participants-by-event/get-participants-by-event.use-case'
+import { UpdateParticipantProfileUseCase } from '../use-cases/update-participant-profile/update-participant-profile.use-case'
+import { AttachBraceletUseCase } from '../use-cases/attach-bracelet/attach-bracelet.use-case'
+import { UnregisterParticipantUseCase } from '../use-cases/unregister-participant/unregister-participant.use-case'
+
+export class ParticipantService {
+  constructor(
+    private readonly registerParticipantUseCase: RegisterParticipantUseCase,
+    private readonly getParticipantByIdUseCase: GetParticipantByIdUseCase,
+    private readonly getMyParticipationsUseCase: GetMyParticipationsUseCase,
+    private readonly getParticipantsByEventUseCase: GetParticipantsByEventUseCase,
+    private readonly updateParticipantProfileUseCase: UpdateParticipantProfileUseCase,
+    private readonly attachBraceletUseCase: AttachBraceletUseCase,
+    private readonly unregisterParticipantUseCase: UnregisterParticipantUseCase,
+  ) {}
+
+  register(input: RegisterParticipantInput): Promise<ParticipantEntity> {
+    return this.registerParticipantUseCase.execute(input)
+  }
+
+  getById(id: string): Promise<ParticipantEntity> {
+    return this.getParticipantByIdUseCase.execute(id)
+  }
+
+  getMyParticipations(userId: string): Promise<ParticipantEntity[]> {
+    return this.getMyParticipationsUseCase.execute(userId)
+  }
+
+  getByEvent(eventId: string): Promise<ParticipantEntity[]> {
+    return this.getParticipantsByEventUseCase.execute(eventId)
+  }
+
+  updateProfile(participantId: string, callerUserId: string, partial: Partial<ParticipantProfile>): Promise<ParticipantEntity> {
+    return this.updateParticipantProfileUseCase.execute(participantId, callerUserId, partial)
+  }
+
+  attachBracelet(participantId: string, braceletId: string): Promise<ParticipantEntity> {
+    return this.attachBraceletUseCase.execute(participantId, braceletId)
+  }
+
+  unregister(participantId: string, callerUserId: string): Promise<void> {
+    return this.unregisterParticipantUseCase.execute(participantId, callerUserId)
+  }
+}
