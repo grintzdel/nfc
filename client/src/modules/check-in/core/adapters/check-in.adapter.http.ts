@@ -16,4 +16,17 @@ export class CheckInHttpAdapter implements ICheckInPort {
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
+
+  async getPaginatedByEvent(params: {
+    eventId: string
+    page: number
+    limit: number
+  }): Promise<CheckInDomainModel.PaginatedCheckInsDto> {
+    const qs = new URLSearchParams({ page: String(params.page), limit: String(params.limit) })
+    const result = await this.httpClient.get<CheckInDomainModel.PaginatedCheckInsDto>(
+      `/check-ins/event/${params.eventId}/paginated?${qs.toString()}`,
+    )
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
 }

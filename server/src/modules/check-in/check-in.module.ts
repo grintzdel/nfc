@@ -8,6 +8,7 @@ import { CheckInRepositoryMongooseMongo } from './infrastructure/repository/chec
 import { ICheckInRepository } from './domain/repository/check-in.repository.interface'
 import { RecordCheckInUseCase } from './application/use-cases/record-check-in/record-check-in.use-case'
 import { GetCheckInsByEventUseCase } from './application/use-cases/get-check-ins-by-event/get-check-ins-by-event.use-case'
+import { GetPaginatedCheckInsByEventUseCase } from './application/use-cases/get-paginated-check-ins-by-event/get-paginated-check-ins-by-event.use-case'
 import { CheckInService } from './application/services/check-in.service'
 import { CheckInController } from './presentation/controllers/check-in.controller'
 
@@ -21,8 +22,9 @@ export function createCheckInModule(
 
   const recordUC = new RecordCheckInUseCase(checkInRepository, braceletRepository, participantRepository, activateBraceletUseCase)
   const getByEventUC = new GetCheckInsByEventUseCase(checkInRepository)
+  const getPaginatedByEventUC = new GetPaginatedCheckInsByEventUseCase(checkInRepository, participantRepository)
 
-  const service = new CheckInService(recordUC, getByEventUC)
+  const service = new CheckInService(recordUC, getByEventUC, getPaginatedByEventUC)
   const controller = new CheckInController(service)
 
   const auth = createAuthMiddleware(jwtService)
@@ -30,6 +32,7 @@ export function createCheckInModule(
 
   const router = Router()
   router.post('/', auth, (req, res, next) => controller.record(req, res, next))
+  router.get('/event/:eventId/paginated', auth, admin, (req, res, next) => controller.getPaginatedByEvent(req, res, next))
   router.get('/event/:eventId', auth, admin, (req, res, next) => controller.getByEvent(req, res, next))
 
   return { router, checkInRepository }

@@ -8,6 +8,8 @@ export class CheckInRepositoryMock implements ICheckInRepository {
   findById_result: Nullable<CheckInEntity> = null
   findAllByEventId_result: CheckInEntity[] = []
   findAllByBraceletId_result: CheckInEntity[] = []
+  findPaginatedByEventId_result: PaginatedResult<CheckInEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  findPaginatedByEventId_calledWith: { eventId: string; page: number; limit: number } | null = null
   countByInteractionType_result: { type: InteractionType; count: number }[] = []
   countByEventIdAndType_result = 0
   countByEventId_result = 0
@@ -22,6 +24,15 @@ export class CheckInRepositoryMock implements ICheckInRepository {
   async findAllByEventId(_eventId: string): Promise<CheckInEntity[]> { return this.findAllByEventId_result }
 
   async findAllByBraceletId(_braceletId: string): Promise<CheckInEntity[]> { return this.findAllByBraceletId_result }
+
+  async findPaginatedByEventId(params: {
+    eventId: string
+    page: number
+    limit: number
+  }): Promise<PaginatedResult<CheckInEntity>> {
+    this.findPaginatedByEventId_calledWith = params
+    return this.findPaginatedByEventId_result
+  }
 
   async countByInteractionType(): Promise<{ type: InteractionType; count: number }[]> {
     return this.countByInteractionType_result

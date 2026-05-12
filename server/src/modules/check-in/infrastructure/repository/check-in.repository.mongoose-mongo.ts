@@ -57,4 +57,18 @@ export class CheckInRepositoryMongooseMongo implements ICheckInRepository {
   async countByEventId(eventId: string): Promise<number> {
     return CheckInModel.countDocuments({ eventId })
   }
+
+  async findPaginatedByEventId(params: {
+    eventId: string
+    page: number
+    limit: number
+  }): Promise<PaginatedResult<CheckInEntity>> {
+    const { eventId, page, limit } = params
+    const filter = { eventId }
+    const [docs, total] = await Promise.all([
+      CheckInModel.find(filter).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit),
+      CheckInModel.countDocuments(filter),
+    ])
+    return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
+  }
 }

@@ -6,6 +6,7 @@ export interface ICheckInRepository {
   findById(id: string): Promise<Nullable<CheckInEntity>>
   findAllByEventId(eventId: string): Promise<CheckInEntity[]>
   findAllByBraceletId(braceletId: string): Promise<CheckInEntity[]>
+  findPaginatedByEventId(params: { eventId: string; page: number; limit: number }): Promise<PaginatedResult<CheckInEntity>>
   countByInteractionType(): Promise<{ type: InteractionType; count: number }[]>
   countByEventIdAndType(eventId: string, type: InteractionType): Promise<number>
   countByEventId(eventId: string): Promise<number>

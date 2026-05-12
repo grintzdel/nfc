@@ -10,6 +10,7 @@ import { useEventStatusTransition, type EventStatusAction } from '@/modules/even
 import EventDetailHeader from './components/event-detail-header.vue'
 import EventDetailParticipants from './components/event-detail-participants.vue'
 import EventDetailBracelets from './components/event-detail-bracelets.vue'
+import EventDetailCheckIns from './components/event-detail-check-ins.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -87,9 +88,7 @@ function handleStatusAction(action: EventStatusAction): void {
             <EventDetailBracelets :event-id="event.id" />
           </TabsContent>
           <TabsContent value="check-ins">
-            <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">
-              Tab Check-ins — à implémenter (Phase 4)
-            </div>
+            <EventDetailCheckIns :event-id="event.id" :stats="stats" />
           </TabsContent>
         </Tabs>
       </template>

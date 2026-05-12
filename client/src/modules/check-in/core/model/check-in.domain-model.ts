@@ -29,4 +29,19 @@ export namespace CheckInDomainModel {
     amount?: number
     metadata?: Record<string, unknown>
   }
+
+  export type ParticipantSummaryDto = {
+    id: string
+    displayName: string
+  }
+  export type CheckInWithParticipantDto = CheckInOverviewDto & {
+    participant: ParticipantSummaryDto | null
+  }
+  export type PaginatedCheckInsDto = {
+    items: CheckInWithParticipantDto[]
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+  }
 }
