@@ -5,9 +5,11 @@ import { Globe, Apple } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 import { getSharedHttpClient } from '@/modules/shared/http/http-client'
+import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
 
 const router = useRouter()
 const { authPort } = useDependencies()
+const { isAdmin } = useAuth()
 
 const email = ref('')
 const password = ref('')
@@ -25,7 +27,7 @@ async function handleSubmit() {
     localStorage.setItem('token', response.token)
     getSharedHttpClient().setAuthToken(response.token)
     toast.success('Connexion reussie !')
-    router.push('/')
+    router.push(isAdmin() ? '/admin/dashboard' : '/')
   } catch (error) {
     toast.error(error instanceof Error ? error.message : 'Erreur de connexion')
   } finally {
