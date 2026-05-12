@@ -25,6 +25,11 @@ export namespace EventDomainModel {
     ownerId: string
     createdAt: string
     updatedAt: string
+    /**
+     * Only populated by GET /events/public/:slug. Lets the public page detect
+     * capacity-full state without an extra round-trip.
+     */
+    participantCount?: number
   }
 
   export type CreateEventDto = {

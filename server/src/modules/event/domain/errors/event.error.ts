@@ -9,3 +9,8 @@ export class EventInvalidStatusTransitionError extends AppError {
 export class EventNotOwnerError extends AppError {
   constructor() { super(403, 'Only the event owner can perform this action') }
 }
+export class EventFullError extends AppError {
+  constructor(eventId: string) {
+    super(409, `Event ${eventId} is full — no more spots available`)
+  }
+}

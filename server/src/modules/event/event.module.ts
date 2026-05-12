@@ -3,6 +3,7 @@ import { JwtServiceSecurity } from '@modules/auth/application/services/security/
 import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { ICheckInRepository } from '@modules/check-in/domain/repository/check-in.repository.interface'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 import { EventRepositoryMongooseMongo } from './infrastructure/repository/event.repository.mongoose-mongo'
 import { IEventRepository } from './domain/repository/event.repository.interface'
 import { CreateEventUseCase } from './application/use-cases/create-event/create-event.use-case'
@@ -23,6 +24,7 @@ import { EventController } from './presentation/controllers/event.controller'
 export interface EventModuleDeps {
   braceletRepository: IBraceletRepository
   checkInRepository: ICheckInRepository
+  participantRepository: IParticipantRepository
 }
 
 export function createEventModule(
@@ -45,7 +47,16 @@ export function createEventModule(
     ? new ListPaginatedEventsUseCase(eventRepository, deps.braceletRepository, deps.checkInRepository)
     : null
 
-  const getBySlugPublicUC = new GetEventBySlugPublicUseCase(eventRepository)
+  // The public endpoint needs participantCount, which lives in the participant module.
+  // We wire a fallback that throws on first call, then attachDeps replaces it with the real one
+  // once main.ts has spun up the participant module (same pattern as listPaginated above).
+  let getBySlugPublicUC: GetEventBySlugPublicUseCase = deps
+    ? new GetEventBySlugPublicUseCase(eventRepository, deps.participantRepository)
+    : new GetEventBySlugPublicUseCase(eventRepository, {
+        async countByEventId() {
+          throw new Error('Event module participantRepository not attached yet')
+        },
+      } as unknown as IParticipantRepository)
 
   const service = new EventService(createUC, getByIdUC, getMyUC, getAllUC, updateUC, publishUC, startUC, completeUC, cancelUC, deleteUC, listPaginatedUC, getBySlugPublicUC)
   const controller = new EventController(service)
@@ -70,6 +81,8 @@ export function createEventModule(
   function attachDeps(d: EventModuleDeps): void {
     listPaginatedUC = new ListPaginatedEventsUseCase(eventRepository, d.braceletRepository, d.checkInRepository)
     service.attachListPaginated(listPaginatedUC)
+    getBySlugPublicUC = new GetEventBySlugPublicUseCase(eventRepository, d.participantRepository)
+    service.attachGetBySlugPublic(getBySlugPublicUC)
   }
 
   return { router, eventRepository, attachDeps }

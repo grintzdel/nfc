@@ -58,7 +58,7 @@ const { router: checkInRouter, checkInRepository } = createCheckInModule(
   participantRepository,
   activateBraceletUseCase,
 )
-attachEventDeps({ braceletRepository, checkInRepository })
+attachEventDeps({ braceletRepository, checkInRepository, participantRepository })
 const { router: teamRouter } = createTeamModule(jwtService, userRepository, eventRepository)
 const { router: orderRouter, orderRepository } = createOrderModule(
   jwtService,

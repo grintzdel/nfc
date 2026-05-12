@@ -96,8 +96,8 @@ export class EventController {
 
   async getPublicBySlug(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const event = await this.eventService.getPublicBySlug(req.params.slug as string)
-      res.json({ success: true, data: new EventResponseDto(event) })
+      const { event, participantCount } = await this.eventService.getPublicBySlug(req.params.slug as string)
+      res.json({ success: true, data: { ...new EventResponseDto(event), participantCount } })
     } catch (e) { next(e) }
   }
 

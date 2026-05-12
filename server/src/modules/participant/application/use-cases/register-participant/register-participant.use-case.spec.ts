@@ -4,7 +4,7 @@ import { createParticipantFixture } from '../../../__tests__/participant.factory
 import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
 import { createEventFixture } from '@modules/event/__tests__/event.factory'
 import { EventStatus } from '@modules/event/domain/constants/event-status.constant'
-import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { EventFullError, EventNotFoundError } from '@modules/event/domain/errors/event.error'
 import { ParticipantAlreadyRegisteredError } from '../../../domain/errors/participant.error'
 import { AppError } from '@shared/errors/app.error'
 
@@ -65,5 +65,31 @@ describe('RegisterParticipantUseCase', () => {
     })
 
     await expect(useCase.execute(validInput)).rejects.toThrow(ParticipantAlreadyRegisteredError)
+  })
+
+  it('should throw EventFullError when event is at capacity', async () => {
+    eventRepo.findById_result = createEventFixture({ status: EventStatus.UPCOMING, capacity: 100 })
+    participantRepo.findByUserAndEvent_result = null
+    participantRepo.countByEventId_result = 100
+
+    await expect(useCase.execute(validInput)).rejects.toThrow(EventFullError)
+  })
+
+  it('should allow registration when event has capacity left', async () => {
+    eventRepo.findById_result = createEventFixture({ status: EventStatus.UPCOMING, capacity: 100 })
+    participantRepo.findByUserAndEvent_result = null
+    participantRepo.countByEventId_result = 99
+
+    const result = await useCase.execute(validInput)
+    expect(result).toBeDefined()
+  })
+
+  it('should skip capacity check when capacity is 0 (no limit)', async () => {
+    eventRepo.findById_result = createEventFixture({ status: EventStatus.UPCOMING, capacity: 0 })
+    participantRepo.findByUserAndEvent_result = null
+    participantRepo.countByEventId_result = 9999
+
+    const result = await useCase.execute(validInput)
+    expect(result).toBeDefined()
   })
 })

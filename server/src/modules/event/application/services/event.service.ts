@@ -11,7 +11,7 @@ import { CompleteEventUseCase } from '../use-cases/complete-event/complete-event
 import { CancelEventUseCase } from '../use-cases/cancel-event/cancel-event.use-case'
 import { DeleteEventUseCase } from '../use-cases/delete-event/delete-event.use-case'
 import { ListPaginatedEventsUseCase, PaginatedEventRow } from '../use-cases/list-paginated-events/list-paginated-events.use-case'
-import { GetEventBySlugPublicUseCase } from '../use-cases/get-event-by-slug-public/get-event-by-slug-public.use-case'
+import { GetEventBySlugPublicUseCase, PublicEventOverview } from '../use-cases/get-event-by-slug-public/get-event-by-slug-public.use-case'
 
 export class EventService {
   constructor(
@@ -26,11 +26,15 @@ export class EventService {
     private readonly cancelEventUseCase: CancelEventUseCase,
     private readonly deleteEventUseCase: DeleteEventUseCase,
     private listPaginatedEventsUseCase: ListPaginatedEventsUseCase | null,
-    private readonly getEventBySlugPublicUC: GetEventBySlugPublicUseCase,
+    private getEventBySlugPublicUC: GetEventBySlugPublicUseCase,
   ) {}
 
   attachListPaginated(uc: ListPaginatedEventsUseCase): void {
     this.listPaginatedEventsUseCase = uc
+  }
+
+  attachGetBySlugPublic(uc: GetEventBySlugPublicUseCase): void {
+    this.getEventBySlugPublicUC = uc
   }
 
   create(dto: EventDomainModel.CreateEventDto): Promise<EventEntity> { return this.createEventUseCase.execute(dto) }
@@ -48,7 +52,7 @@ export class EventService {
     return this.listPaginatedEventsUseCase.execute(params)
   }
 
-  async getPublicBySlug(slug: string): Promise<EventEntity> {
+  async getPublicBySlug(slug: string): Promise<PublicEventOverview> {
     return this.getEventBySlugPublicUC.execute(slug)
   }
 }

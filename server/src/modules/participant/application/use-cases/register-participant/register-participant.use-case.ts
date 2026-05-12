@@ -2,7 +2,7 @@ import { ParticipantEntity, ParticipantProfile } from '../../../domain/entity/pa
 import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 import { ParticipantAlreadyRegisteredError } from '../../../domain/errors/participant.error'
 import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
-import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { EventFullError, EventNotFoundError } from '@modules/event/domain/errors/event.error'
 import { AppError } from '@shared/errors/app.error'
 
 export interface RegisterParticipantInput {
@@ -27,6 +27,11 @@ export class RegisterParticipantUseCase {
 
     const existing = await this.participantRepository.findByUserAndEvent(input.userId, input.eventId)
     if (existing) throw new ParticipantAlreadyRegisteredError(input.userId, input.eventId)
+
+    if (event.capacity > 0) {
+      const currentCount = await this.participantRepository.countByEventId(input.eventId)
+      if (currentCount >= event.capacity) throw new EventFullError(input.eventId)
+    }
 
     const entity = ParticipantEntity.create({
       userId: input.userId,

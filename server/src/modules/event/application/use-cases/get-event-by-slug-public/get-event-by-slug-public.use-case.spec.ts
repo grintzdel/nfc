@@ -1,50 +1,60 @@
 import { GetEventBySlugPublicUseCase } from './get-event-by-slug-public.use-case'
 import { EventRepositoryMock } from '../../../__tests__/event.repository.mock'
+import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
 import { createEventFixture } from '../../../__tests__/event.factory'
 import { EventStatus } from '../../../domain/constants/event-status.constant'
 import { EventNotFoundError } from '../../../domain/errors/event.error'
 import { AppError } from '@shared/errors/app.error'
 
 describe('GetEventBySlugPublicUseCase', () => {
-  let mockRepository: EventRepositoryMock
+  let eventRepo: EventRepositoryMock
+  let participantRepo: ParticipantRepositoryMock
   let useCase: GetEventBySlugPublicUseCase
 
   beforeEach(() => {
-    mockRepository = new EventRepositoryMock()
-    useCase = new GetEventBySlugPublicUseCase(mockRepository)
+    eventRepo = new EventRepositoryMock()
+    participantRepo = new ParticipantRepositoryMock()
+    useCase = new GetEventBySlugPublicUseCase(eventRepo, participantRepo)
   })
 
-  it('returns event when status is upcoming', async () => {
-    mockRepository.findBySlug_result = createEventFixture({ status: EventStatus.UPCOMING })
+  it('returns event + participantCount when status is upcoming', async () => {
+    eventRepo.findBySlug_result = createEventFixture({ id: 'e1', status: EventStatus.UPCOMING })
+    participantRepo.countByEventId_result = 42
+
     const result = await useCase.execute('any-slug')
-    expect(result.isUpcoming()).toBe(true)
+
+    expect(result.event.id).toBe('e1')
+    expect(result.event.isUpcoming()).toBe(true)
+    expect(result.participantCount).toBe(42)
   })
 
   it('returns event when status is in_progress', async () => {
-    mockRepository.findBySlug_result = createEventFixture({ status: EventStatus.IN_PROGRESS })
+    eventRepo.findBySlug_result = createEventFixture({ status: EventStatus.IN_PROGRESS })
+    participantRepo.countByEventId_result = 7
     const result = await useCase.execute('any-slug')
-    expect(result.isInProgress()).toBe(true)
+    expect(result.event.isInProgress()).toBe(true)
+    expect(result.participantCount).toBe(7)
   })
 
   it('throws AppError 404 when status is draft', async () => {
-    mockRepository.findBySlug_result = createEventFixture({ status: EventStatus.DRAFT })
+    eventRepo.findBySlug_result = createEventFixture({ status: EventStatus.DRAFT })
     await expect(useCase.execute('any-slug')).rejects.toBeInstanceOf(AppError)
   })
 
   it('throws AppError 404 when status is completed', async () => {
-    mockRepository.findBySlug_result = createEventFixture({ status: EventStatus.COMPLETED })
+    eventRepo.findBySlug_result = createEventFixture({ status: EventStatus.COMPLETED })
     await expect(useCase.execute('any-slug')).rejects.toBeInstanceOf(AppError)
   })
 
   it('throws EventNotFoundError when slug not found', async () => {
-    mockRepository.findBySlug_result = null
+    eventRepo.findBySlug_result = null
     await expect(useCase.execute('missing-slug')).rejects.toBeInstanceOf(EventNotFoundError)
   })
 
   it('throws EventNotFoundError when soft-deleted', async () => {
     const e = createEventFixture({ status: EventStatus.UPCOMING })
     e.softDelete()
-    mockRepository.findBySlug_result = e
+    eventRepo.findBySlug_result = e
     await expect(useCase.execute('slug')).rejects.toBeInstanceOf(EventNotFoundError)
   })
 })
