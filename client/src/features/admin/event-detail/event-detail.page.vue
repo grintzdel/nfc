@@ -5,6 +5,9 @@ import { toast } from 'vue-sonner'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs'
 import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
+import { useGetEventDetailStats } from '@/modules/analytics/ui/hooks/queries/query/use-get-event-detail-stats'
+import { useEventStatusTransition, type EventStatusAction } from '@/modules/event/ui/hooks/queries/mutation/use-event-status-transition'
+import EventDetailHeader from './components/event-detail-header.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -17,11 +20,13 @@ watch(
   },
 )
 
-const { data: event, isError } = useGetEventById(eventId)
+const { data: event, isError: eventError } = useGetEventById(eventId)
+const { data: stats, isError: statsError } = useGetEventDetailStats(eventId)
+const statusMutation = useEventStatusTransition()
 
-watch(isError, (err) => {
-  if (err) {
-    toast.error("Événement introuvable")
+watch([eventError, statsError], ([eErr, sErr]) => {
+  if (eErr || sErr) {
+    toast.error('Événement introuvable')
     router.push('/admin/events')
   }
 })
@@ -37,27 +42,41 @@ const subtitle = computed(() => {
   return `${event.value.venueName} — ${start}`
 })
 
+const isReady = computed(() => Boolean(event.value && stats.value))
 const activeTab = ref<'participants' | 'bracelets' | 'check-ins'>('participants')
+
+function handleStatusAction(action: EventStatusAction): void {
+  if (!eventId.value) return
+  statusMutation.mutate({ id: eventId.value, action })
+}
 </script>
 
 <template>
   <AdminLayout :title="title" :subtitle="subtitle">
     <div class="flex flex-col gap-6 p-6 xl:p-8">
-      <div v-if="!event" class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">
+      <div v-if="!isReady" class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">
         Chargement…
       </div>
 
-      <template v-else>
-        <!-- Phase 1 will mount <EventDetailHeader :event :stats /> here -->
-        <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">
-          Header KPI strip à venir (Phase 1)
-        </div>
+      <template v-else-if="event && stats">
+        <EventDetailHeader
+          :event="event"
+          :stats="stats"
+          :loading="statusMutation.isPending.value"
+          @action="handleStatusAction"
+        />
 
         <Tabs v-model="activeTab" default-value="participants">
           <TabsList>
-            <TabsTrigger value="participants">Participants</TabsTrigger>
-            <TabsTrigger value="bracelets">Bracelets</TabsTrigger>
-            <TabsTrigger value="check-ins">Check-ins</TabsTrigger>
+            <TabsTrigger value="participants">
+              Participants ({{ stats.participantCount }})
+            </TabsTrigger>
+            <TabsTrigger value="bracelets">
+              Bracelets ({{ stats.braceletsAttachedCount }})
+            </TabsTrigger>
+            <TabsTrigger value="check-ins">
+              Check-ins ({{ stats.checkInCount }})
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="participants">
             <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">

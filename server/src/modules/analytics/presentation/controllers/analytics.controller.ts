@@ -53,4 +53,12 @@ export class AnalyticsController {
     try { const data = await this.analyticsService.getEventPageStats(); res.json({ success: true, data }) }
     catch (e) { next(e) }
   }
+
+  async getEventDetailStats(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { eventId } = req.params
+      const data = await this.analyticsService.getEventDetailStats(eventId!)
+      res.json({ success: true, data })
+    } catch (e) { next(e) }
+  }
 }

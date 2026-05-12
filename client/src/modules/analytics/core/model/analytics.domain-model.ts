@@ -73,6 +73,17 @@ export namespace AnalyticsDomainModel {
     successRate: number
   }
 
+  export type EventDetailStatsDto = {
+    participantCount: number
+    capacity: number
+    capacityFillRate: number
+    braceletsAttachedCount: number
+    braceletsActiveCount: number
+    checkInCount: number
+    uniqueParticipantsCheckedIn: number
+    lastCheckInAt: string | null
+  }
+
   export type BraceletStockStatsDto = {
     current: number
     maxCapacity: number

@@ -16,6 +16,7 @@ import { ListInteractionTypesWithStatsUseCase } from './application/use-cases/li
 import { GetNextEventWithStatsUseCase } from './application/use-cases/get-next-event-with-stats/get-next-event-with-stats.use-case'
 import { GetBraceletStockWithStatsUseCase } from './application/use-cases/get-bracelet-stock-with-stats/get-bracelet-stock-with-stats.use-case'
 import { GetEventPageStatsUseCase } from './application/use-cases/get-event-page-stats/get-event-page-stats.use-case'
+import { GetEventDetailStatsUseCase } from './application/use-cases/get-event-detail-stats/get-event-detail-stats.use-case'
 import { AnalyticsService } from './application/services/analytics.service'
 import { AnalyticsController } from './presentation/controllers/analytics.controller'
 
@@ -38,10 +39,17 @@ export function createAnalyticsModule(jwtService: JwtServiceSecurity, deps: Anal
   const getNextEventUC = new GetNextEventWithStatsUseCase(deps.eventRepository, deps.braceletRepository)
   const getStockUC = new GetBraceletStockWithStatsUseCase(deps.braceletRepository, deps.supplyOrderRepository)
   const getEventPageStatsUC = new GetEventPageStatsUseCase(deps.eventRepository)
+  const getEventDetailStatsUC = new GetEventDetailStatsUseCase(
+    deps.eventRepository,
+    deps.participantRepository,
+    deps.braceletRepository,
+    deps.checkInRepository,
+  )
 
   const service = new AnalyticsService(
     listActiveUC, getParticipantsUC, getBraceletsUC, getRevenueUC,
     listActivationsUC, listInteractionsUC, getNextEventUC, getStockUC, getEventPageStatsUC,
+    getEventDetailStatsUC,
   )
   const controller = new AnalyticsController(service)
 
@@ -58,5 +66,6 @@ export function createAnalyticsModule(jwtService: JwtServiceSecurity, deps: Anal
   router.get('/revenue', auth, admin, (req, res, next) => controller.getRevenue(req, res, next))
   router.get('/interactions', auth, admin, (req, res, next) => controller.listInteractions(req, res, next))
   router.get('/events/page-stats', auth, admin, (req, res, next) => controller.getEventPageStats(req, res, next))
+  router.get('/events/:eventId', auth, admin, (req, res, next) => controller.getEventDetailStats(req, res, next))
   return router
 }

@@ -8,6 +8,7 @@ import { ListInteractionTypesWithStatsUseCase } from '../use-cases/list-interact
 import { GetNextEventWithStatsUseCase } from '../use-cases/get-next-event-with-stats/get-next-event-with-stats.use-case'
 import { GetBraceletStockWithStatsUseCase } from '../use-cases/get-bracelet-stock-with-stats/get-bracelet-stock-with-stats.use-case'
 import { GetEventPageStatsUseCase } from '../use-cases/get-event-page-stats/get-event-page-stats.use-case'
+import { GetEventDetailStatsUseCase } from '../use-cases/get-event-detail-stats/get-event-detail-stats.use-case'
 
 export class AnalyticsService {
   constructor(
@@ -20,6 +21,7 @@ export class AnalyticsService {
     private readonly getNextEventUC: GetNextEventWithStatsUseCase,
     private readonly getStockUC: GetBraceletStockWithStatsUseCase,
     private readonly getEventPageStatsUC: GetEventPageStatsUseCase,
+    private readonly getEventDetailStatsUC: GetEventDetailStatsUseCase,
   ) {}
 
   listActiveEventsWithStats(): Promise<AnalyticsDomainModel.ActiveEventsStatsDto> { return this.listActiveEventsUC.execute() }
@@ -31,4 +33,7 @@ export class AnalyticsService {
   getNextEventWithStats(): Promise<AnalyticsDomainModel.NextEventStatsDto> { return this.getNextEventUC.execute() }
   getBraceletStockWithStats(): Promise<AnalyticsDomainModel.BraceletStockStatsDto> { return this.getStockUC.execute() }
   getEventPageStats(): Promise<AnalyticsDomainModel.EventPageStatsDto> { return this.getEventPageStatsUC.execute() }
+  getEventDetailStats(eventId: string): Promise<AnalyticsDomainModel.EventDetailStatsDto> {
+    return this.getEventDetailStatsUC.execute(eventId)
+  }
 }

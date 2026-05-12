@@ -67,4 +67,14 @@ export namespace AnalyticsDomainModel {
     completedThisYear: number
     successRate: number
   }
+  export interface EventDetailStatsDto {
+    participantCount: number
+    capacity: number
+    capacityFillRate: number
+    braceletsAttachedCount: number
+    braceletsActiveCount: number
+    checkInCount: number
+    uniqueParticipantsCheckedIn: number
+    lastCheckInAt: Nullable<string>
+  }
 }

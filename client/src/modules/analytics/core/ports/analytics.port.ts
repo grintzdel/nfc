@@ -10,4 +10,5 @@ export interface IAnalyticsPort {
   getRevenue(): Promise<AnalyticsDomainModel.RevenueWithRateDto>
   getInteractions(): Promise<AnalyticsDomainModel.InteractionsStatsDto>
   getEventPageStats(): Promise<AnalyticsDomainModel.EventPageStatsDto>
+  getEventDetailStats(eventId: string): Promise<AnalyticsDomainModel.EventDetailStatsDto>
 }

@@ -59,4 +59,10 @@ export class AnalyticsHttpAdapter implements IAnalyticsPort {
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
+
+  async getEventDetailStats(eventId: string): Promise<AnalyticsDomainModel.EventDetailStatsDto> {
+    const result = await this.httpClient.get<AnalyticsDomainModel.EventDetailStatsDto>(`/admin-stats/events/${eventId}`)
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
 }
