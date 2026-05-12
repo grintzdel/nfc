@@ -16,6 +16,7 @@ import { CompleteEventUseCase } from './application/use-cases/complete-event/com
 import { CancelEventUseCase } from './application/use-cases/cancel-event/cancel-event.use-case'
 import { DeleteEventUseCase } from './application/use-cases/delete-event/delete-event.use-case'
 import { ListPaginatedEventsUseCase } from './application/use-cases/list-paginated-events/list-paginated-events.use-case'
+import { GetEventBySlugPublicUseCase } from './application/use-cases/get-event-by-slug-public/get-event-by-slug-public.use-case'
 import { EventService } from './application/services/event.service'
 import { EventController } from './presentation/controllers/event.controller'
 
@@ -44,13 +45,16 @@ export function createEventModule(
     ? new ListPaginatedEventsUseCase(eventRepository, deps.braceletRepository, deps.checkInRepository)
     : null
 
-  const service = new EventService(createUC, getByIdUC, getMyUC, getAllUC, updateUC, publishUC, startUC, completeUC, cancelUC, deleteUC, listPaginatedUC)
+  const getBySlugPublicUC = new GetEventBySlugPublicUseCase(eventRepository)
+
+  const service = new EventService(createUC, getByIdUC, getMyUC, getAllUC, updateUC, publishUC, startUC, completeUC, cancelUC, deleteUC, listPaginatedUC, getBySlugPublicUC)
   const controller = new EventController(service)
 
   const auth = createAuthMiddleware(jwtService)
   const admin = createAdminMiddleware()
 
   const router = Router()
+  router.get('/public/:slug', (req, res, next) => controller.getPublicBySlug(req, res, next))
   router.post('/', auth, (req, res, next) => controller.create(req, res, next))
   router.get('/', auth, (req, res, next) => controller.getMyEvents(req, res, next))
   router.get('/admin', auth, admin, (req, res, next) => controller.getAll(req, res, next))

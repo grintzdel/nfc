@@ -38,6 +38,12 @@ export class EventHttpAdapter implements IEventPort {
     return result.data.data
   }
 
+  async getPublicBySlug(slug: string): Promise<EventDomainModel.EventOverviewDto> {
+    const result = await this.httpClient.get<EventDomainModel.EventOverviewDto>(`/events/public/${slug}`)
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
+
   async update(id: string, dto: EventDomainModel.UpdateEventDto): Promise<EventDomainModel.EventOverviewDto> {
     const result = await this.httpClient.patch<EventDomainModel.EventOverviewDto>(`/events/${id}`, dto)
     if (result.error) throw new Error(result.error.message)

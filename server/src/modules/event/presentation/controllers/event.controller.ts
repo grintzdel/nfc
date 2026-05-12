@@ -94,6 +94,13 @@ export class EventController {
     } catch (e) { next(e) }
   }
 
+  async getPublicBySlug(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const event = await this.eventService.getPublicBySlug(req.params.slug as string)
+      res.json({ success: true, data: new EventResponseDto(event) })
+    } catch (e) { next(e) }
+  }
+
   async listPaginated(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const page = Math.max(1, Number(req.query.page) || 1)

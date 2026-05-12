@@ -3,10 +3,12 @@ import { EventEntity } from '../domain/entity/event.entity'
 import { EventStatus } from '../domain/constants/event-status.constant'
 
 export class EventRepositoryMock implements IEventRepository {
-  create_result: EventEntity | null = null
-  create_calledWith: EventEntity | null = null
+  create_result:  Nullable<EventEntity> = null
+  create_calledWith: Nullable<EventEntity> = null
   findById_result: Nullable<EventEntity> = null
-  findById_calledWith: string | null = null
+  findById_calledWith: Nullable<string> = null
+  findBySlug_result: Nullable<EventEntity> = null
+  findBySlug_calledWith: Nullable<string> = null
   findAll_result: EventEntity[] = []
   findAllByOwner_result: EventEntity[] = []
   findAllByStatusIn_result: EventEntity[] = []
@@ -23,6 +25,7 @@ export class EventRepositoryMock implements IEventRepository {
 
   async create(e: EventEntity): Promise<EventEntity> { this.create_calledWith = e; return this.create_result ?? e }
   async findById(id: string): Promise<Nullable<EventEntity>> { this.findById_calledWith = id; return this.findById_result }
+  async findBySlug(slug: string): Promise<Nullable<EventEntity>> { this.findBySlug_calledWith = slug; return this.findBySlug_result }
   async findAll(): Promise<EventEntity[]> { return this.findAll_result }
   async findAllByOwner(_ownerId: string): Promise<EventEntity[]> { return this.findAllByOwner_result }
   async findAllByStatusIn(_statuses: EventStatus[]): Promise<EventEntity[]> { return this.findAllByStatusIn_result }

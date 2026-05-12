@@ -36,6 +36,11 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
     return doc ? toEntity(doc) : null
   }
 
+  async findBySlug(slug: string): Promise<Nullable<EventEntity>> {
+    const doc = await EventModel.findOne({ slug, deletedAt: null })
+    return doc ? toEntity(doc) : null
+  }
+
   async findAll(): Promise<EventEntity[]> {
     const docs = await EventModel.find({ deletedAt: null })
     return docs.map(toEntity)

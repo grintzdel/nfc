@@ -6,6 +6,7 @@ export interface IEventPort {
   getAll(): Promise<EventDomainModel.EventOverviewDto[]>
   getPaginated(params: { page: number; limit: number; search?: string; status?: string }): Promise<EventDomainModel.PaginatedEventsDto>
   getById(id: string): Promise<EventDomainModel.EventOverviewDto>
+  getPublicBySlug(slug: string): Promise<EventDomainModel.EventOverviewDto>
   update(id: string, dto: EventDomainModel.UpdateEventDto): Promise<EventDomainModel.EventOverviewDto>
   publish(id: string): Promise<EventDomainModel.EventOverviewDto>
   start(id: string): Promise<EventDomainModel.EventOverviewDto>

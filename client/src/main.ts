@@ -24,6 +24,7 @@ const router = createRouter({
       component: () => import('./pages/me/events/page.vue'),
       meta: { requiresAuth: true },
     },
+    { path: '/events/:slug', name: 'event-public', component: () => import('./pages/events-public/page.vue') },
     { path: '/admin', redirect: '/admin/dashboard' },
     {
       path: '/admin/dashboard',
