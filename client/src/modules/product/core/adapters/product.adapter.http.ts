@@ -22,4 +22,21 @@ export class ProductHttpAdapter implements IProductPort {
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
+
+  async create(dto: ProductDomainModel.CreateProductDto): Promise<ProductDomainModel.ProductOverviewDto> {
+    const result = await this.httpClient.post<ProductDomainModel.ProductOverviewDto>('/products', dto)
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
+
+  async update(id: string, dto: ProductDomainModel.UpdateProductDto): Promise<ProductDomainModel.ProductOverviewDto> {
+    const result = await this.httpClient.patch<ProductDomainModel.ProductOverviewDto>(`/products/${id}`, dto)
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.httpClient.delete(`/products/${id}`)
+    if (result.error) throw new Error(result.error.message)
+  }
 }

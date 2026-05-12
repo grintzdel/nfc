@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { Calendar, LayoutDashboard, Radio, Users, Watch } from 'lucide-vue-next'
+import { Calendar, LayoutDashboard, Package, Radio, ShoppingBag, Users, Watch } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
@@ -42,6 +42,13 @@ const sections: NavSection[] = [
       { label: 'Événements', icon: Calendar, to: '/admin/events' },
       { label: 'Bracelets', icon: Watch, to: '/admin/bracelets' },
       { label: 'Participants', icon: Users, to: '/admin/participants' },
+    ],
+  },
+  {
+    title: 'E-commerce',
+    items: [
+      { label: 'Catalogue', icon: Package, to: '/admin/products' },
+      { label: 'Commandes', icon: ShoppingBag, to: '/admin/orders' },
     ],
   },
 ]
