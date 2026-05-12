@@ -11,8 +11,8 @@ export class ParticipantHttpAdapter implements IParticipantPort {
     return result.data.data
   }
 
-  async getMyParticipations(): Promise<ParticipantDomainModel.ParticipantOverviewDto[]> {
-    const result = await this.httpClient.get<ParticipantDomainModel.ParticipantOverviewDto[]>('/participants/me')
+  async getMyParticipations(): Promise<ParticipantDomainModel.MyParticipationDto[]> {
+    const result = await this.httpClient.get<ParticipantDomainModel.MyParticipationDto[]>('/participants/me')
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }

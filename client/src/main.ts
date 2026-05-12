@@ -19,9 +19,15 @@ const router = createRouter({
     { path: '/register', name: 'register', component: () => import('./pages/register/page.vue'), meta: { noLayout: true } },
     { path: '/orders', name: 'orders', component: () => import('./pages/orders/page.vue') },
     {
+      path: '/me/events',
+      name: 'my-events',
+      component: () => import('./pages/me/events/page.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/me/events/:participantId',
       name: 'participant-profile-edit',
-      component: () => import('./pages/me/events/page.vue'),
+      component: () => import('./pages/me/events/$participantId/page.vue'),
       meta: { requiresAuth: true },
     },
     { path: '/events/:slug', name: 'event-public', component: () => import('./pages/events-public/page.vue') },

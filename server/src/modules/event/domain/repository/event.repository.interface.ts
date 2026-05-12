@@ -6,6 +6,7 @@ export interface IEventRepository {
   findById(id: string): Promise<Nullable<EventEntity>>
   findBySlug(slug: string): Promise<Nullable<EventEntity>>
   findAll(): Promise<EventEntity[]>
+  findAllByIds(ids: string[]): Promise<EventEntity[]>
   findAllByOwner(ownerId: string): Promise<EventEntity[]>
   findAllByStatusIn(statuses: EventStatus[]): Promise<EventEntity[]>
   findNextUpcoming(): Promise<Nullable<EventEntity>>

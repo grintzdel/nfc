@@ -1,5 +1,6 @@
 import type { ProfileLinkType } from '../constants/profile-link-type.constant'
 import type { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import type { EventStatus } from '@/modules/event/core/model/event.domain-model'
 
 export namespace ParticipantDomainModel {
   export type ProfileLinkDto = { type: ProfileLinkType; url: string; label: string | null }
@@ -51,5 +52,19 @@ export namespace ParticipantDomainModel {
     page: number
     limit: number
     totalPages: number
+  }
+
+  export type EventSummaryDto = {
+    id: string
+    name: string
+    slug: string
+    startsAt: string
+    endsAt: string
+    venueName: string
+    city: string
+    status: EventStatus
+  }
+  export type MyParticipationDto = ParticipantOverviewDto & {
+    event: EventSummaryDto | null
   }
 }

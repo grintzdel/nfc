@@ -46,6 +46,12 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
     return docs.map(toEntity)
   }
 
+  async findAllByIds(ids: string[]): Promise<EventEntity[]> {
+    if (ids.length === 0) return []
+    const docs = await EventModel.find({ _id: { $in: ids }, deletedAt: null })
+    return docs.map(toEntity)
+  }
+
   async findAllByOwner(ownerId: string): Promise<EventEntity[]> {
     const docs = await EventModel.find({ ownerId, deletedAt: null })
     return docs.map(toEntity)

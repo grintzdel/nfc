@@ -25,7 +25,7 @@ export function createParticipantModule(
 
   const registerUC = new RegisterParticipantUseCase(participantRepository, eventRepository)
   const getByIdUC = new GetParticipantByIdUseCase(participantRepository)
-  const getMyUC = new GetMyParticipationsUseCase(participantRepository)
+  const getMyUC = new GetMyParticipationsUseCase(participantRepository, eventRepository)
   const getByEventUC = new GetParticipantsByEventUseCase(participantRepository)
   const getPaginatedByEventUC = new GetPaginatedParticipantsByEventUseCase(participantRepository, braceletRepository)
   const updateProfileUC = new UpdateParticipantProfileUseCase(participantRepository)

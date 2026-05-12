@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Menu, X, ShoppingCart, LogOut, User } from 'lucide-vue-next'
+import { Menu, X, ShoppingCart, LogOut, User, Calendar } from 'lucide-vue-next'
 import { useCart } from '@/modules/cart/ui/hooks/use-cart'
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
 
@@ -46,8 +46,16 @@ const navLinks = [
         </RouterLink>
         <template v-else>
           <RouterLink
+            to="/me/events"
+            class="rounded-md p-2 text-slate-300 transition-colors hover:text-white"
+            title="Mes événements"
+          >
+            <Calendar class="h-5 w-5" />
+          </RouterLink>
+          <RouterLink
             to="/orders"
             class="rounded-md p-2 text-slate-300 transition-colors hover:text-white"
+            title="Mes commandes"
           >
             <User class="h-5 w-5" />
           </RouterLink>
@@ -76,8 +84,17 @@ const navLinks = [
       <div class="flex items-center gap-2 lg:hidden">
         <RouterLink
           v-if="isAuthenticated()"
+          to="/me/events"
+          class="rounded-md p-2 text-slate-300 transition-colors hover:text-white"
+          title="Mes événements"
+        >
+          <Calendar class="h-5 w-5" />
+        </RouterLink>
+        <RouterLink
+          v-if="isAuthenticated()"
           to="/orders"
           class="rounded-md p-2 text-slate-300 transition-colors hover:text-white"
+          title="Mes commandes"
         >
           <User class="h-5 w-5" />
         </RouterLink>

@@ -2,7 +2,7 @@ import type { ParticipantDomainModel } from '../model/participant.domain-model'
 
 export interface IParticipantPort {
   register(dto: ParticipantDomainModel.RegisterParticipantDto): Promise<ParticipantDomainModel.ParticipantOverviewDto>
-  getMyParticipations(): Promise<ParticipantDomainModel.ParticipantOverviewDto[]>
+  getMyParticipations(): Promise<ParticipantDomainModel.MyParticipationDto[]>
   getByEvent(eventId: string): Promise<ParticipantDomainModel.ParticipantOverviewDto[]>
   getPaginatedByEvent(params: {
     eventId: string

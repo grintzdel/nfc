@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ParticipantProfileEditPage from '@/features/private/participant-profile-edit/participant-profile-edit.page.vue'
+import MyEventsPage from '@/features/private/my-events/my-events.page.vue'
 </script>
 
 <template>
-  <ParticipantProfileEditPage />
+  <MyEventsPage />
 </template>

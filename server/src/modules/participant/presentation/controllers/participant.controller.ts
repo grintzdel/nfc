@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { ParticipantService } from '../../application/services/participant.service'
 import { ParticipantResponseDto } from '../dto/participant.response.dto'
 import { PaginatedParticipantsResponseDto } from '../dto/paginated-participants.response.dto'
+import { MyParticipationResponseDto } from '../dto/my-participations.response.dto'
 import { RegisterParticipantRequestDto } from '../dto/register-participant.request.dto'
 import { UpdateParticipantProfileRequestDto } from '../dto/update-participant-profile.request.dto'
 import { AttachBraceletRequestDto } from '../dto/attach-bracelet.request.dto'
@@ -23,8 +24,8 @@ export class ParticipantController {
 
   async getMyParticipations(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const participants = await this.participantService.getMyParticipations(req.user!.userId)
-      res.json({ success: true, data: participants.map((p) => new ParticipantResponseDto(p)) })
+      const items = await this.participantService.getMyParticipations(req.user!.userId)
+      res.json({ success: true, data: items.map((it) => new MyParticipationResponseDto(it.participant, it.event)) })
     } catch (e) { next(e) }
   }
 

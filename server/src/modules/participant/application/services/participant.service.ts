@@ -1,7 +1,7 @@
 import { ParticipantEntity, ParticipantProfile } from '../../domain/entity/participant.entity'
 import { RegisterParticipantUseCase, RegisterParticipantInput } from '../use-cases/register-participant/register-participant.use-case'
 import { GetParticipantByIdUseCase } from '../use-cases/get-participant-by-id/get-participant-by-id.use-case'
-import { GetMyParticipationsUseCase } from '../use-cases/get-my-participations/get-my-participations.use-case'
+import { GetMyParticipationsUseCase, ParticipantWithEvent } from '../use-cases/get-my-participations/get-my-participations.use-case'
 import { GetParticipantsByEventUseCase } from '../use-cases/get-participants-by-event/get-participants-by-event.use-case'
 import { GetPaginatedParticipantsByEventUseCase, ParticipantWithBracelet } from '../use-cases/get-paginated-participants-by-event/get-paginated-participants-by-event.use-case'
 import { UpdateParticipantProfileUseCase } from '../use-cases/update-participant-profile/update-participant-profile.use-case'
@@ -28,7 +28,7 @@ export class ParticipantService {
     return this.getParticipantByIdUseCase.execute(id)
   }
 
-  getMyParticipations(userId: string): Promise<ParticipantEntity[]> {
+  getMyParticipations(userId: string): Promise<ParticipantWithEvent[]> {
     return this.getMyParticipationsUseCase.execute(userId)
   }
 
