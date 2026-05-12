@@ -1,26 +1,24 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import {
   Timer,
   Package,
-  Truck,
   CircleCheck,
   Users,
   MapPin,
   Calendar,
   UsersRound,
-  Ticket,
-  Sparkles,
   MonitorPlay,
-} from "lucide-vue-next";
-import type { AnalyticsDomainModel } from "@/modules/analytics/core/model/analytics.domain-model";
+} from 'lucide-vue-next'
+import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 
 defineProps<{
-  data?: AnalyticsDomainModel.NextEventStatsDto;
-}>();
+  data?: AnalyticsDomainModel.NextEventStatsDto
+}>()
 
 function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })
 }
 </script>
 
@@ -30,14 +28,14 @@ function formatDate(dateStr: string): string {
   >
     <!-- Empty state -->
     <div v-if="!data?.event" class="flex h-60 items-center justify-center">
-      <p class="text-sm text-slate-400">Aucun evenement a venir</p>
+      <p class="text-sm text-slate-400">Aucun événement à venir</p>
     </div>
 
     <template v-else>
       <!-- Header -->
       <div class="flex flex-col gap-1.5">
         <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
-          Prochain evenement
+          Prochain événement
         </p>
         <p class="text-lg font-bold text-slate-50">{{ data.event.name }}</p>
         <span
@@ -51,46 +49,27 @@ function formatDate(dateStr: string): string {
         </span>
       </div>
 
-      <!-- KPI row -->
-      <div class="grid grid-cols-2 gap-4 xl:grid-cols-4">
+      <!-- KPI row (3 KPIs — used to be 4 with a "Livrés" duplicate of "Commandés") -->
+      <div class="grid grid-cols-3 gap-4">
         <div class="rounded-md bg-slate-800 p-3">
-          <p class="text-[11px] font-medium text-slate-400">
-            Bracelets commandes
-          </p>
+          <p class="text-[11px] font-medium text-slate-400">Bracelets commandés</p>
           <div class="mt-1 flex items-center gap-1.5">
             <Package class="h-3.5 w-3.5 text-[#A78BFA]" />
-            <span class="text-lg font-bold text-slate-50">{{
-              data.event.braceletsOrdered
-            }}</span>
+            <span class="text-lg font-bold text-slate-50">{{ data.event.braceletsOrdered }}</span>
           </div>
         </div>
         <div class="rounded-md bg-slate-800 p-3">
-          <p class="text-[11px] font-medium text-slate-400">Livres</p>
-          <div class="mt-1 flex items-center gap-1.5">
-            <Truck class="h-3.5 w-3.5 text-emerald-500" />
-            <span class="text-lg font-bold text-slate-50">{{
-              data.event.braceletsOrdered
-            }}</span>
-          </div>
-        </div>
-        <div class="rounded-md bg-slate-800 p-3">
-          <p class="text-[11px] font-medium text-slate-400">Pre-actives</p>
+          <p class="text-[11px] font-medium text-slate-400">Pré-activés</p>
           <div class="mt-1 flex items-center gap-1.5">
             <CircleCheck class="h-3.5 w-3.5 text-orange-500" />
-            <span class="text-lg font-bold text-slate-50">{{
-              data.event.braceletsPreActivated
-            }}</span>
+            <span class="text-lg font-bold text-slate-50">{{ data.event.braceletsPreActivated }}</span>
           </div>
         </div>
         <div class="rounded-md bg-slate-800 p-3">
-          <p class="text-[11px] font-medium text-slate-400">
-            Taux de remplissage
-          </p>
+          <p class="text-[11px] font-medium text-slate-400">Taux de remplissage</p>
           <div class="mt-1 flex items-center gap-1.5">
             <Users class="h-3.5 w-3.5 text-[#A78BFA]" />
-            <span class="text-lg font-bold text-slate-50"
-              >{{ parseFloat(data.event.fillRate.toFixed(2)) }}%</span
-            >
+            <span class="text-lg font-bold text-slate-50">{{ parseFloat(data.event.fillRate.toFixed(2)) }}%</span>
           </div>
         </div>
       </div>
@@ -102,37 +81,32 @@ function formatDate(dateStr: string): string {
             <MapPin class="h-3.5 w-3.5 text-[#A78BFA]" />
             <span class="text-xs text-slate-400">Lieu</span>
           </div>
-          <span class="text-xs font-semibold text-slate-50">{{
-            data.event.city || "A definir"
-          }}</span>
+          <span class="text-xs font-semibold text-slate-50">{{ data.event.city || 'À définir' }}</span>
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <Calendar class="h-3.5 w-3.5 text-[#A78BFA]" />
             <span class="text-xs text-slate-400">Horaires</span>
           </div>
-          <span class="text-xs font-semibold text-slate-50">{{
-            formatDate(data.event.startsAt)
-          }}</span>
+          <span class="text-xs font-semibold text-slate-50">{{ formatDate(data.event.startsAt) }}</span>
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <UsersRound class="h-3.5 w-3.5 text-[#A78BFA]" />
-            <span class="text-xs text-slate-400">Staff affecte</span>
+            <span class="text-xs text-slate-400">Staff affecté</span>
           </div>
-          <span class="text-xs font-semibold text-slate-50">{{
-            data.event.staffCount || "—"
-          }}</span>
+          <span class="text-xs font-semibold text-slate-50">{{ data.event.staffCount || '—' }}</span>
         </div>
       </div>
 
-      <!-- CTA -->
-      <button
+      <!-- CTA — links to the event detail page (the "centre de contrôle" we built in Phase 1-5) -->
+      <RouterLink
+        :to="`/admin/events/${data.event.id}`"
         class="flex w-full items-center justify-center gap-2 rounded-md bg-[#7C3AED] px-3.5 py-2.5 text-[13px] font-semibold text-violet-50 hover:bg-[#5B21B6]"
       >
         <MonitorPlay class="h-3.5 w-3.5" />
-        Ouvrir le centre de controle
-      </button>
+        Ouvrir le centre de contrôle
+      </RouterLink>
     </template>
   </div>
 </template>

@@ -87,10 +87,18 @@ function formatDate(dateStr: string): string {
         </div>
       </div>
 
-      <!-- CTA -->
-      <button class="flex w-full items-center justify-center gap-2 rounded-md bg-[#7C3AED] px-3.5 py-2.5 text-[13px] font-semibold text-violet-50 hover:bg-[#5B21B6]">
+      <!-- CTA (disabled until /admin/supply-orders ships) -->
+      <button
+        type="button"
+        disabled
+        title="Bientôt disponible"
+        class="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-md border border-white/10 bg-slate-800/50 px-3.5 py-2.5 text-[13px] font-semibold text-slate-500"
+      >
         <Plus class="h-3.5 w-3.5" />
         Commander des packs
+        <span class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+          Soon
+        </span>
       </button>
     </template>
   </div>

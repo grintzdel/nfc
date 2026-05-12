@@ -26,6 +26,12 @@ function rateVariant(rate: number | null | undefined): 'positive' | 'negative' {
   if (rate == null || rate >= 0) return 'positive'
   return 'negative'
 }
+
+const eurFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
+function formatRevenue(value: number | undefined): string {
+  if (value == null) return '—'
+  return eurFormatter.format(value)
+}
 </script>
 
 <template>
@@ -58,7 +64,7 @@ function rateVariant(rate: number | null | undefined): 'positive' | 'negative' {
       :icon="TrendingUp"
       icon-color="#22C55E"
       title="Revenus"
-      :value="revenue ? `€${revenue.revenue.toLocaleString('fr-FR')}` : '—'"
+      :value="formatRevenue(revenue?.revenue)"
       :badge="formatRate(revenue?.rateVsLastMonth)"
       :badge-variant="rateVariant(revenue?.rateVsLastMonth)"
     />
