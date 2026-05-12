@@ -89,20 +89,37 @@ function statusClass(status: string): string {
           @input="emit('update:search', ($event.target as HTMLInputElement).value)"
         />
       </div>
-      <button class="flex items-center gap-1.5 rounded-md border border-white/10 bg-[#0F172A] px-3 py-2">
-        <SlidersHorizontal class="h-3.5 w-3.5 text-slate-50" />
-        <span class="text-[13px] font-medium text-slate-50">Filtres</span>
-      </button>
-      <button class="flex items-center gap-1.5 rounded-md border border-white/10 bg-[#0F172A] px-3 py-2">
-        <Download class="h-3.5 w-3.5 text-slate-50" />
-        <span class="text-[13px] font-medium text-slate-50">Export</span>
+      <button
+        type="button"
+        disabled
+        title="Filtres avancés bientôt disponibles"
+        class="flex cursor-not-allowed items-center gap-1.5 rounded-md border border-white/10 bg-slate-800/40 px-3 py-2 opacity-60"
+      >
+        <SlidersHorizontal class="h-3.5 w-3.5 text-slate-500" />
+        <span class="text-[13px] font-medium text-slate-500">Filtres</span>
+        <span class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+          Soon
+        </span>
       </button>
       <button
-        class="flex items-center gap-1.5 rounded-md bg-[#8B5CF6] px-4 py-2"
+        type="button"
+        disabled
+        title="Export CSV bientôt disponible"
+        class="flex cursor-not-allowed items-center gap-1.5 rounded-md border border-white/10 bg-slate-800/40 px-3 py-2 opacity-60"
+      >
+        <Download class="h-3.5 w-3.5 text-slate-500" />
+        <span class="text-[13px] font-medium text-slate-500">Export</span>
+        <span class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+          Soon
+        </span>
+      </button>
+      <button
+        type="button"
+        class="flex items-center gap-1.5 rounded-md bg-[#8B5CF6] px-4 py-2 hover:bg-violet-500"
         @click="emit('create')"
       >
         <Plus class="h-3.5 w-3.5 text-violet-50" />
-        <span class="text-[13px] font-semibold text-violet-50">Nouvel evenement</span>
+        <span class="text-[13px] font-semibold text-violet-50">Nouvel évènement</span>
       </button>
     </div>
 

@@ -66,15 +66,31 @@ async function handleSubmit() {
           <p class="text-sm text-slate-400">Connectez-vous a votre compte PULSE</p>
         </div>
 
-        <!-- Social Buttons -->
+        <!-- Social Buttons (OAuth not wired in this iteration) -->
         <div class="flex flex-col gap-2.5">
-          <button class="flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-pulse-surface py-3 text-sm font-medium text-slate-50 transition-colors hover:bg-slate-700">
+          <button
+            type="button"
+            disabled
+            title="OAuth bientôt disponible"
+            class="flex cursor-not-allowed items-center justify-center gap-2 rounded-lg border border-slate-700 bg-pulse-surface py-3 text-sm font-medium text-slate-500 opacity-60"
+          >
             <Globe class="h-[18px] w-[18px]" />
             Continuer avec Google
+            <span class="ml-1 rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+              Soon
+            </span>
           </button>
-          <button class="flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-pulse-surface py-3 text-sm font-medium text-slate-50 transition-colors hover:bg-slate-700">
+          <button
+            type="button"
+            disabled
+            title="OAuth bientôt disponible"
+            class="flex cursor-not-allowed items-center justify-center gap-2 rounded-lg border border-slate-700 bg-pulse-surface py-3 text-sm font-medium text-slate-500 opacity-60"
+          >
             <Apple class="h-[18px] w-[18px]" />
             Continuer avec Apple
+            <span class="ml-1 rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+              Soon
+            </span>
           </button>
         </div>
 

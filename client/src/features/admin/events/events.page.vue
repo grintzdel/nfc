@@ -2,13 +2,16 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQueryClient } from '@tanstack/vue-query'
+import { toast } from 'vue-sonner'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
 import EventStats from './components/event-stats.vue'
 import EventTable from './components/event-table.vue'
 import EventEditModal from './components/event-edit-modal.vue'
+import EventCreateModal from './components/event-create-modal.vue'
 import { useGetEventPageStats } from '@/modules/analytics/ui/hooks/queries/query/use-get-event-page-stats'
 import { useGetPaginatedEvents } from '@/modules/event/ui/hooks/queries/query/use-get-paginated-events'
 import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
+import { useCreateEvent } from '@/modules/event/ui/hooks/queries/mutation/use-create-event'
 import { useUpdateEvent } from '@/modules/event/ui/hooks/queries/mutation/use-update-event'
 import { useDeleteEvent } from '@/modules/event/ui/hooks/queries/mutation/use-delete-event'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
@@ -24,6 +27,7 @@ const { data: stats } = useGetEventPageStats()
 const { data: paginatedEvents } = useGetPaginatedEvents({ page, limit, search, status })
 
 const queryClient = useQueryClient()
+const createMutation = useCreateEvent()
 const updateMutation = useUpdateEvent()
 const deleteMutation = useDeleteEvent()
 
@@ -65,8 +69,24 @@ function handleDelete(id: string) {
   })
 }
 
+// Create modal
+const createOpen = ref(false)
+
 function handleCreate() {
-  // TODO: open create modal
+  createOpen.value = true
+}
+
+function handleCreateConfirm(dto: EventDomainModel.CreateEventDto) {
+  createMutation.mutate(dto, {
+    onSuccess: (created) => {
+      toast.success('Événement créé')
+      createOpen.value = false
+      queryClient.invalidateQueries({ queryKey: ['events'] })
+      queryClient.invalidateQueries({ queryKey: ['analytics', 'eventPageStats'] })
+      router.push(`/admin/events/${created.id}`)
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la création'),
+  })
 }
 
 function handleStatusChange(newStatus: string) {
@@ -105,6 +125,13 @@ function handleSearchChange(newSearch: string) {
       :loading="updateMutation.isPending.value"
       @close="editOpen = false"
       @save="handleSave"
+    />
+
+    <EventCreateModal
+      :open="createOpen"
+      :loading="createMutation.isPending.value"
+      @update:open="(v) => createOpen = v"
+      @confirm="handleCreateConfirm"
     />
   </AdminLayout>
 </template>

@@ -59,10 +59,11 @@ const footerColumns = [
       <div class="mt-8 border-t border-slate-700 pt-8">
         <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p class="text-xs text-slate-500">2026 PULSE. Tous droits reserves.</p>
-          <div class="flex items-center gap-4">
-            <a href="#" class="text-slate-500 transition-colors hover:text-slate-300">Twitter</a>
-            <a href="#" class="text-slate-500 transition-colors hover:text-slate-300">Instagram</a>
-            <a href="#" class="text-slate-500 transition-colors hover:text-slate-300">LinkedIn</a>
+          <div class="flex items-center gap-2 text-xs text-slate-600">
+            <span>Réseaux sociaux</span>
+            <span class="rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+              Bientôt
+            </span>
           </div>
         </div>
       </div>
