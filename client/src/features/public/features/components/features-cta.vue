@@ -23,12 +23,12 @@ import { RouterLink } from 'vue-router'
           >
             Commander maintenant
           </RouterLink>
-          <a
-            href="#contact"
+          <RouterLink
+            to="/contact"
             class="rounded-md border border-slate-600 bg-slate-50 px-8 py-3 text-sm font-medium text-slate-800 transition-colors hover:bg-white"
           >
             Demander une demo
-          </a>
+          </RouterLink>
         </div>
         <p class="text-center text-[13px] text-slate-500">
           Demo gratuite. Sans engagement. Livraison en 5 jours.

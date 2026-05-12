@@ -19,12 +19,12 @@ import { RouterLink } from 'vue-router'
           >
             Decouvrir PULSE
           </RouterLink>
-          <a
-            href="#contact"
+          <RouterLink
+            to="/contact"
             class="rounded-md border border-slate-600 bg-slate-50 px-8 py-3 text-sm font-medium text-slate-800 transition-colors hover:bg-white"
           >
             Nous contacter
-          </a>
+          </RouterLink>
         </div>
       </div>
     </div>

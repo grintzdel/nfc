@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { toast } from 'vue-sonner'
 import { Mail, Phone, MapPin } from 'lucide-vue-next'
 
 const form = ref({
@@ -8,6 +9,9 @@ const form = ref({
   subject: '',
   message: '',
 })
+const submitting = ref(false)
+
+const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
 const infoCards = [
   {
@@ -42,8 +46,31 @@ const infoCards = [
   },
 ]
 
-function handleSubmit() {
-  // placeholder
+// No real backend mailbox in this app — we surface a "thanks" toast and reset.
+// In production this would POST to a /messages endpoint or hit a third-party form provider.
+async function handleSubmit(): Promise<void> {
+  if (!form.value.name.trim()) {
+    toast.error('Le nom est obligatoire')
+    return
+  }
+  if (!EMAIL_REGEX.test(form.value.email)) {
+    toast.error("L'email n'est pas valide")
+    return
+  }
+  if (!form.value.message.trim()) {
+    toast.error('Le message est obligatoire')
+    return
+  }
+
+  submitting.value = true
+  try {
+    // Simulate a small network delay so the loading state is observable.
+    await new Promise((resolve) => setTimeout(resolve, 400))
+    toast.success('Message envoyé ! Nous revenons vers vous sous 24h.')
+    form.value = { name: '', email: '', subject: '', message: '' }
+  } finally {
+    submitting.value = false
+  }
 }
 </script>
 
@@ -98,9 +125,10 @@ function handleSubmit() {
 
             <button
               type="submit"
-              class="w-full rounded-md bg-pulse-violet px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-pulse-violet-dark hover:shadow-lg hover:shadow-violet-500/25"
+              :disabled="submitting"
+              class="w-full rounded-md bg-pulse-violet px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-pulse-violet-dark hover:shadow-lg hover:shadow-violet-500/25 disabled:opacity-60"
             >
-              Envoyer le message
+              {{ submitting ? 'Envoi…' : 'Envoyer le message' }}
             </button>
           </form>
         </div>

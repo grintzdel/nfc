@@ -25,12 +25,12 @@ import { RouterLink } from 'vue-router'
           >
             Commander mon pass
           </RouterLink>
-          <a
-            href="#contact"
+          <RouterLink
+            to="/contact"
             class="rounded-md border border-white/10 bg-slate-950 px-8 py-3 text-sm font-medium text-slate-300 transition-colors hover:border-white/20 hover:text-white"
           >
             Nous contacter
-          </a>
+          </RouterLink>
         </div>
         <p class="text-center text-[13px] text-slate-500">
           Livraison sous 5 jours ouvrables. Support dedie.
