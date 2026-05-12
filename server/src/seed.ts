@@ -377,6 +377,95 @@ async function seed(): Promise<void> {
   ]
   await ParticipantModel.create(demoParticipantDocs)
 
+  // ─── Admin participations ────────────────────────
+  // Register the admin user as a participant on a few events so:
+  //   - GET /participants/me returns something when logged in as admin
+  //   - /me/events page is non-empty, including a future event with an active bracelet (QR demo flow)
+  //   - History tab shows past + upcoming participations
+  const marathonNantes = events[4]!
+  const adminBracelets = await BraceletModel.create([
+    {
+      nfcId: 'demo-nfc-admin-001',
+      status: BraceletStatus.ACTIVE,
+      userId: String(admin._id),
+      eventId: String(demoEvent!._id),
+      productId: null,
+      orderId: null,
+      activatedAt: new Date(),
+      deletedAt: null,
+    },
+    {
+      nfcId: 'demo-nfc-admin-002',
+      status: BraceletStatus.PRE_ACTIVATED,
+      userId: String(admin._id),
+      eventId: String(festivalLyon!._id),
+      productId: null,
+      orderId: null,
+      activatedAt: null,
+      deletedAt: null,
+    },
+    {
+      nfcId: 'demo-nfc-admin-003',
+      status: BraceletStatus.ACTIVE,
+      userId: String(admin._id),
+      eventId: String(marathonNantes._id),
+      productId: null,
+      orderId: null,
+      activatedAt: daysAgo(36),
+      deletedAt: null,
+    },
+  ])
+
+  await ParticipantModel.create([
+    {
+      userId: String(admin._id),
+      eventId: String(demoEvent!._id),
+      braceletId: String(adminBracelets[0]!._id),
+      profile: {
+        displayName: 'Admin Pulse',
+        role: 'Organisateur',
+        bio: "Je teste l'expérience de l'autre côté du bracelet.",
+        links: [
+          { type: 'linkedin', url: 'https://linkedin.com/in/pulse-admin', label: null },
+        ],
+      },
+      registeredAt: daysAgo(2),
+      checkedInAt: null,
+      deletedAt: null,
+      createdAt: daysAgo(2),
+    },
+    {
+      userId: String(admin._id),
+      eventId: String(festivalLyon!._id),
+      braceletId: String(adminBracelets[1]!._id),
+      profile: {
+        displayName: 'Admin Pulse',
+        role: 'VIP organisateur',
+        bio: null,
+        links: [],
+      },
+      registeredAt: daysAgo(10),
+      checkedInAt: null,
+      deletedAt: null,
+      createdAt: daysAgo(10),
+    },
+    {
+      userId: String(admin._id),
+      eventId: String(marathonNantes._id),
+      braceletId: String(adminBracelets[2]!._id),
+      profile: {
+        displayName: 'Admin Pulse',
+        role: 'Coureur',
+        bio: 'Mon premier marathon !',
+        links: [],
+      },
+      registeredAt: daysAgo(40),
+      checkedInAt: daysAgo(35),
+      deletedAt: null,
+      createdAt: daysAgo(40),
+    },
+  ])
+
   // 6 check-ins on the demo event using Marie's bracelet + a few pre-activated ones (so unique > 1)
   await CheckInModel.create([
     { braceletId: String(demoBracelet!._id), eventId: String(demoEvent!._id), interactionType: 'check_in', zoneName: 'Entrée principale', targetBraceletId: null, amount: null, metadata: {} },
