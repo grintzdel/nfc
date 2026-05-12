@@ -2,12 +2,15 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toast } from 'vue-sonner'
+import { ScanLine } from 'lucide-vue-next'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 import { useGetParticipantById } from '@/modules/participant/ui/hooks/queries/query/use-get-participant-by-id'
+import { useGetBraceletById } from '@/modules/bracelet/ui/hooks/queries/query/use-get-bracelet-by-id'
 import { useUpdateParticipantProfile } from '@/modules/participant/ui/hooks/queries/mutation/use-update-participant-profile'
 import ProfileFieldsForm from '@/modules/participant/ui/components/profile-fields-form.vue'
 import ProfileLinksEditor from '@/modules/participant/ui/components/profile-links-editor.vue'
+import QrCodeDisplay from '@/modules/qrcode/ui/components/qrcode-display.vue'
 import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
 
 const route = useRoute()
@@ -16,6 +19,9 @@ const participantId = computed(() => route.params.participantId as string)
 
 const { data, isLoading, isError, error } = useGetParticipantById(participantId)
 const updateMutation = useUpdateParticipantProfile()
+
+const braceletId = computed(() => data.value?.braceletId ?? '')
+const { data: bracelet } = useGetBraceletById(braceletId)
 
 const fields = ref<{ displayName: string; role: string | null; bio: string | null }>({
   displayName: '',
@@ -107,6 +113,25 @@ async function handleSave(): Promise<void> {
       </Card>
 
       <template v-else>
+        <!-- QR for entry / scanner — shown when a bracelet is attached -->
+        <Card v-if="bracelet">
+          <CardHeader>
+            <CardTitle class="flex items-center gap-1.5 text-sm uppercase tracking-wider text-muted-foreground">
+              <ScanLine class="h-3.5 w-3.5" />
+              Bracelet — QR d'entrée
+            </CardTitle>
+          </CardHeader>
+          <CardContent class="flex flex-col items-center gap-3">
+            <QrCodeDisplay :value="bracelet.nfcId" :size="220" :alt="`QR code du bracelet ${bracelet.nfcId}`" />
+            <div class="flex flex-col items-center gap-1 text-center">
+              <span class="font-mono text-xs text-muted-foreground">{{ bracelet.nfcId }}</span>
+              <p class="max-w-md text-xs text-muted-foreground">
+                Présentez ce QR code à l'organisateur à l'entrée de l'événement.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle class="text-sm uppercase tracking-wider text-muted-foreground">Identité</CardTitle>

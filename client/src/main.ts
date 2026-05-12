@@ -56,6 +56,12 @@ const router = createRouter({
       component: () => import('./pages/admin/events/$eventId/page.vue'),
       meta: { noLayout: true, requiresAdmin: true },
     },
+    {
+      path: '/admin/events/:eventId/scanner',
+      name: 'admin-event-scanner',
+      component: () => import('./pages/admin/events/$eventId/scanner/page.vue'),
+      meta: { noLayout: true, requiresAdmin: true },
+    },
   ],
   scrollBehavior(_to, _from, savedPosition) {
     if (savedPosition) return savedPosition

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Calendar, MapPin, ExternalLink, Send, Play, CheckCircle2, XCircle } from 'lucide-vue-next'
+import { Calendar, MapPin, ExternalLink, Send, Play, CheckCircle2, XCircle, ScanLine } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
@@ -106,7 +106,14 @@ const lastCheckInLabel = computed(() => {
         </div>
       </div>
 
-      <div v-if="actions.length > 0" class="flex flex-wrap items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <RouterLink
+          :to="`/admin/events/${event.id}/scanner`"
+          class="inline-flex items-center gap-1.5 rounded-md border border-emerald-500/40 px-3.5 py-2 text-sm font-semibold text-emerald-300 hover:bg-emerald-500/10"
+        >
+          <ScanLine class="h-3.5 w-3.5" />
+          Ouvrir le scanner
+        </RouterLink>
         <button
           v-for="a in actions"
           :key="a.action"
