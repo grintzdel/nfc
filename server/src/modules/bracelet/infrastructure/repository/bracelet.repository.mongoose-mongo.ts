@@ -62,6 +62,25 @@ export class BraceletRepositoryMongooseMongo implements IBraceletRepository {
     return docs.map(toEntity)
   }
 
+  async findPaginatedByEventId(params: {
+    eventId: string
+    page: number
+    limit: number
+    search?: string
+  }): Promise<PaginatedResult<BraceletEntity>> {
+    const { eventId, page, limit, search } = params
+    const filter: Record<string, unknown> = { eventId, deletedAt: null }
+    if (search && search.trim()) {
+      const regex = new RegExp(search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
+      filter['nfcId'] = regex
+    }
+    const [docs, total] = await Promise.all([
+      BraceletModel.find(filter).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit),
+      BraceletModel.countDocuments(filter),
+    ])
+    return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
+  }
+
   async findAllByUserId(userId: string): Promise<BraceletEntity[]> {
     const docs = await BraceletModel.find({ userId, deletedAt: null })
     return docs.map(toEntity)

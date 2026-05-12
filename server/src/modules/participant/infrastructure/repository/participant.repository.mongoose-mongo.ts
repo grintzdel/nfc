@@ -1,5 +1,5 @@
 import { IParticipantRepository } from '../../domain/repository/participant.repository.interface'
-import { ParticipantEntity } from '../../domain/entity/participant.entity'
+import { ParticipantEntity, ProfileLink } from '../../domain/entity/participant.entity'
 import { ParticipantModel, ParticipantDocument } from '../schema/participant.schema'
 
 function toEntity(doc: ParticipantDocument): ParticipantEntity {
@@ -12,7 +12,7 @@ function toEntity(doc: ParticipantDocument): ParticipantEntity {
       displayName: doc.profile.displayName,
       role: doc.profile.role,
       bio: doc.profile.bio,
-      links: doc.profile.links,
+      links: doc.profile.links as ProfileLink[],
     },
     registeredAt: doc.registeredAt,
     checkedInAt: doc.checkedInAt,

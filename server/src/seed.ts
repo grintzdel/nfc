@@ -308,7 +308,35 @@ async function seed(): Promise<void> {
     },
   ])
 
-  await ParticipantModel.create([
+  // Demo bracelets for the admin event-detail page:
+  // - 1 active+attached (Marie's demo-nfc-001, created above)
+  // - 8 PRE_ACTIVATED ready for the attach-bracelet dialog
+  // - 1 DISABLED for the bracelets-tab status filtering demo
+  const demoExtraBracelets = await BraceletModel.create([
+    ...Array.from({ length: 8 }, (_, i) => ({
+      nfcId: `demo-nfc-pre-${String(i + 1).padStart(3, '0')}`,
+      status: BraceletStatus.PRE_ACTIVATED,
+      userId: String(admin._id),
+      eventId: String(demoEvent!._id),
+      productId: null,
+      orderId: null,
+      activatedAt: null,
+      deletedAt: null,
+    })),
+    {
+      nfcId: 'demo-nfc-disabled-001',
+      status: BraceletStatus.DISABLED,
+      userId: String(admin._id),
+      eventId: String(demoEvent!._id),
+      productId: null,
+      orderId: null,
+      activatedAt: new Date(),
+      deletedAt: null,
+    },
+  ])
+
+  // Marie + 25 generated participants on the demo event (exercise pagination at limit=20)
+  const demoParticipantDocs = [
     {
       userId: String(marieUser._id),
       eventId: String(demoEvent!._id),
@@ -328,7 +356,53 @@ async function seed(): Promise<void> {
       deletedAt: null,
       createdAt: new Date(),
     },
+    ...Array.from({ length: 25 }, (_, i) => {
+      const date = new Date(Date.now() - i * 3 * HOUR)
+      return {
+        userId: String(participantUsers[i % participantUsers.length]!._id),
+        eventId: String(demoEvent!._id),
+        braceletId: null,
+        profile: {
+          displayName: `Demo Participant ${i + 1}`,
+          role: i < 3 ? 'Speaker' : 'Attendee',
+          bio: null,
+          links: [],
+        },
+        registeredAt: date,
+        checkedInAt: null,
+        deletedAt: null,
+        createdAt: date,
+      }
+    }),
+  ]
+  await ParticipantModel.create(demoParticipantDocs)
+
+  // 6 check-ins on the demo event using Marie's bracelet + a few pre-activated ones (so unique > 1)
+  await CheckInModel.create([
+    { braceletId: String(demoBracelet!._id), eventId: String(demoEvent!._id), interactionType: 'check_in', zoneName: 'Entrée principale', targetBraceletId: null, amount: null, metadata: {} },
+    { braceletId: String(demoBracelet!._id), eventId: String(demoEvent!._id), interactionType: 'networking', zoneName: null, targetBraceletId: null, amount: null, metadata: {} },
+    { braceletId: String(demoExtraBracelets[0]!._id), eventId: String(demoEvent!._id), interactionType: 'check_in', zoneName: 'Entrée VIP', targetBraceletId: null, amount: null, metadata: {} },
+    { braceletId: String(demoExtraBracelets[1]!._id), eventId: String(demoEvent!._id), interactionType: 'check_in', zoneName: 'Entrée principale', targetBraceletId: null, amount: null, metadata: {} },
+    { braceletId: String(demoExtraBracelets[2]!._id), eventId: String(demoEvent!._id), interactionType: 'cashless', zoneName: 'Bar 1', targetBraceletId: null, amount: 12.5, metadata: {} },
+    { braceletId: String(demoExtraBracelets[0]!._id), eventId: String(demoEvent!._id), interactionType: 'vote', zoneName: null, targetBraceletId: null, amount: null, metadata: {} },
   ])
+
+  // Extra draft event so the "Publier" state-machine button is reachable from the admin demo
+  await EventModel.create({
+    name: 'Pulse Draft Demo',
+    slug: 'pulse-draft-demo',
+    description: 'Draft event used to demo the Publier state transition',
+    venueName: 'Station F',
+    venueAddress: '5 Parvis Alan Turing, Paris',
+    city: 'Paris',
+    startsAt: daysFromNow(45),
+    endsAt: daysFromNow(46),
+    capacity: 200,
+    staffCount: 5,
+    status: EventStatus.DRAFT,
+    ownerId: String(admin._id),
+    createdAt: new Date(),
+  })
 
   // ─── Bracelets ────────────────────────────────────
   // We need bracelets created in current AND last month for comparison stats

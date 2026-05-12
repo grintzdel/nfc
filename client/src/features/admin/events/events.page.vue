@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useQueryClient } from '@tanstack/vue-query'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
 import EventStats from './components/event-stats.vue'
 import EventTable from './components/event-table.vue'
-import EventViewModal from './components/event-view-modal.vue'
 import EventEditModal from './components/event-edit-modal.vue'
 import { useGetEventPageStats } from '@/modules/analytics/ui/hooks/queries/query/use-get-event-page-stats'
 import { useGetPaginatedEvents } from '@/modules/event/ui/hooks/queries/query/use-get-paginated-events'
@@ -12,6 +12,8 @@ import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-
 import { useUpdateEvent } from '@/modules/event/ui/hooks/queries/mutation/use-update-event'
 import { useDeleteEvent } from '@/modules/event/ui/hooks/queries/mutation/use-delete-event'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
+
+const router = useRouter()
 
 const page = ref(1)
 const limit = ref(8)
@@ -25,14 +27,8 @@ const queryClient = useQueryClient()
 const updateMutation = useUpdateEvent()
 const deleteMutation = useDeleteEvent()
 
-// View modal
-const viewOpen = ref(false)
-const viewEventId = ref<string | null>(null)
-const { data: viewEvent } = useGetEventById(viewEventId)
-
 function handleView(id: string) {
-  viewEventId.value = id
-  viewOpen.value = true
+  router.push(`/admin/events/${id}`)
 }
 
 // Edit modal
@@ -102,12 +98,6 @@ function handleSearchChange(newSearch: string) {
         @create="handleCreate"
       />
     </div>
-
-    <EventViewModal
-      :event="viewEvent ?? null"
-      :open="viewOpen"
-      @close="viewOpen = false"
-    />
 
     <EventEditModal
       :event="editEvent ?? null"
