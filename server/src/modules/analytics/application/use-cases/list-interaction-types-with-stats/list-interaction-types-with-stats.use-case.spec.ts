@@ -6,6 +6,7 @@ const mockCheckInRepo: jest.Mocked<ICheckInRepository> = {
   findById: jest.fn(),
   findAllByEventId: jest.fn(),
   findAllByBraceletId: jest.fn(),
+  findOneByBraceletEventType: jest.fn(),
   findPaginatedByEventId: jest.fn(),
   countByInteractionType: jest.fn(),
   countByEventIdAndType: jest.fn(),

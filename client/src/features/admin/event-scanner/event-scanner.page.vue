@@ -128,25 +128,13 @@ async function doScan(nfcId: string): Promise<void> {
   const trimmed = nfcId.trim()
   if (!trimmed) return
 
-  const key = sessionKey(trimmed, interactionType.value)
-  if (sessionScanned.value.has(key)) {
-    showResult({
-      kind: 'duplicate',
-      nfcId: trimmed,
-      participantName: findParticipantNameByNfcId(trimmed),
-      interactionLabel: interactionLabel.value,
-      time: new Date(),
-    })
-    return
-  }
-
   try {
     await recordMutation.mutateAsync({
       nfcId: trimmed,
       eventId: eventIdString.value,
       interactionType: interactionType.value,
     })
-    sessionScanned.value.add(key)
+    sessionScanned.value.add(sessionKey(trimmed, interactionType.value))
     sessionSuccessCount.value += 1
     showResult({
       kind: 'success',
@@ -160,11 +148,16 @@ async function doScan(nfcId: string): Promise<void> {
     queryClient.invalidateQueries({ queryKey: ['checkIns', 'event', eventIdString.value] })
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e)
+    // Server-side dedup: the backend now rejects a duplicate CHECK_IN with a 409 +
+    // "already been checked in" message. We match that to surface the same fullscreen
+    // warning we used to do client-side.
+    const isDuplicate = /already been checked in|already.*checked|déjà/i.test(message)
     const isNotFound = /not found|introuvable|404/i.test(message)
+    const kind = isDuplicate ? 'duplicate' : isNotFound ? 'unknown' : 'error'
     showResult({
-      kind: isNotFound ? 'unknown' : 'error',
+      kind,
       nfcId: trimmed,
-      participantName: null,
+      participantName: isDuplicate ? findParticipantNameByNfcId(trimmed) : null,
       interactionLabel: interactionLabel.value,
       time: new Date(),
       errorMessage: message,

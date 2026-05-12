@@ -39,6 +39,11 @@ export class CheckInRepositoryMongooseMongo implements ICheckInRepository {
     return docs.map(toEntity)
   }
 
+  async findOneByBraceletEventType(braceletId: string, eventId: string, type: InteractionType): Promise<Nullable<CheckInEntity>> {
+    const doc = await CheckInModel.findOne({ braceletId, eventId, interactionType: type })
+    return doc ? toEntity(doc) : null
+  }
+
   async countByInteractionType(): Promise<{ type: InteractionType; count: number }[]> {
     const rows = await CheckInModel.aggregate<{ _id: InteractionType; count: number }>([
       { $group: { _id: '$interactionType', count: { $sum: 1 } } },

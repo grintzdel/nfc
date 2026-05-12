@@ -5,3 +5,9 @@ export class CheckInInvalidBraceletStateError extends AppError {
     super(400, `Cannot check in bracelet ${nfcId} in state ${status}`)
   }
 }
+
+export class DuplicateCheckInError extends AppError {
+  constructor(nfcId: string) {
+    super(409, `Bracelet ${nfcId} has already been checked in for this event`)
+  }
+}

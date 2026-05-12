@@ -8,7 +8,7 @@ import { createBraceletFixture } from '@modules/bracelet/__tests__/bracelet.fact
 import { createParticipantFixture } from '@modules/participant/__tests__/participant.factory'
 import { InteractionType } from '../../../domain/constants/interaction-type.constant'
 import { BraceletStatus } from '@modules/bracelet/domain/constants/bracelet-status.constant'
-import { CheckInInvalidBraceletStateError } from '../../../domain/errors/check-in.error'
+import { CheckInInvalidBraceletStateError, DuplicateCheckInError } from '../../../domain/errors/check-in.error'
 import { BraceletNotFoundError } from '@modules/bracelet/domain/errors/bracelet.error'
 
 function makeUseCase() {
@@ -131,5 +131,50 @@ describe('RecordCheckInUseCase', () => {
 
     expect(participantRepo.update_calledWith).not.toBeNull()
     expect(participantRepo.update_calledWith?.isCheckedIn()).toBe(true)
+  })
+
+  it('throws DuplicateCheckInError when a CHECK_IN already exists for the same bracelet+event', async () => {
+    const { useCase, braceletRepo, checkInRepo } = makeUseCase()
+    const bracelet = createBraceletFixture({ status: BraceletStatus.ACTIVE, nfcId: 'nfc-active-3' })
+    braceletRepo.findByNfcId_result = bracelet
+    checkInRepo.findOneByBraceletEventType_result = createCheckInFixture({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      interactionType: InteractionType.CHECK_IN,
+    })
+
+    await expect(
+      useCase.execute({ nfcId: 'nfc-active-3', eventId: 'event-1', interactionType: InteractionType.CHECK_IN }),
+    ).rejects.toThrow(DuplicateCheckInError)
+    expect(checkInRepo.findOneByBraceletEventType_calledWith).toEqual({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      type: InteractionType.CHECK_IN,
+    })
+  })
+
+  it('allows repeated NETWORKING / CASHLESS / VOTE interactions (only CHECK_IN is deduped)', async () => {
+    const { useCase, braceletRepo, checkInRepo } = makeUseCase()
+    const bracelet = createBraceletFixture({ status: BraceletStatus.ACTIVE, nfcId: 'nfc-active-4' })
+    braceletRepo.findByNfcId_result = bracelet
+    // Even if a previous one exists, NETWORKING should pass through unchecked.
+    checkInRepo.findOneByBraceletEventType_result = createCheckInFixture({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      interactionType: InteractionType.NETWORKING,
+    })
+    checkInRepo.create_result = createCheckInFixture({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      interactionType: InteractionType.NETWORKING,
+    })
+
+    const result = await useCase.execute({
+      nfcId: 'nfc-active-4',
+      eventId: 'event-1',
+      interactionType: InteractionType.NETWORKING,
+    })
+    expect(result.interactionType).toBe(InteractionType.NETWORKING)
+    expect(checkInRepo.findOneByBraceletEventType_calledWith).toBeNull()
   })
 })

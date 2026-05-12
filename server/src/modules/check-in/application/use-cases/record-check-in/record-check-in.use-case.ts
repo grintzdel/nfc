@@ -1,6 +1,6 @@
 import { CheckInEntity } from '../../../domain/entity/check-in.entity'
 import { InteractionType } from '../../../domain/constants/interaction-type.constant'
-import { CheckInInvalidBraceletStateError } from '../../../domain/errors/check-in.error'
+import { CheckInInvalidBraceletStateError, DuplicateCheckInError } from '../../../domain/errors/check-in.error'
 import { ICheckInRepository } from '../../../domain/repository/check-in.repository.interface'
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
@@ -33,6 +33,17 @@ export class RecordCheckInUseCase {
     // 2. Validate bracelet state — must be PRE_ACTIVATED or ACTIVE
     if (bracelet.isInStock() || bracelet.isDisabled()) {
       throw new CheckInInvalidBraceletStateError(input.nfcId, bracelet.status)
+    }
+
+    // 2b. Reject duplicate door-entrance check-ins for the same bracelet+event.
+    //     Other interaction types (networking / vote / cashless) can legitimately repeat.
+    if (input.interactionType === InteractionType.CHECK_IN) {
+      const existing = await this.checkInRepository.findOneByBraceletEventType(
+        bracelet.id,
+        input.eventId,
+        InteractionType.CHECK_IN,
+      )
+      if (existing) throw new DuplicateCheckInError(input.nfcId)
     }
 
     // 3. Resolve targetBraceletId from targetNfcId if present
