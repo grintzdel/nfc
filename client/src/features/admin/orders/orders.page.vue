@@ -5,6 +5,7 @@ import { ShoppingBag, TrendingUp } from 'lucide-vue-next'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
 import StatCard from '@/ui/components/stat-card.vue'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
+import { TableSkeleton } from '@/ui/skeleton'
 import { useGetAllOrders } from '@/modules/order/ui/hooks/queries/query/use-get-all-orders'
 import { useUpdateOrderStatus } from '@/modules/order/ui/hooks/queries/mutation/use-update-order-status'
 import { OrderStatus } from '@/modules/order/core/model/order.domain-model'
@@ -164,9 +165,7 @@ function formatDate(dateStr: string): string {
             </div>
           </div>
 
-          <div v-if="isLoading && filteredItems.length === 0" class="flex h-32 items-center justify-center">
-            <p class="text-sm text-slate-400">Chargement…</p>
-          </div>
+          <TableSkeleton v-if="isLoading && filteredItems.length === 0" :rows="5" :columns="5" />
         </template>
       </div>
     </div>

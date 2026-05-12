@@ -7,6 +7,7 @@ import { Search, Plus, ExternalLink, Watch, TrendingUp } from 'lucide-vue-next'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
 import StatCard from '@/ui/components/stat-card.vue'
 import { Pagination } from '@/ui/pagination'
+import { TableSkeleton } from '@/ui/skeleton'
 import { useGetPaginatedBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets'
 import { useCreateBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-create-bracelet'
 import { useGetBraceletsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-bracelets-count'
@@ -237,9 +238,7 @@ function formatDate(dateStr: string): string {
           </div>
 
           <!-- Loading -->
-          <div v-if="isLoading && items.length === 0" class="flex h-32 items-center justify-center">
-            <p class="text-sm text-slate-400">Chargement…</p>
-          </div>
+          <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
 
           <!-- Pagination -->
           <Pagination

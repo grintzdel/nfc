@@ -5,6 +5,7 @@ import { Search, Users, CheckCircle2 } from 'lucide-vue-next'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
 import StatCard from '@/ui/components/stat-card.vue'
 import { Pagination } from '@/ui/pagination'
+import { TableSkeleton } from '@/ui/skeleton'
 import { useGetPaginatedParticipants } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants'
 import { useGetParticipantsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-participants-count'
 
@@ -155,9 +156,7 @@ function initials(name: string): string {
           </div>
 
           <!-- Loading -->
-          <div v-if="isLoading && items.length === 0" class="flex h-32 items-center justify-center">
-            <p class="text-sm text-slate-400">Chargement…</p>
-          </div>
+          <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="4" />
 
           <!-- Pagination -->
           <Pagination

@@ -9,6 +9,7 @@ import { useUpdateProduct } from '@/modules/product/ui/hooks/queries/mutation/us
 import { useDeleteProduct } from '@/modules/product/ui/hooks/queries/mutation/use-delete-product'
 import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
 import ProductFormDialog from './components/product-form-dialog.vue'
+import { TableSkeleton } from '@/ui/skeleton'
 
 const { data: products, isLoading } = useGetProducts()
 const createMutation = useCreateProduct()
@@ -139,9 +140,7 @@ function formatEur(value: number): string {
             </div>
           </div>
 
-          <div v-if="isLoading && items.length === 0" class="flex h-32 items-center justify-center">
-            <p class="text-sm text-slate-400">Chargement…</p>
-          </div>
+          <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
         </template>
       </div>
     </div>
