@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import AdminSidebar from './admin-sidebar.vue'
 import AdminHeader from './admin-header.vue'
 import { Toaster } from 'vue-sonner'
@@ -7,13 +9,18 @@ defineProps<{
   title: string
   subtitle?: string
 }>()
+
+const sidebarOpen = ref(false)
+const route = useRoute()
+// Close drawer whenever the route changes (handles back/forward + RouterLink clicks)
+watch(() => route.fullPath, () => { sidebarOpen.value = false })
 </script>
 
 <template>
   <div class="flex h-screen bg-[#0F172A]">
-    <AdminSidebar />
+    <AdminSidebar :open="sidebarOpen" @update:open="(v) => sidebarOpen = v" />
     <div class="flex flex-1 flex-col overflow-hidden">
-      <AdminHeader :title="title" :subtitle="subtitle" />
+      <AdminHeader :title="title" :subtitle="subtitle" @open-sidebar="sidebarOpen = true" />
       <main class="flex-1 overflow-y-auto">
         <slot />
       </main>

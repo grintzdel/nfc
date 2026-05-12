@@ -87,7 +87,7 @@ function handleSave() {
             />
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-medium text-slate-400">Lieu (venue)</label>
               <input
@@ -115,7 +115,7 @@ function handleSave() {
             />
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-medium text-slate-400">Debut</label>
               <input
@@ -134,7 +134,7 @@ function handleSave() {
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-medium text-slate-400">Capacite</label>
               <input

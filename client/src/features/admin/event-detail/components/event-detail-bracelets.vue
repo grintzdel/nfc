@@ -84,62 +84,66 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
     </div>
 
     <template v-else>
-      <!-- Header -->
-      <div class="flex items-center bg-slate-800">
-        <div class="w-[220px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span></div>
-        <div class="w-[120px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
-        <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant attaché</span></div>
-        <div class="w-[120px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Créé le</span></div>
-        <div class="w-[140px] px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
-      </div>
+      <div class="overflow-x-auto">
+        <div class="flex min-w-[820px] flex-col">
+          <!-- Header -->
+          <div class="flex items-center bg-slate-800">
+            <div class="w-[220px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span></div>
+            <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
+            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant attaché</span></div>
+            <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Créé le</span></div>
+            <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
+          </div>
 
-      <!-- Rows -->
-      <div
-        v-for="row in items"
-        :key="row.id"
-        class="flex items-center border-t border-white/10"
-      >
-        <div class="w-[220px] px-4 py-3">
-          <RouterLink
-            v-if="row.status === BraceletStatus.ACTIVE"
-            :to="`/p/${row.nfcId}`"
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-1 font-mono text-sm text-emerald-300 hover:text-emerald-200"
+          <!-- Rows -->
+          <div
+            v-for="row in items"
+            :key="row.id"
+            class="flex items-center border-t border-white/10"
           >
-            {{ row.nfcId }}
-            <ExternalLink class="h-3 w-3" />
-          </RouterLink>
-          <span v-else class="font-mono text-sm text-slate-300">{{ row.nfcId }}</span>
-        </div>
-        <div class="w-[120px] px-4 py-3">
-          <span
-            class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
-            :class="STATUS_CLASS[row.status]"
-          >
-            {{ STATUS_LABEL[row.status] }}
-          </span>
-        </div>
-        <div class="flex-1 px-4 py-3 text-sm">
-          <span v-if="row.participant" class="text-slate-200">{{ row.participant.displayName }}</span>
-          <span v-else class="text-slate-500">—</span>
-        </div>
-        <div class="w-[120px] px-4 py-3 text-sm text-slate-300">{{ formatDate(row.createdAt) }}</div>
-        <div class="flex w-[140px] items-center justify-end px-4 py-3">
-          <button
-            v-if="row.status === BraceletStatus.ACTIVE || row.status === BraceletStatus.PRE_ACTIVATED"
-            type="button"
-            :disabled="disableMutation.isPending.value"
-            class="rounded-md border border-red-500/40 px-3 py-1.5 text-xs font-medium text-red-300 hover:bg-red-500/10 disabled:opacity-50"
-            @click="handleDisable(row.id)"
-          >
-            Désactiver
-          </button>
+            <div class="w-[220px] shrink-0 px-4 py-3">
+              <RouterLink
+                v-if="row.status === BraceletStatus.ACTIVE"
+                :to="`/p/${row.nfcId}`"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1 font-mono text-sm text-emerald-300 hover:text-emerald-200"
+              >
+                {{ row.nfcId }}
+                <ExternalLink class="h-3 w-3" />
+              </RouterLink>
+              <span v-else class="font-mono text-sm text-slate-300">{{ row.nfcId }}</span>
+            </div>
+            <div class="w-[120px] shrink-0 px-4 py-3">
+              <span
+                class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
+                :class="STATUS_CLASS[row.status]"
+              >
+                {{ STATUS_LABEL[row.status] }}
+              </span>
+            </div>
+            <div class="flex-1 px-4 py-3 text-sm">
+              <span v-if="row.participant" class="text-slate-200">{{ row.participant.displayName }}</span>
+              <span v-else class="text-slate-500">—</span>
+            </div>
+            <div class="w-[120px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(row.createdAt) }}</div>
+            <div class="flex w-[140px] shrink-0 items-center justify-end px-4 py-3">
+              <button
+                v-if="row.status === BraceletStatus.ACTIVE || row.status === BraceletStatus.PRE_ACTIVATED"
+                type="button"
+                :disabled="disableMutation.isPending.value"
+                class="rounded-md border border-red-500/40 px-3 py-1.5 text-xs font-medium text-red-300 hover:bg-red-500/10 disabled:opacity-50"
+                @click="handleDisable(row.id)"
+              >
+                Désactiver
+              </button>
+            </div>
+          </div>
+
+          <!-- Loading -->
+          <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
         </div>
       </div>
-
-      <!-- Loading -->
-      <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
 
       <!-- Pagination -->
       <Pagination

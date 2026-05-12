@@ -111,7 +111,7 @@ async function handleSubmit(): Promise<void> {
     <CardContent>
       <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
         <template v-if="!isLoggedIn">
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div class="flex flex-col gap-1.5">
               <Label for="fn">Prénom</Label>
               <Input id="fn" v-model="accountFields.firstName" />

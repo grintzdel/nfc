@@ -125,47 +125,51 @@ function formatDate(dateStr: string): string {
         </div>
 
         <template v-else>
-          <div class="flex items-center bg-slate-800">
-            <div class="w-[180px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Date</span></div>
-            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Articles</span></div>
-            <div class="w-[140px] px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Montant</span></div>
-            <div class="w-[120px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
-            <div class="w-[180px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
-          </div>
+          <div class="overflow-x-auto">
+            <div class="flex min-w-[820px] flex-col">
+              <div class="flex items-center bg-slate-800">
+                <div class="w-[180px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Date</span></div>
+                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Articles</span></div>
+                <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Montant</span></div>
+                <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
+                <div class="w-[180px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
+              </div>
 
-          <div v-for="o in filteredItems" :key="o.id" class="flex items-center border-t border-white/10">
-            <div class="w-[180px] px-4 py-3 text-sm text-slate-300">{{ formatDate(o.createdAt) }}</div>
-            <div class="flex-1 px-4 py-3 text-sm text-slate-50">
-              <span v-for="(it, i) in o.items" :key="i" class="text-sm text-slate-300">
-                {{ it.quantity }}× {{ it.productName }}<span v-if="i < o.items.length - 1">, </span>
-              </span>
-            </div>
-            <div class="w-[140px] px-4 py-3 text-right text-sm font-medium text-slate-50">
-              {{ eurFormatter.format(o.totalAmount) }}
-            </div>
-            <div class="w-[120px] px-4 py-3">
-              <span
-                class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
-                :class="STATUS_CLASS[o.status]"
-              >
-                {{ STATUS_LABEL[o.status] }}
-              </span>
-            </div>
-            <div class="w-[180px] px-4 py-3">
-              <Select :model-value="o.status" @update:model-value="(v) => handleStatusChange(o.id, v as OrderStatus)">
-                <SelectTrigger class="h-8 text-xs">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem v-for="s in STATUS_OPTIONS" :key="s" :value="s">
-                    {{ STATUS_LABEL[s] }}
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <div v-for="o in filteredItems" :key="o.id" class="flex items-center border-t border-white/10">
+                <div class="w-[180px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(o.createdAt) }}</div>
+                <div class="flex-1 px-4 py-3 text-sm text-slate-50">
+                  <span v-for="(it, i) in o.items" :key="i" class="text-sm text-slate-300">
+                    {{ it.quantity }}× {{ it.productName }}<span v-if="i < o.items.length - 1">, </span>
+                  </span>
+                </div>
+                <div class="w-[140px] shrink-0 px-4 py-3 text-right text-sm font-medium text-slate-50">
+                  {{ eurFormatter.format(o.totalAmount) }}
+                </div>
+                <div class="w-[120px] shrink-0 px-4 py-3">
+                  <span
+                    class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
+                    :class="STATUS_CLASS[o.status]"
+                  >
+                    {{ STATUS_LABEL[o.status] }}
+                  </span>
+                </div>
+                <div class="w-[180px] shrink-0 px-4 py-3">
+                  <Select :model-value="o.status" @update:model-value="(v) => handleStatusChange(o.id, v as OrderStatus)">
+                    <SelectTrigger class="h-8 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem v-for="s in STATUS_OPTIONS" :key="s" :value="s">
+                        {{ STATUS_LABEL[s] }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <TableSkeleton v-if="isLoading && filteredItems.length === 0" :rows="5" :columns="5" />
             </div>
           </div>
-
-          <TableSkeleton v-if="isLoading && filteredItems.length === 0" :rows="5" :columns="5" />
         </template>
       </div>
     </div>

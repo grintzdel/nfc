@@ -50,7 +50,7 @@ function formatDate(dateStr: string): string {
       </div>
 
       <!-- KPI row (3 KPIs — used to be 4 with a "Livrés" duplicate of "Commandés") -->
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div class="rounded-md bg-slate-800 p-3">
           <p class="text-[11px] font-medium text-slate-400">Bracelets commandés</p>
           <div class="mt-1 flex items-center gap-1.5">

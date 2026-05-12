@@ -17,14 +17,14 @@ const stats = [
       <div class="absolute right-[20%] top-0 h-full w-[30%] bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.1)_0%,transparent_70%)]" />
     </div>
 
-    <div class="relative mx-auto flex max-w-7xl items-center justify-around px-6 py-20 lg:px-20">
+    <div class="relative mx-auto grid max-w-7xl grid-cols-2 items-center gap-8 px-6 py-20 sm:gap-12 md:grid-cols-4 lg:px-20">
       <div
         v-for="stat in stats"
         :key="stat.label"
-        class="flex flex-col items-center gap-3"
+        class="flex flex-col items-center gap-3 text-center"
       >
         <component :is="stat.icon" class="h-8 w-8" :class="stat.iconColor" />
-        <span class="text-5xl font-extrabold text-violet-400">{{ stat.value }}</span>
+        <span class="text-3xl font-extrabold text-violet-400 sm:text-4xl md:text-5xl">{{ stat.value }}</span>
         <span class="text-sm font-medium text-slate-400">{{ stat.label }}</span>
       </div>
     </div>

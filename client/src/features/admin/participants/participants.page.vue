@@ -116,47 +116,51 @@ function initials(name: string): string {
         </div>
 
         <template v-else>
-          <!-- Header -->
-          <div class="flex items-center bg-slate-800">
-            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
-            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Événement</span></div>
-            <div class="w-[110px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span></div>
-            <div class="w-[110px] px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span></div>
-          </div>
-
-          <!-- Rows -->
-          <div v-for="p in items" :key="p.id" class="flex items-center border-t border-white/10">
-            <div class="flex flex-1 items-center gap-3 px-4 py-3">
-              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
-                {{ initials(p.profile.displayName) }}
+          <div class="overflow-x-auto">
+            <div class="flex min-w-[720px] flex-col">
+              <!-- Header -->
+              <div class="flex items-center bg-slate-800">
+                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
+                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Événement</span></div>
+                <div class="w-[110px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span></div>
+                <div class="w-[110px] shrink-0 px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span></div>
               </div>
-              <div class="flex flex-col">
-                <span class="text-sm font-medium text-slate-50">{{ p.profile.displayName }}</span>
-                <span v-if="p.profile.role" class="text-xs text-slate-400">{{ p.profile.role }}</span>
+
+              <!-- Rows -->
+              <div v-for="p in items" :key="p.id" class="flex items-center border-t border-white/10">
+                <div class="flex flex-1 items-center gap-3 px-4 py-3">
+                  <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
+                    {{ initials(p.profile.displayName) }}
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-sm font-medium text-slate-50">{{ p.profile.displayName }}</span>
+                    <span v-if="p.profile.role" class="text-xs text-slate-400">{{ p.profile.role }}</span>
+                  </div>
+                </div>
+                <div class="flex-1 px-4 py-3 text-sm">
+                  <RouterLink
+                    v-if="p.event"
+                    :to="`/admin/events/${p.event.id}`"
+                    class="text-violet-300 hover:text-violet-200"
+                  >
+                    {{ p.event.name }}
+                  </RouterLink>
+                  <span v-else class="text-slate-500">Événement supprimé</span>
+                </div>
+                <div class="w-[110px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(p.registeredAt) }}</div>
+                <div class="w-[110px] shrink-0 px-4 py-3 text-center">
+                  <span
+                    class="inline-block h-2.5 w-2.5 rounded-full"
+                    :class="p.checkedInAt ? 'bg-emerald-400' : 'bg-slate-600'"
+                    :title="p.checkedInAt ? `Arrivé le ${formatDate(p.checkedInAt)}` : 'Pas encore arrivé'"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="flex-1 px-4 py-3 text-sm">
-              <RouterLink
-                v-if="p.event"
-                :to="`/admin/events/${p.event.id}`"
-                class="text-violet-300 hover:text-violet-200"
-              >
-                {{ p.event.name }}
-              </RouterLink>
-              <span v-else class="text-slate-500">Événement supprimé</span>
-            </div>
-            <div class="w-[110px] px-4 py-3 text-sm text-slate-300">{{ formatDate(p.registeredAt) }}</div>
-            <div class="w-[110px] px-4 py-3 text-center">
-              <span
-                class="inline-block h-2.5 w-2.5 rounded-full"
-                :class="p.checkedInAt ? 'bg-emerald-400' : 'bg-slate-600'"
-                :title="p.checkedInAt ? `Arrivé le ${formatDate(p.checkedInAt)}` : 'Pas encore arrivé'"
-              />
+
+              <!-- Loading -->
+              <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="4" />
             </div>
           </div>
-
-          <!-- Loading -->
-          <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="4" />
 
           <!-- Pagination -->
           <Pagination

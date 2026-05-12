@@ -34,7 +34,7 @@ import { Activity, Users, MapPin, TrendingUp } from 'lucide-vue-next'
         </div>
 
         <!-- Body -->
-        <div class="grid grid-cols-3 gap-4 p-6">
+        <div class="grid grid-cols-1 gap-4 p-6 sm:grid-cols-3">
           <div class="rounded-lg bg-white/5 p-4">
             <div class="mb-2 flex items-center gap-2">
               <Users class="h-4 w-4 text-violet-400" />

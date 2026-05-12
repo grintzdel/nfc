@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { Calendar, LayoutDashboard, Package, Radio, ShoppingBag, Users, Watch } from 'lucide-vue-next'
+import { Calendar, LayoutDashboard, Package, Radio, ShoppingBag, Users, Watch, X } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
+
+defineProps<{ open: boolean }>()
+const emit = defineEmits<{ (event: 'update:open', value: boolean): void }>()
 
 const route = useRoute()
 const { getUserFromToken } = useAuth()
@@ -55,14 +58,33 @@ const sections: NavSection[] = [
 </script>
 
 <template>
+  <!-- Mobile backdrop -->
+  <div
+    v-if="open"
+    class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm lg:hidden"
+    aria-hidden="true"
+    @click="emit('update:open', false)"
+  />
+
   <aside
-    class="flex h-screen w-64 flex-shrink-0 flex-col border-r border-slate-700/50 bg-pulse-surface-dark"
+    class="fixed inset-y-0 left-0 z-50 flex h-screen w-64 flex-shrink-0 transform flex-col border-r border-slate-700/50 bg-pulse-surface-dark transition-transform duration-200 ease-out lg:static lg:translate-x-0"
+    :class="open ? 'translate-x-0' : '-translate-x-full'"
   >
     <!-- Header -->
     <div class="flex items-center justify-between px-4 py-5">
       <span class="font-bold tracking-[1px] text-slate-50">PULSE</span>
-      <div class="flex h-8 w-8 items-center justify-center rounded-full bg-pulse-violet">
-        <Radio :size="18" class="text-white" />
+      <div class="flex items-center gap-2">
+        <div class="flex h-8 w-8 items-center justify-center rounded-full bg-pulse-violet">
+          <Radio :size="18" class="text-white" />
+        </div>
+        <button
+          type="button"
+          class="rounded-md p-1.5 text-slate-400 hover:bg-white/5 hover:text-slate-100 lg:hidden"
+          aria-label="Fermer le menu"
+          @click="emit('update:open', false)"
+        >
+          <X :size="18" />
+        </button>
       </div>
     </div>
 
@@ -84,6 +106,7 @@ const sections: NavSection[] = [
                   ? 'rounded-md bg-slate-800 font-medium text-slate-50'
                   : 'rounded-md text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
               "
+              @click="emit('update:open', false)"
             >
               <component :is="item.icon" class="h-4 w-4" />
               {{ item.label }}

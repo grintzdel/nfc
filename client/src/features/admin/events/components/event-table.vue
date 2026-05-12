@@ -125,83 +125,85 @@ function statusClass(status: string): string {
 
     <!-- Table -->
     <div class="w-full overflow-x-auto">
-      <!-- Header -->
-      <div class="flex items-center bg-slate-800">
-        <div class="flex-1 px-4 py-3">
-          <span class="text-xs font-semibold tracking-wide text-slate-400">Evenement</span>
+      <div class="flex min-w-[860px] flex-col">
+        <!-- Header -->
+        <div class="flex items-center bg-slate-800">
+          <div class="flex-1 px-4 py-3">
+            <span class="text-xs font-semibold tracking-wide text-slate-400">Evenement</span>
+          </div>
+          <div class="w-[140px] shrink-0 px-4 py-3">
+            <span class="text-xs font-semibold tracking-wide text-slate-400">Date</span>
+          </div>
+          <div class="w-[120px] shrink-0 px-4 py-3 text-right">
+            <span class="text-xs font-semibold tracking-wide text-slate-400">Bracelets</span>
+          </div>
+          <div class="w-[160px] shrink-0 px-4 py-3 text-right">
+            <span class="text-xs font-semibold tracking-wide text-slate-400">Check-ins</span>
+          </div>
+          <div class="w-[130px] shrink-0 px-4 py-3">
+            <span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span>
+          </div>
+          <div class="w-[140px] shrink-0 px-4 py-3 text-right">
+            <span class="text-xs font-semibold tracking-wide text-slate-400">Actions</span>
+          </div>
         </div>
-        <div class="w-[140px] px-4 py-3">
-          <span class="text-xs font-semibold tracking-wide text-slate-400">Date</span>
-        </div>
-        <div class="w-[120px] px-4 py-3 text-right">
-          <span class="text-xs font-semibold tracking-wide text-slate-400">Bracelets</span>
-        </div>
-        <div class="w-[160px] px-4 py-3 text-right">
-          <span class="text-xs font-semibold tracking-wide text-slate-400">Check-ins</span>
-        </div>
-        <div class="w-[130px] px-4 py-3">
-          <span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span>
-        </div>
-        <div class="w-[140px] px-4 py-3 text-right">
-          <span class="text-xs font-semibold tracking-wide text-slate-400">Actions</span>
-        </div>
-      </div>
 
-      <!-- Rows -->
-      <div
-        v-for="row in data?.items"
-        :key="row.id"
-        class="flex items-center border-t border-white/10"
-      >
-        <div class="flex flex-1 flex-col gap-0.5 px-4 py-3">
-          <span class="text-sm font-semibold text-slate-50">{{ row.name }}</span>
-          <span class="text-xs text-slate-400">{{ row.venueName || row.city }}</span>
+        <!-- Rows -->
+        <div
+          v-for="row in data?.items"
+          :key="row.id"
+          class="flex items-center border-t border-white/10"
+        >
+          <div class="flex flex-1 flex-col gap-0.5 px-4 py-3">
+            <span class="text-sm font-semibold text-slate-50">{{ row.name }}</span>
+            <span class="text-xs text-slate-400">{{ row.venueName || row.city }}</span>
+          </div>
+          <div class="w-[140px] shrink-0 px-4 py-3">
+            <span class="text-sm text-slate-50">{{ formatDate(row.startsAt) }}</span>
+          </div>
+          <div class="w-[120px] shrink-0 px-4 py-3 text-right">
+            <span class="text-sm font-medium text-slate-50">{{ row.braceletsCount.toLocaleString('fr-FR') }}</span>
+          </div>
+          <div class="w-[160px] shrink-0 px-4 py-3 text-right">
+            <span class="text-sm text-slate-50">
+              {{ row.checkInsCount.toLocaleString('fr-FR') }}
+              <span v-if="row.braceletsCount > 0" class="text-slate-400">({{ row.checkInsRate }}%)</span>
+            </span>
+          </div>
+          <div class="w-[130px] shrink-0 px-4 py-3">
+            <span
+              class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
+              :class="statusClass(row.status)"
+            >
+              {{ statusLabel(row.status) }}
+            </span>
+          </div>
+          <div class="flex w-[140px] shrink-0 items-center justify-end gap-0.5 px-3 py-3">
+            <button
+              class="rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-slate-200"
+              @click="emit('view', row.id)"
+            >
+              <Eye class="h-4 w-4" />
+            </button>
+            <button
+              class="rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-slate-200"
+              @click="emit('edit', row.id)"
+            >
+              <Pencil class="h-4 w-4" />
+            </button>
+            <button
+              class="rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-red-400"
+              @click="emit('delete', row.id)"
+            >
+              <MoreHorizontal class="h-4 w-4" />
+            </button>
+          </div>
         </div>
-        <div class="w-[140px] px-4 py-3">
-          <span class="text-sm text-slate-50">{{ formatDate(row.startsAt) }}</span>
-        </div>
-        <div class="w-[120px] px-4 py-3 text-right">
-          <span class="text-sm font-medium text-slate-50">{{ row.braceletsCount.toLocaleString('fr-FR') }}</span>
-        </div>
-        <div class="w-[160px] px-4 py-3 text-right">
-          <span class="text-sm text-slate-50">
-            {{ row.checkInsCount.toLocaleString('fr-FR') }}
-            <span v-if="row.braceletsCount > 0" class="text-slate-400">({{ row.checkInsRate }}%)</span>
-          </span>
-        </div>
-        <div class="w-[130px] px-4 py-3">
-          <span
-            class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
-            :class="statusClass(row.status)"
-          >
-            {{ statusLabel(row.status) }}
-          </span>
-        </div>
-        <div class="flex w-[140px] items-center justify-end gap-0.5 px-3 py-3">
-          <button
-            class="rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-slate-200"
-            @click="emit('view', row.id)"
-          >
-            <Eye class="h-4 w-4" />
-          </button>
-          <button
-            class="rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-slate-200"
-            @click="emit('edit', row.id)"
-          >
-            <Pencil class="h-4 w-4" />
-          </button>
-          <button
-            class="rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-red-400"
-            @click="emit('delete', row.id)"
-          >
-            <MoreHorizontal class="h-4 w-4" />
-          </button>
-        </div>
-      </div>
 
-      <!-- Empty state -->
-      <div v-if="data && data.items.length === 0" class="flex h-40 items-center justify-center">
-        <p class="text-sm text-slate-400">Aucun evenement trouve</p>
+        <!-- Empty state -->
+        <div v-if="data && data.items.length === 0" class="flex h-40 items-center justify-center">
+          <p class="text-sm text-slate-400">Aucun evenement trouve</p>
+        </div>
       </div>
     </div>
 

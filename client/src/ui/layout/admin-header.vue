@@ -1,31 +1,43 @@
 <script setup lang="ts">
-import { Search, Bell } from 'lucide-vue-next'
+import { Search, Bell, Menu } from 'lucide-vue-next'
 
 defineProps<{
   title: string
   subtitle?: string
 }>()
+
+const emit = defineEmits<{ (event: 'open-sidebar'): void }>()
 </script>
 
 <template>
   <header
-    class="border-b border-slate-700/50 bg-[#0F172A] px-8 py-4"
+    class="border-b border-slate-700/50 bg-[#0F172A] px-4 py-4 sm:px-6 lg:px-8"
   >
-    <div class="flex flex-row items-center justify-between">
-      <!-- Left: Title and Subtitle -->
-      <div class="flex flex-col">
-        <h1 class="text-2xl font-bold text-slate-50">
-          {{ title }}
-        </h1>
-        <p v-if="subtitle" class="text-sm text-slate-400">
-          {{ subtitle }}
-        </p>
+    <div class="flex flex-row items-center justify-between gap-3">
+      <!-- Left: hamburger (mobile) + Title -->
+      <div class="flex min-w-0 flex-1 items-center gap-3">
+        <button
+          type="button"
+          class="rounded-md border border-white/10 bg-[#020617] p-2 text-slate-300 hover:text-slate-100 lg:hidden"
+          aria-label="Ouvrir le menu"
+          @click="emit('open-sidebar')"
+        >
+          <Menu class="h-5 w-5" />
+        </button>
+        <div class="flex min-w-0 flex-col">
+          <h1 class="truncate text-xl font-bold text-slate-50 sm:text-2xl">
+            {{ title }}
+          </h1>
+          <p v-if="subtitle" class="truncate text-xs text-slate-400 sm:text-sm">
+            {{ subtitle }}
+          </p>
+        </div>
       </div>
 
       <!-- Right: Search, Bell, Avatar -->
-      <div class="flex items-center gap-4">
-        <!-- Search Input -->
-        <div class="flex w-60 items-center gap-2 rounded-md border border-slate-700/50 bg-[#020617] px-3 py-2">
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Search Input — hidden on small to give space to the title -->
+        <div class="hidden w-60 items-center gap-2 rounded-md border border-slate-700/50 bg-[#020617] px-3 py-2 xl:flex">
           <Search class="h-4 w-4 text-slate-500" />
           <input
             type="text"
@@ -43,7 +55,7 @@ defineProps<{
 
         <!-- Avatar -->
         <div
-          class="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/50 bg-slate-800"
+          class="hidden h-9 w-9 items-center justify-center rounded-full border border-slate-700/50 bg-slate-800 sm:flex"
         >
           <span class="text-xs font-medium text-slate-300">AP</span>
         </div>

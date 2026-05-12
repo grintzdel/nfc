@@ -96,77 +96,81 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
     </div>
 
     <template v-else>
-      <!-- Header -->
-      <div class="flex items-center bg-slate-800">
-        <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
-        <div class="w-[120px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span></div>
-        <div class="w-[180px] px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Bracelet</span></div>
-        <div class="w-[100px] px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span></div>
-        <div class="w-[160px] px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
-      </div>
-
-      <!-- Rows -->
-      <div
-        v-for="row in items"
-        :key="row.id"
-        class="flex items-center border-t border-white/10"
-      >
-        <div class="flex flex-1 items-center gap-3 px-4 py-3">
-          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
-            {{ initials(row.profile.displayName) }}
+      <div class="overflow-x-auto">
+        <div class="flex min-w-[820px] flex-col">
+          <!-- Header -->
+          <div class="flex items-center bg-slate-800">
+            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
+            <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span></div>
+            <div class="w-[180px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Bracelet</span></div>
+            <div class="w-[100px] shrink-0 px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span></div>
+            <div class="w-[160px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
           </div>
-          <div class="flex flex-col">
-            <span class="text-sm font-medium text-slate-50">{{ row.profile.displayName }}</span>
-            <span v-if="row.profile.role" class="text-xs text-slate-400">{{ row.profile.role }}</span>
+
+          <!-- Rows -->
+          <div
+            v-for="row in items"
+            :key="row.id"
+            class="flex items-center border-t border-white/10"
+          >
+            <div class="flex flex-1 items-center gap-3 px-4 py-3">
+              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
+                {{ initials(row.profile.displayName) }}
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-medium text-slate-50">{{ row.profile.displayName }}</span>
+                <span v-if="row.profile.role" class="text-xs text-slate-400">{{ row.profile.role }}</span>
+              </div>
+            </div>
+            <div class="w-[120px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(row.registeredAt) }}</div>
+            <div class="w-[180px] shrink-0 px-4 py-3">
+              <RouterLink
+                v-if="row.bracelet && row.bracelet.status === BraceletStatus.ACTIVE"
+                :to="`/p/${row.bracelet.nfcId}`"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2 py-0.5 font-mono text-xs text-emerald-300 hover:bg-emerald-500/30"
+              >
+                {{ row.bracelet.nfcId }}
+                <ExternalLink class="h-3 w-3" />
+              </RouterLink>
+              <span
+                v-else-if="row.bracelet && row.bracelet.status === BraceletStatus.PRE_ACTIVATED"
+                class="inline-flex items-center gap-1 rounded-full bg-violet-500/20 px-2 py-0.5 font-mono text-xs text-violet-300"
+              >
+                <LinkIcon class="h-3 w-3" /> {{ row.bracelet.nfcId }}
+              </span>
+              <span
+                v-else-if="row.bracelet && row.bracelet.status === BraceletStatus.DISABLED"
+                class="inline-flex items-center rounded-full bg-red-500/20 px-2 py-0.5 text-xs text-red-300"
+              >
+                Désactivé
+              </span>
+              <span v-else class="text-xs text-slate-500">Non attribué</span>
+            </div>
+            <div class="w-[100px] shrink-0 px-4 py-3 text-center">
+              <span
+                class="inline-block h-2.5 w-2.5 rounded-full"
+                :class="row.checkedInAt ? 'bg-emerald-400' : 'bg-slate-600'"
+                :title="row.checkedInAt ? 'Présent' : 'Pas encore arrivé'"
+              />
+            </div>
+            <div class="flex w-[160px] shrink-0 items-center justify-end px-4 py-3">
+              <button
+                v-if="!row.bracelet"
+                type="button"
+                class="rounded-md border border-violet-500/40 px-3 py-1.5 text-xs font-medium text-violet-300 hover:bg-violet-500/10"
+                @click="openAttachDialog(row)"
+              >
+                Attacher
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="w-[120px] px-4 py-3 text-sm text-slate-300">{{ formatDate(row.registeredAt) }}</div>
-        <div class="w-[180px] px-4 py-3">
-          <RouterLink
-            v-if="row.bracelet && row.bracelet.status === BraceletStatus.ACTIVE"
-            :to="`/p/${row.bracelet.nfcId}`"
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2 py-0.5 font-mono text-xs text-emerald-300 hover:bg-emerald-500/30"
-          >
-            {{ row.bracelet.nfcId }}
-            <ExternalLink class="h-3 w-3" />
-          </RouterLink>
-          <span
-            v-else-if="row.bracelet && row.bracelet.status === BraceletStatus.PRE_ACTIVATED"
-            class="inline-flex items-center gap-1 rounded-full bg-violet-500/20 px-2 py-0.5 font-mono text-xs text-violet-300"
-          >
-            <LinkIcon class="h-3 w-3" /> {{ row.bracelet.nfcId }}
-          </span>
-          <span
-            v-else-if="row.bracelet && row.bracelet.status === BraceletStatus.DISABLED"
-            class="inline-flex items-center rounded-full bg-red-500/20 px-2 py-0.5 text-xs text-red-300"
-          >
-            Désactivé
-          </span>
-          <span v-else class="text-xs text-slate-500">Non attribué</span>
-        </div>
-        <div class="w-[100px] px-4 py-3 text-center">
-          <span
-            class="inline-block h-2.5 w-2.5 rounded-full"
-            :class="row.checkedInAt ? 'bg-emerald-400' : 'bg-slate-600'"
-            :title="row.checkedInAt ? 'Présent' : 'Pas encore arrivé'"
-          />
-        </div>
-        <div class="flex w-[160px] items-center justify-end px-4 py-3">
-          <button
-            v-if="!row.bracelet"
-            type="button"
-            class="rounded-md border border-violet-500/40 px-3 py-1.5 text-xs font-medium text-violet-300 hover:bg-violet-500/10"
-            @click="openAttachDialog(row)"
-          >
-            Attacher
-          </button>
+
+          <!-- Loading -->
+          <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
         </div>
       </div>
-
-      <!-- Loading -->
-      <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
 
       <!-- Pagination -->
       <Pagination
