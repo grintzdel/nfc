@@ -9,6 +9,7 @@ import { useGetEventDetailStats } from '@/modules/analytics/ui/hooks/queries/que
 import { useEventStatusTransition, type EventStatusAction } from '@/modules/event/ui/hooks/queries/mutation/use-event-status-transition'
 import EventDetailHeader from './components/event-detail-header.vue'
 import EventDetailParticipants from './components/event-detail-participants.vue'
+import EventDetailBracelets from './components/event-detail-bracelets.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -83,9 +84,7 @@ function handleStatusAction(action: EventStatusAction): void {
             <EventDetailParticipants :event-id="event.id" />
           </TabsContent>
           <TabsContent value="bracelets">
-            <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">
-              Tab Bracelets — à implémenter (Phase 3)
-            </div>
+            <EventDetailBracelets :event-id="event.id" />
           </TabsContent>
           <TabsContent value="check-ins">
             <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6 text-sm text-slate-400">

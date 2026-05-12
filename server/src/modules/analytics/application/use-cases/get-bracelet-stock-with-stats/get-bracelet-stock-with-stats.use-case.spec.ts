@@ -12,6 +12,7 @@ const mockBraceletRepo: jest.Mocked<IBraceletRepository> = {
   findAllByStatus: jest.fn(),
   findAllByEventId: jest.fn(),
   findAllByEventIdAndStatus: jest.fn(),
+  findPaginatedByEventId: jest.fn(),
   findAllByUserId: jest.fn(),
   countByStatus: jest.fn(),
   countByEventId: jest.fn(),

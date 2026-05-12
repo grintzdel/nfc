@@ -10,6 +10,7 @@ export interface IBraceletRepository {
   findAllByStatus(status: BraceletStatus): Promise<BraceletEntity[]>
   findAllByEventId(eventId: string): Promise<BraceletEntity[]>
   findAllByEventIdAndStatus(eventId: string, status: BraceletStatus): Promise<BraceletEntity[]>
+  findPaginatedByEventId(params: { eventId: string; page: number; limit: number; search?: string }): Promise<PaginatedResult<BraceletEntity>>
   findAllByUserId(userId: string): Promise<BraceletEntity[]>
   countByStatus(status: BraceletStatus): Promise<number>
   countByEventId(eventId: string): Promise<number>

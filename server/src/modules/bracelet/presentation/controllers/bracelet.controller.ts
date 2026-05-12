@@ -5,6 +5,8 @@ import { CreateBraceletRequestDto } from '../dto/create-bracelet.request.dto'
 import { AssignBraceletRequestDto } from '../dto/assign-bracelet.request.dto'
 import { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
 import { GetAvailableBraceletsUseCase } from '../../application/use-cases/get-available-bracelets/get-available-bracelets.use-case'
+import { GetPaginatedBraceletsByEventUseCase } from '../../application/use-cases/get-paginated-bracelets-by-event/get-paginated-bracelets-by-event.use-case'
+import { PaginatedBraceletsResponseDto } from '../dto/paginated-bracelets.response.dto'
 import { AppError } from '@shared/errors/app.error'
 
 export class BraceletController {
@@ -61,6 +63,17 @@ export class BraceletController {
       if (!eventId) throw new AppError(400, 'eventId query param is required')
       const bracelets = await useCase.execute({ eventId })
       res.json({ success: true, data: bracelets.map((b) => new BraceletResponseDto(b)) })
+    } catch (e) { next(e) }
+  }
+
+  async getPaginatedByEvent(useCase: GetPaginatedBraceletsByEventUseCase, req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const eventId = req.params.eventId as string
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || 20
+      const search = typeof req.query.search === 'string' ? req.query.search : undefined
+      const paged = await useCase.execute({ eventId, page, limit, search })
+      res.json({ success: true, data: new PaginatedBraceletsResponseDto(paged) })
     } catch (e) { next(e) }
   }
 }

@@ -26,6 +26,21 @@ export class BraceletHttpAdapter implements IBraceletPort {
     return result.data.data
   }
 
+  async getPaginatedByEvent(params: {
+    eventId: string
+    page: number
+    limit: number
+    search?: string
+  }): Promise<BraceletDomainModel.PaginatedBraceletsDto> {
+    const qs = new URLSearchParams({ page: String(params.page), limit: String(params.limit) })
+    if (params.search && params.search.trim()) qs.append('search', params.search.trim())
+    const result = await this.httpClient.get<BraceletDomainModel.PaginatedBraceletsDto>(
+      `/bracelets/event/${params.eventId}/paginated?${qs.toString()}`,
+    )
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
+
   async getById(id: string): Promise<BraceletDomainModel.BraceletOverviewDto> {
     const result = await this.httpClient.get<BraceletDomainModel.BraceletOverviewDto>(`/bracelets/${id}`)
     if (result.error) throw new Error(result.error.message)

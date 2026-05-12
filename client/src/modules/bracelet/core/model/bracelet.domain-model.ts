@@ -30,4 +30,19 @@ export namespace BraceletDomainModel {
     userId: string
     eventId: string
   }
+
+  export type ParticipantSummaryDto = {
+    id: string
+    displayName: string
+  }
+  export type BraceletWithParticipantDto = BraceletOverviewDto & {
+    participant: ParticipantSummaryDto | null
+  }
+  export type PaginatedBraceletsDto = {
+    items: BraceletWithParticipantDto[]
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+  }
 }

@@ -14,6 +14,7 @@ import { ActivateBraceletUseCase } from './application/use-cases/activate-bracel
 import { DisableBraceletUseCase } from './application/use-cases/disable-bracelet/disable-bracelet.use-case'
 import { DeleteBraceletUseCase } from './application/use-cases/delete-bracelet/delete-bracelet.use-case'
 import { GetAvailableBraceletsUseCase } from './application/use-cases/get-available-bracelets/get-available-bracelets.use-case'
+import { GetPaginatedBraceletsByEventUseCase } from './application/use-cases/get-paginated-bracelets-by-event/get-paginated-bracelets-by-event.use-case'
 import { BraceletService } from './application/services/bracelet.service'
 import { BraceletController } from './presentation/controllers/bracelet.controller'
 import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
@@ -40,6 +41,7 @@ export function createBraceletModule(
   const deleteUC = new DeleteBraceletUseCase(braceletRepository)
 
   let getAvailableUC: GetAvailableBraceletsUseCase | null = null
+  let getPaginatedByEventUC: GetPaginatedBraceletsByEventUseCase | null = null
 
   const service = new BraceletService(
     createUC,
@@ -66,6 +68,13 @@ export function createBraceletModule(
     }
     controller.getAvailable(getAvailableUC, req, res, next)
   })
+  router.get('/event/:eventId/paginated', auth, admin, (req, res, next) => {
+    if (!getPaginatedByEventUC) {
+      next(new Error('Bracelet module dependencies not attached'))
+      return
+    }
+    controller.getPaginatedByEvent(getPaginatedByEventUC, req, res, next)
+  })
   router.get('/', auth, admin, (req, res, next) => controller.getAll(req, res, next))
   router.get('/:id', auth, (req, res, next) => controller.getById(req, res, next))
   router.patch('/:id/assign', auth, admin, (req, res, next) => controller.assign(req, res, next))
@@ -74,6 +83,7 @@ export function createBraceletModule(
 
   function attachDeps({ participantRepository }: { participantRepository: IParticipantRepository }): void {
     getAvailableUC = new GetAvailableBraceletsUseCase(braceletRepository, participantRepository)
+    getPaginatedByEventUC = new GetPaginatedBraceletsByEventUseCase(braceletRepository, participantRepository)
   }
 
   return {
