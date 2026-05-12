@@ -9,12 +9,16 @@ const mobileMenuOpen = ref(false)
 const { totalQuantity, openCart: openCartDrawer } = useCart()
 const { isAuthenticated, logout } = useAuth()
 
-const navLinks = [
-  { label: 'Experience', href: '#experience' },
-  { label: 'Fonctionnalites', href: '#features' },
-  { label: 'Catalogue', href: '/shop' },
-  { label: 'Evenements', href: '#events' },
-  { label: 'Contact', href: '#contact' },
+// Anchor sections live on the home page. By targeting "/#anchor" we let Vue Router
+// navigate to the home first (when needed) then scroll — see scrollBehavior in main.ts.
+// "Experience" was a dead anchor (#experience never existed) — dropped.
+type NavLink = { label: string; to: string }
+
+const navLinks: NavLink[] = [
+  { label: 'Fonctionnalités', to: '/#features' },
+  { label: 'Catalogue', to: '/shop' },
+  { label: 'Événements', to: '/#events' },
+  { label: 'Contact', to: '/#contact' },
 ]
 </script>
 
@@ -26,14 +30,14 @@ const navLinks = [
       </RouterLink>
 
       <div class="hidden items-center gap-8 lg:flex">
-        <a
+        <RouterLink
           v-for="link in navLinks"
           :key="link.label"
-          :href="link.href"
+          :to="link.to"
           class="text-sm font-medium text-slate-400 transition-colors hover:text-slate-200"
         >
           {{ link.label }}
-        </a>
+        </RouterLink>
       </div>
 
       <div class="hidden items-center gap-3 lg:flex">
@@ -126,15 +130,15 @@ const navLinks = [
 
     <div v-if="mobileMenuOpen" class="border-t border-slate-700/50 bg-[#0F172A] px-6 py-4 lg:hidden">
       <div class="flex flex-col gap-4">
-        <a
+        <RouterLink
           v-for="link in navLinks"
           :key="link.label"
-          :href="link.href"
+          :to="link.to"
           class="text-sm font-medium text-slate-400"
           @click="mobileMenuOpen = false"
         >
           {{ link.label }}
-        </a>
+        </RouterLink>
         <div v-if="!isAuthenticated()" class="flex flex-col gap-2 pt-4">
           <RouterLink to="/login" class="rounded-md border border-slate-600 px-6 py-2 text-center text-sm font-medium text-slate-300">
             Connexion

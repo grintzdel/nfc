@@ -87,8 +87,9 @@ const router = createRouter({
       meta: { noLayout: true, requiresAdmin: true },
     },
   ],
-  scrollBehavior(_to, _from, savedPosition) {
+  scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth', top: 80 }
     return { top: 0 }
   },
 })
