@@ -4,6 +4,8 @@ import { BraceletResponseDto } from '../dto/bracelet.response.dto'
 import { CreateBraceletRequestDto } from '../dto/create-bracelet.request.dto'
 import { AssignBraceletRequestDto } from '../dto/assign-bracelet.request.dto'
 import { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
+import { GetAvailableBraceletsUseCase } from '../../application/use-cases/get-available-bracelets/get-available-bracelets.use-case'
+import { AppError } from '@shared/errors/app.error'
 
 export class BraceletController {
   constructor(private readonly braceletService: BraceletService) {}
@@ -50,6 +52,15 @@ export class BraceletController {
     try {
       await this.braceletService.delete(req.params.id as string)
       res.status(204).send()
+    } catch (e) { next(e) }
+  }
+
+  async getAvailable(useCase: GetAvailableBraceletsUseCase, req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const eventId = typeof req.query.eventId === 'string' ? req.query.eventId : null
+      if (!eventId) throw new AppError(400, 'eventId query param is required')
+      const bracelets = await useCase.execute({ eventId })
+      res.json({ success: true, data: bracelets.map((b) => new BraceletResponseDto(b)) })
     } catch (e) { next(e) }
   }
 }

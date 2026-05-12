@@ -54,6 +54,25 @@ export class ParticipantRepositoryMongooseMongo implements IParticipantRepositor
     return docs.map(toEntity)
   }
 
+  async findPaginatedByEventId(params: {
+    eventId: string
+    page: number
+    limit: number
+    search?: string
+  }): Promise<PaginatedResult<ParticipantEntity>> {
+    const { eventId, page, limit, search } = params
+    const filter: Record<string, unknown> = { eventId, deletedAt: null }
+    if (search && search.trim()) {
+      const regex = new RegExp(search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
+      filter['$or'] = [{ 'profile.displayName': regex }, { 'profile.role': regex }]
+    }
+    const [docs, total] = await Promise.all([
+      ParticipantModel.find(filter).sort({ registeredAt: -1 }).skip((page - 1) * limit).limit(limit),
+      ParticipantModel.countDocuments(filter),
+    ])
+    return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
+  }
+
   async countInRange(from: Date, to: Date): Promise<number> {
     return ParticipantModel.countDocuments({ createdAt: { $gte: from, $lt: to }, deletedAt: null })
   }

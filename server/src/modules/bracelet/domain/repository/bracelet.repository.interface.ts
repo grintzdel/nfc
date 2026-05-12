@@ -6,8 +6,10 @@ export interface IBraceletRepository {
   findById(id: string): Promise<Nullable<BraceletEntity>>
   findByNfcId(nfcId: string): Promise<Nullable<BraceletEntity>>
   findAll(): Promise<BraceletEntity[]>
+  findAllByIds(ids: string[]): Promise<BraceletEntity[]>
   findAllByStatus(status: BraceletStatus): Promise<BraceletEntity[]>
   findAllByEventId(eventId: string): Promise<BraceletEntity[]>
+  findAllByEventIdAndStatus(eventId: string, status: BraceletStatus): Promise<BraceletEntity[]>
   findAllByUserId(userId: string): Promise<BraceletEntity[]>
   countByStatus(status: BraceletStatus): Promise<number>
   countByEventId(eventId: string): Promise<number>

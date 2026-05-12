@@ -13,8 +13,10 @@ import { AssignBraceletUseCase } from './application/use-cases/assign-bracelet/a
 import { ActivateBraceletUseCase } from './application/use-cases/activate-bracelet/activate-bracelet.use-case'
 import { DisableBraceletUseCase } from './application/use-cases/disable-bracelet/disable-bracelet.use-case'
 import { DeleteBraceletUseCase } from './application/use-cases/delete-bracelet/delete-bracelet.use-case'
+import { GetAvailableBraceletsUseCase } from './application/use-cases/get-available-bracelets/get-available-bracelets.use-case'
 import { BraceletService } from './application/services/bracelet.service'
 import { BraceletController } from './presentation/controllers/bracelet.controller'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 
 export function createBraceletModule(
   jwtService: JwtServiceSecurity,
@@ -24,6 +26,7 @@ export function createBraceletModule(
   braceletRepository: IBraceletRepository
   createBraceletFromOrderUseCase: CreateBraceletFromOrderUseCase
   activateBraceletUseCase: ActivateBraceletUseCase
+  attachDeps: (deps: { participantRepository: IParticipantRepository }) => void
 } {
   const braceletRepository = new BraceletRepositoryMongooseMongo()
   const createUC = new CreateBraceletUseCase(braceletRepository)
@@ -35,6 +38,8 @@ export function createBraceletModule(
   const activateUC = new ActivateBraceletUseCase(braceletRepository)
   const disableUC = new DisableBraceletUseCase(braceletRepository)
   const deleteUC = new DeleteBraceletUseCase(braceletRepository)
+
+  let getAvailableUC: GetAvailableBraceletsUseCase | null = null
 
   const service = new BraceletService(
     createUC,
@@ -54,11 +59,28 @@ export function createBraceletModule(
 
   const router = Router()
   router.post('/', auth, admin, (req, res, next) => controller.create(req, res, next))
+  router.get('/available', auth, admin, (req, res, next) => {
+    if (!getAvailableUC) {
+      next(new Error('Bracelet module dependencies not attached'))
+      return
+    }
+    controller.getAvailable(getAvailableUC, req, res, next)
+  })
   router.get('/', auth, admin, (req, res, next) => controller.getAll(req, res, next))
   router.get('/:id', auth, (req, res, next) => controller.getById(req, res, next))
   router.patch('/:id/assign', auth, admin, (req, res, next) => controller.assign(req, res, next))
   router.patch('/:id/disable', auth, admin, (req, res, next) => controller.disable(req, res, next))
   router.delete('/:id', auth, admin, (req, res, next) => controller.delete(req, res, next))
 
-  return { router, braceletRepository, createBraceletFromOrderUseCase: createFromOrderUC, activateBraceletUseCase: activateUC }
+  function attachDeps({ participantRepository }: { participantRepository: IParticipantRepository }): void {
+    getAvailableUC = new GetAvailableBraceletsUseCase(braceletRepository, participantRepository)
+  }
+
+  return {
+    router,
+    braceletRepository,
+    createBraceletFromOrderUseCase: createFromOrderUC,
+    activateBraceletUseCase: activateUC,
+    attachDeps,
+  }
 }

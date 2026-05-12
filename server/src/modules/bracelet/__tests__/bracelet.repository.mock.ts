@@ -10,8 +10,12 @@ export class BraceletRepositoryMock implements IBraceletRepository {
   findByNfcId_result: Nullable<BraceletEntity> = null
   findByNfcId_calledWith: string | null = null
   findAll_result: BraceletEntity[] = []
+  findAllByIds_result: BraceletEntity[] = []
+  findAllByIds_calledWith: string[] | null = null
   findAllByStatus_result: BraceletEntity[] = []
   findAllByEventId_result: BraceletEntity[] = []
+  findAllByEventIdAndStatus_result: BraceletEntity[] = []
+  findAllByEventIdAndStatus_calledWith: { eventId: string; status: BraceletStatus } | null = null
   findAllByUserId_result: BraceletEntity[] = []
   countByStatus_result = 0
   countByEventId_result = 0
@@ -43,9 +47,19 @@ export class BraceletRepositoryMock implements IBraceletRepository {
 
   async findAll(): Promise<BraceletEntity[]> { return this.findAll_result }
 
+  async findAllByIds(ids: string[]): Promise<BraceletEntity[]> {
+    this.findAllByIds_calledWith = ids
+    return this.findAllByIds_result
+  }
+
   async findAllByStatus(_status: BraceletStatus): Promise<BraceletEntity[]> { return this.findAllByStatus_result }
 
   async findAllByEventId(_eventId: string): Promise<BraceletEntity[]> { return this.findAllByEventId_result }
+
+  async findAllByEventIdAndStatus(eventId: string, status: BraceletStatus): Promise<BraceletEntity[]> {
+    this.findAllByEventIdAndStatus_calledWith = { eventId, status }
+    return this.findAllByEventIdAndStatus_result
+  }
 
   async findAllByUserId(_userId: string): Promise<BraceletEntity[]> { return this.findAllByUserId_result }
 

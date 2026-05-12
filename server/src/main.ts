@@ -43,6 +43,7 @@ const {
   braceletRepository,
   createBraceletFromOrderUseCase,
   activateBraceletUseCase,
+  attachDeps: attachBraceletDeps,
 } = createBraceletModule(jwtService, productRepository)
 const { router: eventRouter, eventRepository, attachDeps: attachEventDeps } = createEventModule(jwtService)
 const { router: participantRouter, participantRepository } = createParticipantModule(
@@ -50,6 +51,7 @@ const { router: participantRouter, participantRepository } = createParticipantMo
   eventRepository,
   braceletRepository,
 )
+attachBraceletDeps({ participantRepository })
 const { router: checkInRouter, checkInRepository } = createCheckInModule(
   jwtService,
   braceletRepository,

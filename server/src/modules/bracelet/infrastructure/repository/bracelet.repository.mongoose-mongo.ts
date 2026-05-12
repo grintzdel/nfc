@@ -36,6 +36,12 @@ export class BraceletRepositoryMongooseMongo implements IBraceletRepository {
     return doc ? toEntity(doc) : null
   }
 
+  async findAllByIds(ids: string[]): Promise<BraceletEntity[]> {
+    if (ids.length === 0) return []
+    const docs = await BraceletModel.find({ _id: { $in: ids }, deletedAt: null })
+    return docs.map(toEntity)
+  }
+
   async findAll(): Promise<BraceletEntity[]> {
     const docs = await BraceletModel.find({ deletedAt: null })
     return docs.map(toEntity)
@@ -48,6 +54,11 @@ export class BraceletRepositoryMongooseMongo implements IBraceletRepository {
 
   async findAllByEventId(eventId: string): Promise<BraceletEntity[]> {
     const docs = await BraceletModel.find({ eventId, deletedAt: null })
+    return docs.map(toEntity)
+  }
+
+  async findAllByEventIdAndStatus(eventId: string, status: BraceletStatus): Promise<BraceletEntity[]> {
+    const docs = await BraceletModel.find({ eventId, status, deletedAt: null })
     return docs.map(toEntity)
   }
 

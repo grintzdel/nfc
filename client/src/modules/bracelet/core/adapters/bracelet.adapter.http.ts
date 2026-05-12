@@ -18,6 +18,14 @@ export class BraceletHttpAdapter implements IBraceletPort {
     return result.data.data
   }
 
+  async getAvailable(eventId: string): Promise<BraceletDomainModel.BraceletOverviewDto[]> {
+    const result = await this.httpClient.get<BraceletDomainModel.BraceletOverviewDto[]>(
+      `/bracelets/available?eventId=${encodeURIComponent(eventId)}`,
+    )
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
+
   async getById(id: string): Promise<BraceletDomainModel.BraceletOverviewDto> {
     const result = await this.httpClient.get<BraceletDomainModel.BraceletOverviewDto>(`/bracelets/${id}`)
     if (result.error) throw new Error(result.error.message)

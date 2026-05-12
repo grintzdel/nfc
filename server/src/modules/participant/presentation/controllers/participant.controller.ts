@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { ParticipantService } from '../../application/services/participant.service'
 import { ParticipantResponseDto } from '../dto/participant.response.dto'
+import { PaginatedParticipantsResponseDto } from '../dto/paginated-participants.response.dto'
 import { RegisterParticipantRequestDto } from '../dto/register-participant.request.dto'
 import { UpdateParticipantProfileRequestDto } from '../dto/update-participant-profile.request.dto'
 import { AttachBraceletRequestDto } from '../dto/attach-bracelet.request.dto'
@@ -31,6 +32,17 @@ export class ParticipantController {
     try {
       const participants = await this.participantService.getByEvent(req.params.eventId as string)
       res.json({ success: true, data: participants.map((p) => new ParticipantResponseDto(p)) })
+    } catch (e) { next(e) }
+  }
+
+  async getPaginatedByEvent(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const eventId = req.params.eventId as string
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || 20
+      const search = typeof req.query.search === 'string' ? req.query.search : undefined
+      const paged = await this.participantService.getPaginatedByEvent({ eventId, page, limit, search })
+      res.json({ success: true, data: new PaginatedParticipantsResponseDto(paged) })
     } catch (e) { next(e) }
   }
 

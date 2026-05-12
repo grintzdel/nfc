@@ -7,6 +7,7 @@ export interface IParticipantRepository {
   findByBraceletId(braceletId: string): Promise<Nullable<ParticipantEntity>>
   findAllByEventId(eventId: string): Promise<ParticipantEntity[]>
   findAllByUserId(userId: string): Promise<ParticipantEntity[]>
+  findPaginatedByEventId(params: { eventId: string; page: number; limit: number; search?: string }): Promise<PaginatedResult<ParticipantEntity>>
   countInRange(from: Date, to: Date): Promise<number>
   countByEventId(eventId: string): Promise<number>
   update(entity: ParticipantEntity): Promise<ParticipantEntity>

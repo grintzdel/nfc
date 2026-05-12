@@ -3,6 +3,7 @@ import { RegisterParticipantUseCase, RegisterParticipantInput } from '../use-cas
 import { GetParticipantByIdUseCase } from '../use-cases/get-participant-by-id/get-participant-by-id.use-case'
 import { GetMyParticipationsUseCase } from '../use-cases/get-my-participations/get-my-participations.use-case'
 import { GetParticipantsByEventUseCase } from '../use-cases/get-participants-by-event/get-participants-by-event.use-case'
+import { GetPaginatedParticipantsByEventUseCase, ParticipantWithBracelet } from '../use-cases/get-paginated-participants-by-event/get-paginated-participants-by-event.use-case'
 import { UpdateParticipantProfileUseCase } from '../use-cases/update-participant-profile/update-participant-profile.use-case'
 import { AttachBraceletUseCase } from '../use-cases/attach-bracelet/attach-bracelet.use-case'
 import { UnregisterParticipantUseCase } from '../use-cases/unregister-participant/unregister-participant.use-case'
@@ -13,6 +14,7 @@ export class ParticipantService {
     private readonly getParticipantByIdUseCase: GetParticipantByIdUseCase,
     private readonly getMyParticipationsUseCase: GetMyParticipationsUseCase,
     private readonly getParticipantsByEventUseCase: GetParticipantsByEventUseCase,
+    private readonly getPaginatedParticipantsByEventUseCase: GetPaginatedParticipantsByEventUseCase,
     private readonly updateParticipantProfileUseCase: UpdateParticipantProfileUseCase,
     private readonly attachBraceletUseCase: AttachBraceletUseCase,
     private readonly unregisterParticipantUseCase: UnregisterParticipantUseCase,
@@ -32,6 +34,15 @@ export class ParticipantService {
 
   getByEvent(eventId: string): Promise<ParticipantEntity[]> {
     return this.getParticipantsByEventUseCase.execute(eventId)
+  }
+
+  getPaginatedByEvent(params: {
+    eventId: string
+    page: number
+    limit: number
+    search?: string
+  }): Promise<PaginatedResult<ParticipantWithBracelet>> {
+    return this.getPaginatedParticipantsByEventUseCase.execute(params)
   }
 
   updateProfile(participantId: string, callerUserId: string, partial: Partial<ParticipantProfile>): Promise<ParticipantEntity> {
