@@ -1,11 +1,13 @@
+import type { ProfileLinkType } from '../constants/profile-link-type.constant'
+
 export namespace ParticipantDomainModel {
+  export type ProfileLinkDto = { type: ProfileLinkType; url: string; label: string | null }
   export type ParticipantProfileDto = {
     displayName: string
     role: string | null
-    linkedinUrl: string | null
     bio: string | null
+    links: ProfileLinkDto[]
   }
-
   export type ParticipantOverviewDto = {
     id: string
     userId: string
@@ -17,25 +19,20 @@ export namespace ParticipantDomainModel {
     createdAt: string
     updatedAt: string
   }
-
   export type RegisterParticipantDto = {
     eventId: string
     profile: {
       displayName: string
-      role?: string
-      linkedinUrl?: string
-      bio?: string
+      role?: string | null
+      bio?: string | null
+      links?: ProfileLinkDto[]
     }
   }
-
   export type UpdateParticipantProfileDto = {
     displayName?: string
-    role?: string
-    linkedinUrl?: string
-    bio?: string
+    role?: string | null
+    bio?: string | null
+    links?: ProfileLinkDto[]
   }
-
-  export type AttachBraceletDto = {
-    braceletId: string
-  }
+  export type AttachBraceletDto = { braceletId: string }
 }

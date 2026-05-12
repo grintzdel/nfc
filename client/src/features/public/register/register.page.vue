@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter, RouterLink } from 'vue-router'
+import { useRouter, useRoute, RouterLink } from 'vue-router'
 import { Globe, Apple } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
@@ -8,6 +8,7 @@ import { getSharedHttpClient } from '@/modules/shared/http/http-client'
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
 
 const router = useRouter()
+const route = useRoute()
 const { authPort } = useDependencies()
 const { isAdmin } = useAuth()
 
@@ -34,7 +35,8 @@ async function handleSubmit() {
     localStorage.setItem('token', response.token)
     getSharedHttpClient().setAuthToken(response.token)
     toast.success('Compte cree avec succes !')
-    router.push(isAdmin() ? '/admin/dashboard' : '/')
+    const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : null
+    router.push(redirect ?? (isAdmin() ? '/admin/dashboard' : '/'))
   } catch (error) {
     toast.error(error instanceof Error ? error.message : "Erreur lors de l'inscription")
   } finally {

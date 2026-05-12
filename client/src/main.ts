@@ -18,6 +18,12 @@ const router = createRouter({
     { path: '/login', name: 'login', component: () => import('./pages/login/page.vue'), meta: { noLayout: true } },
     { path: '/register', name: 'register', component: () => import('./pages/register/page.vue'), meta: { noLayout: true } },
     { path: '/orders', name: 'orders', component: () => import('./pages/orders/page.vue') },
+    {
+      path: '/me/events/:participantId',
+      name: 'participant-profile-edit',
+      component: () => import('./pages/me/events/page.vue'),
+      meta: { requiresAuth: true },
+    },
     { path: '/admin', redirect: '/admin/dashboard' },
     {
       path: '/admin/dashboard',
@@ -39,15 +45,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
+  const token = localStorage.getItem('token')
   if (to.meta.requiresAdmin) {
-    const token = localStorage.getItem('token')
-    if (!token) return '/login'
+    if (!token) return { path: '/login', query: { redirect: to.fullPath } }
     try {
       const payload = JSON.parse(atob(token.split('.')[1]))
-      if (payload.role !== 'admin') return '/login'
+      if (payload.role !== 'admin') return '/'
     } catch {
       return '/login'
     }
+  }
+  if (to.meta.requiresAuth && !token) {
+    return { path: '/login', query: { redirect: to.fullPath } }
   }
 })
 

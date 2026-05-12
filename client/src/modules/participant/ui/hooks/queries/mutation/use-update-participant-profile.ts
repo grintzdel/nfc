@@ -5,13 +5,13 @@ import type { ParticipantDomainModel } from '@/modules/participant/core/model/pa
 export function useUpdateParticipantProfile() {
   const { participantPort } = useDependencies()
   const queryClient = useQueryClient()
-
   return useMutation({
     mutationKey: ['updateParticipantProfile'],
     mutationFn: ({ id, dto }: { id: string; dto: ParticipantDomainModel.UpdateParticipantProfileDto }) =>
       participantPort.updateProfile(id, dto),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['participants'] })
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['participants', data.id] })
+      queryClient.invalidateQueries({ queryKey: ['participants', 'me'] })
     },
   })
 }
