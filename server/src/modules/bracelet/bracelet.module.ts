@@ -79,6 +79,7 @@ export function createBraceletModule(
     }
     controller.getPaginatedByEvent(getPaginatedByEventUC, req, res, next)
   })
+  router.get('/paginated', auth, admin, (req, res, next) => controller.getPaginated(req, res, next))
   router.get('/', auth, admin, (req, res, next) => controller.getAll(req, res, next))
   router.get('/:id', auth, (req, res, next) => controller.getById(req, res, next))
   router.patch('/:id/assign', auth, admin, (req, res, next) => controller.assign(req, res, next))
