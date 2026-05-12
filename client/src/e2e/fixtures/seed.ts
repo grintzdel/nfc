@@ -29,3 +29,20 @@ export async function signUpUser(payload: {
   }
   return ((await loginRes.json()) as { data: { token: string } }).data
 }
+
+export async function signInAdmin(): Promise<{ token: string }> {
+  const email = process.env.E2E_ADMIN_EMAIL ?? 'admin@gmail.com'
+  const password = process.env.E2E_ADMIN_PASSWORD ?? 'admin2026'
+  const loginRes = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  })
+  if (!loginRes.ok) {
+    const body = await loginRes.text()
+    throw new Error(
+      `Admin seed login failed (${loginRes.status}): ${body}. Did you run \`pnpm seed\` first?`,
+    )
+  }
+  return ((await loginRes.json()) as { data: { token: string } }).data
+}

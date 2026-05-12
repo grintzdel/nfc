@@ -15,8 +15,14 @@ export default defineConfig({
     {
       name: 'authenticated',
       testMatch: 'src/**/*.test.e2e.ts',
-      testIgnore: 'src/e2e/smoke/**',
+      testIgnore: ['src/e2e/smoke/**', 'src/features/admin/**'],
       use: { ...devices['Desktop Chrome'], storageState: 'src/e2e/.auth/user.json' },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'admin',
+      testMatch: 'src/features/admin/**/*.test.e2e.ts',
+      use: { ...devices['Desktop Chrome'], storageState: 'src/e2e/.auth/admin.json' },
       dependencies: ['setup'],
     },
   ],

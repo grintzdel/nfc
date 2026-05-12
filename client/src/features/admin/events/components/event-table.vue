@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Search, SlidersHorizontal, Download, Plus, Eye, Pencil, MoreHorizontal, ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { Search, SlidersHorizontal, Download, Plus, Eye, Pencil, MoreHorizontal } from 'lucide-vue-next'
+import { Pagination } from '@/ui/pagination'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
 
@@ -53,16 +54,6 @@ function statusClass(status: string): string {
   return map[status] ?? 'bg-slate-500/20 text-slate-400'
 }
 
-function pageNumbers(): number[] {
-  if (!props.data) return []
-  const total = props.data.totalPages
-  const current = props.data.page
-  const pages: number[] = []
-  const start = Math.max(1, current - 1)
-  const end = Math.min(total, start + 2)
-  for (let i = start; i <= end; i++) pages.push(i)
-  return pages
-}
 </script>
 
 <template>
@@ -198,42 +189,14 @@ function pageNumbers(): number[] {
     </div>
 
     <!-- Footer / Pagination -->
-    <div
-      v-if="data && data.total > 0"
-      class="flex items-center justify-between border-t border-white/10 px-6 py-4"
-    >
-      <span class="text-sm text-slate-400">
-        Affichage {{ (data.page - 1) * data.limit + 1 }}-{{ Math.min(data.page * data.limit, data.total) }} sur {{ data.total }} evenements
-      </span>
-      <div class="flex items-center gap-1">
-        <button
-          class="flex h-10 w-10 items-center justify-center rounded-md text-slate-400 hover:bg-white/5 disabled:opacity-30"
-          :disabled="data.page <= 1"
-          @click="emit('update:page', data.page - 1)"
-        >
-          <ChevronLeft class="h-4 w-4" />
-        </button>
-        <button
-          v-for="p in pageNumbers()"
-          :key="p"
-          class="flex h-10 w-10 items-center justify-center rounded-md text-sm font-medium"
-          :class="
-            p === data.page
-              ? 'border border-white/10 bg-[#020617] text-slate-50 shadow-sm'
-              : 'text-slate-400 hover:bg-white/5'
-          "
-          @click="emit('update:page', p)"
-        >
-          {{ p }}
-        </button>
-        <button
-          class="flex h-10 w-10 items-center justify-center rounded-md text-slate-400 hover:bg-white/5 disabled:opacity-30"
-          :disabled="data.page >= data.totalPages"
-          @click="emit('update:page', data.page + 1)"
-        >
-          <ChevronRight class="h-4 w-4" />
-        </button>
-      </div>
-    </div>
+    <Pagination
+      v-if="data"
+      :page="data.page"
+      :total-pages="data.totalPages"
+      :total="data.total"
+      :limit="data.limit"
+      item-label="evenements"
+      @update:page="(p) => emit('update:page', p)"
+    />
   </div>
 </template>
