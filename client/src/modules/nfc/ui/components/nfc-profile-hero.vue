@@ -27,7 +27,6 @@ const dateRange = computed(() => {
 <template>
   <header class="flex flex-col items-center gap-4 text-center">
     <div class="relative">
-      <!-- Animated halo: 2 concentric pulses to convey "fresh / live" without being noisy -->
       <span class="pointer-events-none absolute inset-0 -m-2 rounded-full bg-violet-500/20 blur-xl nfc-pulse" />
       <span class="pointer-events-none absolute inset-0 -m-4 rounded-full bg-fuchsia-500/10 blur-2xl nfc-pulse-delayed" />
       <Avatar class="relative h-24 w-24 bg-gradient-to-br from-violet-500 to-fuchsia-500 shadow-2xl shadow-violet-500/40 ring-2 ring-white/10">

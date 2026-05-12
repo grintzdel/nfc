@@ -26,17 +26,15 @@ export class RecordCheckInUseCase {
   ) {}
 
   async execute(input: RecordCheckInInput): Promise<CheckInEntity> {
-    // 1. Resolve bracelet by nfcId
     const bracelet = await this.braceletRepository.findByNfcId(input.nfcId)
     if (!bracelet || bracelet.isDeleted()) throw new BraceletNotFoundError(input.nfcId)
 
-    // 2. Validate bracelet state — must be PRE_ACTIVATED or ACTIVE
     if (bracelet.isInStock() || bracelet.isDisabled()) {
       throw new CheckInInvalidBraceletStateError(input.nfcId, bracelet.status)
     }
 
-    // 2b. Reject duplicate door-entrance check-ins for the same bracelet+event.
-    //     Other interaction types (networking / vote / cashless) can legitimately repeat.
+    // Reject duplicate door-entrance check-ins for the same bracelet+event.
+    // Other interaction types (networking / vote / cashless) can legitimately repeat.
     if (input.interactionType === InteractionType.CHECK_IN) {
       const existing = await this.checkInRepository.findOneByBraceletEventType(
         bracelet.id,
@@ -46,14 +44,12 @@ export class RecordCheckInUseCase {
       if (existing) throw new DuplicateCheckInError(input.nfcId)
     }
 
-    // 3. Resolve targetBraceletId from targetNfcId if present
     let targetBraceletId: Nullable<string> = null
     if (input.targetNfcId) {
       const target = await this.braceletRepository.findByNfcId(input.targetNfcId)
       targetBraceletId = target?.id ?? null
     }
 
-    // 4. Create the check-in
     const checkIn = CheckInEntity.create({
       braceletId: bracelet.id,
       eventId: input.eventId,
@@ -65,7 +61,7 @@ export class RecordCheckInUseCase {
     })
     const saved = await this.checkInRepository.create(checkIn)
 
-    // 5. Side-effect: if PRE_ACTIVATED + CHECK_IN → activate bracelet
+    // Side-effect: if PRE_ACTIVATED + CHECK_IN, activate bracelet
     if (bracelet.isPreActivated() && input.interactionType === InteractionType.CHECK_IN) {
       try {
         await this.activateBraceletUseCase.execute(bracelet.id)
@@ -74,7 +70,7 @@ export class RecordCheckInUseCase {
       }
     }
 
-    // 6. Side-effect: if CHECK_IN → find participant and mark checked in
+    // Side-effect: if CHECK_IN, mark the linked participant as checked in
     if (input.interactionType === InteractionType.CHECK_IN) {
       try {
         const participant = await this.participantRepository.findByBraceletId(bracelet.id)

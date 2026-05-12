@@ -32,11 +32,6 @@ type NavSection = {
   items: NavItem[]
 }
 
-// Only surface routes that actually exist. Items flagged as `soon` render
-// disabled with a "Bientôt" pill so the surface stays informative without
-// being a trap.
-// Team management is per-event — surfaced as the "Équipe" tab inside /admin/events/:eventId,
-// not as a global sidebar entry.
 const sections: NavSection[] = [
   {
     title: 'Principal',
@@ -58,7 +53,6 @@ const sections: NavSection[] = [
 </script>
 
 <template>
-  <!-- Mobile backdrop -->
   <div
     v-if="open"
     class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm lg:hidden"
@@ -70,7 +64,6 @@ const sections: NavSection[] = [
     class="fixed inset-y-0 left-0 z-50 flex h-screen w-64 flex-shrink-0 transform flex-col border-r border-slate-700/50 bg-pulse-surface-dark transition-transform duration-200 ease-out lg:static lg:translate-x-0"
     :class="open ? 'translate-x-0' : '-translate-x-full'"
   >
-    <!-- Header -->
     <div class="flex items-center justify-between px-4 py-5">
       <span class="font-bold tracking-[1px] text-slate-50">PULSE</span>
       <div class="flex items-center gap-2">
@@ -88,7 +81,6 @@ const sections: NavSection[] = [
       </div>
     </div>
 
-    <!-- Navigation -->
     <nav class="flex-1 overflow-y-auto px-3 pb-4">
       <div v-for="section in sections" :key="section.title" class="mb-5">
         <p class="mb-1.5 px-2 text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -96,7 +88,6 @@ const sections: NavSection[] = [
         </p>
         <ul>
           <li v-for="item in section.items" :key="item.label">
-            <!-- Active route -->
             <RouterLink
               v-if="item.to"
               :to="item.to"
@@ -112,7 +103,6 @@ const sections: NavSection[] = [
               {{ item.label }}
             </RouterLink>
 
-            <!-- Disabled / soon -->
             <div
               v-else
               class="flex items-center gap-3 rounded-md px-2 py-1.5 text-sm text-slate-600"
@@ -129,7 +119,6 @@ const sections: NavSection[] = [
       </div>
     </nav>
 
-    <!-- Footer -->
     <div class="border-t border-slate-700/50 px-4 py-4">
       <p class="text-sm font-medium text-slate-50">Admin PULSE</p>
       <p v-if="user" class="text-xs text-slate-500">{{ roleLabel }}</p>

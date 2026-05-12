@@ -80,7 +80,6 @@ function formatDate(dateStr: string): string {
 <template>
   <AdminLayout title="Commandes" subtitle="Suivi et statut des commandes e-commerce">
     <div class="flex flex-col gap-6 p-6 xl:p-8">
-      <!-- Stats strip -->
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StatCard
           :icon="ShoppingBag"
@@ -101,7 +100,6 @@ function formatDate(dateStr: string): string {
       </div>
 
       <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-        <!-- Tabs -->
         <div class="flex items-center px-6 pt-4">
           <div class="flex flex-wrap items-center gap-0.5 rounded-md bg-slate-800 p-0.5">
             <button

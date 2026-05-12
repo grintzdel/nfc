@@ -22,7 +22,6 @@ const eventIdString = computed(() => eventIdRef.value ?? '')
 const { data: event } = useGetEventById(eventIdRef)
 const { data: stats } = useGetEventDetailStats(eventIdRef)
 
-// Mode B — paginated participants list (search-friendly)
 const search = ref('')
 const searchDebounced = ref('')
 const page = ref(1)
@@ -48,7 +47,6 @@ const { data: pagedParticipants } = useGetPaginatedParticipantsByEvent({
 
 const participantItems = computed(() => pagedParticipants.value?.items ?? [])
 
-// Interaction type
 const INTERACTION_OPTIONS: { value: InteractionType; label: string }[] = [
   { value: InteractionType.CHECK_IN, label: 'Entrée' },
   { value: InteractionType.NETWORKING, label: 'Networking' },
@@ -60,24 +58,19 @@ const interactionLabel = computed(
   () => INTERACTION_OPTIONS.find((o) => o.value === interactionType.value)?.label ?? interactionType.value,
 )
 
-// Manual entry
 const manualInput = ref('')
 const manualInputEl = ref<HTMLInputElement | null>(null)
 
-// Camera mode
 const cameraEnabled = ref(false)
 const scannerPaused = ref(false)
 
-// Session de-duplication (cleared on page reload)
 const sessionScanned = ref<Set<string>>(new Set())
 function sessionKey(nfcId: string, type: InteractionType): string {
   return `${type}::${nfcId}`
 }
 
-// Session counter (this scanner session only)
 const sessionSuccessCount = ref(0)
 
-// Result overlay state
 const result = ref<ScannerResult | null>(null)
 let dismissTimer: ReturnType<typeof setTimeout> | null = null
 
@@ -95,11 +88,9 @@ function dismissResult(): void {
     clearTimeout(dismissTimer)
     dismissTimer = null
   }
-  // Refocus manual input for the next scan
   manualInputEl.value?.focus()
 }
 
-// Esc key dismisses the overlay
 function handleKeyDown(e: KeyboardEvent): void {
   if (e.key === 'Escape' && result.value) {
     e.preventDefault()
@@ -143,7 +134,6 @@ async function doScan(nfcId: string): Promise<void> {
       interactionLabel: interactionLabel.value,
       time: new Date(),
     })
-    // Refresh global counters
     queryClient.invalidateQueries({ queryKey: ['analytics', 'event', eventIdString.value] })
     queryClient.invalidateQueries({ queryKey: ['checkIns', 'event', eventIdString.value] })
   } catch (e) {
@@ -183,7 +173,6 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
 
 <template>
   <div class="flex min-h-screen flex-col bg-[#020617] text-slate-50">
-    <!-- Top bar -->
     <header class="flex items-center justify-between border-b border-white/10 bg-[#0F172A] px-6 py-3">
       <RouterLink
         :to="`/admin/events/${eventIdString}`"
@@ -208,7 +197,6 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
       </div>
     </header>
 
-    <!-- Interaction type toggle -->
     <div class="flex flex-wrap items-center gap-2 border-b border-white/10 bg-[#0F172A]/70 px-6 py-3">
       <span class="text-xs uppercase tracking-wider text-slate-500">Type :</span>
       <button
@@ -227,11 +215,8 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
       </button>
     </div>
 
-    <!-- Body: 2 cols -->
     <main class="flex flex-1 flex-col gap-6 px-6 py-6 lg:flex-row">
-      <!-- Left: manual entry + camera -->
       <section class="flex flex-1 flex-col gap-6">
-        <!-- Manual entry -->
         <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6">
           <label for="scanner-input" class="text-xs uppercase tracking-wider text-slate-500">
             Saisie manuelle
@@ -260,7 +245,6 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
           </p>
         </div>
 
-        <!-- Camera -->
         <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6">
           <div class="flex items-center justify-between">
             <span class="text-xs uppercase tracking-wider text-slate-500">Caméra (QR code)</span>
@@ -286,7 +270,6 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
         </div>
       </section>
 
-      <!-- Right: participants list (Mode B / list-pick) -->
       <aside class="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0F172A] p-4 lg:w-[28rem]">
         <div class="flex items-center gap-2 rounded-md border border-white/10 bg-[#020617] px-3 py-2">
           <Search class="h-3.5 w-3.5 text-slate-400" />
@@ -331,7 +314,6 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
       </aside>
     </main>
 
-    <!-- Result overlay -->
     <ScannerResultOverlay :result="result" @dismiss="dismissResult" />
   </div>
 </template>

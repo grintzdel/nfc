@@ -22,7 +22,6 @@ function handleAddToCart() {
     :to="`/product/${product.slug}`"
     class="group flex flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-gradient-to-b from-pulse-surface to-pulse-bg shadow-[0_8px_30px_rgba(124,58,237,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:shadow-[0_16px_40px_rgba(124,58,237,0.25)]"
   >
-    <!-- Image -->
     <div class="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-pulse-surface to-pulse-bg">
       <img
         v-if="product.imageUrl"
@@ -34,7 +33,6 @@ function handleAddToCart() {
         <span class="text-5xl">🎫</span>
       </div>
 
-      <!-- Featured badge -->
       <div
         v-if="product.featured"
         class="absolute left-3 top-3 rounded-full bg-violet-600/90 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm"
@@ -42,7 +40,6 @@ function handleAddToCart() {
         Populaire
       </div>
 
-      <!-- Stock indicator -->
       <div
         v-if="product.stock <= 5 && product.stock > 0"
         class="absolute right-3 top-3 rounded-full bg-orange-500/90 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-sm"
@@ -57,7 +54,6 @@ function handleAddToCart() {
       </div>
     </div>
 
-    <!-- Content -->
     <div class="flex flex-1 flex-col gap-3 p-5">
       <h3 class="text-lg font-semibold text-slate-50 transition-colors group-hover:text-violet-300">
         {{ product.name }}

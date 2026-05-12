@@ -66,7 +66,6 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
 
 <template>
   <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-    <!-- Search bar -->
     <div class="flex items-center gap-3 px-6 py-4">
       <div class="flex flex-1 items-center gap-2 rounded-md border border-white/10 bg-[#0F172A] px-3 py-2">
         <Search class="h-3.5 w-3.5 text-slate-400" />
@@ -79,7 +78,6 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
       </div>
     </div>
 
-    <!-- Empty state -->
     <EmptyState
       v-if="hasNoResults"
       :icon="Watch"
@@ -91,7 +89,6 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
     <template v-else>
       <div class="overflow-x-auto">
         <div class="flex min-w-[820px] flex-col">
-          <!-- Header -->
           <div class="flex items-center bg-slate-800">
             <div class="w-[220px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span></div>
             <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
@@ -100,7 +97,6 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
             <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
           </div>
 
-          <!-- Rows -->
           <div
             v-for="row in items"
             :key="row.id"
@@ -145,12 +141,10 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
             </div>
           </div>
 
-          <!-- Loading -->
           <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
         </div>
       </div>
 
-      <!-- Pagination -->
       <Pagination
         v-if="paged"
         :page="paged.page"

@@ -13,7 +13,6 @@ const perks = [
 <template>
   <section class="relative" style="background: conic-gradient(from 0deg at 50% 50%, #0F172A 0%, #1a0a2e 25%, #0F172A 50%, #1a1030 75%, #0F172A 100%);">
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-20 lg:flex-row lg:px-20">
-      <!-- Image -->
       <div class="w-full lg:w-1/2">
         <div class="aspect-[4/3] overflow-hidden rounded-2xl border shadow-[0_16px_60px_rgba(124,58,237,0.2)]" style="border-image: linear-gradient(135deg, #7C3AED44, #F9731644) 1;">
           <div class="flex h-full items-center justify-center bg-gradient-to-br from-pulse-surface to-pulse-bg">
@@ -26,7 +25,6 @@ const perks = [
         </div>
       </div>
 
-      <!-- Content -->
       <div class="flex w-full flex-col gap-6 lg:w-1/2">
         <div class="rounded-full bg-slate-800 px-3 py-0.5 w-fit">
           <span class="text-xs font-semibold text-slate-50">ENTREPRISE</span>

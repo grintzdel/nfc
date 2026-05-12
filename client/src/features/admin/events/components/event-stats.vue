@@ -9,7 +9,6 @@ defineProps<{
 
 <template>
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-    <!-- Total événements -->
     <div class="flex flex-col gap-1.5 rounded-lg border border-white/10 bg-[#0F172A] p-5">
       <div class="flex items-center justify-between">
         <span class="text-xs font-medium text-slate-400">Total evenements</span>
@@ -25,7 +24,6 @@ defineProps<{
       </span>
     </div>
 
-    <!-- À venir -->
     <div class="flex flex-col gap-1.5 rounded-lg border border-white/10 bg-[#0F172A] p-5">
       <div class="flex items-center justify-between">
         <span class="text-xs font-medium text-slate-400">A venir</span>
@@ -35,7 +33,6 @@ defineProps<{
       <span class="text-[11px] font-medium text-slate-400">Dans les 30 jours</span>
     </div>
 
-    <!-- En cours -->
     <div class="flex flex-col gap-1.5 rounded-lg border border-white/10 bg-[#0F172A] p-5">
       <div class="flex items-center justify-between">
         <span class="text-xs font-medium text-slate-400">En cours</span>
@@ -45,7 +42,6 @@ defineProps<{
       <span class="text-[11px] font-medium text-[#A78BFA]">Actifs aujourd'hui</span>
     </div>
 
-    <!-- Terminés -->
     <div class="flex flex-col gap-1.5 rounded-lg border border-white/10 bg-[#0F172A] p-5">
       <div class="flex items-center justify-between">
         <span class="text-xs font-medium text-slate-400">Termines ({{ new Date().getFullYear() }})</span>

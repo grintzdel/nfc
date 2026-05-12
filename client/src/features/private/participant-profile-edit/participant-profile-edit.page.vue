@@ -119,7 +119,6 @@ async function handleSave(): Promise<void> {
       </Card>
 
       <template v-else>
-        <!-- QR for entry / scanner — shown when a bracelet is attached -->
         <Card v-if="bracelet">
           <CardHeader>
             <CardTitle class="flex items-center gap-1.5 text-sm uppercase tracking-wider text-muted-foreground">

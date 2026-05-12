@@ -57,7 +57,6 @@ const fillPercent = computed(() => {
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <EventPublicDescription :description="data.description" />
 
-          <!-- Sold out — full event -->
           <Card v-if="isFull" class="border-amber-500/30 bg-amber-500/10">
             <CardHeader>
               <CardTitle class="flex items-center gap-2 text-amber-300">
@@ -76,7 +75,6 @@ const fillPercent = computed(() => {
             </CardContent>
           </Card>
 
-          <!-- Registration with subtle capacity indicator -->
           <div v-else class="flex flex-col gap-3">
             <div
               v-if="data.capacity > 0"

@@ -17,9 +17,7 @@ const props = withDefaults(
       :key="r"
       class="flex items-center gap-3 px-4 py-4"
     >
-      <!-- First "column" mimics the row's main label — gets a wider skeleton -->
       <Skeleton class="h-4 flex-1" />
-      <!-- Subsequent columns are narrower like badges / counts -->
       <Skeleton
         v-for="c in props.columns - 1"
         :key="c"

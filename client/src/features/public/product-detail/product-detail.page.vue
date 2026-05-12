@@ -15,21 +15,17 @@ const { data: product, isLoading, isError } = useGetProductBySlug(slug)
 </script>
 
 <template>
-  <!-- Loading -->
   <div v-if="isLoading" class="flex min-h-[60vh] items-center justify-center bg-pulse-bg">
     <Loader2 class="h-8 w-8 animate-spin text-violet-400" />
   </div>
 
-  <!-- Error -->
   <div v-else-if="isError || !product" class="flex min-h-[60vh] flex-col items-center justify-center gap-4 bg-pulse-bg">
     <span class="text-5xl">😔</span>
     <p class="text-lg text-slate-400">Produit introuvable.</p>
     <RouterLink to="/shop" class="text-sm text-violet-400 hover:underline">Retour au catalogue</RouterLink>
   </div>
 
-  <!-- Content -->
   <div v-else>
-    <!-- Breadcrumb -->
     <div class="border-b border-slate-700 bg-pulse-bg px-6 py-4 lg:px-20">
       <div class="mx-auto flex max-w-7xl items-center gap-2">
         <RouterLink to="/shop" class="text-[13px] text-slate-500 hover:text-slate-300">Catalogue</RouterLink>

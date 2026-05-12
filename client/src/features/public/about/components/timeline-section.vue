@@ -41,12 +41,10 @@ const milestones = [
 
 <template>
   <section class="relative bg-pulse-bg py-20">
-    <!-- Glows -->
     <div class="absolute left-[30%] top-[15%] h-[600px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.14)_0%,transparent_70%)] opacity-50" />
     <div class="absolute right-[15%] top-[55%] h-[400px] w-[400px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.09)_0%,transparent_70%)] opacity-40" />
 
     <div class="relative mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 lg:px-20">
-      <!-- Header -->
       <div class="flex flex-col items-center gap-4">
         <div class="flex items-center gap-2 rounded-full border border-orange-500/35 bg-orange-500/15 px-4 py-1.5">
           <span class="text-xs text-orange-400">&#10022;</span>
@@ -56,9 +54,7 @@ const milestones = [
         <p class="text-center text-base text-slate-400">De l'idee a la realite, chaque etape nous rapproche de notre vision.</p>
       </div>
 
-      <!-- Timeline -->
       <div class="flex w-full max-w-[900px] gap-0">
-        <!-- Vertical line + dots -->
         <div class="hidden flex-col items-center md:flex" style="width: 40px;">
           <template v-for="(m, i) in milestones" :key="m.title">
             <div class="flex h-4 w-4 items-center justify-center rounded-full shadow-[0_0_0_3px] ring-0" :class="[m.dotColor, m.dotGlow]" />
@@ -66,7 +62,6 @@ const milestones = [
           </template>
         </div>
 
-        <!-- Cards -->
         <div class="flex flex-1 flex-col gap-6 md:pl-6">
           <div
             v-for="m in milestones"

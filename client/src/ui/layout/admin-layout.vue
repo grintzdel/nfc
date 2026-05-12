@@ -12,7 +12,6 @@ defineProps<{
 
 const sidebarOpen = ref(false)
 const route = useRoute()
-// Close drawer whenever the route changes (handles back/forward + RouterLink clicks)
 watch(() => route.fullPath, () => { sidebarOpen.value = false })
 </script>
 

@@ -19,9 +19,7 @@ import { Activity, Users, MapPin, TrendingUp } from 'lucide-vue-next'
         </p>
       </div>
 
-      <!-- Dashboard mockup -->
       <div class="w-full max-w-[1100px] overflow-hidden rounded-xl border border-slate-700 bg-pulse-surface shadow-[0_16px_64px_8px_rgba(124,58,237,0.27),0_0_120px_rgba(124,58,237,0.13),0_8px_24px_rgba(0,0,0,0.33)]">
-        <!-- Header -->
         <div class="flex items-center justify-between border-b border-slate-700 px-6 py-4">
           <div class="flex items-center gap-3">
             <Activity class="h-5 w-5 text-violet-400" />
@@ -33,7 +31,6 @@ import { Activity, Users, MapPin, TrendingUp } from 'lucide-vue-next'
           </div>
         </div>
 
-        <!-- Body -->
         <div class="grid grid-cols-1 gap-4 p-6 sm:grid-cols-3">
           <div class="rounded-lg bg-white/5 p-4">
             <div class="mb-2 flex items-center gap-2">
@@ -61,7 +58,6 @@ import { Activity, Users, MapPin, TrendingUp } from 'lucide-vue-next'
           </div>
         </div>
 
-        <!-- Chart placeholder -->
         <div class="px-6 pb-6">
           <div class="flex h-48 items-end justify-around rounded-lg bg-white/[0.03] p-4">
             <div v-for="(h, i) in [40, 55, 35, 70, 85, 65, 90, 75, 60, 80, 95, 50]" :key="i" class="w-[6%] rounded-t bg-gradient-to-t from-violet-600/60 to-violet-400/80" :style="{ height: `${h}%` }" />

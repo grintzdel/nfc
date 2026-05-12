@@ -54,7 +54,6 @@ function initials(name: string): string {
 <template>
   <AdminLayout title="Participants" subtitle="Vue globale des participants à travers tous les événements">
     <div class="flex flex-col gap-6 p-6 xl:p-8">
-      <!-- Stats strip -->
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StatCard
           :icon="Users"
@@ -76,9 +75,7 @@ function initials(name: string): string {
         />
       </div>
 
-      <!-- Table -->
       <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-        <!-- Tabs -->
         <div class="flex items-center px-6 pt-4">
           <div class="flex items-center gap-0.5 rounded-md bg-slate-800 p-0.5">
             <button
@@ -98,7 +95,6 @@ function initials(name: string): string {
           </div>
         </div>
 
-        <!-- Search -->
         <div class="flex items-center gap-3 px-6 py-4">
           <div class="flex flex-1 items-center gap-2 rounded-md border border-white/10 bg-[#0F172A] px-3 py-2">
             <Search class="h-3.5 w-3.5 text-slate-400" />
@@ -111,7 +107,6 @@ function initials(name: string): string {
           </div>
         </div>
 
-        <!-- Empty -->
         <EmptyState
           v-if="paged && paged.total === 0"
           :icon="Users"
@@ -123,7 +118,6 @@ function initials(name: string): string {
         <template v-else>
           <div class="overflow-x-auto">
             <div class="flex min-w-[720px] flex-col">
-              <!-- Header -->
               <div class="flex items-center bg-slate-800">
                 <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
                 <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Événement</span></div>
@@ -131,7 +125,6 @@ function initials(name: string): string {
                 <div class="w-[110px] shrink-0 px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span></div>
               </div>
 
-              <!-- Rows -->
               <div v-for="p in items" :key="p.id" class="flex items-center border-t border-white/10">
                 <div class="flex flex-1 items-center gap-3 px-4 py-3">
                   <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
@@ -162,12 +155,10 @@ function initials(name: string): string {
                 </div>
               </div>
 
-              <!-- Loading -->
               <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="4" />
             </div>
           </div>
 
-          <!-- Pagination -->
           <Pagination
             v-if="paged"
             :page="paged.page"

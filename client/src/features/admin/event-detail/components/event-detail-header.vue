@@ -73,7 +73,6 @@ const lastCheckInLabel = computed(() => {
 
 <template>
   <header class="flex flex-col gap-5 rounded-lg border border-white/10 bg-[#0F172A] p-6">
-    <!-- Top row: title + status + actions -->
     <div class="flex flex-wrap items-start justify-between gap-4">
       <div class="flex flex-col gap-2">
         <div class="flex items-center gap-3">
@@ -133,7 +132,6 @@ const lastCheckInLabel = computed(() => {
       </div>
     </div>
 
-    <!-- KPI strip -->
     <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
       <div class="flex flex-col gap-1 rounded-md border border-white/10 bg-[#020617] px-4 py-3">
         <span class="text-xs font-medium text-slate-400">Participants</span>

@@ -84,7 +84,6 @@ function initials(name: string): string {
 
 <template>
   <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-    <!-- Header -->
     <div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
       <div class="flex flex-col">
         <span class="text-sm font-semibold text-slate-50">Membres de l'équipe</span>
@@ -100,7 +99,6 @@ function initials(name: string): string {
       </button>
     </div>
 
-    <!-- Empty -->
     <EmptyState
       v-if="memberRows.length === 0 && !isLoading"
       :icon="Users"
@@ -112,7 +110,6 @@ function initials(name: string): string {
     <template v-else>
       <div class="overflow-x-auto">
         <div class="flex min-w-[760px] flex-col">
-          <!-- Header -->
           <div class="flex items-center bg-slate-800">
             <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Membre</span></div>
             <div class="w-[130px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Rôle</span></div>
@@ -121,7 +118,6 @@ function initials(name: string): string {
             <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
           </div>
 
-          <!-- Rows -->
           <div v-for="m in memberRows" :key="m.id" class="flex items-center border-t border-white/10">
             <div class="flex flex-1 items-center gap-3 px-4 py-3">
               <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">

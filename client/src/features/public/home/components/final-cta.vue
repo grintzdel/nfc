@@ -4,7 +4,6 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <section id="contact" class="relative bg-pulse-bg">
-    <!-- Background glows -->
     <div class="absolute inset-0">
       <div class="absolute left-[10%] top-[10%] h-[400px] w-[400px] rounded-full bg-violet-600/8 blur-[60px]" />
       <div class="absolute bottom-[10%] right-[10%] h-[350px] w-[350px] rounded-full bg-pink-500/6 blur-[50px]" />

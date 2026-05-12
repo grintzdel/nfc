@@ -9,9 +9,6 @@ const mobileMenuOpen = ref(false)
 const { totalQuantity, openCart: openCartDrawer } = useCart()
 const { isAuthenticated, logout } = useAuth()
 
-// Anchor sections live on the home page. By targeting "/#anchor" we let Vue Router
-// navigate to the home first (when needed) then scroll — see scrollBehavior in main.ts.
-// "Experience" was a dead anchor (#experience never existed) — dropped.
 type NavLink = { label: string; to: string }
 
 const navLinks: NavLink[] = [

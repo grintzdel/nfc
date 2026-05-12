@@ -17,7 +17,6 @@ let observer: IntersectionObserver | null = null
 
 onMounted(() => {
   if (!wrapper.value) return
-  // Reduced motion: skip the animation, show content directly.
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   if (prefersReducedMotion) {
     visible.value = true

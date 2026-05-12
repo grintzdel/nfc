@@ -11,10 +11,8 @@ import FadeInOnScroll from '@/components/fade-in-on-scroll.vue'
 
 <template>
   <div>
-    <!-- Hero shows immediately (no scroll-reveal — it's above the fold) -->
     <HeroSection />
 
-    <!-- Subsequent sections fade-up as they enter the viewport -->
     <FadeInOnScroll><TrustStrip /></FadeInOnScroll>
     <FadeInOnScroll><ProblemSolution /></FadeInOnScroll>
     <FadeInOnScroll><FeaturesSection /></FadeInOnScroll>

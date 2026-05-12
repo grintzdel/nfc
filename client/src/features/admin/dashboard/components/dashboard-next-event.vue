@@ -27,7 +27,6 @@ function formatDate(dateStr: string): string {
   <div
     class="flex flex-col gap-4 overflow-hidden rounded-lg border border-white/10 bg-[#0F172A] p-5"
   >
-    <!-- Empty state -->
     <div v-if="!data?.event" class="flex h-60 items-center justify-center">
       <EmptyState
         :icon="Calendar"
@@ -38,7 +37,6 @@ function formatDate(dateStr: string): string {
     </div>
 
     <template v-else>
-      <!-- Header -->
       <div class="flex flex-col gap-1.5">
         <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
           Prochain événement
@@ -55,7 +53,6 @@ function formatDate(dateStr: string): string {
         </span>
       </div>
 
-      <!-- KPI row (3 KPIs — used to be 4 with a "Livrés" duplicate of "Commandés") -->
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div class="rounded-md bg-slate-800 p-3">
           <p class="text-[11px] font-medium text-slate-400">Bracelets commandés</p>
@@ -80,7 +77,6 @@ function formatDate(dateStr: string): string {
         </div>
       </div>
 
-      <!-- Meta info -->
       <div class="flex flex-col gap-2 rounded-md bg-slate-800 p-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -105,7 +101,6 @@ function formatDate(dateStr: string): string {
         </div>
       </div>
 
-      <!-- CTA — links to the event detail page (the "centre de contrôle" we built in Phase 1-5) -->
       <RouterLink
         :to="`/admin/events/${data.event.id}`"
         class="flex w-full items-center justify-center gap-2 rounded-md bg-[#7C3AED] px-3.5 py-2.5 text-[13px] font-semibold text-violet-50 hover:bg-[#5B21B6]"

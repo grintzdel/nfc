@@ -31,7 +31,6 @@ const afterItems = [
       </div>
 
       <div class="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
-        <!-- Before -->
         <div class="rounded-xl border border-slate-700 bg-gradient-to-b from-pulse-surface to-[#172033] p-8 shadow-[0_4px_24px_rgba(239,68,68,0.13)]">
           <div class="mb-6 flex items-center gap-3">
             <div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-500/20">
@@ -47,7 +46,6 @@ const afterItems = [
           </div>
         </div>
 
-        <!-- After -->
         <div class="rounded-xl border border-violet-500/40 bg-gradient-to-b from-pulse-surface to-[#1a1535] p-8 shadow-[0_8px_40px_rgba(124,58,237,0.3),0_0_80px_rgba(124,58,237,0.2)]">
           <div class="mb-6 flex items-center gap-3">
             <div class="flex h-10 w-10 items-center justify-center rounded-full bg-violet-500/20">

@@ -65,7 +65,6 @@ const { data: stock } = useGetStock()
 
 const items = computed(() => paged.value?.items ?? [])
 
-// Create
 const createOpen = ref(false)
 const createMutation = useCreateBracelet()
 function handleCreate(payload: { nfcId: string; productId?: string }): void {
@@ -79,7 +78,6 @@ function handleCreate(payload: { nfcId: string; productId?: string }): void {
   })
 }
 
-// Disable (inline mutation — global scope, broad invalidation)
 const disableMutation = useMutation({
   mutationKey: ['disableBraceletGlobal'],
   mutationFn: (id: string) => braceletPort.disable(id),
@@ -104,7 +102,6 @@ function formatDate(dateStr: string): string {
 <template>
   <AdminLayout title="Bracelets" subtitle="Inventaire global et gestion du stock NFC">
     <div class="flex flex-col gap-6 p-6 xl:p-8">
-      <!-- Stats strip -->
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StatCard
           :icon="Watch"
@@ -126,9 +123,7 @@ function formatDate(dateStr: string): string {
         />
       </div>
 
-      <!-- Table -->
       <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-        <!-- Tabs -->
         <div class="flex items-center px-6 pt-4">
           <div class="flex items-center gap-0.5 rounded-md bg-slate-800 p-0.5">
             <button
@@ -148,7 +143,6 @@ function formatDate(dateStr: string): string {
           </div>
         </div>
 
-        <!-- Search + create -->
         <div class="flex items-center gap-3 px-6 py-4">
           <div class="flex flex-1 items-center gap-2 rounded-md border border-white/10 bg-[#0F172A] px-3 py-2">
             <Search class="h-3.5 w-3.5 text-slate-400" />
@@ -169,7 +163,6 @@ function formatDate(dateStr: string): string {
           </button>
         </div>
 
-        <!-- Empty -->
         <EmptyState
           v-if="paged && paged.total === 0"
           :icon="Watch"
@@ -181,7 +174,6 @@ function formatDate(dateStr: string): string {
         <template v-else>
           <div class="overflow-x-auto">
             <div class="flex min-w-[800px] flex-col">
-              <!-- Header -->
               <div class="flex items-center bg-slate-800">
                 <div class="w-[260px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span></div>
                 <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
@@ -190,7 +182,6 @@ function formatDate(dateStr: string): string {
                 <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
               </div>
 
-              <!-- Rows -->
               <div
                 v-for="row in items"
                 :key="row.id"
@@ -241,12 +232,10 @@ function formatDate(dateStr: string): string {
                 </div>
               </div>
 
-              <!-- Loading -->
               <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
             </div>
           </div>
 
-          <!-- Pagination -->
           <Pagination
             v-if="paged"
             :page="paged.page"

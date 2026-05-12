@@ -29,7 +29,6 @@ const steps = [
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.04)_0%,transparent_70%)]" />
 
     <div class="relative mx-auto flex max-w-7xl flex-col items-center gap-14 px-6 py-24 lg:px-20">
-      <!-- Badge -->
       <div class="rounded-full border border-slate-600 px-3 py-0.5">
         <span class="text-xs font-semibold text-slate-800">COMMENT CA MARCHE</span>
       </div>

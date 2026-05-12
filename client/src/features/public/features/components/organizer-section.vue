@@ -40,7 +40,6 @@ const cards = [
 <template>
   <section class="relative" style="background: conic-gradient(from 0deg at 50% 50%, #0F172A 0%, #1a0a2e 25%, #0F172A 50%, #1a1030 75%, #0F172A 100%);">
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-24 lg:px-20">
-      <!-- Badge -->
       <div class="rounded-full bg-slate-800 px-3 py-0.5">
         <span class="text-xs font-semibold text-slate-50">POUR LES ORGANISATEURS</span>
       </div>
@@ -53,7 +52,6 @@ const cards = [
         Le dashboard PULSE donne aux organisateurs une vue complete en temps reel : affluence, interactions, revenus et engagement.
       </p>
 
-      <!-- Grid 2x2 -->
       <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
         <div
           v-for="card in cards"

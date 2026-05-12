@@ -1,6 +1,5 @@
 <template>
   <section class="relative overflow-hidden bg-pulse-bg">
-    <!-- Orbs -->
     <div class="absolute -left-[100px] -top-[80px] h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.25)_0%,transparent_70%)] blur-[80px]" />
     <div class="absolute right-[10%] top-[10%] h-[400px] w-[400px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.19)_0%,transparent_70%)] blur-[60px]" />
 

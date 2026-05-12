@@ -28,7 +28,6 @@ const errorVariant = computed<'not-active' | 'network'>(() =>
 
 <template>
   <div class="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-950 via-[#0F172A] to-slate-950 px-6 py-12 text-slate-50">
-    <!-- Soft ambient gradient blobs for depth — pure decoration, pointer-events-none -->
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
       <div class="absolute -left-32 top-20 h-[500px] w-[500px] rounded-full bg-violet-600/8 blur-3xl" />
       <div class="absolute -right-32 bottom-20 h-[400px] w-[400px] rounded-full bg-fuchsia-500/6 blur-3xl" />
@@ -69,7 +68,6 @@ const errorVariant = computed<'not-active' | 'network'>(() =>
 </template>
 
 <style scoped>
-/* Staggered entrance for the link cards — each one drops in 60ms after the previous */
 @keyframes nfc-link-enter {
   from {
     opacity: 0;

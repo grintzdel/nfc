@@ -11,7 +11,6 @@ const stats = [
 
 <template>
   <section class="relative">
-    <!-- Background with subtle gradients -->
     <div class="absolute inset-0 bg-gradient-to-b from-pulse-bg via-[#1a0a2e] to-pulse-bg">
       <div class="absolute left-[30%] top-0 h-full w-[40%] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.15)_0%,transparent_70%)]" />
       <div class="absolute right-[20%] top-0 h-full w-[30%] bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.1)_0%,transparent_70%)]" />

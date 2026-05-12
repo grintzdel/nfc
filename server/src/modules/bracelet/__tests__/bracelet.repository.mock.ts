@@ -30,7 +30,6 @@ export class BraceletRepositoryMock implements IBraceletRepository {
   update_calledWith: BraceletEntity | null = null
   softDelete_calledWith: string | null = null
 
-  // Track all create calls for multi-create tests
   create_calls: BraceletEntity[] = []
 
   async create(entity: BraceletEntity): Promise<BraceletEntity> {

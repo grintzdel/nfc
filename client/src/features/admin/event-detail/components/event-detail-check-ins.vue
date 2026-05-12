@@ -64,7 +64,6 @@ const lastCheckInRelative = computed(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <!-- KPI strip from stats (no list.length anywhere) -->
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
       <div class="flex flex-col gap-1 rounded-md border border-white/10 bg-[#020617] px-4 py-3">
         <span class="text-xs font-medium text-slate-400">Total check-ins</span>
@@ -80,7 +79,6 @@ const lastCheckInRelative = computed(() => {
       </div>
     </div>
 
-    <!-- Table -->
     <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
       <EmptyState
         v-if="paged && paged.total === 0"

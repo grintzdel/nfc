@@ -17,7 +17,6 @@ export async function signUpUser(payload: {
     const body = await registerRes.text()
     throw new Error(`Seed register failed (${registerRes.status}): ${body}`)
   }
-  // 409 = already registered, fall back to login
   const loginRes = await fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

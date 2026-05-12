@@ -30,18 +30,15 @@ describe('CreateBraceletFromOrderUseCase', () => {
 
     const bracelets = await useCase.execute(order)
 
-    // 3 + 1 = 4 bracelets total
     expect(bracelets).toHaveLength(4)
     expect(mockRepository.create_calls).toHaveLength(4)
 
-    // All bracelets should have the correct orderId and userId
     for (const b of bracelets) {
       expect(b.orderId).toBe('order-1')
       expect(b.userId).toBe('user-1')
       expect(b.status).toBe(BraceletStatus.STOCK)
     }
 
-    // Check productId distribution
     const p1Bracelets = bracelets.filter((b) => b.productId === 'p1')
     const p2Bracelets = bracelets.filter((b) => b.productId === 'p2')
     expect(p1Bracelets).toHaveLength(3)

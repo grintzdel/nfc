@@ -40,7 +40,6 @@ async function handleSubmit() {
 
 <template>
   <div class="flex min-h-screen">
-    <!-- Left Visual -->
     <div class="relative hidden w-1/2 overflow-hidden lg:block" style="background: linear-gradient(180deg, #0F172A 0%, #1E1B4B 100%)">
       <span class="absolute left-12 top-10 text-[28px] font-extrabold tracking-[2px] text-white">PULSE</span>
       <div class="absolute left-[160px] top-[300px] h-[300px] w-[400px] rounded-full bg-violet-600/20 blur-[80px]" />
@@ -57,10 +56,8 @@ async function handleSubmit() {
       </p>
     </div>
 
-    <!-- Right Form -->
     <div class="flex w-full items-center justify-center bg-[#0F172A] px-6 lg:w-1/2 lg:px-20">
       <div class="flex w-full max-w-[400px] flex-col gap-7">
-        <!-- Header -->
         <div class="flex flex-col gap-2">
           <h1 class="text-[28px] font-bold text-slate-50">Bon retour !</h1>
           <p class="text-sm text-slate-400">Connectez-vous a votre compte PULSE</p>
@@ -94,14 +91,12 @@ async function handleSubmit() {
           </button>
         </div>
 
-        <!-- Divider -->
         <div class="flex items-center gap-3">
           <div class="h-px flex-1 bg-slate-700" />
           <span class="text-xs text-slate-400">ou</span>
           <div class="h-px flex-1 bg-slate-700" />
         </div>
 
-        <!-- Form -->
         <form class="flex flex-col gap-3.5" @submit.prevent="handleSubmit">
           <div class="flex flex-col gap-1.5">
             <label class="text-sm font-medium text-slate-300">Adresse email</label>
@@ -122,7 +117,6 @@ async function handleSubmit() {
             />
           </div>
 
-          <!-- Remember + Forgot -->
           <div class="flex items-center justify-between">
             <label class="flex items-center gap-2">
               <input type="checkbox" class="h-4 w-4 rounded border-slate-700 bg-[#0F172A]" />
@@ -133,7 +127,6 @@ async function handleSubmit() {
             </button>
           </div>
 
-          <!-- Submit -->
           <button
             type="submit"
             class="mt-2 w-full rounded-lg bg-pulse-violet py-2.5 text-sm font-medium text-white transition-colors hover:bg-pulse-violet-dark disabled:opacity-50"
@@ -143,7 +136,6 @@ async function handleSubmit() {
           </button>
         </form>
 
-        <!-- Register link -->
         <p class="text-center text-[13px] text-slate-400">
           Pas encore de compte ?
           <RouterLink to="/register" class="font-semibold text-violet-400 hover:text-violet-300">

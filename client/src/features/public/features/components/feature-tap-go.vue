@@ -11,11 +11,9 @@ const benefits = [
 
 <template>
   <section id="feature-1" class="relative bg-pulse-bg">
-    <!-- Glow -->
     <div class="absolute left-0 top-[10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.12)_0%,transparent_70%)]" />
 
     <div class="relative mx-auto flex max-w-7xl flex-col items-center gap-16 px-6 py-20 lg:flex-row lg:px-20">
-      <!-- Image -->
       <div class="w-full lg:w-1/2">
         <div class="aspect-square overflow-hidden rounded-2xl border border-violet-500/15 bg-gradient-to-br from-pulse-surface to-pulse-bg">
           <div class="flex h-full items-center justify-center">
@@ -28,7 +26,6 @@ const benefits = [
         </div>
       </div>
 
-      <!-- Content -->
       <div class="flex w-full flex-col gap-6 lg:w-1/2">
         <div class="flex items-center gap-3">
           <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-violet-800">
@@ -52,7 +49,6 @@ const benefits = [
       </div>
     </div>
 
-    <!-- Divider -->
     <div class="h-px w-full bg-gradient-to-r from-transparent via-violet-500/25 to-transparent" />
   </section>
 </template>

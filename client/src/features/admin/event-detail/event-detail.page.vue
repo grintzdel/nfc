@@ -60,12 +60,10 @@ function handleStatusAction(action: EventStatusAction): void {
   <AdminLayout :title="title" :subtitle="subtitle">
     <div class="flex flex-col gap-6 p-6 xl:p-8">
       <div v-if="!isReady" class="flex flex-col gap-6">
-        <!-- Header band placeholder -->
         <div class="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0F172A] p-6">
           <Skeleton class="h-6 w-1/3" />
           <Skeleton class="h-4 w-1/2" />
         </div>
-        <!-- KPI grid placeholder -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div
             v-for="i in 4"
@@ -77,7 +75,6 @@ function handleStatusAction(action: EventStatusAction): void {
             <Skeleton class="h-3 w-1/3" />
           </div>
         </div>
-        <!-- Table placeholder -->
         <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
           <TableSkeleton :rows="5" :columns="5" />
         </div>

@@ -55,7 +55,6 @@ function formatDateRange(startsAt: string, endsAt: string): string {
         Impossible de charger vos événements. Réessayez dans un instant.
       </div>
 
-      <!-- Empty state -->
       <Card v-else-if="participations.length === 0" class="border-white/10 bg-[#0F172A]">
         <CardContent class="p-0">
           <EmptyState
@@ -74,7 +73,6 @@ function formatDateRange(startsAt: string, endsAt: string): string {
         </CardContent>
       </Card>
 
-      <!-- Grid of participations -->
       <div v-else class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <Card
           v-for="p in participations"
@@ -82,7 +80,6 @@ function formatDateRange(startsAt: string, endsAt: string): string {
           class="flex flex-col gap-4 border-white/10 bg-[#0F172A] transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-500/10"
         >
           <CardContent class="flex flex-1 flex-col gap-3 p-5">
-            <!-- Event header -->
             <div class="flex items-start justify-between gap-2">
               <div class="flex flex-col gap-0.5">
                 <h2 class="text-lg font-semibold text-slate-50">
@@ -102,7 +99,6 @@ function formatDateRange(startsAt: string, endsAt: string): string {
               </span>
             </div>
 
-            <!-- Event meta -->
             <div v-if="p.event" class="flex flex-col gap-1.5 text-sm text-slate-300">
               <span class="inline-flex items-center gap-1.5">
                 <Calendar class="h-3.5 w-3.5 text-slate-500" />
@@ -114,14 +110,12 @@ function formatDateRange(startsAt: string, endsAt: string): string {
               </span>
             </div>
 
-            <!-- Bracelet status -->
             <div class="flex items-center gap-2 rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-xs">
               <span class="text-slate-500">Bracelet :</span>
               <span v-if="p.braceletId" class="font-medium text-emerald-300">attaché</span>
               <span v-else class="font-medium text-slate-400">non attribué</span>
             </div>
 
-            <!-- Actions -->
             <div class="mt-auto flex flex-wrap items-center gap-2 pt-2">
               <RouterLink :to="`/me/events/${p.id}`" class="flex-1">
                 <Button variant="default" class="w-full">

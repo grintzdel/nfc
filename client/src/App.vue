@@ -23,8 +23,6 @@ const noLayout = computed(() => route.meta.noLayout === true)
 </template>
 
 <style>
-/* Subtle fade + slight upward slide on route change. mode="out-in" makes it sequential
-   (old fades out → new fades in), which feels more natural than crossfade for full pages. */
 .page-enter-active,
 .page-leave-active {
   transition: opacity 160ms ease-out, transform 160ms ease-out;

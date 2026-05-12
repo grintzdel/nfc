@@ -77,7 +77,6 @@ async function handleSubmit(): Promise<void> {
 <template>
   <section class="bg-pulse-bg">
     <div class="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-16 lg:flex-row lg:px-20">
-      <!-- Form -->
       <div class="w-full lg:w-1/2">
         <div class="rounded-2xl border bg-pulse-surface p-8" style="border-image: linear-gradient(135deg, #7C3AED40, #F9731620, #7C3AED10) 1;">
           <h2 class="mb-6 text-2xl font-bold text-slate-50">Envoyez-nous un message</h2>
@@ -134,7 +133,6 @@ async function handleSubmit(): Promise<void> {
         </div>
       </div>
 
-      <!-- Info Cards -->
       <div class="flex w-full flex-col gap-5 lg:w-1/2">
         <div
           v-for="card in infoCards"

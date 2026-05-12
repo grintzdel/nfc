@@ -35,7 +35,6 @@ function handleView(id: string) {
   router.push(`/admin/events/${id}`)
 }
 
-// Edit modal
 const editOpen = ref(false)
 const editEventId = ref<string | null>(null)
 const { data: editEvent } = useGetEventById(editEventId)
@@ -69,7 +68,6 @@ function handleDelete(id: string) {
   })
 }
 
-// Create modal
 const createOpen = ref(false)
 
 function handleCreate() {

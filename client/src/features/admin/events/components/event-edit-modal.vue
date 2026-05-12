@@ -59,7 +59,6 @@ function handleSave() {
       @click.self="emit('close')"
     >
       <div class="w-full max-w-lg rounded-lg border border-white/10 bg-[#0F172A] shadow-2xl">
-        <!-- Header -->
         <div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
           <h2 class="text-lg font-bold text-slate-50">Modifier l'evenement</h2>
           <button class="rounded-md p-1.5 text-slate-400 hover:bg-white/5" @click="emit('close')">
@@ -67,7 +66,6 @@ function handleSave() {
           </button>
         </div>
 
-        <!-- Body -->
         <form class="flex flex-col gap-4 px-6 py-5" @submit.prevent="handleSave">
           <div class="flex flex-col gap-1.5">
             <label class="text-xs font-medium text-slate-400">Nom</label>
@@ -155,7 +153,6 @@ function handleSave() {
             </div>
           </div>
 
-          <!-- Footer -->
           <div class="flex justify-end gap-3 border-t border-white/10 pt-4">
             <button
               type="button"

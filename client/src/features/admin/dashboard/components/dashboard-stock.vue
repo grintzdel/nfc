@@ -19,13 +19,11 @@ function formatDate(dateStr: string): string {
 
 <template>
   <div class="flex w-full flex-col justify-between gap-4 rounded-lg border border-white/10 bg-[#0F172A] p-5 xl:w-[380px]">
-    <!-- Empty state -->
     <div v-if="!data" class="flex h-60 items-center justify-center">
       <EmptyState :icon="Package" title="Aucune donnée de stock" size="sm" />
     </div>
 
     <template v-else>
-      <!-- Header -->
       <div class="flex items-start justify-between">
         <div class="flex flex-col gap-0.5">
           <span class="text-base font-semibold text-slate-50">Stock bracelets</span>
@@ -40,9 +38,7 @@ function formatDate(dateStr: string): string {
         </span>
       </div>
 
-      <!-- Stock value -->
       <div class="flex flex-col gap-2">
-        <!-- Row: label + value + percent -->
         <div class="flex items-end justify-between">
           <div class="flex flex-col gap-0.5">
             <span class="text-xs text-slate-400">Bracelets en stock</span>
@@ -54,7 +50,6 @@ function formatDate(dateStr: string): string {
           <span class="text-[13px] font-semibold" :style="{ color: barColor }">{{ parseFloat(data.fillPercent.toFixed(2)) }}%</span>
         </div>
 
-        <!-- Progress bar -->
         <div class="relative h-2 w-full overflow-hidden rounded-full bg-slate-800">
           <div
             class="h-full rounded-full transition-all"
@@ -62,7 +57,6 @@ function formatDate(dateStr: string): string {
           />
         </div>
 
-        <!-- Threshold row -->
         <div class="flex justify-between text-[10px] text-slate-400">
           <span>0</span>
           <span class="font-medium text-[#A78BFA]">Seuil · 500</span>
@@ -70,7 +64,6 @@ function formatDate(dateStr: string): string {
         </div>
       </div>
 
-      <!-- Pending order -->
       <div v-if="data.pendingOrder" class="flex flex-col gap-2 rounded-md bg-slate-800 p-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
@@ -88,7 +81,6 @@ function formatDate(dateStr: string): string {
         </div>
       </div>
 
-      <!-- CTA (disabled until /admin/supply-orders ships) -->
       <button
         type="button"
         disabled

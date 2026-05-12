@@ -59,7 +59,6 @@ function statusClass(status: string): string {
 
 <template>
   <div class="flex flex-col rounded-lg border border-white/10 bg-[#0F172A]">
-    <!-- Tabs -->
     <div class="flex items-center px-6 pt-4">
       <div class="flex items-center gap-0.5 rounded-md bg-slate-800 p-0.5">
         <button
@@ -78,7 +77,6 @@ function statusClass(status: string): string {
       </div>
     </div>
 
-    <!-- Search bar -->
     <div class="flex items-center gap-3 px-6 py-4">
       <div class="flex flex-1 items-center gap-2 rounded-md border border-white/10 bg-[#0F172A] px-3 py-2">
         <Search class="h-3.5 w-3.5 text-slate-400" />
@@ -124,10 +122,8 @@ function statusClass(status: string): string {
       </button>
     </div>
 
-    <!-- Table -->
     <div class="w-full overflow-x-auto">
       <div class="flex min-w-[860px] flex-col">
-        <!-- Header -->
         <div class="flex items-center bg-slate-800">
           <div class="flex-1 px-4 py-3">
             <span class="text-xs font-semibold tracking-wide text-slate-400">Evenement</span>
@@ -149,7 +145,6 @@ function statusClass(status: string): string {
           </div>
         </div>
 
-        <!-- Rows -->
         <div
           v-for="row in data?.items"
           :key="row.id"
@@ -201,7 +196,6 @@ function statusClass(status: string): string {
           </div>
         </div>
 
-        <!-- Empty state -->
         <EmptyState
           v-if="data && data.items.length === 0"
           :icon="Calendar"
@@ -212,7 +206,6 @@ function statusClass(status: string): string {
       </div>
     </div>
 
-    <!-- Footer / Pagination -->
     <Pagination
       v-if="data"
       :page="data.page"

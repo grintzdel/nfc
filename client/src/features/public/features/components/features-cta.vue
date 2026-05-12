@@ -4,7 +4,6 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <section class="relative bg-pulse-bg">
-    <!-- Glows -->
     <div class="absolute left-[8%] top-[8%] h-[400px] w-[400px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.1)_0%,transparent_70%)] blur-[60px]" />
     <div class="absolute bottom-[8%] right-[5%] h-[350px] w-[350px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(236,72,153,0.08)_0%,transparent_70%)] blur-[50px]" />
 

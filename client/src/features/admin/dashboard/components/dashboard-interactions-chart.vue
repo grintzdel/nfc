@@ -47,7 +47,6 @@ const donutTooltipTriggers = {
     </template>
 
     <template v-else>
-      <!-- Donut chart + center overlay -->
       <div class="flex justify-center">
         <div class="relative" style="width: 144px; height: 144px">
           <VisSingleContainer :data="donutData" :width="144" :height="144">
@@ -60,7 +59,6 @@ const donutTooltipTriggers = {
             <VisTooltip :triggers="donutTooltipTriggers" />
           </VisSingleContainer>
 
-          <!-- Center overlay -->
           <div
             v-if="topItem"
             class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"
@@ -71,7 +69,6 @@ const donutTooltipTriggers = {
         </div>
       </div>
 
-      <!-- Legend -->
       <div class="flex flex-col gap-2">
         <div
           v-for="(item, index) in donutData"

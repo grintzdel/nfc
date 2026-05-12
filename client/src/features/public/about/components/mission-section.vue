@@ -1,7 +1,6 @@
 <template>
   <section class="bg-pulse-bg">
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-16 px-6 py-16 lg:flex-row lg:px-20">
-      <!-- Image -->
       <div class="relative w-full lg:w-1/2">
         <div class="absolute -left-[50px] -top-[50px] h-[300px] w-[300px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.35)_0%,transparent_70%)] opacity-50" />
         <div class="aspect-[4/5] overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-br from-pulse-surface to-pulse-bg">
@@ -15,7 +14,6 @@
         </div>
       </div>
 
-      <!-- Content -->
       <div class="flex w-full flex-col justify-center gap-6 lg:w-1/2">
         <div class="flex items-center gap-2 rounded-full border border-violet-500/35 bg-violet-600/15 px-4 py-1.5 w-fit">
           <span class="text-xs text-violet-400">&#10022;</span>

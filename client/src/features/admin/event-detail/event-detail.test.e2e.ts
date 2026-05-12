@@ -15,24 +15,19 @@ test.describe('Admin Event Detail', () => {
     const eventId = await resolveEventIdBySlug(DEMO_SLUG, request)
     await page.goto(`/admin/events/${eventId}`)
 
-    // Header
     await expect(page.getByRole('heading', { level: 1, name: 'Pulse Demo 2026' })).toBeVisible()
     await expect(page.getByText('Page publique')).toBeVisible()
 
-    // KPI strip: 4 KPI labels
     await expect(page.getByText(/Participants$/).first()).toBeVisible()
     await expect(page.getByText(/Bracelets actifs/)).toBeVisible()
     await expect(page.getByText(/^Check-ins$/).first()).toBeVisible()
     await expect(page.getByText(/Dernier check-in/)).toBeVisible()
 
-    // Participants tab (default)
     await expect(page.getByText('Marie Dubois')).toBeVisible()
 
-    // Bracelets tab
     await page.getByRole('tab', { name: /Bracelets/ }).click()
     await expect(page.getByText('demo-nfc-001').first()).toBeVisible()
 
-    // Check-ins tab
     await page.getByRole('tab', { name: /Check-ins/ }).click()
     await expect(page.getByText(/Total check-ins/)).toBeVisible()
     await expect(page.getByText(/Participants uniques/)).toBeVisible()
@@ -44,7 +39,6 @@ test.describe('Admin Event Detail', () => {
 
     await page.goto(`/admin/events/${eventId}`)
     await expect(page.getByRole('button', { name: /Publier/ })).toBeVisible()
-    // No other status actions exist for a draft event
     await expect(page.getByRole('button', { name: /Démarrer/ })).toHaveCount(0)
     await expect(page.getByRole('button', { name: /Clôturer/ })).toHaveCount(0)
   })
@@ -53,10 +47,8 @@ test.describe('Admin Event Detail', () => {
     const eventId = await resolveEventIdBySlug(DEMO_SLUG, request)
     await page.goto(`/admin/events/${eventId}`)
 
-    // Filter by Marie's name
     await page.getByPlaceholder(/Rechercher par nom/).fill('marie')
 
-    // After debounce + refetch, only Marie remains in the table
     await expect(page.getByText('Marie Dubois')).toBeVisible()
     await expect(page.getByText('Demo Participant 1')).toHaveCount(0)
   })

@@ -126,7 +126,6 @@ async function seed(): Promise<void> {
     },
   ])
 
-  // ─── Users ────────────────────────────────────────
   const admin = await UserModel.findOne({ email: 'admin@gmail.com' })
   if (!admin) throw new Error('Admin user not found after seed')
 
@@ -140,7 +139,6 @@ async function seed(): Promise<void> {
     })),
   )
 
-  // ─── Events (8 total: mix of statuses + dates) ───
   const events = await EventModel.create([
     // UPCOMING — next event (the one shown in dashboard "Prochain evenement")
     {
@@ -253,7 +251,6 @@ async function seed(): Promise<void> {
       ownerId: String(admin._id),
       createdAt: randomDateInMonth(-2),
     },
-    // CANCELLED
     {
       name: 'Meetup Dev Lille (annule)',
       slug: 'meetup-dev-lille',
@@ -273,7 +270,6 @@ async function seed(): Promise<void> {
 
   const [festivalLyon, salonParis, techConf, hackathon] = events
 
-  // ─── Demo event (pulse-demo-2026 / demo-nfc-001) ──
   const marieUser = await UserModel.findOne({ email: 'marie@pulse.demo' })
   if (!marieUser) throw new Error('Marie demo user not found after seed')
 
@@ -377,7 +373,6 @@ async function seed(): Promise<void> {
   ]
   await ParticipantModel.create(demoParticipantDocs)
 
-  // ─── Admin participations ────────────────────────
   // Register the admin user as a participant on a few events so:
   //   - GET /participants/me returns something when logged in as admin
   //   - /me/events page is non-empty, including a future event with an active bracelet (QR demo flow)
@@ -493,7 +488,6 @@ async function seed(): Promise<void> {
     createdAt: new Date(),
   })
 
-  // ─── Bracelets ────────────────────────────────────
   // We need bracelets created in current AND last month for comparison stats
   // Also activations spread across all 12 months of the year for the bar chart
 
@@ -578,7 +572,6 @@ async function seed(): Promise<void> {
     ...lastMonthBracelets,
   ])
 
-  // ─── Participants ─────────────────────────────────
   // Current month: 25 participants, last month: 18 (for +38.89% growth)
   const thisMonthParticipants = Array.from({ length: 25 }, (_, i) => {
     const date = randomDateInMonth(0)
@@ -620,7 +613,6 @@ async function seed(): Promise<void> {
 
   await ParticipantModel.create([...thisMonthParticipants, ...lastMonthParticipants])
 
-  // ─── Check-ins (400 total — more variety) ─────────
   const interactionTypes = [
     'check_in', 'check_in', 'check_in', 'check_in',
     'networking', 'networking',
@@ -639,7 +631,6 @@ async function seed(): Promise<void> {
   }))
   await CheckInModel.create(checkInsData)
 
-  // ─── Orders (revenue comparison) ──────────────────
   // This month: ~24500€ revenue, last month: ~26600€ (= -8%)
   const thisMonthOrders = Array.from({ length: 40 }, (_, i) => {
     const amount = 400 + Math.floor(Math.random() * 400)
@@ -671,7 +662,6 @@ async function seed(): Promise<void> {
 
   await OrderModel.create([...thisMonthOrders, ...lastMonthOrders])
 
-  // ─── Supply orders ────────────────────────────────
   await SupplyOrderModel.create([
     {
       units: 1500,
