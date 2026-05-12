@@ -38,6 +38,22 @@ export class ParticipantHttpAdapter implements IParticipantPort {
     return result.data.data
   }
 
+  async getPaginated(params: {
+    page: number
+    limit: number
+    checkedIn?: boolean
+    search?: string
+  }): Promise<ParticipantDomainModel.PaginatedAllParticipantsDto> {
+    const qs = new URLSearchParams({ page: String(params.page), limit: String(params.limit) })
+    if (params.checkedIn !== undefined) qs.append('checkedIn', String(params.checkedIn))
+    if (params.search && params.search.trim()) qs.append('search', params.search.trim())
+    const result = await this.httpClient.get<ParticipantDomainModel.PaginatedAllParticipantsDto>(
+      `/participants/paginated?${qs.toString()}`,
+    )
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
+
   async getById(id: string): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
     const result = await this.httpClient.get<ParticipantDomainModel.ParticipantOverviewDto>(`/participants/${id}`)
     if (result.error) throw new Error(result.error.message)

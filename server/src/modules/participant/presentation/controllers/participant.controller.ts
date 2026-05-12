@@ -47,6 +47,27 @@ export class ParticipantController {
     } catch (e) { next(e) }
   }
 
+  async getPaginated(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const page = Number(req.query.page) || 1
+      const limit = Number(req.query.limit) || 20
+      const search = typeof req.query.search === 'string' ? req.query.search : undefined
+      const checkedInRaw = req.query.checkedIn
+      const checkedIn = checkedInRaw === 'true' ? true : checkedInRaw === 'false' ? false : undefined
+      const paged = await this.participantService.getPaginated({ page, limit, checkedIn, search })
+      res.json({
+        success: true,
+        data: {
+          items: paged.items.map((it) => new MyParticipationResponseDto(it.participant, it.event)),
+          total: paged.total,
+          page: paged.page,
+          limit: paged.limit,
+          totalPages: paged.totalPages,
+        },
+      })
+    } catch (e) { next(e) }
+  }
+
   async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const participant = await this.participantService.getById(req.params.id as string)

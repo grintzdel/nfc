@@ -67,4 +67,11 @@ export namespace ParticipantDomainModel {
   export type MyParticipationDto = ParticipantOverviewDto & {
     event: EventSummaryDto | null
   }
+  export type PaginatedAllParticipantsDto = {
+    items: MyParticipationDto[]
+    total: number
+    page: number
+    limit: number
+    totalPages: number
+  }
 }

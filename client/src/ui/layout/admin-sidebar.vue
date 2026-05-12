@@ -39,7 +39,7 @@ const sections: NavSection[] = [
       { label: 'Dashboard', icon: LayoutDashboard, to: '/admin/dashboard' },
       { label: 'Événements', icon: Calendar, to: '/admin/events' },
       { label: 'Bracelets', icon: Watch, to: '/admin/bracelets' },
-      { label: 'Participants', icon: Users, soon: true },
+      { label: 'Participants', icon: Users, to: '/admin/participants' },
     ],
   },
   {

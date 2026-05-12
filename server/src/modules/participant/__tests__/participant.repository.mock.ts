@@ -16,6 +16,8 @@ export class ParticipantRepositoryMock implements IParticipantRepository {
   findAllByUserId_calledWith: string | null = null
   findPaginatedByEventId_result: PaginatedResult<ParticipantEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
   findPaginatedByEventId_calledWith: { eventId: string; page: number; limit: number; search?: string } | null = null
+  findPaginated_result: PaginatedResult<ParticipantEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  findPaginated_calledWith: { page: number; limit: number; checkedIn?: boolean; search?: string } | null = null
   countInRange_result = 0
   countByEventId_result = 0
   update_result: ParticipantEntity | null = null
@@ -60,6 +62,16 @@ export class ParticipantRepositoryMock implements IParticipantRepository {
   }): Promise<PaginatedResult<ParticipantEntity>> {
     this.findPaginatedByEventId_calledWith = params
     return this.findPaginatedByEventId_result
+  }
+
+  async findPaginated(params: {
+    page: number
+    limit: number
+    checkedIn?: boolean
+    search?: string
+  }): Promise<PaginatedResult<ParticipantEntity>> {
+    this.findPaginated_calledWith = params
+    return this.findPaginated_result
   }
 
   async countInRange(_from: Date, _to: Date): Promise<number> { return this.countInRange_result }

@@ -10,6 +10,7 @@ import { GetParticipantByIdUseCase } from './application/use-cases/get-participa
 import { GetMyParticipationsUseCase } from './application/use-cases/get-my-participations/get-my-participations.use-case'
 import { GetParticipantsByEventUseCase } from './application/use-cases/get-participants-by-event/get-participants-by-event.use-case'
 import { GetPaginatedParticipantsByEventUseCase } from './application/use-cases/get-paginated-participants-by-event/get-paginated-participants-by-event.use-case'
+import { GetPaginatedParticipantsUseCase } from './application/use-cases/get-paginated-participants/get-paginated-participants.use-case'
 import { UpdateParticipantProfileUseCase } from './application/use-cases/update-participant-profile/update-participant-profile.use-case'
 import { AttachBraceletUseCase } from './application/use-cases/attach-bracelet/attach-bracelet.use-case'
 import { UnregisterParticipantUseCase } from './application/use-cases/unregister-participant/unregister-participant.use-case'
@@ -28,6 +29,7 @@ export function createParticipantModule(
   const getMyUC = new GetMyParticipationsUseCase(participantRepository, eventRepository)
   const getByEventUC = new GetParticipantsByEventUseCase(participantRepository)
   const getPaginatedByEventUC = new GetPaginatedParticipantsByEventUseCase(participantRepository, braceletRepository)
+  const getPaginatedUC = new GetPaginatedParticipantsUseCase(participantRepository, eventRepository)
   const updateProfileUC = new UpdateParticipantProfileUseCase(participantRepository)
   const attachBraceletUC = new AttachBraceletUseCase(participantRepository, braceletRepository)
   const unregisterUC = new UnregisterParticipantUseCase(participantRepository)
@@ -38,6 +40,7 @@ export function createParticipantModule(
     getMyUC,
     getByEventUC,
     getPaginatedByEventUC,
+    getPaginatedUC,
     updateProfileUC,
     attachBraceletUC,
     unregisterUC,
@@ -50,6 +53,7 @@ export function createParticipantModule(
   const router = Router()
   router.post('/', auth, (req, res, next) => controller.register(req, res, next))
   router.get('/me', auth, (req, res, next) => controller.getMyParticipations(req, res, next))
+  router.get('/paginated', auth, admin, (req, res, next) => controller.getPaginated(req, res, next))
   router.get('/event/:eventId/paginated', auth, admin, (req, res, next) => controller.getPaginatedByEvent(req, res, next))
   router.get('/event/:eventId', auth, admin, (req, res, next) => controller.getByEvent(req, res, next))
   router.get('/:id', auth, (req, res, next) => controller.getById(req, res, next))
