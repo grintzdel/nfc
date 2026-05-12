@@ -11,6 +11,7 @@ import EventDetailHeader from './components/event-detail-header.vue'
 import EventDetailParticipants from './components/event-detail-participants.vue'
 import EventDetailBracelets from './components/event-detail-bracelets.vue'
 import EventDetailCheckIns from './components/event-detail-check-ins.vue'
+import EventDetailTeam from './components/event-detail-team.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -46,7 +47,7 @@ const subtitle = computed(() => {
 })
 
 const isReady = computed(() => Boolean(event.value && stats.value))
-const activeTab = ref<'participants' | 'bracelets' | 'check-ins'>('participants')
+const activeTab = ref<'participants' | 'bracelets' | 'check-ins' | 'team'>('participants')
 
 function handleStatusAction(action: EventStatusAction): void {
   if (!eventId.value) return
@@ -80,6 +81,7 @@ function handleStatusAction(action: EventStatusAction): void {
             <TabsTrigger value="check-ins">
               Check-ins ({{ stats.checkInCount }})
             </TabsTrigger>
+            <TabsTrigger value="team">Équipe</TabsTrigger>
           </TabsList>
           <TabsContent value="participants">
             <EventDetailParticipants :event-id="event.id" />
@@ -89,6 +91,9 @@ function handleStatusAction(action: EventStatusAction): void {
           </TabsContent>
           <TabsContent value="check-ins">
             <EventDetailCheckIns :event-id="event.id" :stats="stats" />
+          </TabsContent>
+          <TabsContent value="team">
+            <EventDetailTeam :event-id="event.id" />
           </TabsContent>
         </Tabs>
       </template>

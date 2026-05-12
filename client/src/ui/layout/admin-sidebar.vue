@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { Calendar, LayoutDashboard, Radio, Users, UsersRound, Watch } from 'lucide-vue-next'
+import { Calendar, LayoutDashboard, Radio, Users, Watch } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
@@ -32,6 +32,8 @@ type NavSection = {
 // Only surface routes that actually exist. Items flagged as `soon` render
 // disabled with a "Bientôt" pill so the surface stays informative without
 // being a trap.
+// Team management is per-event — surfaced as the "Équipe" tab inside /admin/events/:eventId,
+// not as a global sidebar entry.
 const sections: NavSection[] = [
   {
     title: 'Principal',
@@ -40,12 +42,6 @@ const sections: NavSection[] = [
       { label: 'Événements', icon: Calendar, to: '/admin/events' },
       { label: 'Bracelets', icon: Watch, to: '/admin/bracelets' },
       { label: 'Participants', icon: Users, to: '/admin/participants' },
-    ],
-  },
-  {
-    title: 'Paramètres',
-    items: [
-      { label: 'Équipe', icon: UsersRound, soon: true },
     ],
   },
 ]
