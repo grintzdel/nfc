@@ -29,20 +29,17 @@ describe('Events integration', () => {
       const startsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
       const endsAt = new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString()
 
-      const response = await request(app)
-        .post('/api/events')
-        .set(authHeader(adminToken))
-        .send({
-          name: 'Pulse Demo 2026',
-          description: 'Demo event',
-          venueName: 'Grand Hall',
-          venueAddress: '1 rue de Paris',
-          city: 'Paris',
-          startsAt,
-          endsAt,
-          capacity: 500,
-          staffCount: 5,
-        })
+      const response = await request(app).post('/api/events').set(authHeader(adminToken)).send({
+        name: 'Pulse Demo 2026',
+        description: 'Demo event',
+        venueName: 'Grand Hall',
+        venueAddress: '1 rue de Paris',
+        city: 'Paris',
+        startsAt,
+        endsAt,
+        capacity: 500,
+        staffCount: 5,
+      })
 
       expect(response.status).toBe(201)
       expect(response.body.data.id).toEqual(expect.any(String))
@@ -141,9 +138,7 @@ describe('Events integration', () => {
     })
 
     it('returns 404 for an unknown id', async () => {
-      const response = await request(app)
-        .get('/api/events/507f1f77bcf86cd799439011')
-        .set(authHeader(adminToken))
+      const response = await request(app).get('/api/events/507f1f77bcf86cd799439011').set(authHeader(adminToken))
       expect(response.status).toBe(404)
     })
   })

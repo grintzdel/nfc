@@ -113,18 +113,14 @@ describe('Participants integration', () => {
     it('returns the participants of an event for an admin', async () => {
       await request(app).post('/api/participants').set(authHeader(customer.token)).send(registerPayload())
 
-      const response = await request(app)
-        .get(`/api/participants/event/${eventId}`)
-        .set(authHeader(adminToken))
+      const response = await request(app).get(`/api/participants/event/${eventId}`).set(authHeader(adminToken))
 
       expect(response.status).toBe(200)
       expect(response.body.data).toHaveLength(1)
     })
 
     it('returns 403 for a non-admin', async () => {
-      const response = await request(app)
-        .get(`/api/participants/event/${eventId}`)
-        .set(authHeader(customer.token))
+      const response = await request(app).get(`/api/participants/event/${eventId}`).set(authHeader(customer.token))
 
       expect(response.status).toBe(403)
     })
@@ -173,9 +169,7 @@ describe('Participants integration', () => {
         .send(registerPayload())
       const participantId = created.body.data.id as string
 
-      const response = await request(app)
-        .delete(`/api/participants/${participantId}`)
-        .set(authHeader(customer.token))
+      const response = await request(app).delete(`/api/participants/${participantId}`).set(authHeader(customer.token))
 
       expect(response.status).toBe(204)
     })

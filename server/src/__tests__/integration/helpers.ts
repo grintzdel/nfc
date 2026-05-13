@@ -131,12 +131,9 @@ export async function createBracelet(
   adminToken: string,
   overrides: Partial<{ nfcId: string; productId: string }> = {}
 ): Promise<{ id: string; nfcId: string }> {
-  const response = await request(app)
-    .post('/api/bracelets')
-    .set(authHeader(adminToken))
-    .send({
-      nfcId: overrides.nfcId,
-      productId: overrides.productId,
-    })
+  const response = await request(app).post('/api/bracelets').set(authHeader(adminToken)).send({
+    nfcId: overrides.nfcId,
+    productId: overrides.productId,
+  })
   return { id: response.body.data.id as string, nfcId: response.body.data.nfcId as string }
 }

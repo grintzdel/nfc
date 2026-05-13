@@ -1,8 +1,8 @@
 import type { Express } from 'express'
 import request from 'supertest'
 
-import { FaqModel } from './infrastructure/schema/faq.schema'
 import { setupTestApp, teardownTestApp, clearDatabase } from '../../__tests__/integration/setup'
+import { FaqModel } from './infrastructure/schema/faq.schema'
 
 describe('Marketing integration', () => {
   let app: Express

@@ -90,9 +90,7 @@ describe('Bracelets integration', () => {
       await createBraceletViaApi()
       await createBraceletViaApi()
 
-      const response = await request(app)
-        .get('/api/bracelets/paginated?page=1&limit=2')
-        .set(authHeader(adminToken))
+      const response = await request(app).get('/api/bracelets/paginated?page=1&limit=2').set(authHeader(adminToken))
 
       expect(response.status).toBe(200)
       expect(response.body.data.items).toHaveLength(2)
@@ -111,9 +109,7 @@ describe('Bracelets integration', () => {
     })
 
     it('returns 404 for an unknown id', async () => {
-      const response = await request(app)
-        .get('/api/bracelets/507f1f77bcf86cd799439011')
-        .set(authHeader(adminToken))
+      const response = await request(app).get('/api/bracelets/507f1f77bcf86cd799439011').set(authHeader(adminToken))
       expect(response.status).toBe(404)
     })
 

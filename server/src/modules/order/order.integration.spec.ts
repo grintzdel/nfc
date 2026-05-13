@@ -115,10 +115,7 @@ describe('Orders integration', () => {
   describe('GET /api/orders/:id', () => {
     it('returns an order by id', async () => {
       await fillCart(userToken)
-      const created = await request(app)
-        .post('/api/orders')
-        .set(authHeader(userToken))
-        .send({ shippingAddress: 'A' })
+      const created = await request(app).post('/api/orders').set(authHeader(userToken)).send({ shippingAddress: 'A' })
       const orderId = created.body.data.id as string
 
       const response = await request(app).get(`/api/orders/${orderId}`).set(authHeader(userToken))
@@ -128,9 +125,7 @@ describe('Orders integration', () => {
     })
 
     it('returns 404 for an unknown id', async () => {
-      const response = await request(app)
-        .get('/api/orders/507f1f77bcf86cd799439011')
-        .set(authHeader(userToken))
+      const response = await request(app).get('/api/orders/507f1f77bcf86cd799439011').set(authHeader(userToken))
       expect(response.status).toBe(404)
     })
   })
@@ -138,10 +133,7 @@ describe('Orders integration', () => {
   describe('PATCH /api/orders/:id/status', () => {
     it('updates the status when called by an admin', async () => {
       await fillCart(userToken)
-      const created = await request(app)
-        .post('/api/orders')
-        .set(authHeader(userToken))
-        .send({ shippingAddress: 'A' })
+      const created = await request(app).post('/api/orders').set(authHeader(userToken)).send({ shippingAddress: 'A' })
       const orderId = created.body.data.id as string
 
       const response = await request(app)
@@ -155,10 +147,7 @@ describe('Orders integration', () => {
 
     it('rejects an invalid status', async () => {
       await fillCart(userToken)
-      const created = await request(app)
-        .post('/api/orders')
-        .set(authHeader(userToken))
-        .send({ shippingAddress: 'A' })
+      const created = await request(app).post('/api/orders').set(authHeader(userToken)).send({ shippingAddress: 'A' })
       const orderId = created.body.data.id as string
 
       const response = await request(app)
@@ -171,10 +160,7 @@ describe('Orders integration', () => {
 
     it('returns 403 for a non-admin', async () => {
       await fillCart(userToken)
-      const created = await request(app)
-        .post('/api/orders')
-        .set(authHeader(userToken))
-        .send({ shippingAddress: 'A' })
+      const created = await request(app).post('/api/orders').set(authHeader(userToken)).send({ shippingAddress: 'A' })
       const orderId = created.body.data.id as string
 
       const response = await request(app)

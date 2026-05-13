@@ -66,8 +66,14 @@ describe('Supply orders integration', () => {
 
   describe('GET /api/supply-orders', () => {
     it('returns the list for an admin', async () => {
-      await request(app).post('/api/supply-orders').set(authHeader(adminToken)).send(payload({ units: 50 }))
-      await request(app).post('/api/supply-orders').set(authHeader(adminToken)).send(payload({ units: 75 }))
+      await request(app)
+        .post('/api/supply-orders')
+        .set(authHeader(adminToken))
+        .send(payload({ units: 50 }))
+      await request(app)
+        .post('/api/supply-orders')
+        .set(authHeader(adminToken))
+        .send(payload({ units: 75 }))
 
       const response = await request(app).get('/api/supply-orders').set(authHeader(adminToken))
 
@@ -93,9 +99,7 @@ describe('Supply orders integration', () => {
     })
 
     it('returns 404 for an unknown id', async () => {
-      const response = await request(app)
-        .get('/api/supply-orders/507f1f77bcf86cd799439011')
-        .set(authHeader(adminToken))
+      const response = await request(app).get('/api/supply-orders/507f1f77bcf86cd799439011').set(authHeader(adminToken))
       expect(response.status).toBe(404)
     })
   })

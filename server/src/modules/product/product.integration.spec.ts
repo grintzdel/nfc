@@ -1,8 +1,8 @@
 import type { Express } from 'express'
 import request from 'supertest'
 
-import { UserModel } from '../auth/infrastructure/schema/user.schema'
 import { setupTestApp, teardownTestApp, clearDatabase } from '../../__tests__/integration/setup'
+import { UserModel } from '../auth/infrastructure/schema/user.schema'
 
 describe('Products CRUD integration', () => {
   let app: Express

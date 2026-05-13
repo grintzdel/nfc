@@ -140,9 +140,7 @@ describe('Check-ins integration', () => {
         .set(authHeader(adminToken))
         .send({ nfcId: bracelet.nfcId, eventId, interactionType: 'check_in' })
 
-      const response = await request(app)
-        .get(`/api/check-ins/event/${eventId}`)
-        .set(authHeader(adminToken))
+      const response = await request(app).get(`/api/check-ins/event/${eventId}`).set(authHeader(adminToken))
 
       expect(response.status).toBe(200)
       expect(Array.isArray(response.body)).toBe(true)
@@ -150,9 +148,7 @@ describe('Check-ins integration', () => {
     })
 
     it('returns 403 for a non-admin', async () => {
-      const response = await request(app)
-        .get(`/api/check-ins/event/${eventId}`)
-        .set(authHeader(customer.token))
+      const response = await request(app).get(`/api/check-ins/event/${eventId}`).set(authHeader(customer.token))
 
       expect(response.status).toBe(403)
     })

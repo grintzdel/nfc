@@ -141,10 +141,7 @@ describe('Teams integration', () => {
         .send({ userId: target.userId, role: 'staff' })
       const inviteId = invite.body.data.id as string
 
-      const response = await request(app)
-        .post(`/api/teams/${inviteId}/accept`)
-        .set(authHeader(intruder.token))
-        .send({})
+      const response = await request(app).post(`/api/teams/${inviteId}/accept`).set(authHeader(intruder.token)).send({})
 
       expect(response.status).toBe(403)
     })

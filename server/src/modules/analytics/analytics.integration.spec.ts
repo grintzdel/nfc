@@ -81,9 +81,7 @@ describe('Analytics integration', () => {
   describe('GET /api/admin-stats/events/:eventId', () => {
     it('returns detail stats for a known event', async () => {
       const event = await createEvent(app, adminToken)
-      const response = await request(app)
-        .get(`/api/admin-stats/events/${event.id}`)
-        .set(authHeader(adminToken))
+      const response = await request(app).get(`/api/admin-stats/events/${event.id}`).set(authHeader(adminToken))
 
       expect(response.status).toBe(200)
       expect(response.body.data).toBeDefined()
@@ -91,9 +89,7 @@ describe('Analytics integration', () => {
 
     it('returns 403 for a non-admin', async () => {
       const event = await createEvent(app, adminToken)
-      const response = await request(app)
-        .get(`/api/admin-stats/events/${event.id}`)
-        .set(authHeader(customerToken))
+      const response = await request(app).get(`/api/admin-stats/events/${event.id}`).set(authHeader(customerToken))
 
       expect(response.status).toBe(403)
     })
