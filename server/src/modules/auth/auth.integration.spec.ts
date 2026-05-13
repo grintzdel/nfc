@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 import request from 'supertest'
 
-import { setupTestApp, teardownTestApp, clearDatabase } from './setup'
+import { setupTestApp, teardownTestApp, clearDatabase } from '../../__tests__/integration/setup'
 
 describe('Auth integration', () => {
   let app: Express

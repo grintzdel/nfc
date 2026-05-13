@@ -6,8 +6,8 @@
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/main.ts",
     "build": "tsc",
     "start": "node dist/main.js",
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch",
+    "test": "jest --passWithNoTests --maxWorkers=4",
+    "test:watch": "jest --watch --maxWorkers=4",
     "seed": "ts-node-dev --transpile-only -r tsconfig-paths/register src/seed.ts"
   },
   "dependencies": {
