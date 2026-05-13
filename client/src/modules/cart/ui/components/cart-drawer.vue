@@ -49,13 +49,15 @@ async function handleCheckout() {
   try {
     await cartPort.clearCart().catch(() => {})
 
-    for (const item of cartItems.value) {
-      await cartPort.addToCart({
-        productId: item.productId,
-        quantity: item.quantity,
-        variantName: item.variantName,
-      })
-    }
+    await Promise.all(
+      cartItems.value.map((item) =>
+        cartPort.addToCart({
+          productId: item.productId,
+          quantity: item.quantity,
+          variantName: item.variantName,
+        })
+      )
+    )
 
     await orderPort.create({ shippingAddress: 'Non renseigne' })
 

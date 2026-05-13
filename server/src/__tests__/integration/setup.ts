@@ -27,8 +27,6 @@ export async function teardownTestApp(): Promise<void> {
 }
 
 export async function clearDatabase(): Promise<void> {
-  const collections = mongoose.connection.collections
-  for (const key in collections) {
-    await collections[key]!.deleteMany({})
-  }
+  const collections = Object.values(mongoose.connection.collections)
+  await Promise.all(collections.map((c) => c.deleteMany({})))
 }

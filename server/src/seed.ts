@@ -34,7 +34,6 @@ function randomDateInMonth(monthOffset: number): Date {
   const now = new Date()
   const year = now.getFullYear()
   const month = now.getMonth() + monthOffset
-  const start = new Date(year, month, 1)
   const end = new Date(year, month + 1, 0)
   const day = 1 + Math.floor(Math.random() * end.getDate())
   return new Date(year, month, day, Math.floor(Math.random() * 18) + 6)
@@ -271,7 +270,7 @@ async function seed(): Promise<void> {
     },
   ])
 
-  const [festivalLyon, salonParis, techConf, hackathon] = events
+  const [festivalLyon, , techConf, hackathon] = events
 
   const marieUser = await UserModel.findOne({ email: 'marie@pulse.demo' })
   if (!marieUser) throw new Error('Marie demo user not found after seed')
@@ -540,7 +539,6 @@ async function seed(): Promise<void> {
   // We need bracelets created in current AND last month for comparison stats
   // Also activations spread across all 12 months of the year for the bar chart
 
-  const now = Date.now()
   const currentYear = new Date().getFullYear()
 
   // Activations spread over 12 months (for the bar chart)

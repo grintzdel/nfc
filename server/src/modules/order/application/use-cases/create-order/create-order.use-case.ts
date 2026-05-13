@@ -21,17 +21,17 @@ export class CreateOrderUseCase {
     const cartItems = await this.cartItemRepository.findByUserId(input.userId)
     if (cartItems.length === 0) throw new AppError(400, 'Cart is empty')
 
-    const orderItems: OrderItem[] = []
-    for (const cartItem of cartItems) {
-      const product = await this.productRepository.findById(cartItem.productId)
+    const products = await Promise.all(cartItems.map((item) => this.productRepository.findById(item.productId)))
+    const orderItems: OrderItem[] = cartItems.map((cartItem, index) => {
+      const product = products[index]
       if (!product) throw new AppError(400, `Product ${cartItem.productId} not found`)
-      orderItems.push({
+      return {
         productId: product.id,
         productName: product.name,
         quantity: cartItem.quantity,
         unitPrice: product.price,
-      })
-    }
+      }
+    })
 
     const order = OrderEntity.create({
       userId: input.userId,

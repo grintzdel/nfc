@@ -42,8 +42,11 @@ watch(
   }
 )
 
+function pad(n: number): string {
+  return String(n).padStart(2, '0')
+}
+
 function toLocalInputValue(d: Date): string {
-  const pad = (n: number): string => String(n).padStart(2, '0')
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 

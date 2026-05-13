@@ -8,19 +8,16 @@ export class CreateBraceletFromOrderUseCase {
   constructor(private readonly braceletRepository: IBraceletRepository) {}
 
   async execute(order: OrderEntity): Promise<BraceletEntity[]> {
-    const created: BraceletEntity[] = []
-    for (const item of order.items) {
-      for (let i = 0; i < item.quantity; i++) {
-        const entity = BraceletEntity.create({
+    const entities = order.items.flatMap((item) =>
+      Array.from({ length: item.quantity }, () =>
+        BraceletEntity.create({
           nfcId: generateId(),
           userId: order.userId,
           productId: item.productId,
           orderId: order.id,
         })
-        const saved = await this.braceletRepository.create(entity)
-        created.push(saved)
-      }
-    }
-    return created
+      )
+    )
+    return Promise.all(entities.map((entity) => this.braceletRepository.create(entity)))
   }
 }

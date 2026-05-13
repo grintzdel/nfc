@@ -22,7 +22,9 @@
         "ignoreRestSiblings": true
       }
     ],
-    "typescript/no-explicit-any": "error"
+    "typescript/no-explicit-any": "error",
+    "no-underscore-dangle": "off",
+    "import/no-unassigned-import": "off"
   },
   "env": {
     "builtin": true,
