@@ -14,6 +14,7 @@ const makePendingOrder = () =>
     shippingAddress: '1 rue de la Paix, Paris',
     createdAt: new Date(),
     updatedAt: new Date(),
+    deletedAt: null,
   })
 
 describe('UpdateOrderStatusUseCase', () => {
@@ -26,6 +27,7 @@ describe('UpdateOrderStatusUseCase', () => {
       findByUserId: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
+      delete: jest.fn(),
       sumRevenueInRange: jest.fn(),
     }
   })

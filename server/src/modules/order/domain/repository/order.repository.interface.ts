@@ -7,5 +7,6 @@ export interface IOrderRepository {
   findByUserId(userId: string): Promise<OrderEntity[]>
   create(order: OrderEntity): Promise<OrderEntity>
   update(order: OrderEntity): Promise<OrderEntity>
+  delete(id: string): Promise<void>
   sumRevenueInRange(from: Date, to: Date, statuses: OrderStatus[]): Promise<number>
 }

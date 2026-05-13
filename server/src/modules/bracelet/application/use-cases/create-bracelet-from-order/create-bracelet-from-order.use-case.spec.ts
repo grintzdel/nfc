@@ -27,6 +27,7 @@ describe('CreateBraceletFromOrderUseCase', () => {
       shippingAddress: '1 Rue de Paris',
       createdAt: new Date(),
       updatedAt: new Date(),
+      deletedAt: null,
     })
 
     const bracelets = await useCase.execute(order)
@@ -56,6 +57,7 @@ describe('CreateBraceletFromOrderUseCase', () => {
       shippingAddress: '2 Rue de Lyon',
       createdAt: new Date(),
       updatedAt: new Date(),
+      deletedAt: null,
     })
 
     const bracelets = await useCase.execute(order)

@@ -24,9 +24,14 @@ export namespace OrderDomainModel {
     status: OrderStatus
     shippingAddress: string
     createdAt: string
+    updatedAt: string
   }
 
   export type CreateOrderDto = {
     shippingAddress: string
+  }
+
+  export type UpdateOrderDto = {
+    shippingAddress?: string
   }
 }

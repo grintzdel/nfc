@@ -8,6 +8,7 @@ export interface OrderDocument extends Document {
   shippingAddress: string
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
 }
 
 const orderItemSchema = new Schema(
@@ -27,6 +28,7 @@ const orderSchema = new Schema<OrderDocument>(
     totalAmount: { type: Number, required: true },
     status: { type: String, enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'], default: 'pending' },
     shippingAddress: { type: String, required: true },
+    deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 )

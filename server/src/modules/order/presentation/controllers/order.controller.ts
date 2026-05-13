@@ -4,6 +4,7 @@ import { OrderService } from '../../application/services/order.service'
 import { CreateOrderRequestDto } from '../dto/create-order.request.dto'
 import { OrderResponseDto } from '../dto/order.response.dto'
 import { UpdateOrderStatusRequestDto } from '../dto/update-order-status.request.dto'
+import { UpdateOrderRequestDto } from '../dto/update-order.request.dto'
 
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -46,6 +47,25 @@ export class OrderController {
       const dto = new UpdateOrderStatusRequestDto(req.body)
       const order = await this.orderService.updateStatus(req.params.id as string, dto.status)
       res.status(200).json({ success: true, data: new OrderResponseDto(order) })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const dto = new UpdateOrderRequestDto(req.body)
+      const order = await this.orderService.update(req.params.id as string, { shippingAddress: dto.shippingAddress })
+      res.status(200).json({ success: true, data: new OrderResponseDto(order) })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      await this.orderService.delete(req.params.id as string)
+      res.status(200).json({ success: true, data: null })
     } catch (error) {
       next(error)
     }

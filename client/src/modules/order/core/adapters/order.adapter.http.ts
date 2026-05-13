@@ -35,4 +35,15 @@ export class OrderHttpAdapter implements IOrderPort {
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
+
+  async update(id: string, dto: OrderDomainModel.UpdateOrderDto): Promise<OrderDomainModel.OrderOverviewDto> {
+    const result = await this.httpClient.patch<OrderDomainModel.OrderOverviewDto>(`/orders/${id}`, dto)
+    if (result.error) throw new Error(result.error.message)
+    return result.data.data
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.httpClient.delete(`/orders/${id}`)
+    if (result.error) throw new Error(result.error.message)
+  }
 }

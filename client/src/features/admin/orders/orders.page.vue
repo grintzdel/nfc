@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ShoppingBag, TrendingUp } from 'lucide-vue-next'
+import { Eye, Pencil, ShoppingBag, Trash2, TrendingUp } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
+import type { OrderDomainModel } from '@/modules/order/core/model/order.domain-model'
 import { OrderStatus } from '@/modules/order/core/model/order.domain-model'
+import { useDeleteOrder } from '@/modules/order/ui/hooks/queries/mutation/use-delete-order'
+import { useUpdateOrder } from '@/modules/order/ui/hooks/queries/mutation/use-update-order'
 import { useUpdateOrderStatus } from '@/modules/order/ui/hooks/queries/mutation/use-update-order-status'
 import { useGetAllOrders } from '@/modules/order/ui/hooks/queries/query/use-get-all-orders'
 import StatCard from '@/ui/components/stat-card.vue'
@@ -12,8 +15,14 @@ import AdminLayout from '@/ui/layout/admin-layout.vue'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { TableSkeleton } from '@/ui/skeleton'
 
+import ConfirmDeleteOrderDialog from './components/confirm-delete-order-dialog.vue'
+import OrderDetailDialog from './components/order-detail-dialog.vue'
+import OrderEditDialog from './components/order-edit-dialog.vue'
+
 const { data: orders, isLoading } = useGetAllOrders()
 const updateStatusMutation = useUpdateOrderStatus()
+const updateMutation = useUpdateOrder()
+const deleteMutation = useDeleteOrder()
 
 const items = computed(() => orders.value ?? [])
 
@@ -63,6 +72,53 @@ function handleStatusChange(id: string, status: OrderStatus): void {
       onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la mise à jour'),
     }
   )
+}
+
+const detailOpen = ref(false)
+const editOpen = ref(false)
+const deleteOpen = ref(false)
+const selectedOrder = ref<OrderDomainModel.OrderOverviewDto | null>(null)
+const deleteOrderId = computed(() => selectedOrder.value?.id)
+
+function handleView(order: OrderDomainModel.OrderOverviewDto): void {
+  selectedOrder.value = order
+  detailOpen.value = true
+}
+
+function handleEdit(order: OrderDomainModel.OrderOverviewDto): void {
+  selectedOrder.value = order
+  editOpen.value = true
+}
+
+function handleEditConfirm(payload: { shippingAddress: string }): void {
+  if (!selectedOrder.value) return
+  updateMutation.mutate(
+    { id: selectedOrder.value.id, dto: payload },
+    {
+      onSuccess: () => {
+        toast.success('Commande mise à jour')
+        editOpen.value = false
+      },
+      onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la mise à jour'),
+    }
+  )
+}
+
+function handleDelete(order: OrderDomainModel.OrderOverviewDto): void {
+  selectedOrder.value = order
+  deleteOpen.value = true
+}
+
+function handleDeleteConfirm(): void {
+  if (!selectedOrder.value) return
+  deleteMutation.mutate(selectedOrder.value.id, {
+    onSuccess: () => {
+      toast.success('Commande supprimée')
+      deleteOpen.value = false
+      selectedOrder.value = null
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la suppression'),
+  })
 }
 
 const totalRevenue = computed(() =>
@@ -128,36 +184,39 @@ function formatDate(dateStr: string): string {
 
         <template v-else>
           <div class="overflow-x-auto">
-            <div class="flex min-w-[820px] flex-col">
+            <div class="flex min-w-[960px] flex-col">
               <div class="flex items-center bg-slate-800">
-                <div class="w-[180px] shrink-0 px-4 py-3">
+                <div class="w-[160px] shrink-0 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Date</span>
                 </div>
                 <div class="flex-1 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Articles</span>
                 </div>
-                <div class="w-[140px] shrink-0 px-4 py-3 text-right">
+                <div class="w-[120px] shrink-0 px-4 py-3 text-right">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Montant</span>
                 </div>
-                <div class="w-[120px] shrink-0 px-4 py-3">
+                <div class="w-[110px] shrink-0 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span>
                 </div>
-                <div class="w-[180px] shrink-0 px-4 py-3">
-                  <span class="text-xs font-semibold tracking-wide text-slate-400">Action</span>
+                <div class="w-[170px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Changer statut</span>
+                </div>
+                <div class="flex w-[160px] shrink-0 items-center justify-end px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Actions</span>
                 </div>
               </div>
 
               <div v-for="o in filteredItems" :key="o.id" class="flex items-center border-t border-white/10">
-                <div class="w-[180px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(o.createdAt) }}</div>
+                <div class="w-[160px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(o.createdAt) }}</div>
                 <div class="flex-1 px-4 py-3 text-sm text-slate-50">
                   <span v-for="(it, i) in o.items" :key="i" class="text-sm text-slate-300">
                     {{ it.quantity }}× {{ it.productName }}<span v-if="i < o.items.length - 1">, </span>
                   </span>
                 </div>
-                <div class="w-[140px] shrink-0 px-4 py-3 text-right text-sm font-medium text-slate-50">
+                <div class="w-[120px] shrink-0 px-4 py-3 text-right text-sm font-medium text-slate-50">
                   {{ eurFormatter.format(o.totalAmount) }}
                 </div>
-                <div class="w-[120px] shrink-0 px-4 py-3">
+                <div class="w-[110px] shrink-0 px-4 py-3">
                   <span
                     class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
                     :class="STATUS_CLASS[o.status]"
@@ -165,7 +224,7 @@ function formatDate(dateStr: string): string {
                     {{ STATUS_LABEL[o.status] }}
                   </span>
                 </div>
-                <div class="w-[180px] shrink-0 px-4 py-3">
+                <div class="w-[170px] shrink-0 px-4 py-3">
                   <Select
                     :model-value="o.status"
                     @update:model-value="(v) => handleStatusChange(o.id, v as OrderStatus)"
@@ -180,13 +239,61 @@ function formatDate(dateStr: string): string {
                     </SelectContent>
                   </Select>
                 </div>
+                <div class="flex w-[160px] shrink-0 items-center justify-end gap-1 px-4 py-3">
+                  <button
+                    type="button"
+                    class="rounded-md border border-white/10 p-1.5 text-slate-300 hover:bg-white/5"
+                    title="Voir le détail"
+                    :aria-label="`Voir la commande ${o.id}`"
+                    @click="handleView(o)"
+                  >
+                    <Eye class="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    class="rounded-md border border-white/10 p-1.5 text-slate-300 hover:bg-white/5"
+                    title="Modifier l'adresse"
+                    :aria-label="`Modifier la commande ${o.id}`"
+                    @click="handleEdit(o)"
+                  >
+                    <Pencil class="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    :disabled="o.status === OrderStatus.DELIVERED || deleteMutation.isPending.value"
+                    class="rounded-md border border-red-500/40 p-1.5 text-red-300 hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+                    :title="o.status === OrderStatus.DELIVERED ? 'Impossible : commande livrée' : 'Supprimer'"
+                    :aria-label="`Supprimer la commande ${o.id}`"
+                    @click="handleDelete(o)"
+                  >
+                    <Trash2 class="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
 
-              <TableSkeleton v-if="isLoading && filteredItems.length === 0" :rows="5" :columns="5" />
+              <TableSkeleton v-if="isLoading && filteredItems.length === 0" :rows="5" :columns="6" />
             </div>
           </div>
         </template>
       </div>
     </div>
+
+    <OrderDetailDialog :open="detailOpen" :order="selectedOrder" @update:open="(v) => (detailOpen = v)" />
+
+    <OrderEditDialog
+      :open="editOpen"
+      :order="selectedOrder"
+      :loading="updateMutation.isPending.value"
+      @update:open="(v) => (editOpen = v)"
+      @confirm="handleEditConfirm"
+    />
+
+    <ConfirmDeleteOrderDialog
+      :open="deleteOpen"
+      :order-id="deleteOrderId"
+      :loading="deleteMutation.isPending.value"
+      @update:open="(v) => (deleteOpen = v)"
+      @confirm="handleDeleteConfirm"
+    />
   </AdminLayout>
 </template>

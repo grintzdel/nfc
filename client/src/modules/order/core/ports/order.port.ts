@@ -6,4 +6,6 @@ export interface IOrderPort {
   getById(id: string): Promise<OrderDomainModel.OrderOverviewDto>
   getAllAdmin(): Promise<OrderDomainModel.OrderOverviewDto[]>
   updateStatus(id: string, status: OrderStatus): Promise<OrderDomainModel.OrderOverviewDto>
+  update(id: string, dto: OrderDomainModel.UpdateOrderDto): Promise<OrderDomainModel.OrderOverviewDto>
+  delete(id: string): Promise<void>
 }

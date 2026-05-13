@@ -6,6 +6,7 @@ import { Router } from 'express'
 
 import { OrderService } from './application/services/order.service'
 import { CreateOrderUseCase } from './application/use-cases/create-order/create-order.use-case'
+import { DeleteOrderUseCase } from './application/use-cases/delete-order/delete-order.use-case'
 import { GetAllOrdersUseCase } from './application/use-cases/get-all-orders/get-all-orders.use-case'
 import { GetMyOrdersUseCase } from './application/use-cases/get-my-orders/get-my-orders.use-case'
 import { GetOrderByIdUseCase } from './application/use-cases/get-order-by-id/get-order-by-id.use-case'
@@ -13,6 +14,7 @@ import {
   OnOrderConfirmed,
   UpdateOrderStatusUseCase,
 } from './application/use-cases/update-order-status/update-order-status.use-case'
+import { UpdateOrderUseCase } from './application/use-cases/update-order/update-order.use-case'
 import { IOrderRepository } from './domain/repository/order.repository.interface'
 import { OrderRepositoryMongooseMongo } from './infrastructure/repository/order.repository.mongoose-mongo'
 import { OrderController } from './presentation/controllers/order.controller'
@@ -29,12 +31,16 @@ export function createOrderModule(
   const getOrderByIdUseCase = new GetOrderByIdUseCase(orderRepository)
   const getAllOrdersUseCase = new GetAllOrdersUseCase(orderRepository)
   const updateOrderStatusUseCase = new UpdateOrderStatusUseCase(orderRepository, onOrderConfirmed)
+  const updateOrderUseCase = new UpdateOrderUseCase(orderRepository)
+  const deleteOrderUseCase = new DeleteOrderUseCase(orderRepository)
   const orderService = new OrderService(
     createOrderUseCase,
     getMyOrdersUseCase,
     getOrderByIdUseCase,
     getAllOrdersUseCase,
-    updateOrderStatusUseCase
+    updateOrderStatusUseCase,
+    updateOrderUseCase,
+    deleteOrderUseCase
   )
   const controller = new OrderController(orderService)
 
@@ -49,6 +55,8 @@ export function createOrderModule(
   router.patch('/:id/status', authMiddleware, adminMiddleware, (req, res, next) =>
     controller.updateStatus(req, res, next)
   )
+  router.patch('/:id', authMiddleware, adminMiddleware, (req, res, next) => controller.update(req, res, next))
+  router.delete('/:id', authMiddleware, adminMiddleware, (req, res, next) => controller.delete(req, res, next))
 
   return { router, orderRepository }
 }

@@ -8,6 +8,7 @@ export class OrderResponseDto {
   public readonly status: string
   public readonly shippingAddress: string
   public readonly createdAt: Date
+  public readonly updatedAt: Date
 
   constructor(entity: OrderEntity) {
     this.id = entity.id
@@ -17,5 +18,6 @@ export class OrderResponseDto {
     this.status = entity.status
     this.shippingAddress = entity.shippingAddress
     this.createdAt = entity.createdAt
+    this.updatedAt = entity.updatedAt
   }
 }

@@ -10,3 +10,8 @@ export class InvalidOrderTransitionError extends AppError {
     super(400, `Cannot transition order from "${from}" to "${to}"`)
   }
 }
+export class OrderCannotBeDeletedError extends AppError {
+  constructor(id: string) {
+    super(409, `Order "${id}" has been delivered and cannot be deleted`)
+  }
+}

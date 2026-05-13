@@ -16,6 +16,7 @@ export interface OrderEntityProps {
   shippingAddress: string
   createdAt: Date
   updatedAt: Date
+  deletedAt: Nullable<Date>
 }
 
 export class OrderEntity {
@@ -39,6 +40,7 @@ export class OrderEntity {
       shippingAddress: props.shippingAddress,
       createdAt: props.createdAt ?? now,
       updatedAt: props.updatedAt ?? now,
+      deletedAt: props.deletedAt ?? null,
     })
   }
 
@@ -69,6 +71,9 @@ export class OrderEntity {
   }
   get updatedAt(): Date {
     return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
   }
 
   isPending(): boolean {
@@ -110,6 +115,27 @@ export class OrderEntity {
     if (this.isCancelled()) throw new Error('Order is already cancelled')
     this.props.status = OrderStatus.CANCELLED
     this.props.updatedAt = new Date()
+    return this
+  }
+
+  isDeleted(): boolean {
+    return this.props.deletedAt !== null
+  }
+
+  softDelete(): void {
+    if (!this.props.deletedAt) {
+      this.props.deletedAt = new Date()
+      this.props.updatedAt = new Date()
+    }
+  }
+
+  update(newProps: Partial<Pick<OrderEntityProps, 'shippingAddress'>>): this {
+    if (newProps.shippingAddress !== undefined) {
+      const trimmed = newProps.shippingAddress.trim()
+      if (!trimmed) throw new Error('Shipping address cannot be empty')
+      this.props.shippingAddress = trimmed
+      this.props.updatedAt = new Date()
+    }
     return this
   }
 
