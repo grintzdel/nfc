@@ -5,6 +5,7 @@ export interface IProductRepository {
   findById(id: string): Promise<Nullable<ProductEntity>>
   findBySlug(slug: string): Promise<Nullable<ProductEntity>>
   findFeatured(): Promise<ProductEntity[]>
+  countByCategory(slug: string): Promise<number>
   create(product: ProductEntity): Promise<ProductEntity>
   update(product: ProductEntity): Promise<ProductEntity>
   delete(id: string): Promise<void>

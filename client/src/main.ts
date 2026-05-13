@@ -84,6 +84,12 @@ const router = createRouter({
       meta: { noLayout: true, requiresAdmin: true },
     },
     {
+      path: '/admin/categories',
+      name: 'admin-categories',
+      component: () => import('./pages/admin/categories/page.vue'),
+      meta: { noLayout: true, requiresAdmin: true },
+    },
+    {
       path: '/admin/products',
       name: 'admin-products',
       component: () => import('./pages/admin/products/page.vue'),

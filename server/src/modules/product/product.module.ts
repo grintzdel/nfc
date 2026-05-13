@@ -1,4 +1,5 @@
 import { JwtServiceSecurity } from '@modules/auth/application/services/security/jwt.service-security'
+import { ICategoryRepository } from '@modules/category/domain/repository/category.repository.interface'
 import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
 import { Router } from 'express'
 
@@ -12,14 +13,14 @@ import { UpdateProductUseCase } from './application/use-cases/update-product/upd
 import { ProductRepositoryMongooseMongo } from './infrastructure/repository/product.repository.mongoose-mongo'
 import { ProductController } from './presentation/controllers/product.controller'
 
-export function createProductModule(jwtService: JwtServiceSecurity) {
+export function createProductModule(jwtService: JwtServiceSecurity, categoryRepository: ICategoryRepository) {
   const repository = new ProductRepositoryMongooseMongo()
 
-  const createUseCase = new CreateProductUseCase(repository)
+  const createUseCase = new CreateProductUseCase(repository, categoryRepository)
   const getAllUseCase = new GetAllProductsUseCase(repository)
   const getBySlugUseCase = new GetProductBySlugUseCase(repository)
   const getFeaturedUseCase = new GetFeaturedProductsUseCase(repository)
-  const updateUseCase = new UpdateProductUseCase(repository)
+  const updateUseCase = new UpdateProductUseCase(repository, categoryRepository)
   const deleteUseCase = new DeleteProductUseCase(repository)
 
   const service = new ProductService(

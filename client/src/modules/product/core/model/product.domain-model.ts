@@ -14,6 +14,7 @@ export namespace ProductDomainModel {
     stock: number
     imageUrl: string
     featured: boolean
+    category: string
     createdAt: string
     updatedAt: string
   }

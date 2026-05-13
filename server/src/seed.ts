@@ -8,6 +8,7 @@ import { connectDatabase } from './config/database'
 import { UserModel } from './modules/auth/infrastructure/schema/user.schema'
 import { BraceletStatus } from './modules/bracelet/domain/constants/bracelet-status.constant'
 import { BraceletModel } from './modules/bracelet/infrastructure/schema/bracelet.schema'
+import { CategoryModel } from './modules/category/infrastructure/schema/category.schema'
 import { CheckInModel } from './modules/check-in/infrastructure/schema/check-in.schema'
 import { EventStatus } from './modules/event/domain/constants/event-status.constant'
 import { EventModel } from './modules/event/infrastructure/schema/event.schema'
@@ -43,6 +44,7 @@ async function seed(): Promise<void> {
   await connectDatabase(process.env.MONGODB_URI!)
 
   await UserModel.deleteMany({})
+  await CategoryModel.deleteMany({})
   await ProductModel.deleteMany({})
   await EventModel.deleteMany({})
   await BraceletModel.deleteMany({})
@@ -50,6 +52,12 @@ async function seed(): Promise<void> {
   await CheckInModel.deleteMany({})
   await SupplyOrderModel.deleteMany({})
   await OrderModel.deleteMany({})
+
+  await CategoryModel.create([
+    { name: 'Bracelet', slug: 'bracelet', description: 'Bracelets NFC réutilisables pour vos événements.' },
+    { name: 'Pass', slug: 'pass', description: 'Pass événement avec check-in NFC et accès personnalisé.' },
+    { name: 'Bundle', slug: 'bundle', description: 'Packs combinant bracelets, pass et accessoires.' },
+  ])
 
   const hashedPassword = await bcrypt.hash('password123', 10)
   const adminPassword = await bcrypt.hash('admin2026', 10)

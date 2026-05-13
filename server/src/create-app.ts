@@ -5,6 +5,7 @@ import { createAnalyticsModule } from './modules/analytics/analytics.module'
 import { createAuthModule } from './modules/auth/auth.module'
 import { createBraceletModule } from './modules/bracelet/bracelet.module'
 import { createCartModule } from './modules/cart/cart.module'
+import { createCategoryModule } from './modules/category/category.module'
 import { createCheckInModule } from './modules/check-in/check-in.module'
 import { createEventModule } from './modules/event/event.module'
 import { createMarketingModule } from './modules/marketing/marketing.module'
@@ -33,7 +34,13 @@ export function createApp(): Express {
   app.use(loggerMiddleware)
 
   const { router: authRouter, jwtService, userRepository } = createAuthModule()
-  const { router: productRouter, productRepository } = createProductModule(jwtService)
+  const {
+    router: categoryRouter,
+    categoryRepository,
+    attachDeps: attachCategoryDeps,
+  } = createCategoryModule(jwtService)
+  const { router: productRouter, productRepository } = createProductModule(jwtService, categoryRepository)
+  attachCategoryDeps({ productRepository })
   const { router: cartRouter, cartItemRepository } = createCartModule(jwtService)
   const { router: supplyOrderRouter, supplyOrderRepository } = createSupplyOrderModule(jwtService)
   const {
@@ -79,6 +86,7 @@ export function createApp(): Express {
 
   app.use('/api/auth', authRouter)
   app.use('/api/users', createUserModule(userRepository, jwtService))
+  app.use('/api/categories', categoryRouter)
   app.use('/api/products', productRouter)
   app.use('/api/cart', cartRouter)
   app.use('/api/orders', orderRouter)

@@ -33,6 +33,7 @@ function makeProduct(
     imageUrl: '/images/pulse-classic.webp',
     stock: 100,
     featured: true,
+    category: 'bracelet',
     createdAt: '2026-01-01T00:00:00.000Z',
     updatedAt: '2026-01-01T00:00:00.000Z',
     ...overrides,

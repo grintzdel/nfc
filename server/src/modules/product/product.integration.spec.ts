@@ -3,11 +3,16 @@ import request from 'supertest'
 
 import { setupTestApp, teardownTestApp, clearDatabase } from '../../__tests__/integration/setup'
 import { UserModel } from '../auth/infrastructure/schema/user.schema'
+import { CategoryModel } from '../category/infrastructure/schema/category.schema'
 
 describe('Products CRUD integration', () => {
   let app: Express
   let adminToken: string
   let customerToken: string
+
+  async function seedDefaultCategory(): Promise<void> {
+    await CategoryModel.create({ name: 'Bracelet', slug: 'bracelet', description: '' })
+  }
 
   async function adminLogin(): Promise<string> {
     await request(app)
@@ -40,6 +45,7 @@ describe('Products CRUD integration', () => {
     await clearDatabase()
     adminToken = await adminLogin()
     customerToken = await customerLogin()
+    await seedDefaultCategory()
   })
 
   describe('full CRUD lifecycle', () => {

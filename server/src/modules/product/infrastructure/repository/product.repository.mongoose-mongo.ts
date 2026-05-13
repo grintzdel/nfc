@@ -1,4 +1,3 @@
-import { ProductCategory } from '../../domain/constants/product.constant'
 import { ProductEntity } from '../../domain/entity/product.entity'
 import { IProductRepository } from '../../domain/repository/product.repository.interface'
 import { ProductModel, ProductDocument } from '../schema/product.schema'
@@ -12,7 +11,7 @@ export class ProductRepositoryMongooseMongo implements IProductRepository {
       description: doc.description,
       price: doc.price,
       images: doc.images,
-      category: doc.category as ProductCategory,
+      category: doc.category,
       variants: doc.variants,
       stock: doc.stock,
       featured: doc.featured,
@@ -40,6 +39,10 @@ export class ProductRepositoryMongooseMongo implements IProductRepository {
   async findFeatured(): Promise<ProductEntity[]> {
     const docs = await ProductModel.find({ featured: true, deletedAt: null })
     return docs.map((doc) => this.toEntity(doc))
+  }
+
+  async countByCategory(slug: string): Promise<number> {
+    return ProductModel.countDocuments({ category: slug, deletedAt: null })
   }
 
   async create(product: ProductEntity): Promise<ProductEntity> {

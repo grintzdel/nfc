@@ -1,5 +1,3 @@
-import { ProductCategory } from '../constants/product.constant'
-
 export interface ProductVariant {
   name: string
   color: string
@@ -13,7 +11,7 @@ export interface ProductEntityProps {
   description: string
   price: number
   images: string[]
-  category: ProductCategory
+  category: string
   variants: ProductVariant[]
   stock: number
   featured: boolean
@@ -44,7 +42,7 @@ export class ProductEntity {
       description: props.description ?? '',
       price: props.price,
       images: props.images ?? [],
-      category: props.category ?? ProductCategory.BRACELET,
+      category: props.category ?? 'bracelet',
       variants: props.variants ?? [],
       stock: props.stock ?? 0,
       featured: props.featured ?? false,
@@ -76,7 +74,7 @@ export class ProductEntity {
   get images(): string[] {
     return this.props.images
   }
-  get category(): ProductCategory {
+  get category(): string {
     return this.props.category
   }
   get variants(): ProductVariant[] {

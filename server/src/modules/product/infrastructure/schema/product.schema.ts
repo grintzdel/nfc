@@ -31,7 +31,7 @@ const productSchema = new Schema<ProductDocument>(
     description: { type: String, default: '' },
     price: { type: Number, required: true },
     images: { type: [String], default: [] },
-    category: { type: String, enum: ['bracelet', 'pass', 'bundle'], default: 'bracelet' },
+    category: { type: String, default: 'bracelet' },
     variants: { type: [productVariantSchema], default: [] },
     stock: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },

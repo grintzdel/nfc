@@ -2,6 +2,7 @@ import type { Express } from 'express'
 import request from 'supertest'
 
 import { UserModel } from '../../modules/auth/infrastructure/schema/user.schema'
+import { CategoryModel } from '../../modules/category/infrastructure/schema/category.schema'
 
 export interface AuthFixture {
   token: string
@@ -71,8 +72,15 @@ export function authHeader(token: string): { Authorization: string } {
 export async function createProduct(
   app: Express,
   adminToken: string,
-  overrides: Partial<{ name: string; price: number; description: string; stock: number }> = {}
+  overrides: Partial<{ name: string; price: number; description: string; stock: number; category: string }> = {}
 ): Promise<{ id: string; slug: string }> {
+  const categorySlug = overrides.category ?? 'bracelet'
+  await CategoryModel.updateOne(
+    { slug: categorySlug },
+    { $setOnInsert: { name: categorySlug, slug: categorySlug, description: '' } },
+    { upsert: true }
+  )
+
   const response = await request(app)
     .post('/api/products')
     .set(authHeader(adminToken))
@@ -81,6 +89,7 @@ export async function createProduct(
       price: overrides.price ?? 19.9,
       description: overrides.description ?? 'A pass for the event',
       stock: overrides.stock ?? 100,
+      category: categorySlug,
     })
   return { id: response.body.data.id as string, slug: response.body.data.slug as string }
 }

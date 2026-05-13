@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, LayoutDashboard, Package, Radio, ShoppingBag, Users, Watch, X } from 'lucide-vue-next'
+import { Calendar, LayoutDashboard, Package, Radio, ShoppingBag, Tag, Users, Watch, X } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
@@ -46,6 +46,7 @@ const sections: NavSection[] = [
   {
     title: 'E-commerce',
     items: [
+      { label: 'Catégories', icon: Tag, to: '/admin/categories' },
       { label: 'Catalogue', icon: Package, to: '/admin/products' },
       { label: 'Commandes', icon: ShoppingBag, to: '/admin/orders' },
     ],

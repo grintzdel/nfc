@@ -6,6 +6,8 @@ import { BraceletHttpAdapter } from '@/modules/bracelet/core/adapters/bracelet.a
 import type { IBraceletPort } from '@/modules/bracelet/core/ports/bracelet.port'
 import { CartHttpAdapter } from '@/modules/cart/core/adapters/cart.adapter.http'
 import type { ICartPort } from '@/modules/cart/core/ports/cart.port'
+import { CategoryHttpAdapter } from '@/modules/category/core/adapters/category.adapter.http'
+import type { ICategoryPort } from '@/modules/category/core/ports/category.port'
 import { CheckInHttpAdapter } from '@/modules/check-in/core/adapters/check-in.adapter.http'
 import type { ICheckInPort } from '@/modules/check-in/core/ports/check-in.port'
 import { EventHttpAdapter } from '@/modules/event/core/adapters/event.adapter.http'
@@ -32,6 +34,7 @@ import type { IUserPort } from '@/modules/user/core/ports/user.port'
 
 export type Dependencies = {
   productPort: IProductPort
+  categoryPort: ICategoryPort
   authPort: IAuthPort
   eventPort: IEventPort
   braceletPort: IBraceletPort
@@ -58,6 +61,7 @@ export function createDependencies(): Dependencies {
 
   return {
     productPort: new ProductHttpAdapter(httpClient),
+    categoryPort: new CategoryHttpAdapter(httpClient),
     authPort: new AuthHttpAdapter(),
     eventPort: new EventHttpAdapter(httpClient),
     braceletPort: new BraceletHttpAdapter(httpClient),

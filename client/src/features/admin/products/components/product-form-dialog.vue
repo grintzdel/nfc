@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
+import { useGetCategories } from '@/modules/category/ui/hooks/queries/query/use-get-categories'
 import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 
@@ -11,12 +12,12 @@ type FormPayload = {
   price: number
   stock?: number
   featured?: boolean
+  category?: string
 }
 
 const props = defineProps<{
   open: boolean
   loading?: boolean
-  // When set, the dialog is in "edit" mode and pre-fills from this product.
   product?: ProductDomainModel.ProductOverviewDto | null
 }>()
 
@@ -24,6 +25,9 @@ const emit = defineEmits<{
   'update:open': [value: boolean]
   confirm: [payload: FormPayload]
 }>()
+
+const { data: categories } = useGetCategories()
+const categoryOptions = computed(() => categories.value ?? [])
 
 const isEdit = () => Boolean(props.product)
 
@@ -33,6 +37,7 @@ const description = ref('')
 const price = ref(0)
 const stock = ref(0)
 const featured = ref(false)
+const category = ref('')
 
 watch(
   () => props.open,
@@ -45,6 +50,7 @@ watch(
       price.value = props.product.price
       stock.value = props.product.stock
       featured.value = props.product.featured
+      category.value = props.product.category ?? categoryOptions.value[0]?.slug ?? ''
     } else {
       name.value = ''
       slug.value = ''
@@ -52,12 +58,17 @@ watch(
       price.value = 0
       stock.value = 0
       featured.value = false
+      category.value = categoryOptions.value[0]?.slug ?? ''
     }
   }
 )
 
+watch(categoryOptions, (options) => {
+  if (!category.value && options.length > 0) category.value = options[0]!.slug
+})
+
 function handleConfirm(): void {
-  if (!name.value.trim() || price.value < 0) return
+  if (!name.value.trim() || price.value < 0 || !category.value) return
   emit('confirm', {
     name: name.value.trim(),
     slug: slug.value.trim() || undefined,
@@ -65,6 +76,7 @@ function handleConfirm(): void {
     price: price.value,
     stock: stock.value,
     featured: featured.value,
+    category: category.value,
   })
 }
 </script>
@@ -99,13 +111,14 @@ function handleConfirm(): void {
             />
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-xs uppercase tracking-wider text-slate-400">Catégorie (info, non bloquant)</label>
-            <input
-              type="text"
-              disabled
-              value="à venir"
-              class="rounded-md border border-white/10 bg-slate-800/40 px-3 py-2 text-sm text-slate-500 outline-none"
-            />
+            <label class="text-xs uppercase tracking-wider text-slate-400">Catégorie *</label>
+            <select
+              v-model="category"
+              class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none focus:border-violet-400"
+            >
+              <option v-if="categoryOptions.length === 0" disabled value="">Aucune catégorie</option>
+              <option v-for="c in categoryOptions" :key="c.id" :value="c.slug">{{ c.name }}</option>
+            </select>
           </div>
         </div>
 
@@ -157,7 +170,7 @@ function handleConfirm(): void {
         </button>
         <button
           type="button"
-          :disabled="!name.trim() || price < 0 || loading"
+          :disabled="!name.trim() || price < 0 || !category || loading"
           class="rounded-md bg-[#8B5CF6] px-3.5 py-2 text-sm font-semibold text-violet-50 hover:bg-violet-500 disabled:opacity-50"
           @click="handleConfirm"
         >
