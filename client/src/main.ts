@@ -6,7 +6,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { createDependencies } from '@/modules/app/core/dependencies'
 import { DEPENDENCIES_KEY } from '@/modules/app/ui/hooks/use-dependencies'
 
-import App from './App.vue'
+import App from './app.vue'
 
 import './assets/main.css'
 

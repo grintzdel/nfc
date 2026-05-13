@@ -1,3 +1,3 @@
-export { default as Skeleton } from './Skeleton.vue'
-export { default as TableSkeleton } from './TableSkeleton.vue'
-export { default as CardSkeleton } from './CardSkeleton.vue'
+export { default as Skeleton } from './skeleton.vue'
+export { default as TableSkeleton } from './table-skeleton.vue'
+export { default as CardSkeleton } from './card-skeleton.vue'
