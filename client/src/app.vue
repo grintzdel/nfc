@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { Toaster } from 'vue-sonner'
 
 import AppLayout from './components/layout/app-layout.vue'
 
@@ -21,6 +22,7 @@ const noLayout = computed(() => route.meta.noLayout === true)
       <component :is="Component" :key="route.fullPath" />
     </transition>
   </router-view>
+  <Toaster position="top-right" theme="dark" rich-colors />
 </template>
 
 <style>

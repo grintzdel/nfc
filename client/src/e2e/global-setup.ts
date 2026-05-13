@@ -8,6 +8,8 @@ import { signInAdmin, signUpUser } from './fixtures/seed'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const authDir = resolve(here, '.auth')
+const protocol = process.env.VITE_DISABLE_HTTPS === '1' ? 'http' : 'https'
+const origin = `${protocol}://localhost:5173`
 
 function writeStorageState(file: string, token: string): void {
   mkdirSync(authDir, { recursive: true })
@@ -15,7 +17,7 @@ function writeStorageState(file: string, token: string): void {
     resolve(authDir, file),
     JSON.stringify({
       cookies: [],
-      origins: [{ origin: 'http://localhost:5173', localStorage: [{ name: 'token', value: token }] }],
+      origins: [{ origin, localStorage: [{ name: 'token', value: token }] }],
     })
   )
 }

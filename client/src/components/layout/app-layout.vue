@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Toaster } from 'vue-sonner'
-
 import CartDrawer from '@/modules/cart/ui/components/cart-drawer.vue'
 
 import AppFooter from './app-footer.vue'
@@ -15,6 +13,5 @@ import AppNav from './app-nav.vue'
     </main>
     <AppFooter />
     <CartDrawer />
-    <Toaster position="top-right" theme="dark" rich-colors />
   </div>
 </template>

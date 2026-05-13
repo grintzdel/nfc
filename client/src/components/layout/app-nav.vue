@@ -61,6 +61,7 @@ const navLinks: NavLink[] = [
           </RouterLink>
         </template>
         <button
+          aria-label="Ouvrir le panier"
           class="relative rounded-md p-2 text-slate-300 transition-colors hover:text-white"
           @click="openCartDrawer"
         >
@@ -99,6 +100,7 @@ const navLinks: NavLink[] = [
           <User class="h-5 w-5" />
         </RouterLink>
         <button
+          aria-label="Ouvrir le panier"
           class="relative rounded-md p-2 text-slate-300 transition-colors hover:text-white"
           @click="openCartDrawer"
         >

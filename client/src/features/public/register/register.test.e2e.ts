@@ -24,7 +24,7 @@ test.describe('Register Page', () => {
     await page.getByLabel(/Mot de passe/i).fill('Pulse2026Test!')
     await page.getByRole('button', { name: /Creer|S'inscrire|Inscription/i }).click()
 
-    await expect(page).toHaveURL(/^http:\/\/localhost:5173\/(\?.*)?$/)
+    await expect(page).toHaveURL(/^https?:\/\/localhost:5173\/(\?.*)?$/)
     const token = await page.evaluate(() => localStorage.getItem('token'))
     expect(token).toBeTruthy()
     await ctx.close()

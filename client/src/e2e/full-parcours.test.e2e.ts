@@ -15,7 +15,7 @@ test.describe('Full user parcours (signup → SaaS → cart → checkout)', () =
     await page.getByPlaceholder('••••••••').fill(password)
     await page.getByRole('button', { name: /Creer mon compte/ }).click()
 
-    await expect(page).toHaveURL('http://localhost:5173/')
+    await expect(page).toHaveURL('/')
     await expect(page.getByText(/Compte cree avec succes/)).toBeVisible({ timeout: 5_000 })
 
     await page.evaluate(() => localStorage.removeItem('token'))
@@ -23,7 +23,7 @@ test.describe('Full user parcours (signup → SaaS → cart → checkout)', () =
     await page.getByPlaceholder('vous@exemple.com').fill(email)
     await page.getByPlaceholder('••••••••').fill(password)
     await page.getByRole('button', { name: /Se connecter/ }).click()
-    await expect(page).toHaveURL('http://localhost:5173/')
+    await expect(page).toHaveURL('/')
 
     await page.goto('/me/events')
     await expect(page.getByRole('heading', { name: 'Mes événements' })).toBeVisible()

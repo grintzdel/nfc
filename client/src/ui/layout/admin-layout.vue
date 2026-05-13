@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { Toaster } from 'vue-sonner'
 
 import AdminHeader from './admin-header.vue'
 import AdminSidebar from './admin-sidebar.vue'
@@ -30,6 +29,5 @@ watch(
         <slot />
       </main>
     </div>
-    <Toaster position="top-right" theme="dark" rich-colors />
   </div>
 </template>

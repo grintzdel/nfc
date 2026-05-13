@@ -11,7 +11,7 @@ test.describe('Admin Bracelets Page', () => {
     const ctx = await browser.newContext({ storageState: 'src/e2e/.auth/user.json' })
     const page = await ctx.newPage()
     await page.goto('/admin/bracelets')
-    await expect(page).toHaveURL('http://localhost:5173/')
+    await expect(page).toHaveURL('/')
     await ctx.close()
   })
 })
