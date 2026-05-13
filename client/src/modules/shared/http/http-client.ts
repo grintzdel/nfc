@@ -85,6 +85,13 @@ export class HttpClient {
       return { data: null, error: { message, status: response.status } }
     }
 
+    if (response.status === 204 || response.headers.get('content-length') === '0') {
+      return {
+        data: { data: undefined as T, status: response.status, headers: response.headers },
+        error: null,
+      }
+    }
+
     const jsonResult = await tryCatch<{ success: boolean; data: T; error?: string }>(
       response.json() as Promise<{ success: boolean; data: T; error?: string }>
     )
