@@ -15,7 +15,7 @@ const navLinks: NavLink[] = [
   { label: 'Fonctionnalités', to: '/#features' },
   { label: 'Catalogue', to: '/shop' },
   { label: 'Événements', to: '/#events' },
-  { label: 'Contact', to: '/#contact' },
+  { label: 'Contact', to: '/contact' },
 ]
 </script>
 
