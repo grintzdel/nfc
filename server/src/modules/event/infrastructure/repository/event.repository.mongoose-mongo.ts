@@ -67,7 +67,7 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
       status: EventStatus.UPCOMING,
       startsAt: { $gt: new Date() },
       deletedAt: null,
-    }).toSorted({ startsAt: 1 })
+    }).sort({ startsAt: 1 })
     return doc ? toEntity(doc) : null
   }
 
@@ -95,7 +95,7 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
       EventModel.find(filter)
         .skip((page - 1) * limit)
         .limit(limit)
-        .toSorted({ startsAt: -1 }),
+        .sort({ startsAt: -1 }),
       EventModel.countDocuments(filter),
     ])
     return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }

@@ -29,12 +29,12 @@ export class SupplyOrderRepositoryMongooseMongo implements ISupplyOrderRepositor
   }
 
   async findAll(): Promise<SupplyOrderEntity[]> {
-    const docs = await SupplyOrderModel.find().toSorted({ createdAt: -1 })
+    const docs = await SupplyOrderModel.find().sort({ createdAt: -1 })
     return docs.map(toEntity)
   }
 
   async findPending(): Promise<Nullable<SupplyOrderEntity>> {
-    const doc = await SupplyOrderModel.findOne({ status: SupplyOrderStatus.PENDING }).toSorted({
+    const doc = await SupplyOrderModel.findOne({ status: SupplyOrderStatus.PENDING }).sort({
       estimatedDeliveryDate: 1,
     })
     return doc ? toEntity(doc) : null

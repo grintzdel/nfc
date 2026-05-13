@@ -29,7 +29,7 @@ export class UserRepositoryMongooseMongo implements IUserRepository {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    const docs = await UserModel.find({ deletedAt: null }).toSorted({ createdAt: -1 })
+    const docs = await UserModel.find({ deletedAt: null }).sort({ createdAt: -1 })
     return docs.map((doc) => this.toEntity(doc))
   }
 

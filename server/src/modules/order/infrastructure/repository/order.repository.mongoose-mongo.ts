@@ -18,7 +18,7 @@ export class OrderRepositoryMongooseMongo implements IOrderRepository {
   }
 
   async findAll(): Promise<OrderEntity[]> {
-    const docs = await OrderModel.find().toSorted({ createdAt: -1 })
+    const docs = await OrderModel.find().sort({ createdAt: -1 })
     return docs.map((doc) => this.toEntity(doc))
   }
   async findById(id: string): Promise<Nullable<OrderEntity>> {
@@ -26,7 +26,7 @@ export class OrderRepositoryMongooseMongo implements IOrderRepository {
     return doc ? this.toEntity(doc) : null
   }
   async findByUserId(userId: string): Promise<OrderEntity[]> {
-    const docs = await OrderModel.find({ userId }).toSorted({ createdAt: -1 })
+    const docs = await OrderModel.find({ userId }).sort({ createdAt: -1 })
     return docs.map((doc) => this.toEntity(doc))
   }
   async create(order: OrderEntity): Promise<OrderEntity> {

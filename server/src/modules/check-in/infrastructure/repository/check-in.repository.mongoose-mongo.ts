@@ -76,7 +76,7 @@ export class CheckInRepositoryMongooseMongo implements ICheckInRepository {
     const filter = { eventId }
     const [docs, total] = await Promise.all([
       CheckInModel.find(filter)
-        .toSorted({ createdAt: -1 })
+        .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit),
       CheckInModel.countDocuments(filter),

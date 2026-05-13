@@ -68,7 +68,7 @@ export class ParticipantRepositoryMongooseMongo implements IParticipantRepositor
     }
     const [docs, total] = await Promise.all([
       ParticipantModel.find(filter)
-        .toSorted({ registeredAt: -1 })
+        .sort({ registeredAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit),
       ParticipantModel.countDocuments(filter),
@@ -92,7 +92,7 @@ export class ParticipantRepositoryMongooseMongo implements IParticipantRepositor
     }
     const [docs, total] = await Promise.all([
       ParticipantModel.find(filter)
-        .toSorted({ registeredAt: -1 })
+        .sort({ registeredAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit),
       ParticipantModel.countDocuments(filter),

@@ -35,6 +35,16 @@ function decrement() {
 function increment() {
   quantity.value++
 }
+
+function handleAddToCart() {
+  addItem(props.product.id, quantity.value)
+  toast.success(`${quantity.value} article(s) ajoute(s) au panier`)
+}
+
+function handleBuyNow() {
+  addItem(props.product.id, quantity.value)
+  openCartDrawer()
+}
 </script>
 
 <template>
@@ -104,10 +114,7 @@ function increment() {
           <button
             class="flex flex-1 items-center justify-center gap-2 rounded-md bg-pulse-violet px-6 py-3 text-sm font-medium text-white transition-all hover:bg-pulse-violet-dark hover:shadow-lg hover:shadow-violet-500/25 disabled:opacity-40"
             :disabled="product.stock === 0"
-            @click="
-              addItem(product.id, quantity)
-              toast.success(`${quantity} article(s) ajoute(s) au panier`)
-            "
+            @click="handleAddToCart"
           >
             <ShoppingCart class="h-4 w-4" />
             Ajouter au panier
@@ -115,10 +122,7 @@ function increment() {
           <button
             class="flex-1 rounded-md border border-slate-600 bg-slate-50 px-6 py-3 text-sm font-medium text-slate-800 transition-colors hover:bg-white disabled:opacity-40"
             :disabled="product.stock === 0"
-            @click="
-              addItem(product.id, quantity)
-              openCartDrawer()
-            "
+            @click="handleBuyNow"
           >
             Acheter maintenant
           </button>
