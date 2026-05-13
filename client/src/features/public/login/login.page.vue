@@ -107,8 +107,9 @@ async function handleSubmit() {
 
         <form class="flex flex-col gap-3.5" @submit.prevent="handleSubmit">
           <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-slate-300">Adresse email</label>
+            <label for="login-email" class="text-sm font-medium text-slate-300">Adresse email</label>
             <input
+              id="login-email"
               v-model="email"
               type="email"
               placeholder="vous@exemple.com"
@@ -116,8 +117,9 @@ async function handleSubmit() {
             />
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-slate-300">Mot de passe</label>
+            <label for="login-password" class="text-sm font-medium text-slate-300">Mot de passe</label>
             <input
+              id="login-password"
               v-model="password"
               type="password"
               placeholder="••••••••"

@@ -18,8 +18,8 @@ test.describe('Register Page', () => {
     await page.goto('/register')
 
     const email = `e2e-register-${Date.now()}@pulse.test`
-    await page.getByLabel(/Pre[nm]om/i).fill('E2E')
-    await page.getByLabel(/Nom/i).fill('Register')
+    await page.getByLabel(/Pr[ée]nom/i).fill('E2E')
+    await page.getByLabel('Nom', { exact: true }).fill('Register')
     await page.getByLabel(/Email/i).fill(email)
     await page.getByLabel(/Mot de passe/i).fill('Pulse2026Test!')
     await page.getByRole('button', { name: /Creer|S'inscrire|Inscription/i }).click()

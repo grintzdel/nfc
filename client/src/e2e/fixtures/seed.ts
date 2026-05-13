@@ -1,12 +1,25 @@
 const API_BASE = process.env.E2E_API_BASE ?? 'http://localhost:3001/api'
 
+async function fetchWithRetry(url: string, init: RequestInit, attempts = 10, backoffMs = 1000): Promise<Response> {
+  let lastError: unknown
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fetch(url, init)
+    } catch (err) {
+      lastError = err
+      await new Promise((resolve) => setTimeout(resolve, backoffMs))
+    }
+  }
+  throw lastError
+}
+
 export async function signUpUser(payload: {
   firstName: string
   lastName: string
   email: string
   password: string
 }): Promise<{ token: string }> {
-  const registerRes = await fetch(`${API_BASE}/auth/register`, {
+  const registerRes = await fetchWithRetry(`${API_BASE}/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -17,7 +30,7 @@ export async function signUpUser(payload: {
     const body = await registerRes.text()
     throw new Error(`Seed register failed (${registerRes.status}): ${body}`)
   }
-  const loginRes = await fetch(`${API_BASE}/auth/login`, {
+  const loginRes = await fetchWithRetry(`${API_BASE}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: payload.email, password: payload.password }),
@@ -32,7 +45,7 @@ export async function signUpUser(payload: {
 export async function signInAdmin(): Promise<{ token: string }> {
   const email = process.env.E2E_ADMIN_EMAIL ?? 'admin@gmail.com'
   const password = process.env.E2E_ADMIN_PASSWORD ?? 'admin2026'
-  const loginRes = await fetch(`${API_BASE}/auth/login`, {
+  const loginRes = await fetchWithRetry(`${API_BASE}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),

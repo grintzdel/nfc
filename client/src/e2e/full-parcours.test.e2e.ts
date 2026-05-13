@@ -10,7 +10,7 @@ test.describe('Full user parcours (signup → SaaS → cart → checkout)', () =
 
     await page.goto('/register')
     await page.getByPlaceholder('Prenom').fill('Parcours')
-    await page.getByPlaceholder('Nom').fill('Tester')
+    await page.getByPlaceholder('Nom', { exact: true }).fill('Tester')
     await page.getByPlaceholder('vous@exemple.com').fill(email)
     await page.getByPlaceholder('••••••••').fill(password)
     await page.getByRole('button', { name: /Creer mon compte/ }).click()

@@ -5,6 +5,7 @@ const config: Config = {
   testEnvironment: 'node',
   roots: ['<rootDir>/src'],
   testMatch: ['**/*.spec.ts', '**/*.test.ts'],
+  globalSetup: '<rootDir>/src/__tests__/integration/global-setup.ts',
   moduleNameMapper: {
     '^@modules/(.*)$': '<rootDir>/src/modules/$1',
     '^@shared/(.*)$': '<rootDir>/src/shared/$1',

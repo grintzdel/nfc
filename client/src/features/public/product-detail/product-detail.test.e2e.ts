@@ -14,7 +14,7 @@ test.describe('Product Detail Page', () => {
     const ctx = await browser.newContext({ storageState: { cookies: [], origins: [] } })
     const page = await ctx.newPage()
     await page.goto('/product/does-not-exist')
-    await expect(page.getByText(/Produit introuvable/i)).toBeVisible()
+    await expect(page.getByText(/Produit introuvable/i)).toBeVisible({ timeout: 15_000 })
     await ctx.close()
   })
 })

@@ -114,25 +114,30 @@ async function handleSubmit() {
 
         <form class="flex flex-col gap-3.5" @submit.prevent="handleSubmit">
           <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-slate-300">Nom complet</label>
+            <span class="text-sm font-medium text-slate-300">Nom complet</span>
             <div class="flex gap-3">
               <input
+                id="register-firstName"
                 v-model="firstName"
                 type="text"
                 placeholder="Prenom"
+                aria-label="Prénom"
                 class="w-1/2 rounded-md border border-slate-700 bg-[#0F172A] px-3 py-2.5 text-sm text-slate-50 placeholder:text-slate-500 focus:border-violet-500 focus:outline-none"
               />
               <input
+                id="register-lastName"
                 v-model="lastName"
                 type="text"
                 placeholder="Nom"
+                aria-label="Nom"
                 class="w-1/2 rounded-md border border-slate-700 bg-[#0F172A] px-3 py-2.5 text-sm text-slate-50 placeholder:text-slate-500 focus:border-violet-500 focus:outline-none"
               />
             </div>
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-slate-300">Adresse email</label>
+            <label for="register-email" class="text-sm font-medium text-slate-300">Adresse email</label>
             <input
+              id="register-email"
               v-model="email"
               type="email"
               placeholder="vous@exemple.com"
@@ -140,8 +145,9 @@ async function handleSubmit() {
             />
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="text-sm font-medium text-slate-300">Mot de passe</label>
+            <label for="register-password" class="text-sm font-medium text-slate-300">Mot de passe</label>
             <input
+              id="register-password"
               v-model="password"
               type="password"
               placeholder="••••••••"

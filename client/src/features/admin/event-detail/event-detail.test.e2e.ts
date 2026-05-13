@@ -19,7 +19,7 @@ test.describe('Admin Event Detail', () => {
     const eventId = await resolveEventIdBySlug(DEMO_SLUG, request)
     await page.goto(`/admin/events/${eventId}`)
 
-    await expect(page.getByRole('heading', { level: 1, name: 'Pulse Demo 2026' })).toBeVisible()
+    await expect(page.getByRole('main').getByRole('heading', { level: 1, name: 'Pulse Demo 2026' })).toBeVisible()
     await expect(page.getByText('Page publique')).toBeVisible()
 
     await expect(page.getByText(/Participants$/).first()).toBeVisible()

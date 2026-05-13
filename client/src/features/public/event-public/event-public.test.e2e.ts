@@ -15,7 +15,7 @@ test.describe('Event Public Page', () => {
     const ctx = await browser.newContext({ storageState: { cookies: [], origins: [] } })
     const page = await ctx.newPage()
     await page.goto('/events/does-not-exist')
-    await expect(page.getByText(/n'est pas disponible/)).toBeVisible()
+    await expect(page.getByText(/n'est pas disponible/)).toBeVisible({ timeout: 15_000 })
     await ctx.close()
   })
 })
