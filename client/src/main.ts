@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
+import { createHead } from '@unhead/vue/client'
 import App from './App.vue'
 import { createDependencies } from '@/modules/app/core/dependencies'
 import { DEPENDENCIES_KEY } from '@/modules/app/ui/hooks/use-dependencies'
@@ -113,5 +114,6 @@ router.beforeEach((to) => {
 const app = createApp(App)
 app.use(router)
 app.use(VueQueryPlugin)
+app.use(createHead())
 app.provide(DEPENDENCIES_KEY, createDependencies())
 app.mount('#app')

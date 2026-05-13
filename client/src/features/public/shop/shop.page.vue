@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
 import { Loader2, Package } from 'lucide-vue-next'
 import ShopHero from './components/shop-hero.vue'
 import ShopAdvantages from './components/shop-advantages.vue'
@@ -7,6 +8,13 @@ import ShopCta from './components/shop-cta.vue'
 import ProductCard from '@/modules/product/ui/components/product-card.vue'
 import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
 import { EmptyState } from '@/ui/empty-state'
+
+useHead({
+  title: 'Boutique — PULSE Event Pass',
+  meta: [
+    { name: 'description', content: 'Découvrez la gamme de bracelets NFC PULSE : pass classiques, premium et offres entreprise.' },
+  ],
+})
 
 const { data: products, isLoading, isError } = useGetProducts()
 </script>

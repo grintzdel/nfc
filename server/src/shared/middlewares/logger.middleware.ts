@@ -5,6 +5,11 @@ export function loggerMiddleware(
   res: Response,
   next: NextFunction
 ): void {
+  if (process.env.NODE_ENV === 'test') {
+    next()
+    return
+  }
+
   const start = Date.now()
 
   const originalJson = res.json.bind(res)

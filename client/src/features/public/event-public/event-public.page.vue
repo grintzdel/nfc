@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
 import { useGetEventPublicBySlug } from '@/modules/event/ui/hooks/queries/query/use-get-event-public-by-slug'
 import EventPublicHero from '@/modules/event/ui/components/event-public-hero.vue'
 import EventPublicDescription from '@/modules/event/ui/components/event-public-description.vue'
@@ -29,6 +30,16 @@ const isFull = computed(() => {
 const fillPercent = computed(() => {
   if (!data.value || data.value.capacity === 0) return 0
   return Math.min(100, Math.round(((data.value.participantCount ?? 0) / data.value.capacity) * 100))
+})
+
+useHead({
+  title: computed(() => (data.value ? `${data.value.name} — Inscription | PULSE` : 'Événement — PULSE')),
+  meta: [
+    {
+      name: 'description',
+      content: computed(() => data.value?.description ?? 'Page d’inscription à un événement PULSE.'),
+    },
+  ],
 })
 </script>
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
 import { Card, CardContent } from '@/ui/card'
 import { Skeleton } from '@/ui/skeleton'
 import { useGetNfcByNfcId } from '@/modules/nfc/ui/hooks/queries/query/use-get-nfc-by-id'
@@ -24,6 +25,17 @@ const { data, isLoading, isError, error } = useGetNfcByNfcId(nfcId)
 const errorVariant = computed<'not-active' | 'network'>(() =>
   error.value instanceof NfcBraceletNotActiveError ? 'not-active' : 'network',
 )
+
+useHead({
+  title: computed(() => (data.value ? `${data.value.participant.profile.displayName} — PULSE` : 'Profil PULSE')),
+  meta: [
+    { name: 'robots', content: 'noindex' },
+    {
+      name: 'description',
+      content: computed(() => data.value?.participant.profile.bio ?? 'Profil partagé via bracelet NFC PULSE.'),
+    },
+  ],
+})
 </script>
 
 <template>

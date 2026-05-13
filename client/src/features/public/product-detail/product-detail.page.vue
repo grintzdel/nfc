@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
+import { useHead } from '@unhead/vue'
 import { Loader2, ChevronRight } from 'lucide-vue-next'
 import ProductHero from './components/product-hero.vue'
 import ProductSpecs from './components/product-specs.vue'
@@ -12,6 +13,16 @@ import { useGetProductBySlug } from '@/modules/product/ui/hooks/queries/query/us
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
 const { data: product, isLoading, isError } = useGetProductBySlug(slug)
+
+useHead({
+  title: computed(() => (product.value ? `${product.value.name} — Boutique PULSE` : 'Produit — PULSE Event Pass')),
+  meta: [
+    {
+      name: 'description',
+      content: computed(() => product.value?.description ?? 'Détail produit PULSE — bracelet NFC pour événements.'),
+    },
+  ],
+})
 </script>
 
 <template>
