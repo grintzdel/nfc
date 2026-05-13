@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Eye, Pencil, ShoppingBag, Trash2, TrendingUp } from 'lucide-vue-next'
+import { Eye, Pencil, Search, ShoppingBag, Trash2, TrendingUp } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
@@ -35,10 +35,16 @@ const STATUS_FILTER = [
   { key: OrderStatus.CANCELLED, label: 'Annulées' },
 ]
 const activeFilter = ref<string>('all')
+const searchInput = ref('')
 
-const filteredItems = computed(() =>
-  activeFilter.value === 'all' ? items.value : items.value.filter((o) => o.status === activeFilter.value)
-)
+const filteredItems = computed(() => {
+  const query = searchInput.value.trim().toLowerCase()
+  return items.value.filter((o) => {
+    if (activeFilter.value !== 'all' && o.status !== activeFilter.value) return false
+    if (query && !o.id.toLowerCase().includes(query)) return false
+    return true
+  })
+})
 
 const STATUS_OPTIONS: OrderStatus[] = [
   OrderStatus.PENDING,
@@ -174,6 +180,18 @@ function formatDate(dateStr: string): string {
           </div>
         </div>
 
+        <div class="flex items-center gap-3 px-6 py-4">
+          <div class="flex flex-1 items-center gap-2 rounded-md border border-white/10 bg-[#0F172A] px-3 py-2">
+            <Search class="h-3.5 w-3.5 text-slate-400" />
+            <input
+              v-model="searchInput"
+              type="text"
+              placeholder="Rechercher par ID de commande…"
+              class="w-full bg-transparent font-mono text-[13px] text-slate-50 outline-none placeholder:font-sans placeholder:text-slate-400"
+            />
+          </div>
+        </div>
+
         <EmptyState
           v-if="!isLoading && filteredItems.length === 0"
           :icon="ShoppingBag"
@@ -184,8 +202,11 @@ function formatDate(dateStr: string): string {
 
         <template v-else>
           <div class="overflow-x-auto">
-            <div class="flex min-w-[960px] flex-col">
+            <div class="flex min-w-[1180px] flex-col">
               <div class="flex items-center bg-slate-800">
+                <div class="w-[220px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">ID</span>
+                </div>
                 <div class="w-[160px] shrink-0 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Date</span>
                 </div>
@@ -207,6 +228,9 @@ function formatDate(dateStr: string): string {
               </div>
 
               <div v-for="o in filteredItems" :key="o.id" class="flex items-center border-t border-white/10">
+                <div class="w-[220px] shrink-0 px-4 py-3">
+                  <span class="font-mono text-xs text-slate-300" :title="o.id">{{ o.id }}</span>
+                </div>
                 <div class="w-[160px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(o.createdAt) }}</div>
                 <div class="flex-1 px-4 py-3 text-sm text-slate-50">
                   <span v-for="(it, i) in o.items" :key="i" class="text-sm text-slate-300">
@@ -271,7 +295,7 @@ function formatDate(dateStr: string): string {
                 </div>
               </div>
 
-              <TableSkeleton v-if="isLoading && filteredItems.length === 0" :rows="5" :columns="6" />
+              <TableSkeleton v-if="isLoading && filteredItems.length === 0" :rows="5" :columns="7" />
             </div>
           </div>
         </template>

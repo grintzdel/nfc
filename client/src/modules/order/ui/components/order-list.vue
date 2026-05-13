@@ -41,6 +41,7 @@ function totalItems(order: OrderDomainModel.OrderOverviewDto): number {
             <p class="text-sm font-semibold text-slate-50">
               {{ totalItems(order) }} article{{ totalItems(order) > 1 ? 's' : '' }}
             </p>
+            <p class="font-mono text-[11px] text-slate-500">#{{ order.id }}</p>
             <p class="text-xs text-slate-400">{{ formatDate(order.createdAt) }}</p>
           </div>
         </div>
