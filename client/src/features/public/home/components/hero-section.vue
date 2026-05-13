@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Sparkles } from 'lucide-vue-next'
+import { CheckCircle2, Nfc, Sparkles } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 </script>
 
@@ -70,14 +70,87 @@ import { RouterLink } from 'vue-router'
         class="hero-rise mt-8 w-full max-w-[1000px] overflow-hidden rounded-2xl border border-violet-500/15 shadow-[0_30px_100px_-20px_rgba(124,58,237,0.3),0_0_150px_-30px_rgba(249,115,22,0.13)]"
         style="--rise-delay: 360ms"
       >
-        <div class="relative aspect-[2/1] w-full bg-gradient-to-b from-pulse-surface to-pulse-bg">
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="text-center">
-              <div class="mb-4 text-6xl">🎫</div>
-              <p class="text-lg font-semibold text-slate-300">PULSE Event Pass</p>
-              <p class="text-sm text-slate-500">Votre experience commence ici</p>
+        <div class="relative aspect-[2/1] w-full bg-gradient-to-br from-[#1a0f2e] via-pulse-surface to-pulse-bg">
+          <div
+            class="absolute inset-0 opacity-30"
+            style="
+              background-image:
+                linear-gradient(rgba(124, 58, 237, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124, 58, 237, 0.06) 1px, transparent 1px);
+              background-size: 32px 32px;
+            "
+          />
+
+          <div class="absolute -left-16 top-1/3 h-72 w-72 rounded-full bg-violet-500/30 blur-3xl" />
+          <div class="absolute -right-12 bottom-1/4 h-80 w-80 rounded-full bg-orange-500/25 blur-3xl" />
+
+          <div
+            class="absolute inset-0 flex flex-col items-center justify-center gap-8 px-6 sm:flex-row sm:gap-16 sm:px-14"
+          >
+            <div class="relative">
+              <div
+                class="absolute -inset-6 animate-ping rounded-full border border-violet-400/30 [animation-duration:2.5s]"
+              />
+              <div
+                class="absolute -inset-3 animate-ping rounded-full border border-orange-400/30 [animation-delay:300ms] [animation-duration:2.5s]"
+              />
+              <div
+                class="relative h-20 w-48 -rotate-6 rounded-full bg-gradient-to-br from-violet-500 via-violet-600 to-purple-800 shadow-[0_20px_50px_-10px_rgba(124,58,237,0.6)] sm:h-24 sm:w-56"
+              >
+                <div
+                  class="absolute inset-y-3 left-3 right-3 rounded-full border border-white/10 bg-gradient-to-br from-white/5 to-transparent"
+                />
+                <span
+                  class="absolute left-7 top-1/2 -translate-y-1/2 text-[10px] font-bold tracking-[0.25em] text-white/90 sm:text-xs"
+                >
+                  PULSE
+                </span>
+                <div
+                  class="absolute right-5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-md bg-gradient-to-br from-amber-300 via-orange-400 to-orange-600 shadow-inner shadow-amber-200/40 sm:h-12 sm:w-12"
+                >
+                  <Nfc class="h-5 w-5 text-orange-950 sm:h-6 sm:w-6" />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="relative w-[280px] rounded-2xl border border-white/10 bg-slate-900/85 p-5 shadow-2xl shadow-violet-500/20 backdrop-blur-md sm:w-[300px]"
+            >
+              <div class="mb-4 flex items-center justify-between">
+                <span class="text-[10px] font-semibold uppercase tracking-wider text-violet-300"> Scan en cours </span>
+                <span class="relative flex h-2 w-2">
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                  <span
+                    class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
+                  />
+                </span>
+              </div>
+
+              <div class="mb-4 flex items-center gap-3">
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-sm font-semibold text-white shadow-md shadow-violet-500/30"
+                >
+                  MD
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-sm font-semibold text-slate-50">Marie Dubois</span>
+                  <span class="text-xs text-slate-400">Speaker · Pulse Demo</span>
+                </div>
+              </div>
+
+              <div
+                class="flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-medium text-emerald-300"
+              >
+                <CheckCircle2 class="h-3.5 w-3.5" />
+                Check-in confirmé · 12:42
+              </div>
             </div>
           </div>
+
+          <Sparkles class="absolute left-[8%] top-[18%] h-4 w-4 text-violet-300/40" />
+          <Sparkles class="absolute bottom-[18%] right-[10%] h-3.5 w-3.5 text-orange-300/40" />
+          <div class="absolute right-[18%] top-[12%] h-1 w-1 rounded-full bg-violet-300/60" />
+          <div class="absolute bottom-[22%] left-[15%] h-1.5 w-1.5 rounded-full bg-orange-300/50" />
         </div>
       </div>
     </div>
