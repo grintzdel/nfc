@@ -12,7 +12,7 @@ export class CheckInController {
     try {
       const dto = new RecordCheckInRequestDto(req.body as Record<string, unknown>)
       const saved = await this.service.recordCheckIn(dto)
-      res.status(201).json(new CheckInResponseDto(saved))
+      res.status(201).json({ success: true, data: new CheckInResponseDto(saved) })
     } catch (err) {
       next(err)
     }
@@ -21,7 +21,7 @@ export class CheckInController {
   async getByEvent(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const entities = await this.service.getByEventId(req.params.eventId as string)
-      res.status(200).json(entities.map((e) => new CheckInResponseDto(e)))
+      res.status(200).json({ success: true, data: entities.map((e) => new CheckInResponseDto(e)) })
     } catch (err) {
       next(err)
     }

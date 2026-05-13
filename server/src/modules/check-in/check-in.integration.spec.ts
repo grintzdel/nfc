@@ -46,9 +46,10 @@ describe('Check-ins integration', () => {
       })
 
       expect(response.status).toBe(201)
-      expect(response.body.braceletId).toBe(bracelet.id)
-      expect(response.body.eventId).toBe(eventId)
-      expect(response.body.interactionType).toBe('check_in')
+      expect(response.body.success).toBe(true)
+      expect(response.body.data.braceletId).toBe(bracelet.id)
+      expect(response.body.data.eventId).toBe(eventId)
+      expect(response.body.data.interactionType).toBe('check_in')
     })
 
     it('records a networking interaction', async () => {
@@ -60,8 +61,9 @@ describe('Check-ins integration', () => {
       })
 
       expect(response.status).toBe(201)
-      expect(response.body.interactionType).toBe('networking')
-      expect(response.body.zoneName).toBe('lounge')
+      expect(response.body.success).toBe(true)
+      expect(response.body.data.interactionType).toBe('networking')
+      expect(response.body.data.zoneName).toBe('lounge')
     })
 
     it('rejects a duplicate check_in for the same bracelet+event', async () => {
@@ -143,8 +145,9 @@ describe('Check-ins integration', () => {
       const response = await request(app).get(`/api/check-ins/event/${eventId}`).set(authHeader(adminToken))
 
       expect(response.status).toBe(200)
-      expect(Array.isArray(response.body)).toBe(true)
-      expect(response.body).toHaveLength(1)
+      expect(response.body.success).toBe(true)
+      expect(Array.isArray(response.body.data)).toBe(true)
+      expect(response.body.data).toHaveLength(1)
     })
 
     it('returns 403 for a non-admin', async () => {
