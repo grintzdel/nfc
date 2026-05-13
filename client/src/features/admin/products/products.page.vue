@@ -3,6 +3,7 @@ import { Plus, Star, Pencil, Trash2, Package } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
+import { useGetCategories } from '@/modules/category/ui/hooks/queries/query/use-get-categories'
 import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
 import { useCreateProduct } from '@/modules/product/ui/hooks/queries/mutation/use-create-product'
 import { useDeleteProduct } from '@/modules/product/ui/hooks/queries/mutation/use-delete-product'
@@ -15,11 +16,21 @@ import { TableSkeleton } from '@/ui/skeleton'
 import ProductFormDialog from './components/product-form-dialog.vue'
 
 const { data: products, isLoading } = useGetProducts()
+const { data: categories } = useGetCategories()
 const createMutation = useCreateProduct()
 const updateMutation = useUpdateProduct()
 const deleteMutation = useDeleteProduct()
 
 const items = computed(() => products.value ?? [])
+const categoryNameBySlug = computed(() => {
+  const map = new Map<string, string>()
+  for (const c of categories.value ?? []) map.set(c.slug, c.name)
+  return map
+})
+
+function categoryLabel(slug: string): string {
+  return categoryNameBySlug.value.get(slug) ?? slug
+}
 
 const dialogOpen = ref(false)
 const editing = ref<ProductDomainModel.ProductOverviewDto | null>(null)
@@ -106,10 +117,13 @@ function formatEur(value: number): string {
 
         <template v-else>
           <div class="overflow-x-auto">
-            <div class="flex min-w-[640px] flex-col">
+            <div class="flex min-w-[780px] flex-col">
               <div class="flex items-center bg-slate-800">
                 <div class="flex-1 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Produit</span>
+                </div>
+                <div class="w-[140px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Catégorie</span>
                 </div>
                 <div class="w-[110px] shrink-0 px-4 py-3 text-right">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Prix</span>
@@ -129,6 +143,13 @@ function formatEur(value: number): string {
                 <div class="flex flex-1 flex-col px-4 py-3">
                   <span class="text-sm font-medium text-slate-50">{{ p.name }}</span>
                   <span class="font-mono text-xs text-slate-500">{{ p.slug }}</span>
+                </div>
+                <div class="w-[140px] shrink-0 px-4 py-3">
+                  <span
+                    class="inline-flex items-center rounded-full border border-violet-500/30 bg-violet-500/10 px-2.5 py-0.5 text-xs font-medium text-violet-200"
+                  >
+                    {{ categoryLabel(p.category) }}
+                  </span>
                 </div>
                 <div class="w-[110px] shrink-0 px-4 py-3 text-right text-sm text-slate-50">
                   {{ formatEur(p.price) }}
@@ -164,7 +185,7 @@ function formatEur(value: number): string {
                 </div>
               </div>
 
-              <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
+              <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="6" />
             </div>
           </div>
         </template>
