@@ -1,5 +1,5 @@
-import { BraceletEntity } from '../../domain/entity/bracelet.entity'
 import type { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
+import { BraceletEntity } from '../../domain/entity/bracelet.entity'
 
 export class BraceletResponseDto {
   id: string

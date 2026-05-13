@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose'
+
 import { ProfileLinkType } from '../../domain/constants/profile-link-type.constant'
 
 export interface ProfileLinkSubdoc {
@@ -30,7 +31,7 @@ const profileLinkSchema = new Schema(
     url: { type: String, required: true },
     label: { type: String, default: null },
   },
-  { _id: false },
+  { _id: false }
 )
 
 const profileSchema = new Schema(
@@ -40,7 +41,7 @@ const profileSchema = new Schema(
     bio: { type: String, default: null },
     links: { type: [profileLinkSchema], default: [] },
   },
-  { _id: false },
+  { _id: false }
 )
 
 const participantSchema = new Schema<ParticipantDocument>(
@@ -53,12 +54,9 @@ const participantSchema = new Schema<ParticipantDocument>(
     checkedInAt: { type: Date, default: null },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true },
+  { timestamps: true }
 )
 
-participantSchema.index(
-  { userId: 1, eventId: 1 },
-  { unique: true, partialFilterExpression: { deletedAt: null } },
-)
+participantSchema.index({ userId: 1, eventId: 1 }, { unique: true, partialFilterExpression: { deletedAt: null } })
 
 export const ParticipantModel = mongoose.model<ParticipantDocument>('Participant', participantSchema)

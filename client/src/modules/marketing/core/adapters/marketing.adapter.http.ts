@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IMarketingPort } from '../ports/marketing.port'
+
 import type { MarketingDomainModel } from '../model/marketing.domain-model'
+import type { IMarketingPort } from '../ports/marketing.port'
 
 export class MarketingHttpAdapter implements IMarketingPort {
   constructor(private readonly httpClient: HttpClient) {}

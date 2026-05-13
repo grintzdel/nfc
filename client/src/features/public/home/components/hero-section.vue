@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { Sparkles } from 'lucide-vue-next'
+import { RouterLink } from 'vue-router'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import { Sparkles } from 'lucide-vue-next'
     <div class="absolute inset-0 bg-pulse-bg">
       <div class="absolute left-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-purple-600/15 blur-[100px]" />
       <div class="absolute bottom-0 right-1/4 h-[450px] w-[450px] rounded-full bg-orange-500/10 blur-[80px]" />
-      <div class="absolute right-1/3 top-1/3 h-[300px] w-[400px] rounded-full bg-pink-500/8 blur-[100px]" />
+      <div class="bg-pink-500/8 absolute right-1/3 top-1/3 h-[300px] w-[400px] rounded-full blur-[100px]" />
     </div>
 
     <div class="pointer-events-none absolute inset-0">
@@ -16,13 +16,22 @@ import { Sparkles } from 'lucide-vue-next'
       <Sparkles class="absolute left-[15%] top-[40%] h-3.5 w-3.5 text-pink-500/25" />
       <div class="absolute left-[23%] top-[22%] h-1 w-1 rounded-full bg-violet-400/40" />
       <div class="absolute right-[10%] top-[15%] h-0.5 w-0.5 rounded-full bg-orange-500/35" />
-      <div class="absolute right-[15%] top-[20%] h-[200px] w-[200px] rounded-full border-2 border-violet-600/20 opacity-40 blur-[3px]" />
-      <div class="absolute left-[6%] top-[55%] h-[150px] w-[150px] rounded-full border-2 border-orange-500/15 opacity-30 blur-[3px]" />
+      <div
+        class="absolute right-[15%] top-[20%] h-[200px] w-[200px] rounded-full border-2 border-violet-600/20 opacity-40 blur-[3px]"
+      />
+      <div
+        class="absolute left-[6%] top-[55%] h-[150px] w-[150px] rounded-full border-2 border-orange-500/15 opacity-30 blur-[3px]"
+      />
     </div>
 
     <div class="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 pb-24 pt-32 lg:px-20">
-      <div class="hero-rise rounded-full border border-violet-500/50 bg-gradient-to-r from-violet-600/25 to-pink-500/25 px-4 py-1" style="--rise-delay: 0ms">
-        <span class="bg-gradient-to-b from-violet-200 to-orange-200 bg-clip-text text-xs font-semibold text-transparent">
+      <div
+        class="hero-rise rounded-full border border-violet-500/50 bg-gradient-to-r from-violet-600/25 to-pink-500/25 px-4 py-1"
+        style="--rise-delay: 0ms"
+      >
+        <span
+          class="bg-gradient-to-b from-violet-200 to-orange-200 bg-clip-text text-xs font-semibold text-transparent"
+        >
           Festivals · Concerts · Conferences · Soirees
         </span>
       </div>
@@ -38,7 +47,8 @@ import { Sparkles } from 'lucide-vue-next'
         class="hero-rise max-w-[720px] text-center text-lg leading-relaxed text-slate-400 md:text-xl"
         style="--rise-delay: 160ms"
       >
-        PULSE transforme chaque bracelet NFC en passeport intelligent pour vos soirees et festivals. Un tap pour entrer, un tap pour se connecter, un tap pour vivre l'experience a fond.
+        PULSE transforme chaque bracelet NFC en passeport intelligent pour vos soirees et festivals. Un tap pour entrer,
+        un tap pour se connecter, un tap pour vivre l'experience a fond.
       </p>
 
       <div class="hero-rise flex items-center gap-4" style="--rise-delay: 240ms">

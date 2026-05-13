@@ -1,6 +1,7 @@
 import { AppError } from '@shared/errors/app.error'
-import type { ProfileLink } from '../../domain/entity/participant.entity'
+
 import { ProfileLinkType } from '../../domain/constants/profile-link-type.constant'
+import type { ProfileLink } from '../../domain/entity/participant.entity'
 
 const VALID_TYPES = Object.values(ProfileLinkType) as string[]
 

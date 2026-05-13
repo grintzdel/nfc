@@ -1,5 +1,5 @@
-import { OrderEntity } from '../entity/order.entity'
 import { OrderStatus } from '../constants/order.constant'
+import { OrderEntity } from '../entity/order.entity'
 
 export interface IOrderRepository {
   findAll(): Promise<OrderEntity[]>

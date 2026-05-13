@@ -1,5 +1,6 @@
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { getMonthRange } from '@shared/utils/month-range'
+
 import { AnalyticsDomainModel } from '../../../domain/model/analytics.domain-model'
 
 export class GetBraceletsCountWithStatsUseCase {

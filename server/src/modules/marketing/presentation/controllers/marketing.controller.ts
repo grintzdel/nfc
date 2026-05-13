@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express'
+
 import type { MarketingService } from '../../application/services/marketing.service'
 
 export class MarketingController {

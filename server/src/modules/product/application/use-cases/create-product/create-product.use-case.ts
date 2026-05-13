@@ -1,6 +1,6 @@
-import { IProductRepository } from '../../../domain/repository/product.repository.interface'
 import { ProductEntity } from '../../../domain/entity/product.entity'
 import { ProductAlreadyExistsError } from '../../../domain/errors/product.error'
+import { IProductRepository } from '../../../domain/repository/product.repository.interface'
 
 export class CreateProductUseCase {
   constructor(private readonly productRepository: IProductRepository) {}

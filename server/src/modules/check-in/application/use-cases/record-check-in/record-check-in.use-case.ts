@@ -1,11 +1,12 @@
-import { CheckInEntity } from '../../../domain/entity/check-in.entity'
-import { InteractionType } from '../../../domain/constants/interaction-type.constant'
-import { CheckInInvalidBraceletStateError, DuplicateCheckInError } from '../../../domain/errors/check-in.error'
-import { ICheckInRepository } from '../../../domain/repository/check-in.repository.interface'
+import { ActivateBraceletUseCase } from '@modules/bracelet/application/use-cases/activate-bracelet/activate-bracelet.use-case'
+import { BraceletNotFoundError } from '@modules/bracelet/domain/errors/bracelet.error'
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
-import { BraceletNotFoundError } from '@modules/bracelet/domain/errors/bracelet.error'
-import { ActivateBraceletUseCase } from '@modules/bracelet/application/use-cases/activate-bracelet/activate-bracelet.use-case'
+
+import { InteractionType } from '../../../domain/constants/interaction-type.constant'
+import { CheckInEntity } from '../../../domain/entity/check-in.entity'
+import { CheckInInvalidBraceletStateError, DuplicateCheckInError } from '../../../domain/errors/check-in.error'
+import { ICheckInRepository } from '../../../domain/repository/check-in.repository.interface'
 
 export interface RecordCheckInInput {
   nfcId: string
@@ -22,7 +23,7 @@ export class RecordCheckInUseCase {
     private readonly checkInRepository: ICheckInRepository,
     private readonly braceletRepository: IBraceletRepository,
     private readonly participantRepository: IParticipantRepository,
-    private readonly activateBraceletUseCase: ActivateBraceletUseCase,
+    private readonly activateBraceletUseCase: ActivateBraceletUseCase
   ) {}
 
   async execute(input: RecordCheckInInput): Promise<CheckInEntity> {
@@ -39,7 +40,7 @@ export class RecordCheckInUseCase {
       const existing = await this.checkInRepository.findOneByBraceletEventType(
         bracelet.id,
         input.eventId,
-        InteractionType.CHECK_IN,
+        InteractionType.CHECK_IN
       )
       if (existing) throw new DuplicateCheckInError(input.nfcId)
     }

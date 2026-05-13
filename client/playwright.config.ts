@@ -26,5 +26,10 @@ export default defineConfig({
       dependencies: ['setup'],
     },
   ],
-  webServer: { command: 'cd .. && pnpm dev', url: 'http://localhost:5173', reuseExistingServer: !process.env.CI, timeout: 60_000 },
+  webServer: {
+    command: 'cd .. && pnpm dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 60_000,
+  },
 })

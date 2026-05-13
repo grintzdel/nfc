@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
+
 import { CartService } from '../../application/services/cart.service'
 import { AddToCartRequestDto } from '../dto/add-to-cart.request.dto'
-import { UpdateCartItemRequestDto } from '../dto/update-cart-item.request.dto'
 import { CartItemResponseDto } from '../dto/cart-item.response.dto'
+import { UpdateCartItemRequestDto } from '../dto/update-cart-item.request.dto'
 
 export class CartController {
   constructor(private readonly cartService: CartService) {}

@@ -1,10 +1,11 @@
-import { GetEventBySlugPublicUseCase } from './get-event-by-slug-public.use-case'
-import { EventRepositoryMock } from '../../../__tests__/event.repository.mock'
 import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
+import { AppError } from '@shared/errors/app.error'
+
 import { createEventFixture } from '../../../__tests__/event.factory'
+import { EventRepositoryMock } from '../../../__tests__/event.repository.mock'
 import { EventStatus } from '../../../domain/constants/event-status.constant'
 import { EventNotFoundError } from '../../../domain/errors/event.error'
-import { AppError } from '@shared/errors/app.error'
+import { GetEventBySlugPublicUseCase } from './get-event-by-slug-public.use-case'
 
 describe('GetEventBySlugPublicUseCase', () => {
   let eventRepo: EventRepositoryMock

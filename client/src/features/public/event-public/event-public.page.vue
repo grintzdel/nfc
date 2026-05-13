@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
+import { Users } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useHead } from '@unhead/vue'
-import { useGetEventPublicBySlug } from '@/modules/event/ui/hooks/queries/query/use-get-event-public-by-slug'
-import EventPublicHero from '@/modules/event/ui/components/event-public-hero.vue'
-import EventPublicDescription from '@/modules/event/ui/components/event-public-description.vue'
+
 import EventNotAvailable from '@/modules/event/ui/components/event-not-available.vue'
+import EventPublicDescription from '@/modules/event/ui/components/event-public-description.vue'
+import EventPublicHero from '@/modules/event/ui/components/event-public-hero.vue'
 import EventRegistrationForm from '@/modules/event/ui/components/event-registration-form.vue'
+import { useGetEventPublicBySlug } from '@/modules/event/ui/hooks/queries/query/use-get-event-public-by-slug'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 import { Skeleton } from '@/ui/skeleton'
-import { Users } from 'lucide-vue-next'
 
 const route = useRoute()
 const slug = ref<string | null>(typeof route.params.slug === 'string' ? route.params.slug : null)
@@ -17,7 +18,7 @@ watch(
   () => route.params.slug,
   (s) => {
     slug.value = typeof s === 'string' ? s : null
-  },
+  }
 )
 
 const { data, isLoading, isError } = useGetEventPublicBySlug(slug)
@@ -77,12 +78,10 @@ useHead({
             </CardHeader>
             <CardContent class="flex flex-col gap-3 text-sm text-amber-100">
               <p>
-                Cet événement a atteint sa capacité maximale de {{ data.capacity }} participants.
-                Les inscriptions sont fermées.
+                Cet événement a atteint sa capacité maximale de {{ data.capacity }} participants. Les inscriptions sont
+                fermées.
               </p>
-              <p class="text-xs text-amber-200/80">
-                Revenez plus tard, des places peuvent se libérer.
-              </p>
+              <p class="text-xs text-amber-200/80">Revenez plus tard, des places peuvent se libérer.</p>
             </CardContent>
           </Card>
 

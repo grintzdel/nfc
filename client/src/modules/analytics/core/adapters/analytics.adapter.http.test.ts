@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { AnalyticsHttpAdapter } from './analytics.adapter.http'
+
 import type { HttpClient } from '@/modules/shared/http/http-client'
+
+import { AnalyticsHttpAdapter } from './analytics.adapter.http'
 
 function makeClient(get: ReturnType<typeof vi.fn>): HttpClient {
   return { get } as unknown as HttpClient

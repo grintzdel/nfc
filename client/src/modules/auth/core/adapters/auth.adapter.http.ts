@@ -1,5 +1,5 @@
-import type { IAuthPort } from '../ports/auth.port'
 import type { AuthDomainModel } from '../model/auth.domain-model'
+import type { IAuthPort } from '../ports/auth.port'
 
 const BASE_URL = import.meta.env.VITE_API_URL || '/api'
 

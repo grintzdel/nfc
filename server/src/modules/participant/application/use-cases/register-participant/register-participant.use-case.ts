@@ -1,9 +1,10 @@
-import { ParticipantEntity, ParticipantProfile } from '../../../domain/entity/participant.entity'
-import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
-import { ParticipantAlreadyRegisteredError } from '../../../domain/errors/participant.error'
-import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { EventFullError, EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { AppError } from '@shared/errors/app.error'
+
+import { ParticipantEntity, ParticipantProfile } from '../../../domain/entity/participant.entity'
+import { ParticipantAlreadyRegisteredError } from '../../../domain/errors/participant.error'
+import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 
 export interface RegisterParticipantInput {
   userId: string
@@ -14,7 +15,7 @@ export interface RegisterParticipantInput {
 export class RegisterParticipantUseCase {
   constructor(
     private readonly participantRepository: IParticipantRepository,
-    private readonly eventRepository: IEventRepository,
+    private readonly eventRepository: IEventRepository
   ) {}
 
   async execute(input: RegisterParticipantInput): Promise<ParticipantEntity> {

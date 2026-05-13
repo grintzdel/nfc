@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { RouterLink } from 'vue-router'
 import { Calendar, MapPin, ExternalLink, Send, Play, CheckCircle2, XCircle, ScanLine } from 'lucide-vue-next'
+import { computed } from 'vue'
 import type { Component } from 'vue'
+import { RouterLink } from 'vue-router'
+
+import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
-import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 import type { EventStatusAction } from '@/modules/event/ui/hooks/queries/mutation/use-event-status-transition'
 
 const props = defineProps<{
@@ -51,9 +52,7 @@ const dateRange = computed(() => {
   const fmt = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
   const start = new Date(props.event.startsAt)
   const end = new Date(props.event.endsAt)
-  return start.toDateString() === end.toDateString()
-    ? fmt.format(start)
-    : `${fmt.format(start)} → ${fmt.format(end)}`
+  return start.toDateString() === end.toDateString() ? fmt.format(start) : `${fmt.format(start)} → ${fmt.format(end)}`
 })
 
 const fillPercent = computed(() => Math.round(props.stats.capacityFillRate * 100))

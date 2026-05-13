@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import { Avatar, AvatarFallback } from '@/ui/avatar'
 
 const props = defineProps<{
@@ -10,12 +11,13 @@ const props = defineProps<{
   endsAt: string
 }>()
 
-const initials = computed(() =>
-  props.displayName
-    .split(/\s+/)
-    .map((w) => w[0]?.toUpperCase() ?? '')
-    .join('')
-    .slice(0, 2) || '?',
+const initials = computed(
+  () =>
+    props.displayName
+      .split(/\s+/)
+      .map((w) => w[0]?.toUpperCase() ?? '')
+      .join('')
+      .slice(0, 2) || '?'
 )
 
 const dateRange = computed(() => {
@@ -27,9 +29,13 @@ const dateRange = computed(() => {
 <template>
   <header class="flex flex-col items-center gap-4 text-center">
     <div class="relative">
-      <span class="pointer-events-none absolute inset-0 -m-2 rounded-full bg-violet-500/20 blur-xl nfc-pulse" />
-      <span class="pointer-events-none absolute inset-0 -m-4 rounded-full bg-fuchsia-500/10 blur-2xl nfc-pulse-delayed" />
-      <Avatar class="relative h-24 w-24 bg-gradient-to-br from-violet-500 to-fuchsia-500 shadow-2xl shadow-violet-500/40 ring-2 ring-white/10">
+      <span class="nfc-pulse pointer-events-none absolute inset-0 -m-2 rounded-full bg-violet-500/20 blur-xl" />
+      <span
+        class="nfc-pulse-delayed pointer-events-none absolute inset-0 -m-4 rounded-full bg-fuchsia-500/10 blur-2xl"
+      />
+      <Avatar
+        class="relative h-24 w-24 bg-gradient-to-br from-violet-500 to-fuchsia-500 shadow-2xl shadow-violet-500/40 ring-2 ring-white/10"
+      >
         <AvatarFallback class="bg-transparent text-3xl font-bold text-white">{{ initials }}</AvatarFallback>
       </Avatar>
     </div>
@@ -45,8 +51,15 @@ const dateRange = computed(() => {
 
 <style scoped>
 @keyframes nfc-pulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.08); }
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
 }
 .nfc-pulse {
   animation: nfc-pulse 2.6s ease-in-out infinite;

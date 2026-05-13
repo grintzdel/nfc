@@ -1,5 +1,6 @@
-import request from 'supertest'
 import type { Express } from 'express'
+import request from 'supertest'
+
 import { setupTestApp, teardownTestApp, clearDatabase } from './setup'
 
 describe('Auth integration', () => {
@@ -18,7 +19,9 @@ describe('Auth integration', () => {
     await clearDatabase()
   })
 
-  async function registerUser(overrides: Partial<{ email: string; password: string; firstName: string; lastName: string }> = {}) {
+  async function registerUser(
+    overrides: Partial<{ email: string; password: string; firstName: string; lastName: string }> = {}
+  ) {
     const payload = {
       email: 'alice@example.com',
       password: 'secret123',
@@ -97,9 +100,7 @@ describe('Auth integration', () => {
     })
 
     it('returns 401 with an invalid token', async () => {
-      const response = await request(app)
-        .get('/api/participants/me')
-        .set('Authorization', 'Bearer not.a.real.token')
+      const response = await request(app).get('/api/participants/me').set('Authorization', 'Bearer not.a.real.token')
 
       expect(response.status).toBe(401)
       expect(response.body.success).toBe(false)
@@ -109,9 +110,7 @@ describe('Auth integration', () => {
       const register = await registerUser()
       const token = register.body.data.token as string
 
-      const response = await request(app)
-        .get('/api/participants/me')
-        .set('Authorization', `Bearer ${token}`)
+      const response = await request(app).get('/api/participants/me').set('Authorization', `Bearer ${token}`)
 
       expect(response.status).toBe(200)
       expect(response.body.success).toBe(true)

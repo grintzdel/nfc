@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import mkcert from 'vite-plugin-mkcert'
 import path from 'path'
+
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
+import mkcert from 'vite-plugin-mkcert'
 
 export default defineConfig({
   // HTTPS enabled via mkcert so the dev server is reachable from a phone over Wi-Fi

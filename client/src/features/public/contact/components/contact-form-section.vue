@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { Mail, Phone, MapPin } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { Mail, Phone, MapPin } from 'lucide-vue-next'
 
 const form = ref({
   name: '',
@@ -78,7 +78,10 @@ async function handleSubmit(): Promise<void> {
   <section class="bg-pulse-bg">
     <div class="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-16 lg:flex-row lg:px-20">
       <div class="w-full lg:w-1/2">
-        <div class="rounded-2xl border bg-pulse-surface p-8" style="border-image: linear-gradient(135deg, #7C3AED40, #F9731620, #7C3AED10) 1;">
+        <div
+          class="rounded-2xl border bg-pulse-surface p-8"
+          style="border-image: linear-gradient(135deg, #7c3aed40, #f9731620, #7c3aed10) 1"
+        >
           <h2 class="mb-6 text-2xl font-bold text-slate-50">Envoyez-nous un message</h2>
 
           <form class="flex flex-col gap-6" @submit.prevent="handleSubmit">

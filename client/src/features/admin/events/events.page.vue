@@ -1,20 +1,22 @@
 <script setup lang="ts">
+import { useQueryClient } from '@tanstack/vue-query'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useQueryClient } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
+
+import { useGetEventPageStats } from '@/modules/analytics/ui/hooks/queries/query/use-get-event-page-stats'
+import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
+import { useCreateEvent } from '@/modules/event/ui/hooks/queries/mutation/use-create-event'
+import { useDeleteEvent } from '@/modules/event/ui/hooks/queries/mutation/use-delete-event'
+import { useUpdateEvent } from '@/modules/event/ui/hooks/queries/mutation/use-update-event'
+import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
+import { useGetPaginatedEvents } from '@/modules/event/ui/hooks/queries/query/use-get-paginated-events'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
+
+import EventCreateModal from './components/event-create-modal.vue'
+import EventEditModal from './components/event-edit-modal.vue'
 import EventStats from './components/event-stats.vue'
 import EventTable from './components/event-table.vue'
-import EventEditModal from './components/event-edit-modal.vue'
-import EventCreateModal from './components/event-create-modal.vue'
-import { useGetEventPageStats } from '@/modules/analytics/ui/hooks/queries/query/use-get-event-page-stats'
-import { useGetPaginatedEvents } from '@/modules/event/ui/hooks/queries/query/use-get-paginated-events'
-import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
-import { useCreateEvent } from '@/modules/event/ui/hooks/queries/mutation/use-create-event'
-import { useUpdateEvent } from '@/modules/event/ui/hooks/queries/mutation/use-update-event'
-import { useDeleteEvent } from '@/modules/event/ui/hooks/queries/mutation/use-delete-event'
-import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 
 const router = useRouter()
 
@@ -54,7 +56,7 @@ function handleSave(dto: EventDomainModel.UpdateEventDto) {
         queryClient.invalidateQueries({ queryKey: ['events'] })
         queryClient.invalidateQueries({ queryKey: ['analytics', 'eventPageStats'] })
       },
-    },
+    }
   )
 }
 
@@ -128,7 +130,7 @@ function handleSearchChange(newSearch: string) {
     <EventCreateModal
       :open="createOpen"
       :loading="createMutation.isPending.value"
-      @update:open="(v) => createOpen = v"
+      @update:open="(v) => (createOpen = v)"
       @confirm="handleCreateConfirm"
     />
   </AdminLayout>

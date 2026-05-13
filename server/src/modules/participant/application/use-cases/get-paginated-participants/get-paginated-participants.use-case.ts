@@ -1,7 +1,8 @@
-import { ParticipantEntity } from '../../../domain/entity/participant.entity'
-import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 import { EventEntity } from '@modules/event/domain/entity/event.entity'
 import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
+
+import { ParticipantEntity } from '../../../domain/entity/participant.entity'
+import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 
 export type ParticipantWithEventItem = {
   participant: ParticipantEntity
@@ -11,7 +12,7 @@ export type ParticipantWithEventItem = {
 export class GetPaginatedParticipantsUseCase {
   constructor(
     private readonly participantRepository: IParticipantRepository,
-    private readonly eventRepository: IEventRepository,
+    private readonly eventRepository: IEventRepository
   ) {}
 
   async execute(params: {

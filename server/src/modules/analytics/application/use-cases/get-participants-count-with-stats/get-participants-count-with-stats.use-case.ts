@@ -1,5 +1,6 @@
 import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 import { getMonthRange } from '@shared/utils/month-range'
+
 import { AnalyticsDomainModel } from '../../../domain/model/analytics.domain-model'
 
 export class GetParticipantsCountWithStatsUseCase {

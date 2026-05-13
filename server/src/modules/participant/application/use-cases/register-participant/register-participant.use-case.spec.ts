@@ -1,12 +1,13 @@
-import { RegisterParticipantUseCase } from './register-participant.use-case'
-import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
-import { createParticipantFixture } from '../../../__tests__/participant.factory'
-import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
 import { createEventFixture } from '@modules/event/__tests__/event.factory'
+import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
 import { EventStatus } from '@modules/event/domain/constants/event-status.constant'
 import { EventFullError, EventNotFoundError } from '@modules/event/domain/errors/event.error'
-import { ParticipantAlreadyRegisteredError } from '../../../domain/errors/participant.error'
 import { AppError } from '@shared/errors/app.error'
+
+import { createParticipantFixture } from '../../../__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
+import { ParticipantAlreadyRegisteredError } from '../../../domain/errors/participant.error'
+import { RegisterParticipantUseCase } from './register-participant.use-case'
 
 describe('RegisterParticipantUseCase', () => {
   let useCase: RegisterParticipantUseCase

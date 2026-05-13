@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 

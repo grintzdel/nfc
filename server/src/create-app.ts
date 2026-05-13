@@ -1,21 +1,22 @@
-import express, { type Express } from 'express'
 import cors from 'cors'
-import { loggerMiddleware } from './shared/middlewares/logger.middleware'
-import { errorHandlerMiddleware } from './shared/middlewares/error-handler.middleware'
-import { createAuthModule } from './modules/auth/auth.module'
-import { createUserModule } from './modules/user/user.module'
-import { createProductModule } from './modules/product/product.module'
-import { createCartModule } from './modules/cart/cart.module'
-import { createOrderModule } from './modules/order/order.module'
-import { createEventModule } from './modules/event/event.module'
-import { createSupplyOrderModule } from './modules/supply-order/supply-order.module'
-import { createBraceletModule } from './modules/bracelet/bracelet.module'
-import { createParticipantModule } from './modules/participant/participant.module'
-import { createCheckInModule } from './modules/check-in/check-in.module'
-import { createTeamModule } from './modules/team/team.module'
+import express, { type Express } from 'express'
+
 import { createAnalyticsModule } from './modules/analytics/analytics.module'
+import { createAuthModule } from './modules/auth/auth.module'
+import { createBraceletModule } from './modules/bracelet/bracelet.module'
+import { createCartModule } from './modules/cart/cart.module'
+import { createCheckInModule } from './modules/check-in/check-in.module'
+import { createEventModule } from './modules/event/event.module'
 import { createMarketingModule } from './modules/marketing/marketing.module'
+import { createOrderModule } from './modules/order/order.module'
+import { createParticipantModule } from './modules/participant/participant.module'
+import { createProductModule } from './modules/product/product.module'
+import { createSupplyOrderModule } from './modules/supply-order/supply-order.module'
+import { createTeamModule } from './modules/team/team.module'
+import { createUserModule } from './modules/user/user.module'
 import { createNfcRoutes } from './routes/nfc.routes'
+import { errorHandlerMiddleware } from './shared/middlewares/error-handler.middleware'
+import { loggerMiddleware } from './shared/middlewares/logger.middleware'
 
 export function createApp(): Express {
   const app: Express = express()
@@ -26,7 +27,7 @@ export function createApp(): Express {
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
-    }),
+    })
   )
   app.use(express.json())
   app.use(loggerMiddleware)
@@ -46,14 +47,14 @@ export function createApp(): Express {
   const { router: participantRouter, participantRepository } = createParticipantModule(
     jwtService,
     eventRepository,
-    braceletRepository,
+    braceletRepository
   )
   attachBraceletDeps({ participantRepository })
   const { router: checkInRouter, checkInRepository } = createCheckInModule(
     jwtService,
     braceletRepository,
     participantRepository,
-    activateBraceletUseCase,
+    activateBraceletUseCase
   )
   attachEventDeps({ braceletRepository, checkInRepository, participantRepository })
   const { router: teamRouter } = createTeamModule(jwtService, userRepository, eventRepository)
@@ -63,7 +64,7 @@ export function createApp(): Express {
     productRepository,
     async (order) => {
       await createBraceletFromOrderUseCase.execute(order)
-    },
+    }
   )
   const analyticsRouter = createAnalyticsModule(jwtService, {
     eventRepository,

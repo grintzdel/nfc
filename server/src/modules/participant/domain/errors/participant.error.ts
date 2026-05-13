@@ -1,7 +1,9 @@
 import { AppError } from '@shared/errors/app.error'
 
 export class ParticipantNotFoundError extends AppError {
-  constructor(id: string) { super(404, `Participant ${id} not found`) }
+  constructor(id: string) {
+    super(404, `Participant ${id} not found`)
+  }
 }
 
 export class ParticipantAlreadyRegisteredError extends AppError {

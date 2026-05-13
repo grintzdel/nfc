@@ -14,7 +14,7 @@ const footerColumns = [
   {
     title: 'Support',
     links: [
-      { label: 'Centre d\'aide', href: '#help' },
+      { label: "Centre d'aide", href: '#help' },
       { label: 'FAQ', href: '#faq' },
       { label: 'Contact', href: '#contact' },
       { label: 'Status', href: '#status' },
@@ -32,16 +32,15 @@ const footerColumns = [
 </script>
 
 <template>
-  <footer class="border-t-2 border-gradient-to-r bg-[#0B1120]" style="border-image: linear-gradient(90deg, #7C3AED88, #EC489966, #F9731688) 1;">
+  <footer
+    class="border-gradient-to-r border-t-2 bg-[#0B1120]"
+    style="border-image: linear-gradient(90deg, #7c3aed88, #ec489966, #f9731688) 1"
+  >
     <div class="mx-auto max-w-7xl px-6 py-12 lg:px-20">
       <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
         <div>
-          <RouterLink to="/" class="text-2xl font-extrabold tracking-[2px] text-slate-50">
-            PULSE
-          </RouterLink>
-          <p class="mt-3 text-sm text-slate-500">
-            Ton bracelet NFC intelligent pour vivre chaque evenement a fond.
-          </p>
+          <RouterLink to="/" class="text-2xl font-extrabold tracking-[2px] text-slate-50"> PULSE </RouterLink>
+          <p class="mt-3 text-sm text-slate-500">Ton bracelet NFC intelligent pour vivre chaque evenement a fond.</p>
         </div>
 
         <div v-for="col in footerColumns" :key="col.title">
@@ -61,7 +60,9 @@ const footerColumns = [
           <p class="text-xs text-slate-500">2026 PULSE. Tous droits reserves.</p>
           <div class="flex items-center gap-2 text-xs text-slate-600">
             <span>Réseaux sociaux</span>
-            <span class="rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+            <span
+              class="rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500"
+            >
               Bientôt
             </span>
           </div>

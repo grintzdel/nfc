@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
 import { useQueryClient } from '@tanstack/vue-query'
 import { ArrowLeft, Camera, CameraOff, Search } from 'lucide-vue-next'
-import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
+import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+
 import { useGetEventDetailStats } from '@/modules/analytics/ui/hooks/queries/query/use-get-event-detail-stats'
-import { useGetPaginatedParticipantsByEvent } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants-by-event'
-import { useRecordCheckIn } from '@/modules/check-in/ui/hooks/queries/mutation/use-record-check-in'
-import { InteractionType } from '@/modules/check-in/core/model/check-in.domain-model'
 import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import { InteractionType } from '@/modules/check-in/core/model/check-in.domain-model'
+import { useRecordCheckIn } from '@/modules/check-in/ui/hooks/queries/mutation/use-record-check-in'
+import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
+import { useGetPaginatedParticipantsByEvent } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants-by-event'
 import QrCodeScanner from '@/modules/qrcode/ui/components/qrcode-scanner.vue'
+
 import ScannerResultOverlay, { type ScannerResult } from './components/scanner-result-overlay.vue'
 
 const route = useRoute()
@@ -55,7 +57,7 @@ const INTERACTION_OPTIONS: { value: InteractionType; label: string }[] = [
 ]
 const interactionType = ref<InteractionType>(InteractionType.CHECK_IN)
 const interactionLabel = computed(
-  () => INTERACTION_OPTIONS.find((o) => o.value === interactionType.value)?.label ?? interactionType.value,
+  () => INTERACTION_OPTIONS.find((o) => o.value === interactionType.value)?.label ?? interactionType.value
 )
 
 const manualInput = ref('')
@@ -165,7 +167,7 @@ function handleScannerDetect(text: string): void {
   void doScan(text)
 }
 
-function isScannable(p: typeof participantItems.value[number]): boolean {
+function isScannable(p: (typeof participantItems.value)[number]): boolean {
   if (!p.bracelet) return false
   return p.bracelet.status === BraceletStatus.ACTIVE || p.bracelet.status === BraceletStatus.PRE_ACTIVATED
 }
@@ -218,9 +220,7 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
     <main class="flex flex-1 flex-col gap-6 px-6 py-6 lg:flex-row">
       <section class="flex flex-1 flex-col gap-6">
         <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6">
-          <label for="scanner-input" class="text-xs uppercase tracking-wider text-slate-500">
-            Saisie manuelle
-          </label>
+          <label for="scanner-input" class="text-xs uppercase tracking-wider text-slate-500"> Saisie manuelle </label>
           <form class="mt-3 flex items-center gap-2" @submit.prevent="handleManualSubmit">
             <input
               id="scanner-input"
@@ -230,7 +230,7 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
               placeholder="Bracelet : demo-nfc-001…"
               autocomplete="off"
               spellcheck="false"
-              class="flex-1 rounded-md border border-white/10 bg-[#020617] px-4 py-3 font-mono text-base text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+              class="flex-1 rounded-md border border-white/10 bg-[#020617] px-4 py-3 font-mono text-base text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
             />
             <button
               type="submit"
@@ -240,9 +240,7 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
               Scanner
             </button>
           </form>
-          <p class="mt-2 text-xs text-slate-500">
-            Saisissez ou collez l'ID du bracelet, puis appuyez sur Entrée.
-          </p>
+          <p class="mt-2 text-xs text-slate-500">Saisissez ou collez l'ID du bracelet, puis appuyez sur Entrée.</p>
         </div>
 
         <div class="rounded-lg border border-white/10 bg-[#0F172A] p-6">
@@ -260,9 +258,7 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
 
           <div v-if="cameraEnabled" class="mt-4">
             <QrCodeScanner :paused="scannerPaused" @scan="handleScannerDetect" />
-            <p class="mt-2 text-xs text-slate-500">
-              Pointez la caméra vers le QR code affiché par le participant.
-            </p>
+            <p class="mt-2 text-xs text-slate-500">Pointez la caméra vers le QR code affiché par le participant.</p>
           </div>
           <p v-else class="mt-3 text-xs text-slate-500">
             Activez la caméra pour scanner les QR codes affichés par les participants.
@@ -277,7 +273,7 @@ function isScannable(p: typeof participantItems.value[number]): boolean {
             v-model="search"
             type="text"
             placeholder="Rechercher un participant…"
-            class="w-full bg-transparent text-sm text-slate-50 placeholder:text-slate-500 outline-none"
+            class="w-full bg-transparent text-sm text-slate-50 outline-none placeholder:text-slate-500"
           />
         </div>
 

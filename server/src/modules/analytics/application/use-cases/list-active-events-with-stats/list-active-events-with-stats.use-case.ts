@@ -1,6 +1,7 @@
-import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { EventStatus } from '@modules/event/domain/constants/event-status.constant'
+import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { getMonthRange } from '@shared/utils/month-range'
+
 import { AnalyticsDomainModel } from '../../../domain/model/analytics.domain-model'
 
 export class ListActiveEventsWithStatsUseCase {

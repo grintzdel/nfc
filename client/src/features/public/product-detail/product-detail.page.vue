@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
+import { Loader2, ChevronRight } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
-import { useHead } from '@unhead/vue'
-import { Loader2, ChevronRight } from 'lucide-vue-next'
+
+import { useGetProductBySlug } from '@/modules/product/ui/hooks/queries/query/use-get-product-by-slug'
+
+import ProductDetailCta from './components/product-detail-cta.vue'
 import ProductHero from './components/product-hero.vue'
 import ProductSpecs from './components/product-specs.vue'
 import RelatedProducts from './components/related-products.vue'
-import ProductDetailCta from './components/product-detail-cta.vue'
-import { useGetProductBySlug } from '@/modules/product/ui/hooks/queries/query/use-get-product-by-slug'
 
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)

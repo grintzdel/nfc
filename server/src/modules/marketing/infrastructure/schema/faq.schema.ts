@@ -16,7 +16,7 @@ const faqSchema = new Schema<FaqDocument>(
     order: { type: Number, default: 0 },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true },
+  { timestamps: true }
 )
 
 export const FaqModel = mongoose.model<FaqDocument>('Faq', faqSchema)

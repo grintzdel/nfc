@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { ShoppingBag, TrendingUp } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { ShoppingBag, TrendingUp } from 'lucide-vue-next'
-import AdminLayout from '@/ui/layout/admin-layout.vue'
+
+import { OrderStatus } from '@/modules/order/core/model/order.domain-model'
+import { useUpdateOrderStatus } from '@/modules/order/ui/hooks/queries/mutation/use-update-order-status'
+import { useGetAllOrders } from '@/modules/order/ui/hooks/queries/query/use-get-all-orders'
 import StatCard from '@/ui/components/stat-card.vue'
+import { EmptyState } from '@/ui/empty-state'
+import AdminLayout from '@/ui/layout/admin-layout.vue'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 import { TableSkeleton } from '@/ui/skeleton'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetAllOrders } from '@/modules/order/ui/hooks/queries/query/use-get-all-orders'
-import { useUpdateOrderStatus } from '@/modules/order/ui/hooks/queries/mutation/use-update-order-status'
-import { OrderStatus } from '@/modules/order/core/model/order.domain-model'
 
 const { data: orders, isLoading } = useGetAllOrders()
 const updateStatusMutation = useUpdateOrderStatus()
@@ -27,7 +28,7 @@ const STATUS_FILTER = [
 const activeFilter = ref<string>('all')
 
 const filteredItems = computed(() =>
-  activeFilter.value === 'all' ? items.value : items.value.filter((o) => o.status === activeFilter.value),
+  activeFilter.value === 'all' ? items.value : items.value.filter((o) => o.status === activeFilter.value)
 )
 
 const STATUS_OPTIONS: OrderStatus[] = [
@@ -60,14 +61,12 @@ function handleStatusChange(id: string, status: OrderStatus): void {
     {
       onSuccess: () => toast.success('Statut mis à jour'),
       onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la mise à jour'),
-    },
+    }
   )
 }
 
 const totalRevenue = computed(() =>
-  items.value
-    .filter((o) => o.status !== OrderStatus.CANCELLED)
-    .reduce((sum, o) => sum + o.totalAmount, 0),
+  items.value.filter((o) => o.status !== OrderStatus.CANCELLED).reduce((sum, o) => sum + o.totalAmount, 0)
 )
 
 const eurFormatter = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
@@ -109,7 +108,7 @@ function formatDate(dateStr: string): string {
               class="rounded px-3 py-1.5 text-[13px] font-medium transition-colors"
               :class="
                 activeFilter === tab.key
-                  ? 'bg-[#0F172A] text-slate-50 border border-white/10'
+                  ? 'border border-white/10 bg-[#0F172A] text-slate-50'
                   : 'text-slate-400 hover:text-slate-200'
               "
               @click="activeFilter = tab.key"
@@ -131,11 +130,21 @@ function formatDate(dateStr: string): string {
           <div class="overflow-x-auto">
             <div class="flex min-w-[820px] flex-col">
               <div class="flex items-center bg-slate-800">
-                <div class="w-[180px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Date</span></div>
-                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Articles</span></div>
-                <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Montant</span></div>
-                <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
-                <div class="w-[180px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
+                <div class="w-[180px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Date</span>
+                </div>
+                <div class="flex-1 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Articles</span>
+                </div>
+                <div class="w-[140px] shrink-0 px-4 py-3 text-right">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Montant</span>
+                </div>
+                <div class="w-[120px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span>
+                </div>
+                <div class="w-[180px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Action</span>
+                </div>
               </div>
 
               <div v-for="o in filteredItems" :key="o.id" class="flex items-center border-t border-white/10">
@@ -157,7 +166,10 @@ function formatDate(dateStr: string): string {
                   </span>
                 </div>
                 <div class="w-[180px] shrink-0 px-4 py-3">
-                  <Select :model-value="o.status" @update:model-value="(v) => handleStatusChange(o.id, v as OrderStatus)">
+                  <Select
+                    :model-value="o.status"
+                    @update:model-value="(v) => handleStatusChange(o.id, v as OrderStatus)"
+                  >
                     <SelectTrigger class="h-8 text-xs">
                       <SelectValue />
                     </SelectTrigger>

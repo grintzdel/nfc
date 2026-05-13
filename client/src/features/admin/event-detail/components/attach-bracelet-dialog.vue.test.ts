@@ -1,8 +1,10 @@
-import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import AttachBraceletDialog from './attach-bracelet-dialog.vue'
-import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import { describe, it, expect } from 'vitest'
+
 import type { BraceletDomainModel } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+
+import AttachBraceletDialog from './attach-bracelet-dialog.vue'
 
 const participant: ParticipantDomainModel.ParticipantOverviewDto = {
   id: 'p1',
@@ -18,9 +20,16 @@ const participant: ParticipantDomainModel.ParticipantOverviewDto = {
 
 const availableBracelets: BraceletDomainModel.BraceletOverviewDto[] = [
   {
-    id: 'b1', nfcId: 'nfc-001', status: 'pre_activated', userId: null,
-    eventId: 'e1', productId: null, orderId: null, activatedAt: null,
-    createdAt: '', updatedAt: '',
+    id: 'b1',
+    nfcId: 'nfc-001',
+    status: 'pre_activated',
+    userId: null,
+    eventId: 'e1',
+    productId: null,
+    orderId: null,
+    activatedAt: null,
+    createdAt: '',
+    updatedAt: '',
   },
 ]
 

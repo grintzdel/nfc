@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 import type { CheckInDomainModel } from '@/modules/check-in/core/model/check-in.domain-model'
 

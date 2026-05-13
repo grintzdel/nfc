@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -10,7 +10,7 @@ const props = withDefaults(
     limit: number
     itemLabel?: string
   }>(),
-  { itemLabel: 'résultats' },
+  { itemLabel: 'résultats' }
 )
 
 const emit = defineEmits<{ 'update:page': [value: number] }>()
@@ -29,9 +29,7 @@ const pageNumbers = computed(() => {
 
 <template>
   <div v-if="total > 0" class="flex items-center justify-between border-t border-white/10 px-6 py-4">
-    <span class="text-sm text-slate-400">
-      Affichage {{ from }}-{{ to }} sur {{ total }} {{ itemLabel }}
-    </span>
+    <span class="text-sm text-slate-400"> Affichage {{ from }}-{{ to }} sur {{ total }} {{ itemLabel }} </span>
     <div class="flex items-center gap-1">
       <button
         class="flex h-10 w-10 items-center justify-center rounded-md text-slate-400 hover:bg-white/5 disabled:opacity-30"
@@ -45,9 +43,7 @@ const pageNumbers = computed(() => {
         :key="p"
         class="flex h-10 w-10 items-center justify-center rounded-md text-sm font-medium"
         :class="
-          p === page
-            ? 'border border-white/10 bg-[#020617] text-slate-50 shadow-sm'
-            : 'text-slate-400 hover:bg-white/5'
+          p === page ? 'border border-white/10 bg-[#020617] text-slate-50 shadow-sm' : 'text-slate-400 hover:bg-white/5'
         "
         @click="emit('update:page', p)"
       >

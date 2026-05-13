@@ -1,6 +1,6 @@
-import { IEventRepository } from '../../domain/repository/event.repository.interface'
-import { EventEntity } from '../../domain/entity/event.entity'
 import { EventStatus } from '../../domain/constants/event-status.constant'
+import { EventEntity } from '../../domain/entity/event.entity'
+import { IEventRepository } from '../../domain/repository/event.repository.interface'
 import { EventModel, EventDocument } from '../schema/event.schema'
 
 function toEntity(doc: EventDocument): EventEntity {
@@ -67,7 +67,7 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
       status: EventStatus.UPCOMING,
       startsAt: { $gt: new Date() },
       deletedAt: null,
-    }).sort({ startsAt: 1 })
+    }).toSorted({ startsAt: 1 })
     return doc ? toEntity(doc) : null
   }
 
@@ -92,7 +92,10 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
       filter['$or'] = [{ name: regex }, { city: regex }, { venueName: regex }]
     }
     const [docs, total] = await Promise.all([
-      EventModel.find(filter).skip((page - 1) * limit).limit(limit).sort({ startsAt: -1 }),
+      EventModel.find(filter)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .toSorted({ startsAt: -1 }),
       EventModel.countDocuments(filter),
     ])
     return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -105,7 +108,11 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
   async countCompletedInYear(year: number): Promise<number> {
     const from = new Date(year, 0, 1)
     const to = new Date(year + 1, 0, 1)
-    return EventModel.countDocuments({ status: EventStatus.COMPLETED, updatedAt: { $gte: from, $lt: to }, deletedAt: null })
+    return EventModel.countDocuments({
+      status: EventStatus.COMPLETED,
+      updatedAt: { $gte: from, $lt: to },
+      deletedAt: null,
+    })
   }
 
   async countUpcomingInDays(days: number): Promise<number> {
@@ -119,11 +126,37 @@ export class EventRepositoryMongooseMongo implements IEventRepository {
   }
 
   async update(event: EventEntity): Promise<EventEntity> {
-    const { name, slug, description, venueName, venueAddress, city, startsAt, endsAt, capacity, staffCount, status, deletedAt } = event.toJSON()
+    const {
+      name,
+      slug,
+      description,
+      venueName,
+      venueAddress,
+      city,
+      startsAt,
+      endsAt,
+      capacity,
+      staffCount,
+      status,
+      deletedAt,
+    } = event.toJSON()
     const doc = await EventModel.findByIdAndUpdate(
       event.id,
-      { name, slug, description, venueName, venueAddress, city, startsAt, endsAt, capacity, staffCount, status, deletedAt },
-      { new: true },
+      {
+        name,
+        slug,
+        description,
+        venueName,
+        venueAddress,
+        city,
+        startsAt,
+        endsAt,
+        capacity,
+        staffCount,
+        status,
+        deletedAt,
+      },
+      { new: true }
     )
     if (!doc) throw new Error(`Event ${event.id} not found in DB during update`)
     return toEntity(doc)

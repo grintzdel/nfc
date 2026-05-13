@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { VisSingleContainer, VisDonut, VisTooltip, VisDonutSelectors } from '@unovis/vue'
 import { PieChart } from 'lucide-vue-next'
+import { computed } from 'vue'
+
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 import { EmptyState } from '@/ui/empty-state'
 
@@ -50,19 +51,11 @@ const donutTooltipTriggers = {
       <div class="flex justify-center">
         <div class="relative" style="width: 144px; height: 144px">
           <VisSingleContainer :data="donutData" :width="144" :height="144">
-            <VisDonut
-              :value="valueAccessor"
-              :arc-width="28"
-              :pad-angle="0.02"
-              :color="colorAccessor"
-            />
+            <VisDonut :value="valueAccessor" :arc-width="28" :pad-angle="0.02" :color="colorAccessor" />
             <VisTooltip :triggers="donutTooltipTriggers" />
           </VisSingleContainer>
 
-          <div
-            v-if="topItem"
-            class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"
-          >
+          <div v-if="topItem" class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
             <span class="text-lg font-bold text-slate-50">{{ parseFloat(topItem.percent.toFixed(2)) }}%</span>
             <span class="text-[10px] font-medium text-[#A78BFA]">{{ topItem.label }}</span>
           </div>
@@ -70,15 +63,8 @@ const donutTooltipTriggers = {
       </div>
 
       <div class="flex flex-col gap-2">
-        <div
-          v-for="(item, index) in donutData"
-          :key="item.label"
-          class="flex items-center gap-2"
-        >
-          <span
-            class="h-2 w-2 shrink-0 rounded-full"
-            :style="{ backgroundColor: COLORS[index % COLORS.length] }"
-          />
+        <div v-for="(item, index) in donutData" :key="item.label" class="flex items-center gap-2">
+          <span class="h-2 w-2 shrink-0 rounded-full" :style="{ backgroundColor: COLORS[index % COLORS.length] }" />
           <span class="flex-1 text-[13px] text-slate-50">{{ item.label }}</span>
           <span class="text-[13px] font-medium text-slate-400">{{ parseFloat(item.percent.toFixed(2)) }}%</span>
         </div>

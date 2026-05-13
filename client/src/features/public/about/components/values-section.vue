@@ -8,7 +8,8 @@ const values = [
     bgGradient: 'from-pulse-surface to-[#1a1040]',
     borderGradient: 'linear-gradient(180deg, #334155, #7C3AED44)',
     title: 'Passion',
-    description: 'Nes dans les festivals, on construit pour les gens qui vivent la musique et les rencontres. Chaque feature nait d\'une experience reelle.',
+    description:
+      "Nes dans les festivals, on construit pour les gens qui vivent la musique et les rencontres. Chaque feature nait d'une experience reelle.",
   },
   {
     icon: Sparkles,
@@ -16,7 +17,8 @@ const values = [
     bgGradient: 'from-pulse-surface to-[#1f1a2a]',
     borderGradient: 'linear-gradient(180deg, #334155, #F9731644)',
     title: 'Simplicite',
-    description: 'La meilleure techno est celle qu\'on ne remarque pas. Un tap, c\'est tout. Pas d\'app a telecharger, pas de QR code a scanner.',
+    description:
+      "La meilleure techno est celle qu'on ne remarque pas. Un tap, c'est tout. Pas d'app a telecharger, pas de QR code a scanner.",
   },
   {
     icon: Shield,
@@ -24,7 +26,8 @@ const values = [
     bgGradient: 'from-pulse-surface to-[#162030]',
     borderGradient: 'linear-gradient(180deg, #334155, #3B82F644)',
     title: 'Confiance',
-    description: 'Securite zero compromis. Chaque bracelet est crypte, chaque donnee protegee. Vos festivaliers meritent une techno fiable.',
+    description:
+      'Securite zero compromis. Chaque bracelet est crypte, chaque donnee protegee. Vos festivaliers meritent une techno fiable.',
   },
   {
     icon: Leaf,
@@ -32,7 +35,8 @@ const values = [
     bgGradient: 'from-pulse-surface to-[#1a2030]',
     borderGradient: 'linear-gradient(180deg, #334155, #22C55E44)',
     title: 'Impact',
-    description: 'Chaque bracelet NFC remplace des tonnes de billets papier. On construit une techno evenementielle durable et responsable.',
+    description:
+      'Chaque bracelet NFC remplace des tonnes de billets papier. On construit une techno evenementielle durable et responsable.',
   },
 ]
 </script>
@@ -46,7 +50,9 @@ const values = [
         <span class="text-xs font-semibold text-slate-800">NOS VALEURS</span>
       </div>
 
-      <h2 class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent">
+      <h2
+        class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent"
+      >
         Ce en quoi on croit
       </h2>
 

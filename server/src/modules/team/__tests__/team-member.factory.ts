@@ -1,5 +1,5 @@
-import { TeamMemberEntity, TeamMemberEntityProps } from '../domain/entity/team-member.entity'
 import { TeamRole } from '../domain/constants/team-role.constant'
+import { TeamMemberEntity, TeamMemberEntityProps } from '../domain/entity/team-member.entity'
 
 let counter = 0
 

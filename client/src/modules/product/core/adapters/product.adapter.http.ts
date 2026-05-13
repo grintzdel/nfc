@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IProductPort } from '../ports/product.port'
+
 import type { ProductDomainModel } from '../model/product.domain-model'
+import type { IProductPort } from '../ports/product.port'
 
 export class ProductHttpAdapter implements IProductPort {
   constructor(private readonly httpClient: HttpClient) {}

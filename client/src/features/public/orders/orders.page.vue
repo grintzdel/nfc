@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { Loader2, ShoppingBag } from 'lucide-vue-next'
+import { RouterLink } from 'vue-router'
+
 import OrderList from '@/modules/order/ui/components/order-list.vue'
 import { useGetMyOrders } from '@/modules/order/ui/hooks/queries/query/use-get-my-orders'
 import { EmptyState } from '@/ui/empty-state'
@@ -27,7 +28,10 @@ const { data: orders, isLoading, isError } = useGetMyOrders()
       description="Découvrez notre catalogue de pass NFC et passez votre première commande."
       size="md"
     >
-      <RouterLink to="/shop" class="rounded-md bg-pulse-violet px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-pulse-violet-dark">
+      <RouterLink
+        to="/shop"
+        class="rounded-md bg-pulse-violet px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-pulse-violet-dark"
+      >
         Découvrir le catalogue
       </RouterLink>
     </EmptyState>

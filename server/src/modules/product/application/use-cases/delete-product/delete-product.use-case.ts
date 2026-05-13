@@ -1,5 +1,5 @@
-import { IProductRepository } from '../../../domain/repository/product.repository.interface'
 import { ProductNotFoundError } from '../../../domain/errors/product.error'
+import { IProductRepository } from '../../../domain/repository/product.repository.interface'
 
 export class DeleteProductUseCase {
   constructor(private readonly productRepository: IProductRepository) {}

@@ -1,6 +1,7 @@
-import { CheckInEntity } from '../../domain/entity/check-in.entity'
-import { InteractionType } from '../../domain/constants/interaction-type.constant'
 import { ParticipantEntity } from '@modules/participant/domain/entity/participant.entity'
+
+import { InteractionType } from '../../domain/constants/interaction-type.constant'
+import { CheckInEntity } from '../../domain/entity/check-in.entity'
 
 type ParticipantSummary = { id: string; displayName: string }
 

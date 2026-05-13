@@ -1,5 +1,5 @@
-import { RegisterUseCase } from '../use-cases/register/register.use-case'
 import { LoginUseCase } from '../use-cases/login/login.use-case'
+import { RegisterUseCase } from '../use-cases/register/register.use-case'
 
 export class AuthService {
   constructor(

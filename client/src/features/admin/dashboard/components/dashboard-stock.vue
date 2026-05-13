@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { TriangleAlert, Truck, CalendarClock, Plus, Package } from 'lucide-vue-next'
+import { computed } from 'vue'
+
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 import { EmptyState } from '@/ui/empty-state'
 
@@ -18,7 +19,9 @@ function formatDate(dateStr: string): string {
 </script>
 
 <template>
-  <div class="flex w-full flex-col justify-between gap-4 rounded-lg border border-white/10 bg-[#0F172A] p-5 xl:w-[380px]">
+  <div
+    class="flex w-full flex-col justify-between gap-4 rounded-lg border border-white/10 bg-[#0F172A] p-5 xl:w-[380px]"
+  >
     <div v-if="!data" class="flex h-60 items-center justify-center">
       <EmptyState :icon="Package" title="Aucune donnée de stock" size="sm" />
     </div>
@@ -47,14 +50,13 @@ function formatDate(dateStr: string): string {
               <span class="text-sm text-slate-400">/ {{ data.maxCapacity }}</span>
             </div>
           </div>
-          <span class="text-[13px] font-semibold" :style="{ color: barColor }">{{ parseFloat(data.fillPercent.toFixed(2)) }}%</span>
+          <span class="text-[13px] font-semibold" :style="{ color: barColor }"
+            >{{ parseFloat(data.fillPercent.toFixed(2)) }}%</span
+          >
         </div>
 
         <div class="relative h-2 w-full overflow-hidden rounded-full bg-slate-800">
-          <div
-            class="h-full rounded-full transition-all"
-            :style="{ width: barWidth, backgroundColor: barColor }"
-          />
+          <div class="h-full rounded-full transition-all" :style="{ width: barWidth, backgroundColor: barColor }" />
         </div>
 
         <div class="flex justify-between text-[10px] text-slate-400">
@@ -77,7 +79,9 @@ function formatDate(dateStr: string): string {
             <CalendarClock class="h-3.5 w-3.5 text-[#A78BFA]" />
             <span class="text-xs text-slate-400">Livraison estimee</span>
           </div>
-          <span class="text-xs font-semibold text-slate-50">{{ formatDate(data.pendingOrder.estimatedDeliveryDate) }}</span>
+          <span class="text-xs font-semibold text-slate-50">{{
+            formatDate(data.pendingOrder.estimatedDeliveryDate)
+          }}</span>
         </div>
       </div>
 
@@ -89,7 +93,9 @@ function formatDate(dateStr: string): string {
       >
         <Plus class="h-3.5 w-3.5" />
         Commander des packs
-        <span class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+        <span
+          class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400"
+        >
           Soon
         </span>
       </button>

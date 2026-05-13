@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { useHead } from '@unhead/vue'
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useHead } from '@unhead/vue'
+
+import { NfcBraceletNotActiveError } from '@/modules/nfc/core/errors/nfc.error'
+import NfcBioSection from '@/modules/nfc/ui/components/nfc-bio-section.vue'
+import NfcErrorState from '@/modules/nfc/ui/components/nfc-error-state.vue'
+import NfcLinkCard from '@/modules/nfc/ui/components/nfc-link-card.vue'
+import NfcProfileHero from '@/modules/nfc/ui/components/nfc-profile-hero.vue'
+import { useGetNfcByNfcId } from '@/modules/nfc/ui/hooks/queries/query/use-get-nfc-by-id'
 import { Card, CardContent } from '@/ui/card'
 import { Skeleton } from '@/ui/skeleton'
-import { useGetNfcByNfcId } from '@/modules/nfc/ui/hooks/queries/query/use-get-nfc-by-id'
-import { NfcBraceletNotActiveError } from '@/modules/nfc/core/errors/nfc.error'
-import NfcProfileHero from '@/modules/nfc/ui/components/nfc-profile-hero.vue'
-import NfcBioSection from '@/modules/nfc/ui/components/nfc-bio-section.vue'
-import NfcLinkCard from '@/modules/nfc/ui/components/nfc-link-card.vue'
-import NfcErrorState from '@/modules/nfc/ui/components/nfc-error-state.vue'
 
 const route = useRoute()
 const nfcId = ref<string | null>(typeof route.params.nfcId === 'string' ? route.params.nfcId : null)
@@ -17,13 +18,13 @@ watch(
   () => route.params.nfcId,
   (v) => {
     nfcId.value = typeof v === 'string' ? v : null
-  },
+  }
 )
 
 const { data, isLoading, isError, error } = useGetNfcByNfcId(nfcId)
 
 const errorVariant = computed<'not-active' | 'network'>(() =>
-  error.value instanceof NfcBraceletNotActiveError ? 'not-active' : 'network',
+  error.value instanceof NfcBraceletNotActiveError ? 'not-active' : 'network'
 )
 
 useHead({
@@ -39,10 +40,12 @@ useHead({
 </script>
 
 <template>
-  <div class="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-950 via-[#0F172A] to-slate-950 px-6 py-12 text-slate-50">
+  <div
+    class="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-950 via-[#0F172A] to-slate-950 px-6 py-12 text-slate-50"
+  >
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
-      <div class="absolute -left-32 top-20 h-[500px] w-[500px] rounded-full bg-violet-600/8 blur-3xl" />
-      <div class="absolute -right-32 bottom-20 h-[400px] w-[400px] rounded-full bg-fuchsia-500/6 blur-3xl" />
+      <div class="bg-violet-600/8 absolute -left-32 top-20 h-[500px] w-[500px] rounded-full blur-3xl" />
+      <div class="bg-fuchsia-500/6 absolute -right-32 bottom-20 h-[400px] w-[400px] rounded-full blur-3xl" />
     </div>
 
     <div class="relative mx-auto flex w-full max-w-md flex-col gap-6">

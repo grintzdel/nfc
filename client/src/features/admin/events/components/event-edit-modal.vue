@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import { X } from 'lucide-vue-next'
+import { ref, watch } from 'vue'
+
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 
 const props = defineProps<{
@@ -43,7 +44,7 @@ watch(
       }
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 function handleSave() {

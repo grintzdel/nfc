@@ -1,4 +1,5 @@
 import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
+
 import { GetParticipantsCountWithStatsUseCase } from './get-participants-count-with-stats.use-case'
 
 const mockParticipantRepo: jest.Mocked<IParticipantRepository> = {

@@ -1,7 +1,7 @@
-import { IUserRepository } from '../../domain/repository/user.repository.interface'
-import { UserEntity } from '../../domain/entity/user.entity'
-import { UserModel, UserDocument } from '../schema/user.schema'
 import { UserRole } from '../../domain/constants/auth.constant'
+import { UserEntity } from '../../domain/entity/user.entity'
+import { IUserRepository } from '../../domain/repository/user.repository.interface'
+import { UserModel, UserDocument } from '../schema/user.schema'
 
 export class UserRepositoryMongooseMongo implements IUserRepository {
   private toEntity(doc: UserDocument): UserEntity {
@@ -29,7 +29,7 @@ export class UserRepositoryMongooseMongo implements IUserRepository {
   }
 
   async findAll(): Promise<UserEntity[]> {
-    const docs = await UserModel.find({ deletedAt: null }).sort({ createdAt: -1 })
+    const docs = await UserModel.find({ deletedAt: null }).toSorted({ createdAt: -1 })
     return docs.map((doc) => this.toEntity(doc))
   }
 

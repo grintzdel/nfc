@@ -1,4 +1,5 @@
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
+
 import { AnalyticsDomainModel } from '../../../domain/model/analytics.domain-model'
 
 const MONTH_NAMES = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc']

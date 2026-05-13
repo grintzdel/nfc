@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { Search, ExternalLink, Watch } from 'lucide-vue-next'
 import { computed, ref, toRef, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Search, ExternalLink, Watch } from 'lucide-vue-next'
+
+import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import { useDisableBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-disable-bracelet'
+import { useGetPaginatedBraceletsByEvent } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets-by-event'
+import { EmptyState } from '@/ui/empty-state'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetPaginatedBraceletsByEvent } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets-by-event'
-import { useDisableBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-disable-bracelet'
-import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
 
 const props = defineProps<{ eventId: string }>()
 
@@ -73,7 +74,7 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
           v-model="searchInput"
           type="text"
           placeholder="Rechercher par NFC ID…"
-          class="w-full bg-transparent text-[13px] text-slate-50 placeholder:text-slate-400 outline-none"
+          class="w-full bg-transparent text-[13px] text-slate-50 outline-none placeholder:text-slate-400"
         />
       </div>
     </div>
@@ -90,18 +91,24 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
       <div class="overflow-x-auto">
         <div class="flex min-w-[820px] flex-col">
           <div class="flex items-center bg-slate-800">
-            <div class="w-[220px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span></div>
-            <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
-            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant attaché</span></div>
-            <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Créé le</span></div>
-            <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
+            <div class="w-[220px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span>
+            </div>
+            <div class="w-[120px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span>
+            </div>
+            <div class="flex-1 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Participant attaché</span>
+            </div>
+            <div class="w-[120px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Créé le</span>
+            </div>
+            <div class="w-[140px] shrink-0 px-4 py-3 text-right">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Action</span>
+            </div>
           </div>
 
-          <div
-            v-for="row in items"
-            :key="row.id"
-            class="flex items-center border-t border-white/10"
-          >
+          <div v-for="row in items" :key="row.id" class="flex items-center border-t border-white/10">
             <div class="w-[220px] shrink-0 px-4 py-3">
               <RouterLink
                 v-if="row.status === BraceletStatus.ACTIVE"
@@ -152,7 +159,7 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
         :total="paged.total"
         :limit="paged.limit"
         item-label="bracelets"
-        @update:page="(p) => page = p"
+        @update:page="(p) => (page = p)"
       />
     </template>
   </div>

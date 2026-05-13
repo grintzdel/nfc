@@ -3,9 +3,13 @@ import { test, expect } from '@playwright/test'
 const DEMO_SLUG = 'pulse-demo-2026'
 const DRAFT_SLUG = 'pulse-draft-demo'
 
-async function resolveEventIdBySlug(slug: string, request: import('@playwright/test').APIRequestContext): Promise<string> {
+async function resolveEventIdBySlug(
+  slug: string,
+  request: import('@playwright/test').APIRequestContext
+): Promise<string> {
   const res = await request.get(`http://localhost:3001/api/events/public/${slug}`)
-  if (!res.ok()) throw new Error(`Cannot resolve event slug "${slug}" — status ${res.status()}. Did you run \`pnpm seed\`?`)
+  if (!res.ok())
+    throw new Error(`Cannot resolve event slug "${slug}" — status ${res.status()}. Did you run \`pnpm seed\`?`)
   const body = (await res.json()) as { data: { id: string } }
   return body.data.id
 }

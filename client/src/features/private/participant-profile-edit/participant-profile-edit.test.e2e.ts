@@ -17,7 +17,10 @@ test.describe('Participant Profile Edit', () => {
     const meRes = await request.get('http://localhost:3001/api/participants/me', {
       headers: { Authorization: `Bearer ${token}` },
     })
-    test.skip(!meRes.ok(), `baseline user cannot fetch /participants/me (status ${meRes.status()}) — backend or seed issue`)
+    test.skip(
+      !meRes.ok(),
+      `baseline user cannot fetch /participants/me (status ${meRes.status()}) — backend or seed issue`
+    )
 
     const participations = ((await meRes.json()) as { data: Array<{ id: string }> }).data
     test.skip(participations.length === 0, 'baseline E2E user has no participations — seed required')

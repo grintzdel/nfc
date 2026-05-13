@@ -1,11 +1,14 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IParticipantPort } from '../ports/participant.port'
+
 import type { ParticipantDomainModel } from '../model/participant.domain-model'
+import type { IParticipantPort } from '../ports/participant.port'
 
 export class ParticipantHttpAdapter implements IParticipantPort {
   constructor(private readonly httpClient: HttpClient) {}
 
-  async register(dto: ParticipantDomainModel.RegisterParticipantDto): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
+  async register(
+    dto: ParticipantDomainModel.RegisterParticipantDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
     const result = await this.httpClient.post<ParticipantDomainModel.ParticipantOverviewDto>('/participants', dto)
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -18,7 +21,9 @@ export class ParticipantHttpAdapter implements IParticipantPort {
   }
 
   async getByEvent(eventId: string): Promise<ParticipantDomainModel.ParticipantOverviewDto[]> {
-    const result = await this.httpClient.get<ParticipantDomainModel.ParticipantOverviewDto[]>(`/participants/event/${eventId}`)
+    const result = await this.httpClient.get<ParticipantDomainModel.ParticipantOverviewDto[]>(
+      `/participants/event/${eventId}`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
@@ -32,7 +37,7 @@ export class ParticipantHttpAdapter implements IParticipantPort {
     const qs = new URLSearchParams({ page: String(params.page), limit: String(params.limit) })
     if (params.search && params.search.trim()) qs.append('search', params.search.trim())
     const result = await this.httpClient.get<ParticipantDomainModel.PaginatedParticipantsDto>(
-      `/participants/event/${params.eventId}/paginated?${qs.toString()}`,
+      `/participants/event/${params.eventId}/paginated?${qs.toString()}`
     )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -48,7 +53,7 @@ export class ParticipantHttpAdapter implements IParticipantPort {
     if (params.checkedIn !== undefined) qs.append('checkedIn', String(params.checkedIn))
     if (params.search && params.search.trim()) qs.append('search', params.search.trim())
     const result = await this.httpClient.get<ParticipantDomainModel.PaginatedAllParticipantsDto>(
-      `/participants/paginated?${qs.toString()}`,
+      `/participants/paginated?${qs.toString()}`
     )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -60,14 +65,26 @@ export class ParticipantHttpAdapter implements IParticipantPort {
     return result.data.data
   }
 
-  async updateProfile(id: string, dto: ParticipantDomainModel.UpdateParticipantProfileDto): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
-    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(`/participants/${id}/profile`, dto)
+  async updateProfile(
+    id: string,
+    dto: ParticipantDomainModel.UpdateParticipantProfileDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
+    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(
+      `/participants/${id}/profile`,
+      dto
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
 
-  async attachBracelet(id: string, dto: ParticipantDomainModel.AttachBraceletDto): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
-    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(`/participants/${id}/bracelet`, dto)
+  async attachBracelet(
+    id: string,
+    dto: ParticipantDomainModel.AttachBraceletDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
+    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(
+      `/participants/${id}/bracelet`,
+      dto
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }

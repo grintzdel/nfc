@@ -18,7 +18,7 @@ const steps = [
     number: '3',
     gradient: 'from-blue-500 to-cyan-500',
     bgGradient: 'from-pulse-surface to-[#162030]',
-    title: 'Vivez l\'experience',
+    title: "Vivez l'experience",
     description: 'Le jour J, distribuez les bracelets. Vos participants tappent, se connectent et interagissent.',
   },
 ]
@@ -33,7 +33,9 @@ const steps = [
         <span class="text-xs font-semibold text-slate-800">COMMENT CA MARCHE</span>
       </div>
 
-      <h2 class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent">
+      <h2
+        class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent"
+      >
         Simple comme 1, 2, 3
       </h2>
 

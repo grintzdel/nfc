@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
+
 import { ProductService } from '../../application/services/product.service'
 import { CreateProductRequestDto } from '../dto/create-product.request.dto'
-import { UpdateProductRequestDto } from '../dto/update-product.request.dto'
 import { ProductResponseDto } from '../dto/product.response.dto'
+import { UpdateProductRequestDto } from '../dto/update-product.request.dto'
 
 export class ProductController {
   constructor(private readonly productService: ProductService) {}

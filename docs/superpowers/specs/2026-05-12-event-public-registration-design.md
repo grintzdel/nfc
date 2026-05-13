@@ -87,6 +87,7 @@ In `event.module.ts`, instantiate `GetEventBySlugPublicUseCase` and pass it to t
 ### 1.6 Existing registration safeguards (no change)
 
 `register-participant.use-case.ts` already throws:
+
 - `EventNotFoundError` if event missing/deleted
 - `AppError(400)` if event completed/cancelled
 - `ParticipantAlreadyRegisteredError` if same `(userId, eventId)` exists
@@ -153,18 +154,19 @@ import EventPublicPage from '@/features/public/event-public/event-public.page.vu
 
 In `client/src/modules/event/ui/components/`:
 
-| Component | Role |
-|---|---|
-| `event-public-hero.vue` | Cover banner: event name, formatted date range (`Intl.DateTimeFormat('fr-FR')`), city + venue name |
-| `event-public-description.vue` | Description rendered in a prose-styled card |
-| `event-not-available.vue` | Friendly error state shown when API returns 404 |
-| `event-registration-form.vue` | The dual-mode registration form (see 2.7) |
+| Component                      | Role                                                                                               |
+| ------------------------------ | -------------------------------------------------------------------------------------------------- |
+| `event-public-hero.vue`        | Cover banner: event name, formatted date range (`Intl.DateTimeFormat('fr-FR')`), city + venue name |
+| `event-public-description.vue` | Description rendered in a prose-styled card                                                        |
+| `event-not-available.vue`      | Friendly error state shown when API returns 404                                                    |
+| `event-registration-form.vue`  | The dual-mode registration form (see 2.7)                                                          |
 
 ### 2.7 Form `event-registration-form.vue`
 
 **Imports** `useAuth()` and `useDependencies()`.
 
 **Reactive state**:
+
 ```ts
 const isLoggedIn = computed(() => isAuthenticated())
 const accountFields = ref({ firstName: '', lastName: '', email: '', password: '' }) // ignored when logged in
@@ -178,9 +180,10 @@ const profileFields = ref({
 
 **Always-shown fields**: `displayName` (required), `role`, `bio`, `<ProfileLinksEditor v-model="profileFields.links" />` (component from Spec 3).
 
-**Conditionally shown** (`!isLoggedIn`): `firstName`, `lastName`, `email`, `password`. Plus a small link *"J'ai déjà un compte"* → `router.push({ path: '/login', query: { redirect: route.fullPath } })`.
+**Conditionally shown** (`!isLoggedIn`): `firstName`, `lastName`, `email`, `password`. Plus a small link _"J'ai déjà un compte"_ → `router.push({ path: '/login', query: { redirect: route.fullPath } })`.
 
 **Client-side validation** (before submit):
+
 - email matches a simple regex
 - password length ≥ 8
 - `displayName.trim()` non-empty
@@ -219,7 +222,7 @@ async function handleSubmit() {
         return
       }
     }
-    toast.error(message || 'Erreur lors de l\'inscription')
+    toast.error(message || "Erreur lors de l'inscription")
   } finally {
     isLoading.value = false
   }
@@ -244,6 +247,7 @@ Error matching is done on the message string returned by `ParticipantAlreadyRegi
 ### 3.1 Backend unit
 
 `get-event-by-slug-public.use-case.spec.ts`:
+
 - returns event when status `upcoming`
 - returns event when status `in_progress`
 - throws 404 when status `draft`
@@ -263,6 +267,7 @@ Error matching is done on the message string returned by `ParticipantAlreadyRegi
 ### 3.3 Frontend unit
 
 `event-registration-form.vue.test.ts`:
+
 - Toggles fields when `isAuthenticated()` flips
 - Calls `authPort.register` only when anonymous
 - Always calls `participantPort.register`

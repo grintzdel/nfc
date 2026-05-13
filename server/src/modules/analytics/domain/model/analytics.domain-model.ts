@@ -1,6 +1,7 @@
-import type { EventEntityProps } from '@modules/event/domain/entity/event.entity'
-import type { StockLevel } from '../constants/stock-level.constant'
 import type { InteractionType } from '@modules/check-in/domain/constants/interaction-type.constant'
+import type { EventEntityProps } from '@modules/event/domain/entity/event.entity'
+
+import type { StockLevel } from '../constants/stock-level.constant'
 
 export namespace AnalyticsDomainModel {
   export interface ActiveEventsStatsDto {

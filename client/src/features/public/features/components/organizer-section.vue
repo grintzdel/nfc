@@ -8,7 +8,7 @@ const cards = [
     borderGradient: 'linear-gradient(180deg, #334155, #7C3AED44)',
     bgGradient: 'from-pulse-surface to-[#1a1040]',
     title: 'Analytics en direct',
-    description: 'Affluence par zone, taux d\'engagement, pics d\'activite — tout en temps reel.',
+    description: "Affluence par zone, taux d'engagement, pics d'activite — tout en temps reel.",
   },
   {
     icon: MapPin,
@@ -38,18 +38,22 @@ const cards = [
 </script>
 
 <template>
-  <section class="relative" style="background: conic-gradient(from 0deg at 50% 50%, #0F172A 0%, #1a0a2e 25%, #0F172A 50%, #1a1030 75%, #0F172A 100%);">
+  <section
+    class="relative"
+    style="
+      background: conic-gradient(from 0deg at 50% 50%, #0f172a 0%, #1a0a2e 25%, #0f172a 50%, #1a1030 75%, #0f172a 100%);
+    "
+  >
     <div class="mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-24 lg:px-20">
       <div class="rounded-full bg-slate-800 px-3 py-0.5">
         <span class="text-xs font-semibold text-slate-50">POUR LES ORGANISATEURS</span>
       </div>
 
-      <h2 class="max-w-[800px] text-center text-4xl font-bold text-slate-50">
-        Pilotez votre evenement comme un pro
-      </h2>
+      <h2 class="max-w-[800px] text-center text-4xl font-bold text-slate-50">Pilotez votre evenement comme un pro</h2>
 
       <p class="max-w-[640px] text-center text-lg leading-relaxed text-slate-400">
-        Le dashboard PULSE donne aux organisateurs une vue complete en temps reel : affluence, interactions, revenus et engagement.
+        Le dashboard PULSE donne aux organisateurs une vue complete en temps reel : affluence, interactions, revenus et
+        engagement.
       </p>
 
       <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">

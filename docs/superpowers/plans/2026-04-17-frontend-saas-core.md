@@ -18,15 +18,15 @@
 
 Each of the 7 modules creates 3 core files + N hook files:
 
-| Module | core/model | core/ports | core/adapters | hooks (query) | hooks (mutation) |
-|--------|-----------|-----------|--------------|---------------|-----------------|
-| event | `event.domain-model.ts` | `event.port.ts` | `event.adapter.http.ts` | `use-get-my-events.ts`, `use-get-all-events.ts`, `use-get-event-by-id.ts` | `use-create-event.ts`, `use-update-event.ts`, `use-publish-event.ts`, `use-start-event.ts`, `use-complete-event.ts`, `use-cancel-event.ts`, `use-delete-event.ts` |
-| bracelet | `bracelet.domain-model.ts` | `bracelet.port.ts` | `bracelet.adapter.http.ts` | `use-get-all-bracelets.ts`, `use-get-bracelet-by-id.ts` | `use-create-bracelet.ts`, `use-assign-bracelet.ts`, `use-disable-bracelet.ts`, `use-delete-bracelet.ts` |
-| participant | `participant.domain-model.ts` | `participant.port.ts` | `participant.adapter.http.ts` | `use-get-my-participations.ts`, `use-get-participants-by-event.ts`, `use-get-participant-by-id.ts` | `use-register-participant.ts`, `use-update-participant-profile.ts`, `use-attach-bracelet.ts`, `use-unregister-participant.ts` |
-| check-in | `check-in.domain-model.ts` | `check-in.port.ts` | `check-in.adapter.http.ts` | `use-get-check-ins-by-event.ts` | `use-record-check-in.ts` |
-| team | `team.domain-model.ts` | `team.port.ts` | `team.adapter.http.ts` | `use-get-team-by-event.ts`, `use-get-my-memberships.ts` | `use-invite-team-member.ts`, `use-accept-invitation.ts`, `use-change-role.ts`, `use-revoke-team-member.ts` |
-| supply-order | `supply-order.domain-model.ts` | `supply-order.port.ts` | `supply-order.adapter.http.ts` | `use-get-all-supply-orders.ts`, `use-get-supply-order-by-id.ts` | `use-create-supply-order.ts`, `use-mark-supply-order-received.ts`, `use-cancel-supply-order.ts` |
-| analytics | `analytics.domain-model.ts` | `analytics.port.ts` | `analytics.adapter.http.ts` | `use-get-active-events.ts`, `use-get-next-event.ts`, `use-get-participants-count.ts`, `use-get-bracelets-count.ts`, `use-get-stock.ts`, `use-get-activations.ts`, `use-get-revenue.ts`, `use-get-interactions.ts` | (none) |
+| Module       | core/model                     | core/ports             | core/adapters                  | hooks (query)                                                                                                                                                                                                     | hooks (mutation)                                                                                                                                                  |
+| ------------ | ------------------------------ | ---------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| event        | `event.domain-model.ts`        | `event.port.ts`        | `event.adapter.http.ts`        | `use-get-my-events.ts`, `use-get-all-events.ts`, `use-get-event-by-id.ts`                                                                                                                                         | `use-create-event.ts`, `use-update-event.ts`, `use-publish-event.ts`, `use-start-event.ts`, `use-complete-event.ts`, `use-cancel-event.ts`, `use-delete-event.ts` |
+| bracelet     | `bracelet.domain-model.ts`     | `bracelet.port.ts`     | `bracelet.adapter.http.ts`     | `use-get-all-bracelets.ts`, `use-get-bracelet-by-id.ts`                                                                                                                                                           | `use-create-bracelet.ts`, `use-assign-bracelet.ts`, `use-disable-bracelet.ts`, `use-delete-bracelet.ts`                                                           |
+| participant  | `participant.domain-model.ts`  | `participant.port.ts`  | `participant.adapter.http.ts`  | `use-get-my-participations.ts`, `use-get-participants-by-event.ts`, `use-get-participant-by-id.ts`                                                                                                                | `use-register-participant.ts`, `use-update-participant-profile.ts`, `use-attach-bracelet.ts`, `use-unregister-participant.ts`                                     |
+| check-in     | `check-in.domain-model.ts`     | `check-in.port.ts`     | `check-in.adapter.http.ts`     | `use-get-check-ins-by-event.ts`                                                                                                                                                                                   | `use-record-check-in.ts`                                                                                                                                          |
+| team         | `team.domain-model.ts`         | `team.port.ts`         | `team.adapter.http.ts`         | `use-get-team-by-event.ts`, `use-get-my-memberships.ts`                                                                                                                                                           | `use-invite-team-member.ts`, `use-accept-invitation.ts`, `use-change-role.ts`, `use-revoke-team-member.ts`                                                        |
+| supply-order | `supply-order.domain-model.ts` | `supply-order.port.ts` | `supply-order.adapter.http.ts` | `use-get-all-supply-orders.ts`, `use-get-supply-order-by-id.ts`                                                                                                                                                   | `use-create-supply-order.ts`, `use-mark-supply-order-received.ts`, `use-cancel-supply-order.ts`                                                                   |
+| analytics    | `analytics.domain-model.ts`    | `analytics.port.ts`    | `analytics.adapter.http.ts`    | `use-get-active-events.ts`, `use-get-next-event.ts`, `use-get-participants-count.ts`, `use-get-bracelets-count.ts`, `use-get-stock.ts`, `use-get-activations.ts`, `use-get-revenue.ts`, `use-get-interactions.ts` | (none)                                                                                                                                                            |
 
 ### Modified files
 
@@ -39,6 +39,7 @@ Each of the 7 modules creates 3 core files + N hook files:
 ## Task 1: Event Module — Core + Hooks
 
 **Files:**
+
 - Create: `client/src/modules/event/core/model/event.domain-model.ts`
 - Create: `client/src/modules/event/core/ports/event.port.ts`
 - Create: `client/src/modules/event/core/adapters/event.adapter.http.ts`
@@ -407,6 +408,7 @@ git commit -m "feat(client): add event core module — domain model, port, HTTP 
 ## Task 2: Bracelet Module — Core + Hooks
 
 **Files:**
+
 - Create: `client/src/modules/bracelet/core/model/bracelet.domain-model.ts`
 - Create: `client/src/modules/bracelet/core/ports/bracelet.port.ts`
 - Create: `client/src/modules/bracelet/core/adapters/bracelet.adapter.http.ts`
@@ -505,7 +507,10 @@ export class BraceletHttpAdapter implements IBraceletPort {
     return result.data.data
   }
 
-  async assign(id: string, dto: BraceletDomainModel.AssignBraceletDto): Promise<BraceletDomainModel.BraceletOverviewDto> {
+  async assign(
+    id: string,
+    dto: BraceletDomainModel.AssignBraceletDto
+  ): Promise<BraceletDomainModel.BraceletOverviewDto> {
     const result = await this.httpClient.patch<BraceletDomainModel.BraceletOverviewDto>(`/bracelets/${id}/assign`, dto)
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -597,7 +602,8 @@ export function useAssignBracelet() {
 
   return useMutation({
     mutationKey: ['assignBracelet'],
-    mutationFn: ({ id, dto }: { id: string; dto: BraceletDomainModel.AssignBraceletDto }) => braceletPort.assign(id, dto),
+    mutationFn: ({ id, dto }: { id: string; dto: BraceletDomainModel.AssignBraceletDto }) =>
+      braceletPort.assign(id, dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bracelets'] })
     },
@@ -661,6 +667,7 @@ git commit -m "feat(client): add bracelet core module — domain model, port, HT
 ## Task 3: Participant Module — Core + Hooks
 
 **Files:**
+
 - Create: `client/src/modules/participant/core/model/participant.domain-model.ts`
 - Create: `client/src/modules/participant/core/ports/participant.port.ts`
 - Create: `client/src/modules/participant/core/adapters/participant.adapter.http.ts`
@@ -732,8 +739,14 @@ export interface IParticipantPort {
   getMyParticipations(): Promise<ParticipantDomainModel.ParticipantOverviewDto[]>
   getByEvent(eventId: string): Promise<ParticipantDomainModel.ParticipantOverviewDto[]>
   getById(id: string): Promise<ParticipantDomainModel.ParticipantOverviewDto>
-  updateProfile(id: string, dto: ParticipantDomainModel.UpdateParticipantProfileDto): Promise<ParticipantDomainModel.ParticipantOverviewDto>
-  attachBracelet(id: string, dto: ParticipantDomainModel.AttachBraceletDto): Promise<ParticipantDomainModel.ParticipantOverviewDto>
+  updateProfile(
+    id: string,
+    dto: ParticipantDomainModel.UpdateParticipantProfileDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto>
+  attachBracelet(
+    id: string,
+    dto: ParticipantDomainModel.AttachBraceletDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto>
   unregister(id: string): Promise<void>
 }
 ```
@@ -750,7 +763,9 @@ import type { ParticipantDomainModel } from '../model/participant.domain-model'
 export class ParticipantHttpAdapter implements IParticipantPort {
   constructor(private readonly httpClient: HttpClient) {}
 
-  async register(dto: ParticipantDomainModel.RegisterParticipantDto): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
+  async register(
+    dto: ParticipantDomainModel.RegisterParticipantDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
     const result = await this.httpClient.post<ParticipantDomainModel.ParticipantOverviewDto>('/participants', dto)
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -763,7 +778,9 @@ export class ParticipantHttpAdapter implements IParticipantPort {
   }
 
   async getByEvent(eventId: string): Promise<ParticipantDomainModel.ParticipantOverviewDto[]> {
-    const result = await this.httpClient.get<ParticipantDomainModel.ParticipantOverviewDto[]>(`/participants/event/${eventId}`)
+    const result = await this.httpClient.get<ParticipantDomainModel.ParticipantOverviewDto[]>(
+      `/participants/event/${eventId}`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
@@ -774,14 +791,26 @@ export class ParticipantHttpAdapter implements IParticipantPort {
     return result.data.data
   }
 
-  async updateProfile(id: string, dto: ParticipantDomainModel.UpdateParticipantProfileDto): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
-    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(`/participants/${id}/profile`, dto)
+  async updateProfile(
+    id: string,
+    dto: ParticipantDomainModel.UpdateParticipantProfileDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
+    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(
+      `/participants/${id}/profile`,
+      dto
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
 
-  async attachBracelet(id: string, dto: ParticipantDomainModel.AttachBraceletDto): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
-    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(`/participants/${id}/bracelet`, dto)
+  async attachBracelet(
+    id: string,
+    dto: ParticipantDomainModel.AttachBraceletDto
+  ): Promise<ParticipantDomainModel.ParticipantOverviewDto> {
+    const result = await this.httpClient.patch<ParticipantDomainModel.ParticipantOverviewDto>(
+      `/participants/${id}/bracelet`,
+      dto
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
@@ -951,6 +980,7 @@ git commit -m "feat(client): add participant core module — domain model, port,
 ## Task 4: Check-In Module — Core + Hooks
 
 **Files:**
+
 - Create: `client/src/modules/check-in/core/model/check-in.domain-model.ts`
 - Create: `client/src/modules/check-in/core/ports/check-in.port.ts`
 - Create: `client/src/modules/check-in/core/adapters/check-in.adapter.http.ts`
@@ -1094,6 +1124,7 @@ git commit -m "feat(client): add check-in core module — domain model, port, HT
 ## Task 5: Team Module — Core + Hooks
 
 **Files:**
+
 - Create: `client/src/modules/team/core/model/team.domain-model.ts`
 - Create: `client/src/modules/team/core/ports/team.port.ts`
 - Create: `client/src/modules/team/core/adapters/team.adapter.http.ts`
@@ -1172,8 +1203,14 @@ import type { TeamDomainModel } from '../model/team.domain-model'
 export class TeamHttpAdapter implements ITeamPort {
   constructor(private readonly httpClient: HttpClient) {}
 
-  async invite(eventId: string, dto: TeamDomainModel.InviteTeamMemberDto): Promise<TeamDomainModel.TeamMemberOverviewDto> {
-    const result = await this.httpClient.post<TeamDomainModel.TeamMemberOverviewDto>(`/teams/events/${eventId}/invite`, dto)
+  async invite(
+    eventId: string,
+    dto: TeamDomainModel.InviteTeamMemberDto
+  ): Promise<TeamDomainModel.TeamMemberOverviewDto> {
+    const result = await this.httpClient.post<TeamDomainModel.TeamMemberOverviewDto>(
+      `/teams/events/${eventId}/invite`,
+      dto
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
@@ -1346,6 +1383,7 @@ git commit -m "feat(client): add team core module — domain model, port, HTTP a
 ## Task 6: Supply-Order Module — Core + Hooks
 
 **Files:**
+
 - Create: `client/src/modules/supply-order/core/model/supply-order.domain-model.ts`
 - Create: `client/src/modules/supply-order/core/ports/supply-order.port.ts`
 - Create: `client/src/modules/supply-order/core/adapters/supply-order.adapter.http.ts`
@@ -1415,7 +1453,9 @@ import type { SupplyOrderDomainModel } from '../model/supply-order.domain-model'
 export class SupplyOrderHttpAdapter implements ISupplyOrderPort {
   constructor(private readonly httpClient: HttpClient) {}
 
-  async create(dto: SupplyOrderDomainModel.CreateSupplyOrderDto): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
+  async create(
+    dto: SupplyOrderDomainModel.CreateSupplyOrderDto
+  ): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
     const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>('/supply-orders', dto)
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -1434,13 +1474,17 @@ export class SupplyOrderHttpAdapter implements ISupplyOrderPort {
   }
 
   async markReceived(id: string): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
-    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(`/supply-orders/${id}/receive`)
+    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(
+      `/supply-orders/${id}/receive`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
 
   async cancel(id: string): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
-    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(`/supply-orders/${id}/cancel`)
+    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(
+      `/supply-orders/${id}/cancel`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
@@ -1564,6 +1608,7 @@ git commit -m "feat(client): add supply-order core module — domain model, port
 ## Task 7: Analytics Module — Core + Hooks
 
 **Files:**
+
 - Create: `client/src/modules/analytics/core/model/analytics.domain-model.ts`
 - Create: `client/src/modules/analytics/core/ports/analytics.port.ts`
 - Create: `client/src/modules/analytics/core/adapters/analytics.adapter.http.ts`
@@ -1721,7 +1766,9 @@ export class AnalyticsHttpAdapter implements IAnalyticsPort {
 
   async getActivations(year?: number): Promise<AnalyticsDomainModel.ActivationsByYearDto> {
     const params = year ? `?year=${year}` : ''
-    const result = await this.httpClient.get<AnalyticsDomainModel.ActivationsByYearDto>(`/analytics/bracelets/activations${params}`)
+    const result = await this.httpClient.get<AnalyticsDomainModel.ActivationsByYearDto>(
+      `/analytics/bracelets/activations${params}`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
@@ -1887,6 +1934,7 @@ git commit -m "feat(client): add analytics core module — domain model, port, H
 ## Task 8: Wire All Ports into dependencies.ts
 
 **Files:**
+
 - Modify: `client/src/modules/app/core/dependencies.ts`
 
 - [ ] **Step 1: Update dependencies.ts**

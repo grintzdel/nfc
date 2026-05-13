@@ -1,8 +1,8 @@
 import { AddToCartUseCase } from '../use-cases/add-to-cart/add-to-cart.use-case'
-import { GetCartUseCase } from '../use-cases/get-cart/get-cart.use-case'
-import { UpdateCartItemUseCase } from '../use-cases/update-cart-item/update-cart-item.use-case'
-import { RemoveCartItemUseCase } from '../use-cases/remove-cart-item/remove-cart-item.use-case'
 import { ClearCartUseCase } from '../use-cases/clear-cart/clear-cart.use-case'
+import { GetCartUseCase } from '../use-cases/get-cart/get-cart.use-case'
+import { RemoveCartItemUseCase } from '../use-cases/remove-cart-item/remove-cart-item.use-case'
+import { UpdateCartItemUseCase } from '../use-cases/update-cart-item/update-cart-item.use-case'
 
 export class CartService {
   constructor(

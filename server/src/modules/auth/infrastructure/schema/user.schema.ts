@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose'
+
 import { UserRole } from '../../domain/constants/auth.constant'
 
 export interface UserDocument extends Document {

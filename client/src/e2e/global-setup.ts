@@ -1,7 +1,9 @@
-import { test as setup } from '@playwright/test'
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+import { test as setup } from '@playwright/test'
+
 import { signInAdmin, signUpUser } from './fixtures/seed'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -14,7 +16,7 @@ function writeStorageState(file: string, token: string): void {
     JSON.stringify({
       cookies: [],
       origins: [{ origin: 'http://localhost:5173', localStorage: [{ name: 'token', value: token }] }],
-    }),
+    })
   )
 }
 

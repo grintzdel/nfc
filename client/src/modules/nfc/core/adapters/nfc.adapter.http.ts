@@ -1,7 +1,8 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { INfcPort } from '../ports/nfc.port'
-import type { NfcDomainModel } from '../model/nfc.domain-model'
+
 import { NfcBraceletNotActiveError } from '../errors/nfc.error'
+import type { NfcDomainModel } from '../model/nfc.domain-model'
+import type { INfcPort } from '../ports/nfc.port'
 
 export class NfcHttpAdapter implements INfcPort {
   constructor(private readonly httpClient: HttpClient) {}

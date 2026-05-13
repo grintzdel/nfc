@@ -31,7 +31,12 @@ export class EventEntity {
     if (props.capacity === undefined || props.capacity < 0) throw new Error('Valid capacity is required')
 
     const now = new Date()
-    const slug = props.slug ?? props.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    const slug =
+      props.slug ??
+      props.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
 
     return new EventEntity({
       id: props.id ?? '',
@@ -53,32 +58,80 @@ export class EventEntity {
     })
   }
 
-  static fromProps(props: EventEntityProps): EventEntity { return new EventEntity(props) }
+  static fromProps(props: EventEntityProps): EventEntity {
+    return new EventEntity(props)
+  }
 
-  get id(): string { return this.props.id }
-  get name(): string { return this.props.name }
-  get slug(): string { return this.props.slug }
-  get description(): string { return this.props.description }
-  get venueName(): string { return this.props.venueName }
-  get venueAddress(): string { return this.props.venueAddress }
-  get city(): string { return this.props.city }
-  get startsAt(): Date { return this.props.startsAt }
-  get endsAt(): Date { return this.props.endsAt }
-  get capacity(): number { return this.props.capacity }
-  get staffCount(): number { return this.props.staffCount }
-  get status(): EventStatus { return this.props.status }
-  get ownerId(): string { return this.props.ownerId }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get name(): string {
+    return this.props.name
+  }
+  get slug(): string {
+    return this.props.slug
+  }
+  get description(): string {
+    return this.props.description
+  }
+  get venueName(): string {
+    return this.props.venueName
+  }
+  get venueAddress(): string {
+    return this.props.venueAddress
+  }
+  get city(): string {
+    return this.props.city
+  }
+  get startsAt(): Date {
+    return this.props.startsAt
+  }
+  get endsAt(): Date {
+    return this.props.endsAt
+  }
+  get capacity(): number {
+    return this.props.capacity
+  }
+  get staffCount(): number {
+    return this.props.staffCount
+  }
+  get status(): EventStatus {
+    return this.props.status
+  }
+  get ownerId(): string {
+    return this.props.ownerId
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
-  isDraft(): boolean { return this.props.status === EventStatus.DRAFT }
-  isUpcoming(): boolean { return this.props.status === EventStatus.UPCOMING }
-  isInProgress(): boolean { return this.props.status === EventStatus.IN_PROGRESS }
-  isCompleted(): boolean { return this.props.status === EventStatus.COMPLETED }
-  isCancelled(): boolean { return this.props.status === EventStatus.CANCELLED }
-  isActive(): boolean { return this.isUpcoming() || this.isInProgress() }
-  isDeleted(): boolean { return this.props.deletedAt !== null }
+  isDraft(): boolean {
+    return this.props.status === EventStatus.DRAFT
+  }
+  isUpcoming(): boolean {
+    return this.props.status === EventStatus.UPCOMING
+  }
+  isInProgress(): boolean {
+    return this.props.status === EventStatus.IN_PROGRESS
+  }
+  isCompleted(): boolean {
+    return this.props.status === EventStatus.COMPLETED
+  }
+  isCancelled(): boolean {
+    return this.props.status === EventStatus.CANCELLED
+  }
+  isActive(): boolean {
+    return this.isUpcoming() || this.isInProgress()
+  }
+  isDeleted(): boolean {
+    return this.props.deletedAt !== null
+  }
 
   publish(): this {
     if (!this.isDraft()) throw new EventInvalidStatusTransitionError(this.props.status, EventStatus.UPCOMING)
@@ -132,5 +185,7 @@ export class EventEntity {
     }
   }
 
-  toJSON(): EventEntityProps { return { ...this.props } }
+  toJSON(): EventEntityProps {
+    return { ...this.props }
+  }
 }

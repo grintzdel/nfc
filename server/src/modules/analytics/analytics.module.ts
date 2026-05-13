@@ -1,23 +1,24 @@
-import { Router } from 'express'
 import { JwtServiceSecurity } from '@modules/auth/application/services/security/jwt.service-security'
-import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
-import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
-import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
-import { IOrderRepository } from '@modules/order/domain/repository/order.repository.interface'
 import { ICheckInRepository } from '@modules/check-in/domain/repository/check-in.repository.interface'
+import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
+import { IOrderRepository } from '@modules/order/domain/repository/order.repository.interface'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 import { ISupplyOrderRepository } from '@modules/supply-order/domain/repository/supply-order.repository.interface'
-import { ListActiveEventsWithStatsUseCase } from './application/use-cases/list-active-events-with-stats/list-active-events-with-stats.use-case'
-import { GetParticipantsCountWithStatsUseCase } from './application/use-cases/get-participants-count-with-stats/get-participants-count-with-stats.use-case'
+import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
+import { Router } from 'express'
+
+import { AnalyticsService } from './application/services/analytics.service'
+import { GetBraceletStockWithStatsUseCase } from './application/use-cases/get-bracelet-stock-with-stats/get-bracelet-stock-with-stats.use-case'
 import { GetBraceletsCountWithStatsUseCase } from './application/use-cases/get-bracelets-count-with-stats/get-bracelets-count-with-stats.use-case'
+import { GetEventDetailStatsUseCase } from './application/use-cases/get-event-detail-stats/get-event-detail-stats.use-case'
+import { GetEventPageStatsUseCase } from './application/use-cases/get-event-page-stats/get-event-page-stats.use-case'
+import { GetNextEventWithStatsUseCase } from './application/use-cases/get-next-event-with-stats/get-next-event-with-stats.use-case'
+import { GetParticipantsCountWithStatsUseCase } from './application/use-cases/get-participants-count-with-stats/get-participants-count-with-stats.use-case'
 import { GetRevenueWithStatsUseCase } from './application/use-cases/get-revenue-with-stats/get-revenue-with-stats.use-case'
+import { ListActiveEventsWithStatsUseCase } from './application/use-cases/list-active-events-with-stats/list-active-events-with-stats.use-case'
 import { ListBraceletsActivationByYearUseCase } from './application/use-cases/list-bracelets-activation-by-year/list-bracelets-activation-by-year.use-case'
 import { ListInteractionTypesWithStatsUseCase } from './application/use-cases/list-interaction-types-with-stats/list-interaction-types-with-stats.use-case'
-import { GetNextEventWithStatsUseCase } from './application/use-cases/get-next-event-with-stats/get-next-event-with-stats.use-case'
-import { GetBraceletStockWithStatsUseCase } from './application/use-cases/get-bracelet-stock-with-stats/get-bracelet-stock-with-stats.use-case'
-import { GetEventPageStatsUseCase } from './application/use-cases/get-event-page-stats/get-event-page-stats.use-case'
-import { GetEventDetailStatsUseCase } from './application/use-cases/get-event-detail-stats/get-event-detail-stats.use-case'
-import { AnalyticsService } from './application/services/analytics.service'
 import { AnalyticsController } from './presentation/controllers/analytics.controller'
 
 export interface AnalyticsDeps {
@@ -43,13 +44,20 @@ export function createAnalyticsModule(jwtService: JwtServiceSecurity, deps: Anal
     deps.eventRepository,
     deps.participantRepository,
     deps.braceletRepository,
-    deps.checkInRepository,
+    deps.checkInRepository
   )
 
   const service = new AnalyticsService(
-    listActiveUC, getParticipantsUC, getBraceletsUC, getRevenueUC,
-    listActivationsUC, listInteractionsUC, getNextEventUC, getStockUC, getEventPageStatsUC,
-    getEventDetailStatsUC,
+    listActiveUC,
+    getParticipantsUC,
+    getBraceletsUC,
+    getRevenueUC,
+    listActivationsUC,
+    listInteractionsUC,
+    getNextEventUC,
+    getStockUC,
+    getEventPageStatsUC,
+    getEventDetailStatsUC
   )
   const controller = new AnalyticsController(service)
 

@@ -1,5 +1,5 @@
-import { EventEntity } from '../entity/event.entity'
 import { EventStatus } from '../constants/event-status.constant'
+import { EventEntity } from '../entity/event.entity'
 
 export interface IEventRepository {
   create(event: EventEntity): Promise<EventEntity>

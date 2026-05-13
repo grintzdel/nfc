@@ -1,13 +1,13 @@
-import { Router, Request, Response, NextFunction } from 'express'
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
-import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 import { AppError } from '@shared/errors/app.error'
+import { Router, Request, Response, NextFunction } from 'express'
 
 export function createNfcRoutes(
   braceletRepository: IBraceletRepository,
   participantRepository: IParticipantRepository,
-  eventRepository: IEventRepository,
+  eventRepository: IEventRepository
 ): Router {
   const router = Router()
 

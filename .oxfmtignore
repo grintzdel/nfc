@@ -1,0 +1,7 @@
+node_modules/
+client/dist/
+server/dist/
+client/playwright-report/
+client/test-results/
+client/src/e2e/.auth/
+pnpm-lock.yaml

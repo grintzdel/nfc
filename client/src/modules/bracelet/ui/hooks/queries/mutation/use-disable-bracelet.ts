@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 
 export function useDisableBracelet(eventId: string) {

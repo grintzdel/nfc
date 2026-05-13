@@ -1,5 +1,5 @@
-import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 import { EventNotFoundError, EventNotOwnerError } from '../../../domain/errors/event.error'
+import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 
 export class DeleteEventUseCase {
   constructor(private readonly eventRepository: IEventRepository) {}

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/vue-query'
-import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 import type { Ref } from 'vue'
+
+import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 
 export function useGetPaginatedEvents(params: {
   page: Ref<number>

@@ -1,5 +1,5 @@
-import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 import type { InteractionType } from '@/modules/check-in/core/model/check-in.domain-model'
+import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 
 export const StockLevel = {
   LOW: 'low',

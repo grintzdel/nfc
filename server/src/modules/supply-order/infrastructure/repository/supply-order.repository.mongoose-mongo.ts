@@ -1,6 +1,6 @@
-import { ISupplyOrderRepository } from '../../domain/repository/supply-order.repository.interface'
-import { SupplyOrderEntity } from '../../domain/entity/supply-order.entity'
 import { SupplyOrderStatus } from '../../domain/constants/supply-order-status.constant'
+import { SupplyOrderEntity } from '../../domain/entity/supply-order.entity'
+import { ISupplyOrderRepository } from '../../domain/repository/supply-order.repository.interface'
 import { SupplyOrderModel, SupplyOrderDocument } from '../schema/supply-order.schema'
 
 function toEntity(doc: SupplyOrderDocument): SupplyOrderEntity {
@@ -29,13 +29,14 @@ export class SupplyOrderRepositoryMongooseMongo implements ISupplyOrderRepositor
   }
 
   async findAll(): Promise<SupplyOrderEntity[]> {
-    const docs = await SupplyOrderModel.find().sort({ createdAt: -1 })
+    const docs = await SupplyOrderModel.find().toSorted({ createdAt: -1 })
     return docs.map(toEntity)
   }
 
   async findPending(): Promise<Nullable<SupplyOrderEntity>> {
-    const doc = await SupplyOrderModel.findOne({ status: SupplyOrderStatus.PENDING })
-      .sort({ estimatedDeliveryDate: 1 })
+    const doc = await SupplyOrderModel.findOne({ status: SupplyOrderStatus.PENDING }).toSorted({
+      estimatedDeliveryDate: 1,
+    })
     return doc ? toEntity(doc) : null
   }
 
@@ -44,7 +45,7 @@ export class SupplyOrderRepositoryMongooseMongo implements ISupplyOrderRepositor
     const doc = await SupplyOrderModel.findByIdAndUpdate(
       entity.id,
       { units, orderedAt, estimatedDeliveryDate, status, receivedAt },
-      { new: true },
+      { new: true }
     )
     if (!doc) throw new Error(`SupplyOrder ${entity.id} not found in DB during update`)
     return toEntity(doc)

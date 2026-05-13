@@ -10,9 +10,7 @@ const emit = defineEmits<{ (event: 'open-sidebar'): void }>()
 </script>
 
 <template>
-  <header
-    class="border-b border-slate-700/50 bg-[#0F172A] px-4 py-4 sm:px-6 lg:px-8"
-  >
+  <header class="border-b border-slate-700/50 bg-[#0F172A] px-4 py-4 sm:px-6 lg:px-8">
     <div class="flex flex-row items-center justify-between gap-3">
       <div class="flex min-w-0 flex-1 items-center gap-3">
         <button
@@ -34,7 +32,9 @@ const emit = defineEmits<{ (event: 'open-sidebar'): void }>()
       </div>
 
       <div class="flex items-center gap-2 sm:gap-4">
-        <div class="hidden w-60 items-center gap-2 rounded-md border border-slate-700/50 bg-[#020617] px-3 py-2 xl:flex">
+        <div
+          class="hidden w-60 items-center gap-2 rounded-md border border-slate-700/50 bg-[#020617] px-3 py-2 xl:flex"
+        >
           <Search class="h-4 w-4 text-slate-500" />
           <input
             type="text"
@@ -43,9 +43,7 @@ const emit = defineEmits<{ (event: 'open-sidebar'): void }>()
           />
         </div>
 
-        <button
-          class="rounded-md border border-white/10 bg-[#020617] p-2 text-slate-400 hover:text-slate-200"
-        >
+        <button class="rounded-md border border-white/10 bg-[#020617] p-2 text-slate-400 hover:text-slate-200">
           <Bell class="h-5 w-5" />
         </button>
 

@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+
 import { AuthConstant } from '../../../domain/constants/auth.constant'
 
 export class HashServiceSecurity {

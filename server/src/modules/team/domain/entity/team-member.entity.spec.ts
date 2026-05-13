@@ -1,6 +1,6 @@
-import { TeamMemberEntity, TeamMemberEntityProps } from './team-member.entity'
 import { TeamRole } from '../constants/team-role.constant'
 import { TeamMemberAlreadyAcceptedError, TeamMemberInvalidRoleError } from '../errors/team.error'
+import { TeamMemberEntity, TeamMemberEntityProps } from './team-member.entity'
 
 function makeProps(overrides: Partial<TeamMemberEntityProps> = {}): TeamMemberEntityProps {
   const now = new Date()
@@ -46,26 +46,26 @@ describe('TeamMemberEntity', () => {
           eventId: 'event-1',
           role: TeamRole.OWNER,
           invitedBy: 'owner-1',
-        }),
+        })
       ).toThrow('Cannot create OWNER team member — OWNER is stored on EventEntity.ownerId')
     })
 
     it('should throw when userId is missing', () => {
-      expect(() =>
-        TeamMemberEntity.create({ eventId: 'event-1', role: TeamRole.STAFF, invitedBy: 'owner-1' }),
-      ).toThrow('userId is required')
+      expect(() => TeamMemberEntity.create({ eventId: 'event-1', role: TeamRole.STAFF, invitedBy: 'owner-1' })).toThrow(
+        'userId is required'
+      )
     })
 
     it('should throw when eventId is missing', () => {
-      expect(() =>
-        TeamMemberEntity.create({ userId: 'user-1', role: TeamRole.STAFF, invitedBy: 'owner-1' }),
-      ).toThrow('eventId is required')
+      expect(() => TeamMemberEntity.create({ userId: 'user-1', role: TeamRole.STAFF, invitedBy: 'owner-1' })).toThrow(
+        'eventId is required'
+      )
     })
 
     it('should throw when invitedBy is missing', () => {
-      expect(() =>
-        TeamMemberEntity.create({ userId: 'user-1', eventId: 'event-1', role: TeamRole.STAFF }),
-      ).toThrow('invitedBy is required')
+      expect(() => TeamMemberEntity.create({ userId: 'user-1', eventId: 'event-1', role: TeamRole.STAFF })).toThrow(
+        'invitedBy is required'
+      )
     })
   })
 

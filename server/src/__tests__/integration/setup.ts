@@ -1,6 +1,7 @@
+import type { Express } from 'express'
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
-import type { Express } from 'express'
+
 import { createApp } from '../../create-app'
 
 let mongoServer: MongoMemoryServer | null = null

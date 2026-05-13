@@ -1,5 +1,6 @@
-import { ICheckInRepository } from '@modules/check-in/domain/repository/check-in.repository.interface'
 import { InteractionType } from '@modules/check-in/domain/constants/interaction-type.constant'
+import { ICheckInRepository } from '@modules/check-in/domain/repository/check-in.repository.interface'
+
 import { AnalyticsDomainModel } from '../../../domain/model/analytics.domain-model'
 
 const INTERACTION_LABELS: Record<InteractionType, string> = {

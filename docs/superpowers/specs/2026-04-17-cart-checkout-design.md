@@ -29,6 +29,7 @@ Allow users to add products to a cart, view/manage the cart via a slide-in drawe
 Install shadcn-vue into the project. Generic UI components go in `src/ui/` (not in modules).
 
 Components needed for this feature:
+
 - **Sheet** (for cart drawer slide-in)
 - **Button**
 - **Badge**
@@ -45,6 +46,7 @@ The `cn()` utility (clsx + tailwind-merge) goes in `src/ui/lib/utils.ts`.
 **Path:** `client/src/modules/cart/`
 
 **Domain model** (`core/model/cart.domain-model.ts`):
+
 ```
 namespace CartDomainModel {
   CartItemOverviewDto {
@@ -66,6 +68,7 @@ namespace CartDomainModel {
 ```
 
 **Port** (`core/ports/cart.port.ts`):
+
 ```
 ICartPort {
   getCart(): Promise<CartItemOverviewDto[]>
@@ -77,6 +80,7 @@ ICartPort {
 ```
 
 **Adapter** (`core/adapters/cart.adapter.http.ts`):
+
 - GET `/cart` → CartItemOverviewDto[]
 - POST `/cart/items` + body → CartItemOverviewDto (201)
 - PATCH `/cart/items/:id` + body → CartItemOverviewDto
@@ -84,6 +88,7 @@ ICartPort {
 - DELETE `/cart` → void
 
 **Hooks:**
+
 - `ui/hooks/queries/query/use-get-cart.ts` — queryKey: `['cart']`
 - `ui/hooks/queries/mutation/use-add-to-cart.ts` — invalidates `['cart']`
 - `ui/hooks/queries/mutation/use-update-cart-item.ts` — invalidates `['cart']`
@@ -95,6 +100,7 @@ ICartPort {
 **Path:** `client/src/modules/order/`
 
 **Domain model** (`core/model/order.domain-model.ts`):
+
 ```
 const OrderStatus = {
   PENDING: 'pending',
@@ -127,6 +133,7 @@ namespace OrderDomainModel {
 ```
 
 **Port** (`core/ports/order.port.ts`):
+
 ```
 IOrderPort {
   create(dto: CreateOrderDto): Promise<OrderOverviewDto>
@@ -136,11 +143,13 @@ IOrderPort {
 ```
 
 **Adapter** (`core/adapters/order.adapter.http.ts`):
+
 - POST `/orders` + body → OrderOverviewDto (201)
 - GET `/orders` → OrderOverviewDto[]
 - GET `/orders/:id` → OrderOverviewDto
 
 **Hooks:**
+
 - `ui/hooks/queries/query/use-get-my-orders.ts` — queryKey: `['orders']`
 - `ui/hooks/queries/query/use-get-order-by-id.ts` — queryKey: `['orders', id]`, Ref<string>, enabled guard
 - `ui/hooks/queries/mutation/use-create-order.ts` — invalidates `['cart']` + `['orders']`
@@ -148,6 +157,7 @@ IOrderPort {
 ### 2.3 Dependencies Wiring
 
 Add to `dependencies.ts`:
+
 - `cartPort: ICartPort` → `CartHttpAdapter(httpClient)`
 - `orderPort: IOrderPort` → `OrderHttpAdapter(httpClient)`
 
@@ -184,6 +194,7 @@ Based on .pen frames "Cart Drawer - Desktop" and "Cart Drawer - Mobile".
 Uses shadcn Sheet component (side="right").
 
 **Structure:**
+
 1. **Header** — "Votre panier" (Inter 700, 20px) + badge violet with item count + X close button
 2. **Free shipping banner** — green bg (#22C55E10), truck icon, "Livraison gratuite a partir de 500EUR" (Inter 500, 13px, green)
 3. **Cart items list** (scrollable) — each item is a `cart-item-row`
@@ -191,6 +202,7 @@ Uses shadcn Sheet component (side="right").
 5. **CTA section** — "Paiement securise" button (gradient violet→pink, lock icon, Inter 700, 15px, rounded-[10px]) + "Continuer mes achats" link (brand-light, Inter 500, 13px)
 
 **Cart item row sub-component:** `client/src/modules/cart/ui/components/cart-item-row.vue`
+
 - Image (80x80 desktop, 72x72 mobile, rounded-[10px])
 - Product name (Inter 600, 14px) + trash icon (16px, text-secondary)
 - Product description (Inter 400, 12px, text-secondary)
@@ -199,11 +211,13 @@ Uses shadcn Sheet component (side="right").
 **Enrichment:** Cart items only contain `productId`. The drawer fetches products via `useGetProducts()` and joins by productId to display name, image, price, description.
 
 **Mobile behavior:**
+
 - Full-width sheet from bottom (or right, following shadcn Sheet)
 - Handle bar at top (4px height, 40px width, rounded, border color, centered)
 - Same content structure, slightly smaller images (72x72)
 
 **Desktop behavior:**
+
 - 440px panel from right
 - Overlay with semi-transparent dark background
 - Shadow on left side
@@ -223,6 +237,7 @@ The cart drawer is rendered in `App.vue` (or the layout component) so it's acces
 Pure component. Props: `orders: OrderOverviewDto[]`.
 
 Displays a list/cards of orders:
+
 - Order date (formatted)
 - Number of articles (sum of quantities)
 - Total amount
@@ -233,6 +248,7 @@ Displays a list/cards of orders:
 **File:** `client/src/features/public/orders/orders.page.vue`
 
 Orchestrator:
+
 - Uses `useGetMyOrders()` hook
 - Handles loading/error/empty states
 - Renders `order-list` component
@@ -272,23 +288,24 @@ When user clicks "Paiement securise":
 
 ## 6. Color Tokens Reference (from .pen)
 
-| Token | Usage |
-|-------|-------|
-| `$--pulse-text-primary` | Main text |
-| `$--pulse-text-secondary` | Secondary text, icons |
-| `$--pulse-brand` | Badge bg (violet) |
-| `$--pulse-brand-light` | Prices, links |
-| `$--pulse-surface-card` | Quantity control bg |
-| `$--pulse-border` | Borders, dividers |
+| Token                          | Usage                     |
+| ------------------------------ | ------------------------- |
+| `$--pulse-text-primary`        | Main text                 |
+| `$--pulse-text-secondary`      | Secondary text, icons     |
+| `$--pulse-brand`               | Badge bg (violet)         |
+| `$--pulse-brand-light`         | Prices, links             |
+| `$--pulse-surface-card`        | Quantity control bg       |
+| `$--pulse-border`              | Borders, dividers         |
 | `$--pulse-success` / `#22C55E` | Free shipping, "Gratuite" |
-| `$--background` | Drawer panel bg |
-| Gradient `#7C3AED → #EC4899` | CTA button, total price |
+| `$--background`                | Drawer panel bg           |
+| Gradient `#7C3AED → #EC4899`   | CTA button, total price   |
 
 ---
 
 ## 7. File Summary
 
 **New files (~25):**
+
 - shadcn setup: `src/ui/lib/utils.ts`, `src/ui/components/{sheet,button,badge}.vue` + sonner/toast
 - Cart core: 3 (model, port, adapter) + 5 hooks = 8
 - Order core: 3 (model, port, adapter) + 3 hooks = 6
@@ -299,6 +316,7 @@ When user clicks "Paiement securise":
 - Page: `pages/orders/page.vue` = 1
 
 **Modified files (4):**
+
 - `dependencies.ts` — add cartPort + orderPort
 - `product-card.vue` — wire "Ajouter" button
 - `app-nav.vue` — add cart icon + badge + drawer trigger

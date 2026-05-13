@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose'
+
 import { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
 
 export interface BraceletDocument extends Document {
@@ -31,7 +32,7 @@ const braceletSchema = new Schema<BraceletDocument>(
     activatedAt: { type: Date, default: null, index: true },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true },
+  { timestamps: true }
 )
 
 export const BraceletModel = mongoose.model<BraceletDocument>('Bracelet', braceletSchema)

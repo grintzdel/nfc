@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import { AppError } from '../errors/app.error'
+
 import { JwtServiceSecurity } from '../../modules/auth/application/services/security/jwt.service-security'
+import { AppError } from '../errors/app.error'
 
 export function createAuthMiddleware(jwtService: JwtServiceSecurity) {
   return (req: Request, _res: Response, next: NextFunction): void => {

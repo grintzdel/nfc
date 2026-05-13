@@ -1,13 +1,14 @@
 import { Router } from 'express'
-import { UserRepositoryMongooseMongo } from './infrastructure/repository/user.repository.mongoose-mongo'
+import type { StringValue } from 'ms'
+
+import { AuthService } from './application/services/auth.service'
 import { HashServiceSecurity } from './application/services/security/hash.service-security'
 import { JwtServiceSecurity } from './application/services/security/jwt.service-security'
-import { RegisterUseCase } from './application/use-cases/register/register.use-case'
 import { LoginUseCase } from './application/use-cases/login/login.use-case'
-import { AuthService } from './application/services/auth.service'
-import { AuthController } from './presentation/controllers/auth.controller'
+import { RegisterUseCase } from './application/use-cases/register/register.use-case'
 import { AuthConstant } from './domain/constants/auth.constant'
-import type { StringValue } from 'ms'
+import { UserRepositoryMongooseMongo } from './infrastructure/repository/user.repository.mongoose-mongo'
+import { AuthController } from './presentation/controllers/auth.controller'
 
 export function createAuthModule() {
   const userRepository = new UserRepositoryMongooseMongo()

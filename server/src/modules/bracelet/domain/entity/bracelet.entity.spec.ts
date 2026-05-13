@@ -1,6 +1,6 @@
-import { BraceletEntity } from './bracelet.entity'
 import { BraceletStatus } from '../constants/bracelet-status.constant'
 import { BraceletInvalidStatusError } from '../errors/bracelet.error'
+import { BraceletEntity } from './bracelet.entity'
 
 describe('BraceletEntity', () => {
   describe('create()', () => {

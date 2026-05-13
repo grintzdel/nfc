@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
+
 import { AuthService } from '../../application/services/auth.service'
-import { RegisterRequestDto } from '../dto/register.request.dto'
-import { LoginRequestDto } from '../dto/login.request.dto'
 import { AuthResponseDto } from '../dto/auth.response.dto'
+import { LoginRequestDto } from '../dto/login.request.dto'
+import { RegisterRequestDto } from '../dto/register.request.dto'
 
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

@@ -1,0 +1,52 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "vue", "import"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": { "kebabCase": true, "pascalCase": false },
+        "ignore": ["\\.vue$"]
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "^(I[A-Z]|.*Gateway|.*Port)",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "typescript/no-explicit-any": "error"
+  },
+  "env": {
+    "builtin": true,
+    "node": true,
+    "browser": true
+  },
+  "ignorePatterns": [
+    "*.js",
+    "node_modules/",
+    "*.json",
+    "*.md",
+    "*.css",
+    "client/dist/",
+    "server/dist/",
+    "client/playwright-report/",
+    "client/test-results/"
+  ],
+  "overrides": [
+    {
+      "files": ["*.port.ts", "*.interface.*", "*.repository.interface.ts", "*.service.interface.ts"],
+      "rules": {
+        "no-unused-vars": "off",
+        "typescript/no-unused-vars": "off"
+      }
+    }
+  ]
+}

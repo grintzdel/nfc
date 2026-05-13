@@ -27,11 +27,7 @@ defineProps<{
       <span
         v-if="badge"
         class="inline-flex w-fit items-center rounded-full px-2 py-0.5 text-xs font-semibold"
-        :class="
-          badgeVariant === 'negative'
-            ? 'bg-red-500/20 text-red-500'
-            : 'bg-emerald-500/20 text-emerald-500'
-        "
+        :class="badgeVariant === 'negative' ? 'bg-red-500/20 text-red-500' : 'bg-emerald-500/20 text-emerald-500'"
       >
         {{ badge }}
       </span>

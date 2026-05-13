@@ -1,19 +1,20 @@
-import { InviteTeamMemberUseCase } from './invite-team-member.use-case'
-import { TeamMemberRepositoryMock } from '../../../__tests__/team-member.repository.mock'
-import { createTeamMemberFixture } from '../../../__tests__/team-member.factory'
-import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
+import { UserRole } from '@modules/auth/domain/constants/auth.constant'
+import { UserEntity } from '@modules/auth/domain/entity/user.entity'
+import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
 import { createEventFixture } from '@modules/event/__tests__/event.factory'
+import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
 import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { AppError } from '@shared/errors/app.error'
+
+import { createTeamMemberFixture } from '../../../__tests__/team-member.factory'
+import { TeamMemberRepositoryMock } from '../../../__tests__/team-member.repository.mock'
+import { TeamRole } from '../../../domain/constants/team-role.constant'
 import {
   TeamMemberAlreadyExistsError,
   TeamMemberInvalidRoleError,
   TeamMemberNotAuthorizedError,
 } from '../../../domain/errors/team.error'
-import { TeamRole } from '../../../domain/constants/team-role.constant'
-import { AppError } from '@shared/errors/app.error'
-import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
-import { UserEntity } from '@modules/auth/domain/entity/user.entity'
-import { UserRole } from '@modules/auth/domain/constants/auth.constant'
+import { InviteTeamMemberUseCase } from './invite-team-member.use-case'
 
 function makeUserFixture(): UserEntity {
   return UserEntity.fromProps({
@@ -108,7 +109,7 @@ describe('InviteTeamMemberUseCase', () => {
         eventId: EVENT_ID,
         targetUserId: TARGET_USER_ID,
         role: TeamRole.STAFF,
-      }),
+      })
     ).rejects.toThrow(TeamMemberNotAuthorizedError)
   })
 
@@ -121,7 +122,7 @@ describe('InviteTeamMemberUseCase', () => {
         eventId: EVENT_ID,
         targetUserId: TARGET_USER_ID,
         role: TeamRole.STAFF,
-      }),
+      })
     ).rejects.toThrow(EventNotFoundError)
   })
 
@@ -134,7 +135,7 @@ describe('InviteTeamMemberUseCase', () => {
         eventId: EVENT_ID,
         targetUserId: TARGET_USER_ID,
         role: TeamRole.STAFF,
-      }),
+      })
     ).rejects.toMatchObject({ statusCode: 404 })
     await expect(
       useCase.execute({
@@ -142,7 +143,7 @@ describe('InviteTeamMemberUseCase', () => {
         eventId: EVENT_ID,
         targetUserId: TARGET_USER_ID,
         role: TeamRole.STAFF,
-      }),
+      })
     ).rejects.toBeInstanceOf(AppError)
   })
 
@@ -159,7 +160,7 @@ describe('InviteTeamMemberUseCase', () => {
         eventId: EVENT_ID,
         targetUserId: TARGET_USER_ID,
         role: TeamRole.STAFF,
-      }),
+      })
     ).rejects.toThrow(TeamMemberAlreadyExistsError)
   })
 
@@ -170,7 +171,7 @@ describe('InviteTeamMemberUseCase', () => {
         eventId: EVENT_ID,
         targetUserId: TARGET_USER_ID,
         role: TeamRole.OWNER,
-      }),
+      })
     ).rejects.toThrow(TeamMemberInvalidRoleError)
   })
 })

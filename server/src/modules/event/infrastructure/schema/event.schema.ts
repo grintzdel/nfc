@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose'
+
 import { EventStatus } from '../../domain/constants/event-status.constant'
 
 export interface EventDocument extends Document {
@@ -35,7 +36,7 @@ const eventSchema = new Schema<EventDocument>(
     ownerId: { type: String, required: true, index: true },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true },
+  { timestamps: true }
 )
 eventSchema.index({ status: 1, startsAt: 1 })
 

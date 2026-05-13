@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 import { ShoppingCart } from 'lucide-vue-next'
+import { RouterLink } from 'vue-router'
 import { toast } from 'vue-sonner'
-import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
+
 import { useCart } from '@/modules/cart/ui/hooks/use-cart'
+import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
 
 const props = defineProps<{
   product: ProductDomainModel.ProductOverviewDto
@@ -64,9 +65,7 @@ function handleAddToCart() {
       </p>
 
       <div class="mt-auto flex items-center justify-between pt-2">
-        <span class="text-2xl font-extrabold text-violet-400">
-          {{ product.price.toFixed(2) }}€
-        </span>
+        <span class="text-2xl font-extrabold text-violet-400"> {{ product.price.toFixed(2) }}€ </span>
 
         <button
           class="flex items-center gap-2 rounded-lg bg-violet-600/20 px-4 py-2 text-sm font-medium text-violet-300 transition-colors hover:bg-violet-600/30 disabled:opacity-40"

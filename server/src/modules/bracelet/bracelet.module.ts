@@ -1,28 +1,29 @@
-import { Router } from 'express'
 import { JwtServiceSecurity } from '@modules/auth/application/services/security/jwt.service-security'
-import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 import { IProductRepository } from '@modules/product/domain/repository/product.repository.interface'
-import { BraceletRepositoryMongooseMongo } from './infrastructure/repository/bracelet.repository.mongoose-mongo'
-import { IBraceletRepository } from './domain/repository/bracelet.repository.interface'
-import { CreateBraceletUseCase } from './application/use-cases/create-bracelet/create-bracelet.use-case'
+import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
+import { Router } from 'express'
+
+import { BraceletService } from './application/services/bracelet.service'
+import { ActivateBraceletUseCase } from './application/use-cases/activate-bracelet/activate-bracelet.use-case'
+import { AssignBraceletUseCase } from './application/use-cases/assign-bracelet/assign-bracelet.use-case'
 import { CreateBraceletFromOrderUseCase } from './application/use-cases/create-bracelet-from-order/create-bracelet-from-order.use-case'
+import { CreateBraceletUseCase } from './application/use-cases/create-bracelet/create-bracelet.use-case'
+import { DeleteBraceletUseCase } from './application/use-cases/delete-bracelet/delete-bracelet.use-case'
+import { DisableBraceletUseCase } from './application/use-cases/disable-bracelet/disable-bracelet.use-case'
 import { GetAllBraceletsUseCase } from './application/use-cases/get-all-bracelets/get-all-bracelets.use-case'
+import { GetAvailableBraceletsUseCase } from './application/use-cases/get-available-bracelets/get-available-bracelets.use-case'
 import { GetBraceletByIdUseCase } from './application/use-cases/get-bracelet-by-id/get-bracelet-by-id.use-case'
 import { GetBraceletByNfcIdUseCase } from './application/use-cases/get-bracelet-by-nfc-id/get-bracelet-by-nfc-id.use-case'
-import { AssignBraceletUseCase } from './application/use-cases/assign-bracelet/assign-bracelet.use-case'
-import { ActivateBraceletUseCase } from './application/use-cases/activate-bracelet/activate-bracelet.use-case'
-import { DisableBraceletUseCase } from './application/use-cases/disable-bracelet/disable-bracelet.use-case'
-import { DeleteBraceletUseCase } from './application/use-cases/delete-bracelet/delete-bracelet.use-case'
-import { GetAvailableBraceletsUseCase } from './application/use-cases/get-available-bracelets/get-available-bracelets.use-case'
 import { GetPaginatedBraceletsByEventUseCase } from './application/use-cases/get-paginated-bracelets-by-event/get-paginated-bracelets-by-event.use-case'
 import { GetPaginatedBraceletsUseCase } from './application/use-cases/get-paginated-bracelets/get-paginated-bracelets.use-case'
-import { BraceletService } from './application/services/bracelet.service'
+import { IBraceletRepository } from './domain/repository/bracelet.repository.interface'
+import { BraceletRepositoryMongooseMongo } from './infrastructure/repository/bracelet.repository.mongoose-mongo'
 import { BraceletController } from './presentation/controllers/bracelet.controller'
-import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
 
 export function createBraceletModule(
   jwtService: JwtServiceSecurity,
-  _productRepository: IProductRepository,
+  _productRepository: IProductRepository
 ): {
   router: Router
   braceletRepository: IBraceletRepository
@@ -56,7 +57,7 @@ export function createBraceletModule(
     activateUC,
     disableUC,
     deleteUC,
-    getPaginatedUC,
+    getPaginatedUC
   )
   const controller = new BraceletController(service)
 

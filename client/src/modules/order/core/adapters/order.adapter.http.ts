@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IOrderPort } from '../ports/order.port'
+
 import type { OrderDomainModel, OrderStatus } from '../model/order.domain-model'
+import type { IOrderPort } from '../ports/order.port'
 
 export class OrderHttpAdapter implements IOrderPort {
   constructor(private readonly httpClient: HttpClient) {}

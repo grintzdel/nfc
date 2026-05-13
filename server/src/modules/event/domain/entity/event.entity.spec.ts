@@ -1,5 +1,5 @@
-import { EventEntity } from './event.entity'
 import { EventStatus } from '../constants/event-status.constant'
+import { EventEntity } from './event.entity'
 
 describe('EventEntity', () => {
   const validProps = {
@@ -26,9 +26,9 @@ describe('EventEntity', () => {
   })
 
   it('should throw when endsAt is before startsAt', () => {
-    expect(() =>
-      EventEntity.create({ ...validProps, endsAt: new Date('2026-06-15T17:00:00Z') }),
-    ).toThrow('endsAt must be after startsAt')
+    expect(() => EventEntity.create({ ...validProps, endsAt: new Date('2026-06-15T17:00:00Z') })).toThrow(
+      'endsAt must be after startsAt'
+    )
   })
 
   it('should publish DRAFT → UPCOMING', () => {

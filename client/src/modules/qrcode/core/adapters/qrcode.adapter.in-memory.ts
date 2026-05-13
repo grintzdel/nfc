@@ -1,5 +1,5 @@
-import type { IQrCodePort } from '../ports/qrcode.port'
 import type { QrCodeDomainModel } from '../model/qrcode.domain-model'
+import type { IQrCodePort } from '../ports/qrcode.port'
 
 /**
  * In-memory adapter for tests and offline scenarios.

@@ -1,15 +1,16 @@
-import { RecordCheckInUseCase } from './record-check-in.use-case'
-import { CheckInRepositoryMock } from '../../../__tests__/check-in.repository.mock'
-import { BraceletRepositoryMock } from '@modules/bracelet/__tests__/bracelet.repository.mock'
-import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
-import { ActivateBraceletUseCase } from '@modules/bracelet/application/use-cases/activate-bracelet/activate-bracelet.use-case'
-import { createCheckInFixture } from '../../../__tests__/check-in.factory'
 import { createBraceletFixture } from '@modules/bracelet/__tests__/bracelet.factory'
-import { createParticipantFixture } from '@modules/participant/__tests__/participant.factory'
-import { InteractionType } from '../../../domain/constants/interaction-type.constant'
+import { BraceletRepositoryMock } from '@modules/bracelet/__tests__/bracelet.repository.mock'
+import { ActivateBraceletUseCase } from '@modules/bracelet/application/use-cases/activate-bracelet/activate-bracelet.use-case'
 import { BraceletStatus } from '@modules/bracelet/domain/constants/bracelet-status.constant'
-import { CheckInInvalidBraceletStateError, DuplicateCheckInError } from '../../../domain/errors/check-in.error'
 import { BraceletNotFoundError } from '@modules/bracelet/domain/errors/bracelet.error'
+import { createParticipantFixture } from '@modules/participant/__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
+
+import { createCheckInFixture } from '../../../__tests__/check-in.factory'
+import { CheckInRepositoryMock } from '../../../__tests__/check-in.repository.mock'
+import { InteractionType } from '../../../domain/constants/interaction-type.constant'
+import { CheckInInvalidBraceletStateError, DuplicateCheckInError } from '../../../domain/errors/check-in.error'
+import { RecordCheckInUseCase } from './record-check-in.use-case'
 
 function makeUseCase() {
   const checkInRepo = new CheckInRepositoryMock()
@@ -25,9 +26,17 @@ describe('RecordCheckInUseCase', () => {
     const { useCase, braceletRepo, checkInRepo, mockActivate } = makeUseCase()
     const bracelet = createBraceletFixture({ status: BraceletStatus.ACTIVE, nfcId: 'nfc-active-1' })
     braceletRepo.findByNfcId_result = bracelet
-    checkInRepo.create_result = createCheckInFixture({ braceletId: bracelet.id, eventId: 'event-1', interactionType: InteractionType.NETWORKING })
+    checkInRepo.create_result = createCheckInFixture({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      interactionType: InteractionType.NETWORKING,
+    })
 
-    const result = await useCase.execute({ nfcId: 'nfc-active-1', eventId: 'event-1', interactionType: InteractionType.NETWORKING })
+    const result = await useCase.execute({
+      nfcId: 'nfc-active-1',
+      eventId: 'event-1',
+      interactionType: InteractionType.NETWORKING,
+    })
 
     expect(result).toBeDefined()
     expect(result.interactionType).toBe(InteractionType.NETWORKING)
@@ -38,9 +47,17 @@ describe('RecordCheckInUseCase', () => {
     const { useCase, braceletRepo, checkInRepo, mockActivate } = makeUseCase()
     const bracelet = createBraceletFixture({ status: BraceletStatus.PRE_ACTIVATED, nfcId: 'nfc-pre-1' })
     braceletRepo.findByNfcId_result = bracelet
-    checkInRepo.create_result = createCheckInFixture({ braceletId: bracelet.id, eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
+    checkInRepo.create_result = createCheckInFixture({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      interactionType: InteractionType.CHECK_IN,
+    })
 
-    const result = await useCase.execute({ nfcId: 'nfc-pre-1', eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
+    const result = await useCase.execute({
+      nfcId: 'nfc-pre-1',
+      eventId: 'event-1',
+      interactionType: InteractionType.CHECK_IN,
+    })
 
     expect(result).toBeDefined()
     expect(mockActivate.execute).toHaveBeenCalledWith(bracelet.id)
@@ -52,7 +69,7 @@ describe('RecordCheckInUseCase', () => {
     braceletRepo.findByNfcId_result = bracelet
 
     await expect(
-      useCase.execute({ nfcId: 'nfc-stock-1', eventId: 'event-1', interactionType: InteractionType.CHECK_IN }),
+      useCase.execute({ nfcId: 'nfc-stock-1', eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
     ).rejects.toThrow(CheckInInvalidBraceletStateError)
   })
 
@@ -62,7 +79,7 @@ describe('RecordCheckInUseCase', () => {
     braceletRepo.findByNfcId_result = bracelet
 
     await expect(
-      useCase.execute({ nfcId: 'nfc-disabled-1', eventId: 'event-1', interactionType: InteractionType.CHECK_IN }),
+      useCase.execute({ nfcId: 'nfc-disabled-1', eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
     ).rejects.toThrow(CheckInInvalidBraceletStateError)
   })
 
@@ -71,7 +88,7 @@ describe('RecordCheckInUseCase', () => {
     braceletRepo.findByNfcId_result = null
 
     await expect(
-      useCase.execute({ nfcId: 'nfc-unknown', eventId: 'event-1', interactionType: InteractionType.CHECK_IN }),
+      useCase.execute({ nfcId: 'nfc-unknown', eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
     ).rejects.toThrow(BraceletNotFoundError)
   })
 
@@ -110,11 +127,19 @@ describe('RecordCheckInUseCase', () => {
     const { useCase, braceletRepo, checkInRepo, mockActivate } = makeUseCase()
     const bracelet = createBraceletFixture({ status: BraceletStatus.PRE_ACTIVATED, nfcId: 'nfc-pre-2' })
     braceletRepo.findByNfcId_result = bracelet
-    const saved = createCheckInFixture({ braceletId: bracelet.id, eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
+    const saved = createCheckInFixture({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      interactionType: InteractionType.CHECK_IN,
+    })
     checkInRepo.create_result = saved
     ;(mockActivate.execute as jest.Mock).mockRejectedValueOnce(new Error('activation failed'))
 
-    const result = await useCase.execute({ nfcId: 'nfc-pre-2', eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
+    const result = await useCase.execute({
+      nfcId: 'nfc-pre-2',
+      eventId: 'event-1',
+      interactionType: InteractionType.CHECK_IN,
+    })
 
     expect(result).toBe(saved)
   })
@@ -123,7 +148,11 @@ describe('RecordCheckInUseCase', () => {
     const { useCase, braceletRepo, checkInRepo, participantRepo } = makeUseCase()
     const bracelet = createBraceletFixture({ status: BraceletStatus.ACTIVE, nfcId: 'nfc-active-2' })
     braceletRepo.findByNfcId_result = bracelet
-    checkInRepo.create_result = createCheckInFixture({ braceletId: bracelet.id, eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
+    checkInRepo.create_result = createCheckInFixture({
+      braceletId: bracelet.id,
+      eventId: 'event-1',
+      interactionType: InteractionType.CHECK_IN,
+    })
     const participant = createParticipantFixture({ braceletId: bracelet.id })
     participantRepo.findByBraceletId_result = participant
 
@@ -144,7 +173,7 @@ describe('RecordCheckInUseCase', () => {
     })
 
     await expect(
-      useCase.execute({ nfcId: 'nfc-active-3', eventId: 'event-1', interactionType: InteractionType.CHECK_IN }),
+      useCase.execute({ nfcId: 'nfc-active-3', eventId: 'event-1', interactionType: InteractionType.CHECK_IN })
     ).rejects.toThrow(DuplicateCheckInError)
     expect(checkInRepo.findOneByBraceletEventType_calledWith).toEqual({
       braceletId: bracelet.id,

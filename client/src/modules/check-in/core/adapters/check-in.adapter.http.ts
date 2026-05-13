@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { ICheckInPort } from '../ports/check-in.port'
+
 import type { CheckInDomainModel } from '../model/check-in.domain-model'
+import type { ICheckInPort } from '../ports/check-in.port'
 
 export class CheckInHttpAdapter implements ICheckInPort {
   constructor(private readonly httpClient: HttpClient) {}
@@ -24,7 +25,7 @@ export class CheckInHttpAdapter implements ICheckInPort {
   }): Promise<CheckInDomainModel.PaginatedCheckInsDto> {
     const qs = new URLSearchParams({ page: String(params.page), limit: String(params.limit) })
     const result = await this.httpClient.get<CheckInDomainModel.PaginatedCheckInsDto>(
-      `/check-ins/event/${params.eventId}/paginated?${qs.toString()}`,
+      `/check-ins/event/${params.eventId}/paginated?${qs.toString()}`
     )
     if (result.error) throw new Error(result.error.message)
     return result.data.data

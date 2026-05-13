@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Check, ShieldCheck, Truck, RefreshCcw, Minus, Plus, ShoppingCart } from 'lucide-vue-next'
+import { ref } from 'vue'
 import { toast } from 'vue-sonner'
-import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
+
 import { useCart } from '@/modules/cart/ui/hooks/use-cart'
+import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
 
 const props = defineProps<{
   product: ProductDomainModel.ProductOverviewDto
@@ -38,17 +39,17 @@ function increment() {
 
 <template>
   <section class="relative bg-pulse-bg">
-    <div class="absolute left-[20%] top-0 h-full w-[60%] bg-[radial-gradient(ellipse_at_top,rgba(124,58,237,0.03)_0%,transparent_70%)]" />
+    <div
+      class="absolute left-[20%] top-0 h-full w-[60%] bg-[radial-gradient(ellipse_at_top,rgba(124,58,237,0.03)_0%,transparent_70%)]"
+    />
 
     <div class="relative mx-auto flex max-w-7xl flex-col gap-12 px-6 py-16 lg:flex-row lg:px-20">
       <div class="flex w-full flex-col gap-3 lg:w-1/2">
-        <div class="aspect-square overflow-hidden rounded-2xl border shadow-[0_16px_60px_rgba(124,58,237,0.2)]" style="border-image: linear-gradient(135deg, #7C3AED44, #EC489944) 1;">
-          <img
-            v-if="product.imageUrl"
-            :src="product.imageUrl"
-            :alt="product.name"
-            class="h-full w-full object-cover"
-          />
+        <div
+          class="aspect-square overflow-hidden rounded-2xl border shadow-[0_16px_60px_rgba(124,58,237,0.2)]"
+          style="border-image: linear-gradient(135deg, #7c3aed44, #ec489944) 1"
+        >
+          <img v-if="product.imageUrl" :src="product.imageUrl" :alt="product.name" class="h-full w-full object-cover" />
           <div v-else class="flex h-full items-center justify-center bg-gradient-to-br from-pulse-surface to-pulse-bg">
             <span class="text-8xl">🎫</span>
           </div>
@@ -65,7 +66,9 @@ function increment() {
         <p class="text-base leading-relaxed text-slate-400">{{ product.description }}</p>
 
         <div class="flex items-center gap-4">
-          <span class="bg-gradient-to-b from-violet-400 to-pink-500 bg-clip-text text-[40px] font-extrabold text-transparent">
+          <span
+            class="bg-gradient-to-b from-violet-400 to-pink-500 bg-clip-text text-[40px] font-extrabold text-transparent"
+          >
             {{ product.price.toFixed(2) }}€
           </span>
         </div>
@@ -101,7 +104,10 @@ function increment() {
           <button
             class="flex flex-1 items-center justify-center gap-2 rounded-md bg-pulse-violet px-6 py-3 text-sm font-medium text-white transition-all hover:bg-pulse-violet-dark hover:shadow-lg hover:shadow-violet-500/25 disabled:opacity-40"
             :disabled="product.stock === 0"
-            @click="addItem(product.id, quantity); toast.success(`${quantity} article(s) ajoute(s) au panier`)"
+            @click="
+              addItem(product.id, quantity)
+              toast.success(`${quantity} article(s) ajoute(s) au panier`)
+            "
           >
             <ShoppingCart class="h-4 w-4" />
             Ajouter au panier
@@ -109,14 +115,19 @@ function increment() {
           <button
             class="flex-1 rounded-md border border-slate-600 bg-slate-50 px-6 py-3 text-sm font-medium text-slate-800 transition-colors hover:bg-white disabled:opacity-40"
             :disabled="product.stock === 0"
-            @click="addItem(product.id, quantity); openCartDrawer()"
+            @click="
+              addItem(product.id, quantity)
+              openCartDrawer()
+            "
           >
             Acheter maintenant
           </button>
         </div>
 
         <p v-if="product.stock === 0" class="text-sm font-medium text-red-400">Rupture de stock</p>
-        <p v-else-if="product.stock <= 5" class="text-sm font-medium text-orange-400">Plus que {{ product.stock }} en stock</p>
+        <p v-else-if="product.stock <= 5" class="text-sm font-medium text-orange-400">
+          Plus que {{ product.stock }} en stock
+        </p>
 
         <div class="flex items-center gap-6">
           <div v-for="item in trustItems" :key="item.label" class="flex items-center gap-1.5">

@@ -1,5 +1,5 @@
-import { CheckInEntity, CheckInEntityProps } from '../domain/entity/check-in.entity'
 import { InteractionType } from '../domain/constants/interaction-type.constant'
+import { CheckInEntity, CheckInEntityProps } from '../domain/entity/check-in.entity'
 
 let counter = 0
 

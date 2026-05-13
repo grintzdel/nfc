@@ -1,6 +1,6 @@
 import { EventEntity } from '../../../domain/entity/event.entity'
-import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 import { EventDomainModel } from '../../../domain/model/event.domain-model'
+import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 
 export class CreateEventUseCase {
   constructor(private readonly eventRepository: IEventRepository) {}

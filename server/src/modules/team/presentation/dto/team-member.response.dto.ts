@@ -1,5 +1,5 @@
-import { TeamMemberEntity } from '../../domain/entity/team-member.entity'
 import type { TeamRole } from '../../domain/constants/team-role.constant'
+import { TeamMemberEntity } from '../../domain/entity/team-member.entity'
 
 export class TeamMemberResponseDto {
   id: string

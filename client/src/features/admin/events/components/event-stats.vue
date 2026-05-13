@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CalendarDays, Clock4, Activity, CircleCheck } from 'lucide-vue-next'
+
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 
 defineProps<{
@@ -48,9 +49,7 @@ defineProps<{
         <CircleCheck class="h-4 w-4 text-emerald-500" />
       </div>
       <span class="text-2xl font-bold text-slate-50">{{ data?.completedThisYear ?? '—' }}</span>
-      <span v-if="data" class="text-[11px] font-medium text-emerald-500">
-        {{ data.successRate }}% taux de succes
-      </span>
+      <span v-if="data" class="text-[11px] font-medium text-emerald-500"> {{ data.successRate }}% taux de succes </span>
     </div>
   </div>
 </template>

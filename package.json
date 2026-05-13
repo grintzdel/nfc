@@ -7,9 +7,15 @@
     "dev:client": "cd client && pnpm run dev",
     "build": "cd client && pnpm build && cd ../server && pnpm build",
     "seed": "cd server && pnpm run seed",
-    "test:server": "cd server && pnpm test"
+    "test:server": "cd server && pnpm test",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt --ignore-path .oxfmtignore .",
+    "format:check": "oxfmt --ignore-path .oxfmtignore --check ."
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "oxfmt": "^0.49.0",
+    "oxlint": "^1.64.0"
   }
 }

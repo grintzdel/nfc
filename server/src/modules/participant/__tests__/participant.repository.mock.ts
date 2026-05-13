@@ -1,5 +1,5 @@
-import { IParticipantRepository } from '../domain/repository/participant.repository.interface'
 import { ParticipantEntity } from '../domain/entity/participant.entity'
+import { IParticipantRepository } from '../domain/repository/participant.repository.interface'
 
 export class ParticipantRepositoryMock implements IParticipantRepository {
   create_result: ParticipantEntity | null = null
@@ -14,7 +14,13 @@ export class ParticipantRepositoryMock implements IParticipantRepository {
   findAllByEventId_calledWith: string | null = null
   findAllByUserId_result: ParticipantEntity[] = []
   findAllByUserId_calledWith: string | null = null
-  findPaginatedByEventId_result: PaginatedResult<ParticipantEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  findPaginatedByEventId_result: PaginatedResult<ParticipantEntity> = {
+    items: [],
+    total: 0,
+    page: 1,
+    limit: 20,
+    totalPages: 0,
+  }
   findPaginatedByEventId_calledWith: { eventId: string; page: number; limit: number; search?: string } | null = null
   findPaginated_result: PaginatedResult<ParticipantEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
   findPaginated_calledWith: { page: number; limit: number; checkedIn?: boolean; search?: string } | null = null
@@ -74,14 +80,20 @@ export class ParticipantRepositoryMock implements IParticipantRepository {
     return this.findPaginated_result
   }
 
-  async countInRange(_from: Date, _to: Date): Promise<number> { return this.countInRange_result }
+  async countInRange(_from: Date, _to: Date): Promise<number> {
+    return this.countInRange_result
+  }
 
-  async countByEventId(_eventId: string): Promise<number> { return this.countByEventId_result }
+  async countByEventId(_eventId: string): Promise<number> {
+    return this.countByEventId_result
+  }
 
   async update(entity: ParticipantEntity): Promise<ParticipantEntity> {
     this.update_calledWith = entity
     return this.update_result ?? entity
   }
 
-  async softDelete(id: string): Promise<void> { this.softDelete_calledWith = id }
+  async softDelete(id: string): Promise<void> {
+    this.softDelete_calledWith = id
+  }
 }

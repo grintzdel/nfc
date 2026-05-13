@@ -1,4 +1,5 @@
 import { AppError } from '@shared/errors/app.error'
+
 import type { ParticipantProfile, ProfileLink } from '../../domain/entity/participant.entity'
 import { parseProfileLinks } from './profile-link.parser'
 

@@ -1,5 +1,5 @@
-import { ITeamMemberRepository } from '../../domain/repository/team-member.repository.interface'
 import { TeamMemberEntity } from '../../domain/entity/team-member.entity'
+import { ITeamMemberRepository } from '../../domain/repository/team-member.repository.interface'
 import { TeamMemberModel, TeamMemberDocument } from '../schema/team-member.schema'
 
 function toEntity(doc: TeamMemberDocument): TeamMemberEntity {
@@ -49,7 +49,7 @@ export class TeamMemberRepositoryMongooseMongo implements ITeamMemberRepository 
     const doc = await TeamMemberModel.findByIdAndUpdate(
       entity.id,
       { userId, eventId, role, invitedAt, invitedBy, acceptedAt, deletedAt },
-      { new: true },
+      { new: true }
     )
     if (!doc) throw new Error(`TeamMember ${entity.id} not found in DB during update`)
     return toEntity(doc)

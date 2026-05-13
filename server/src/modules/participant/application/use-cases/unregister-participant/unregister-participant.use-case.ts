@@ -1,6 +1,7 @@
-import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
-import { ParticipantNotFoundError } from '../../../domain/errors/participant.error'
 import { AppError } from '@shared/errors/app.error'
+
+import { ParticipantNotFoundError } from '../../../domain/errors/participant.error'
+import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 
 export class UnregisterParticipantUseCase {
   constructor(private readonly participantRepository: IParticipantRepository) {}

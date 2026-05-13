@@ -1,23 +1,24 @@
-import { Router } from 'express'
 import { JwtServiceSecurity } from '@modules/auth/application/services/security/jwt.service-security'
 import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
 import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
-import { TeamMemberRepositoryMongooseMongo } from './infrastructure/repository/team-member.repository.mongoose-mongo'
-import { ITeamMemberRepository } from './domain/repository/team-member.repository.interface'
-import { InviteTeamMemberUseCase } from './application/use-cases/invite-team-member/invite-team-member.use-case'
+import { Router } from 'express'
+
+import { TeamService } from './application/services/team.service'
 import { AcceptInvitationUseCase } from './application/use-cases/accept-invitation/accept-invitation.use-case'
 import { ChangeRoleUseCase } from './application/use-cases/change-role/change-role.use-case'
-import { RevokeTeamMemberUseCase } from './application/use-cases/revoke-team-member/revoke-team-member.use-case'
-import { GetTeamMembersByEventUseCase } from './application/use-cases/get-team-members-by-event/get-team-members-by-event.use-case'
 import { GetMyMembershipsUseCase } from './application/use-cases/get-my-memberships/get-my-memberships.use-case'
-import { TeamService } from './application/services/team.service'
+import { GetTeamMembersByEventUseCase } from './application/use-cases/get-team-members-by-event/get-team-members-by-event.use-case'
+import { InviteTeamMemberUseCase } from './application/use-cases/invite-team-member/invite-team-member.use-case'
+import { RevokeTeamMemberUseCase } from './application/use-cases/revoke-team-member/revoke-team-member.use-case'
+import { ITeamMemberRepository } from './domain/repository/team-member.repository.interface'
+import { TeamMemberRepositoryMongooseMongo } from './infrastructure/repository/team-member.repository.mongoose-mongo'
 import { TeamController } from './presentation/controllers/team.controller'
 
 export function createTeamModule(
   jwtService: JwtServiceSecurity,
   userRepository: IUserRepository,
-  eventRepository: IEventRepository,
+  eventRepository: IEventRepository
 ): { router: Router; teamMemberRepository: ITeamMemberRepository } {
   const teamMemberRepository = new TeamMemberRepositoryMongooseMongo()
 

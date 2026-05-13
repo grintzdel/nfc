@@ -4,13 +4,13 @@ Document de stratégie qualité pour le projet. Couvre les types de tests, les r
 
 ## 1. Types de tests utilisés
 
-| Type | Définition | Présent dans le projet ? | Outil |
-|---|---|---|---|
-| **Tests unitaires** | Vérifient une unité isolée (fonction, classe, composant) sans dépendance externe. Mocks/stubs pour les bordures. | ✅ Backend (use-cases, entités) · ✅ Frontend (composants, hooks, adapters) | Jest · Vitest |
-| **Tests d'intégration backend** | Vérifient l'interaction entre couches (route HTTP → controller → service → use-case → repository → DB). | ✅ 15 tests via Supertest + mongodb-memory-server | Jest + Supertest |
-| **Tests d'intégration frontend** | Vérifient un composant connecté à ses dépendances (queries TanStack, mutations, dialogs Teleport). | ✅ Inclus dans la suite Vitest (composants montés avec providers) | Vitest + Vue Testing Library |
-| **Tests fonctionnels** | Vérifient un comportement métier complet du point de vue utilisateur. | ⚠️ Couverts partiellement par les E2E ciblés sur chaque page critique | Playwright |
-| **Tests E2E** | Simulent un vrai utilisateur sur l'app complète, en parlant à la vraie API. | ✅ Parcours nominal (inscription → connexion → SaaS → panier → commande → vérif) + 4 pages individuelles | Playwright |
+| Type                             | Définition                                                                                                       | Présent dans le projet ?                                                                                 | Outil                        |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| **Tests unitaires**              | Vérifient une unité isolée (fonction, classe, composant) sans dépendance externe. Mocks/stubs pour les bordures. | ✅ Backend (use-cases, entités) · ✅ Frontend (composants, hooks, adapters)                              | Jest · Vitest                |
+| **Tests d'intégration backend**  | Vérifient l'interaction entre couches (route HTTP → controller → service → use-case → repository → DB).          | ✅ 15 tests via Supertest + mongodb-memory-server                                                        | Jest + Supertest             |
+| **Tests d'intégration frontend** | Vérifient un composant connecté à ses dépendances (queries TanStack, mutations, dialogs Teleport).               | ✅ Inclus dans la suite Vitest (composants montés avec providers)                                        | Vitest + Vue Testing Library |
+| **Tests fonctionnels**           | Vérifient un comportement métier complet du point de vue utilisateur.                                            | ⚠️ Couverts partiellement par les E2E ciblés sur chaque page critique                                    | Playwright                   |
+| **Tests E2E**                    | Simulent un vrai utilisateur sur l'app complète, en parlant à la vraie API.                                      | ✅ Parcours nominal (inscription → connexion → SaaS → panier → commande → vérif) + 4 pages individuelles | Playwright                   |
 
 ### Pourquoi cette stratégie
 
@@ -21,18 +21,18 @@ Document de stratégie qualité pour le projet. Couvre les types de tests, les r
 
 ## 2. Risques identifiés
 
-| Catégorie | Risque | Mitigation |
-|---|---|---|
-| **Auth** | Token expiré, mal signé, refusé. Compte partagé entre SaaS et e-commerce qui se désynchronise. | Tests intégration : login OK, mauvais MDP, user inconnu, route protégée sans/avec token. Tests unitaires use-cases auth (`register.use-case.spec`, `login.use-case.spec`). |
-| **Auth** | Échelle de droits (customer vs admin vs organizer) mal appliquée. | Test intégration produit : un customer reçoit 403 sur POST `/api/products`, admin reçoit 201. |
-| **Validation DTOs** | Données mal formées acceptées (email invalide, prix négatif, name manquant). | Tests intégration : POST register avec email invalide → 400. POST product avec name vide ou price < 0 → 400. |
-| **MongoDB** | Schéma désynchronisé, ID malformés, duplicate key (email, slug). | mongodb-memory-server pour isoler. Tests unitaires d'entité valident les invariants. |
-| **Panier non synchronisé** | Le panier en localStorage diverge de la session ou est perdu après login. | Module cart côté serveur. À tester en E2E (parcours complet) lors d'un futur run. |
-| **Capacité événement** | Inscriptions au-delà de la capacité max. | Test unitaire `register-participant.use-case.spec` + check `EventFullError`. Garde-fou côté front (`event-public.page.vue`) qui masque le formulaire. |
-| **Dedup check-in** | Un participant scanné deux fois à l'entrée. | Test unitaire `record-check-in.use-case.spec` qui rejette les doublons `CHECK_IN` (mais laisse passer `NETWORKING`, `VOTE`, `CASHLESS`). |
-| **Cross-module deps** | Bracelets dépendent de Participants, Participants dépendent de Bracelets (cycle). | Pattern `attachDeps` testé manuellement via le bootstrap. Faille potentielle : aucun test n'attrape un oubli d'`attachDeps`. **Acceptée comme risque connu** (le serveur crash au démarrage, donc on le voit immédiatement). |
-| **API échoués côté front** | TanStack Query retry indéfini ou affiche un état cassé. | Tests unitaires composants : `isLoading`, `isError`, `data` rendus correctement. Toasts pour les mutations en échec. |
-| **État Vue divergent** | Reactivité perdue après un dialog/modal, ou data stale. | Tests Vitest sur les composants utilisant `ref` + watch. Refetch automatique via `useQuery` après invalidation. |
+| Catégorie                  | Risque                                                                                         | Mitigation                                                                                                                                                                                                                   |
+| -------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Auth**                   | Token expiré, mal signé, refusé. Compte partagé entre SaaS et e-commerce qui se désynchronise. | Tests intégration : login OK, mauvais MDP, user inconnu, route protégée sans/avec token. Tests unitaires use-cases auth (`register.use-case.spec`, `login.use-case.spec`).                                                   |
+| **Auth**                   | Échelle de droits (customer vs admin vs organizer) mal appliquée.                              | Test intégration produit : un customer reçoit 403 sur POST `/api/products`, admin reçoit 201.                                                                                                                                |
+| **Validation DTOs**        | Données mal formées acceptées (email invalide, prix négatif, name manquant).                   | Tests intégration : POST register avec email invalide → 400. POST product avec name vide ou price < 0 → 400.                                                                                                                 |
+| **MongoDB**                | Schéma désynchronisé, ID malformés, duplicate key (email, slug).                               | mongodb-memory-server pour isoler. Tests unitaires d'entité valident les invariants.                                                                                                                                         |
+| **Panier non synchronisé** | Le panier en localStorage diverge de la session ou est perdu après login.                      | Module cart côté serveur. À tester en E2E (parcours complet) lors d'un futur run.                                                                                                                                            |
+| **Capacité événement**     | Inscriptions au-delà de la capacité max.                                                       | Test unitaire `register-participant.use-case.spec` + check `EventFullError`. Garde-fou côté front (`event-public.page.vue`) qui masque le formulaire.                                                                        |
+| **Dedup check-in**         | Un participant scanné deux fois à l'entrée.                                                    | Test unitaire `record-check-in.use-case.spec` qui rejette les doublons `CHECK_IN` (mais laisse passer `NETWORKING`, `VOTE`, `CASHLESS`).                                                                                     |
+| **Cross-module deps**      | Bracelets dépendent de Participants, Participants dépendent de Bracelets (cycle).              | Pattern `attachDeps` testé manuellement via le bootstrap. Faille potentielle : aucun test n'attrape un oubli d'`attachDeps`. **Acceptée comme risque connu** (le serveur crash au démarrage, donc on le voit immédiatement). |
+| **API échoués côté front** | TanStack Query retry indéfini ou affiche un état cassé.                                        | Tests unitaires composants : `isLoading`, `isError`, `data` rendus correctement. Toasts pour les mutations en échec.                                                                                                         |
+| **État Vue divergent**     | Reactivité perdue après un dialog/modal, ou data stale.                                        | Tests Vitest sur les composants utilisant `ref` + watch. Refetch automatique via `useQuery` après invalidation.                                                                                                              |
 
 ## 3. Stratégie de tests
 
@@ -65,15 +65,15 @@ Document de stratégie qualité pour le projet. Couvre les types de tests, les r
 
 ### Choix techniques effectués
 
-| Choix | Raison |
-|---|---|
-| **Jest + Supertest** côté serveur (vs Vitest) | Jest est le standard Express/Node et la doc Supertest est centrée Jest. ts-jest compile bien le TS strict du projet. |
-| **mongodb-memory-server** (vs base de test dédiée) | Tests isolés par fichier, pas de pollution entre runs, pas de setup CI complexe. Coût mémoire acceptable (~80MB par instance). |
-| **Vitest côté client** (vs Jest) | Plus rapide avec Vite, support natif ESM + TS, JSDOM intégré. |
-| **Playwright** (vs Cypress) | Multi-onglet, auto-waiting plus robuste, support natif WebKit pour validation iOS si besoin. |
-| **Pattern factory pour les data tests** | Centralise la création d'objets, IDs incrémentés via un compteur. Override par paramètre. |
-| **Adapters HTTP + InMemory partagés** côté client | Permet de tester les composants/hooks avec un adapter en mémoire (rapide) tout en validant le contrat sur l'adapter HTTP. |
-| **`mongodb-memory-server` 60s timeout au beforeAll** | Première initialisation peut prendre 30s (download du binaire). Timeout généreux pour éviter les faux négatifs en CI. |
+| Choix                                                | Raison                                                                                                                         |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **Jest + Supertest** côté serveur (vs Vitest)        | Jest est le standard Express/Node et la doc Supertest est centrée Jest. ts-jest compile bien le TS strict du projet.           |
+| **mongodb-memory-server** (vs base de test dédiée)   | Tests isolés par fichier, pas de pollution entre runs, pas de setup CI complexe. Coût mémoire acceptable (~80MB par instance). |
+| **Vitest côté client** (vs Jest)                     | Plus rapide avec Vite, support natif ESM + TS, JSDOM intégré.                                                                  |
+| **Playwright** (vs Cypress)                          | Multi-onglet, auto-waiting plus robuste, support natif WebKit pour validation iOS si besoin.                                   |
+| **Pattern factory pour les data tests**              | Centralise la création d'objets, IDs incrémentés via un compteur. Override par paramètre.                                      |
+| **Adapters HTTP + InMemory partagés** côté client    | Permet de tester les composants/hooks avec un adapter en mémoire (rapide) tout en validant le contrat sur l'adapter HTTP.      |
+| **`mongodb-memory-server` 60s timeout au beforeAll** | Première initialisation peut prendre 30s (download du binaire). Timeout généreux pour éviter les faux négatifs en CI.          |
 
 ## 4. Conventions de tests
 

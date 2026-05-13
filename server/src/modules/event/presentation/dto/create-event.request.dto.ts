@@ -15,7 +15,8 @@ export class CreateEventRequestDto {
     if (typeof body.name !== 'string' || !body.name.trim()) throw new AppError(400, 'name is required')
     if (typeof body.startsAt !== 'string') throw new AppError(400, 'startsAt is required')
     if (typeof body.endsAt !== 'string') throw new AppError(400, 'endsAt is required')
-    if (typeof body.capacity !== 'number' || body.capacity < 0) throw new AppError(400, 'capacity must be a non-negative number')
+    if (typeof body.capacity !== 'number' || body.capacity < 0)
+      throw new AppError(400, 'capacity must be a non-negative number')
     this.name = body.name
     this.description = typeof body.description === 'string' ? body.description : ''
     this.venueName = typeof body.venueName === 'string' ? body.venueName : ''

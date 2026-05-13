@@ -1,6 +1,6 @@
 import { TeamMemberEntity } from '../../../domain/entity/team-member.entity'
-import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
 import { TeamMemberNotFoundError, TeamMemberNotAuthorizedError } from '../../../domain/errors/team.error'
+import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
 
 export class AcceptInvitationUseCase {
   constructor(private readonly teamMemberRepository: ITeamMemberRepository) {}

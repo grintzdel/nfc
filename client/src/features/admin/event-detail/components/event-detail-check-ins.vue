@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, toRef } from 'vue'
 import { ScanLine } from 'lucide-vue-next'
+import { computed, ref, toRef } from 'vue'
+
+import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
+import { InteractionType } from '@/modules/check-in/core/model/check-in.domain-model'
+import { useGetPaginatedCheckInsByEvent } from '@/modules/check-in/ui/hooks/queries/query/use-get-paginated-check-ins-by-event'
+import { EmptyState } from '@/ui/empty-state'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetPaginatedCheckInsByEvent } from '@/modules/check-in/ui/hooks/queries/query/use-get-paginated-check-ins-by-event'
-import { InteractionType } from '@/modules/check-in/core/model/check-in.domain-model'
-import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 
 const props = defineProps<{
   eventId: string
@@ -92,18 +93,24 @@ const lastCheckInRelative = computed(() => {
         <div class="overflow-x-auto">
           <div class="flex min-w-[680px] flex-col">
             <div class="flex items-center bg-slate-800">
-              <div class="w-[180px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Date / heure</span></div>
-              <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
-              <div class="w-[140px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Type</span></div>
-              <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Zone</span></div>
+              <div class="w-[180px] shrink-0 px-4 py-3">
+                <span class="text-xs font-semibold tracking-wide text-slate-400">Date / heure</span>
+              </div>
+              <div class="flex-1 px-4 py-3">
+                <span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span>
+              </div>
+              <div class="w-[140px] shrink-0 px-4 py-3">
+                <span class="text-xs font-semibold tracking-wide text-slate-400">Type</span>
+              </div>
+              <div class="w-[120px] shrink-0 px-4 py-3">
+                <span class="text-xs font-semibold tracking-wide text-slate-400">Zone</span>
+              </div>
             </div>
 
-            <div
-              v-for="row in items"
-              :key="row.id"
-              class="flex items-center border-t border-white/10"
-            >
-              <div class="w-[180px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatTimestamp(row.createdAt) }}</div>
+            <div v-for="row in items" :key="row.id" class="flex items-center border-t border-white/10">
+              <div class="w-[180px] shrink-0 px-4 py-3 text-sm text-slate-300">
+                {{ formatTimestamp(row.createdAt) }}
+              </div>
               <div class="flex-1 px-4 py-3 text-sm">
                 <span v-if="row.participant" class="text-slate-200">{{ row.participant.displayName }}</span>
                 <span v-else class="text-slate-500">—</span>
@@ -130,7 +137,7 @@ const lastCheckInRelative = computed(() => {
           :total="paged.total"
           :limit="paged.limit"
           item-label="check-ins"
-          @update:page="(p) => page = p"
+          @update:page="(p) => (page = p)"
         />
       </template>
     </div>

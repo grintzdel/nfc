@@ -2,13 +2,14 @@
 
 ## Goal
 
-Today the admin can list and edit events but has nowhere to *go* when they click on one — every interaction is wrapped in a modal. This spec introduces `/admin/events/:eventId`, the operational hub where an organizer manages a single event: participants, bracelets attached to that event, check-in activity, and a per-event KPI strip.
+Today the admin can list and edit events but has nowhere to _go_ when they click on one — every interaction is wrapped in a modal. This spec introduces `/admin/events/:eventId`, the operational hub where an organizer manages a single event: participants, bracelets attached to that event, check-in activity, and a per-event KPI strip.
 
 It's the page that turns the current admin from a CRUD into a SaaS dashboard. It consumes 4 backend modules already in place (event, participant, bracelet, check-in) plus the analytics module for KPIs, and introduces 5 new endpoints — 3 paginated lists, 1 helper list, 1 KPI block — to keep all filtering and aggregation server-side.
 
 ## Scope
 
 ### Frontend
+
 - New route `/admin/events/:eventId` (admin-only, `AdminLayout`)
 - Feature page composed of a Header strip + 3 **tabs** (Participants / Bracelets / Check-ins)
 - Header with event meta, status badge, KPI strip, and action buttons driven by the **status state machine** (only show the transitions allowed for the current status)
@@ -63,6 +64,7 @@ Each new use-case returns this shape with its own item type. Defaults: `page=1`,
 ### 1.2 Participant module — `GET /participants/event/:eventId/paginated`
 
 **Files:**
+
 - New: `application/use-cases/get-paginated-participants-by-event/{...}.use-case.ts + .spec.ts`
 - Modify: `participant.repository.interface.ts` — add `findPaginatedByEventId({ eventId, page, limit, search })` returning `{ items, total }`; the repo also resolves each participant's bracelet (mongoose `populate('braceletId')` or a follow-up `bracelet` lookup)
 - Modify: `participant.repository.mongoose-mongo.ts` — implement query: `{ eventId, deletedAt: null, $or: [{ 'profile.displayName': regex }, { 'profile.role': regex }] }` when search is non-empty
@@ -71,6 +73,7 @@ Each new use-case returns this shape with its own item type. Defaults: `page=1`,
 - Modify: `presentation/dto/paginated-participants.response.dto.ts` — new response DTO; each item: `ParticipantOverviewDto` + `bracelet: { id, nfcId, status } | null`
 
 **Spec cases:**
+
 - Returns paginated participants for event
 - `search` filters by `displayName` (case-insensitive) and `role`
 - `page`/`limit` paginate correctly; `total` reflects unfiltered-by-page count
@@ -82,6 +85,7 @@ Each new use-case returns this shape with its own item type. Defaults: `page=1`,
 ### 1.3 Bracelet module — `GET /bracelets/event/:eventId/paginated`
 
 **Files:**
+
 - New: `application/use-cases/get-paginated-bracelets-by-event/{...}.use-case.ts + .spec.ts`
 - Modify: `bracelet.repository.interface.ts` — add `findPaginatedByEventId({ eventId, page, limit, search })`; resolves `participant` per item
 - Modify: `bracelet.repository.mongoose-mongo.ts` — query `{ eventId, deletedAt: null, nfcId: regex }` when search is non-empty
@@ -96,6 +100,7 @@ Each new use-case returns this shape with its own item type. Defaults: `page=1`,
 Non-paginated. Returns up to 100 bracelets with `{ status: 'active', participantId: null, deletedAt: null }`. Ordered by `createdAt DESC`.
 
 **Spec cases:**
+
 - Returns only active+unassigned bracelets
 - Excludes `disabled`, `pre_activated`, soft-deleted, and active+already-assigned
 - Caps at 100 (assert behavior with 150 fixtures)
@@ -105,6 +110,7 @@ Route: `router.get('/available', auth, admin, ...)` — **before `/:id` and `/ev
 ### 1.5 Check-in module — `GET /check-ins/event/:eventId/paginated`
 
 **Files:**
+
 - New: `get-paginated-check-ins-by-event/{...}.use-case.ts + .spec.ts`
 - Modify: `check-in.repository.interface.ts` — `findPaginatedByEventId({ eventId, page, limit })`; resolves `participant` per item via the bracelet
 - Modify: Mongoose repo — query `{ eventId, deletedAt: null }`, `.sort({ createdAt: -1 })`, `.populate({ path: 'braceletId', populate: 'participantId' })`. Map participant into the DTO.
@@ -112,6 +118,7 @@ Route: `router.get('/available', auth, admin, ...)` — **before `/:id` and `/ev
 - Modify: `paginated-check-ins.response.dto.ts` — item: `CheckInOverviewDto` + `participant: { id, displayName } | null`
 
 **Spec cases:**
+
 - Paginated, ordered by `createdAt DESC`
 - Each item resolves participant via bracelet (null if bracelet has no participant, edge case)
 - Excludes check-ins belonging to soft-deleted participants
@@ -119,6 +126,7 @@ Route: `router.get('/available', auth, admin, ...)` — **before `/:id` and `/ev
 ### 1.6 Analytics module — `GET /analytics/events/:eventId`
 
 **Files:**
+
 - New: `get-event-detail-stats/{...}.use-case.ts + .spec.ts`
 - Modify: `analytics.service.ts`, `analytics.controller.ts`, `analytics.module.ts` — wire route + service method
 
@@ -126,20 +134,21 @@ Route: `router.get('/available', auth, admin, ...)` — **before `/:id` and `/ev
 
 ```ts
 {
-  participantCount: number          // participants for this event
-  capacity: number                  // from event
-  capacityFillRate: number          // participantCount / capacity (0 when capacity=0)
-  braceletsAttachedCount: number    // bracelets with this eventId
-  braceletsActiveCount: number      // bracelets attached + status=active
-  checkInCount: number              // check-ins for this event
-  uniqueParticipantsCheckedIn: number  // distinct participants reached by ≥1 check-in
-  lastCheckInAt: string | null      // ISO timestamp of latest check-in
+  participantCount: number // participants for this event
+  capacity: number // from event
+  capacityFillRate: number // participantCount / capacity (0 when capacity=0)
+  braceletsAttachedCount: number // bracelets with this eventId
+  braceletsActiveCount: number // bracelets attached + status=active
+  checkInCount: number // check-ins for this event
+  uniqueParticipantsCheckedIn: number // distinct participants reached by ≥1 check-in
+  lastCheckInAt: string | null // ISO timestamp of latest check-in
 }
 ```
 
 **Why analytics and not per-module count endpoints:** `capacityFillRate` and `uniqueParticipantsCheckedIn` cross multiple modules. Bundling the simple counts with them keeps the page to **one KPI request** instead of four, and makes the cross-module ownership explicit.
 
 **Spec cases:**
+
 - All-zeros baseline
 - Populated baseline (seeded demo event)
 - `event` 404 → `EventNotFoundError`
@@ -191,6 +200,7 @@ Page wrapper at `client/src/pages/admin/events/$eventId/page.vue` (3-line shell)
 ```
 
 **Page-level state:**
+
 - Reads `eventId` from `useRoute().params`
 - 2 queries always running: `event`, `stats`
 - 3 queries per tab (only the active tab is enabled via `enabled: computed(() => activeTab.value === '...')` to avoid loading data the user hasn't asked for)
@@ -211,6 +221,7 @@ All under `client/src/features/admin/event-detail/components/`.
 **Emits:** `action: 'publish' | 'start' | 'complete' | 'cancel'`
 
 **Renders:**
+
 - Event name (h1), city + venue, date range
 - `Badge` for status (color-coded: draft=gray, upcoming=blue, in_progress=green, completed=neutral, cancelled=red)
 - KPI strip (4 small cards): Participants `participantCount / capacity` with fill rate %, Bracelets actifs `braceletsActiveCount`, Check-ins `checkInCount`, Dernier check-in `lastCheckInAt` (relative time, "—" if null)
@@ -230,6 +241,7 @@ All under `client/src/features/admin/event-detail/components/`.
 **Hook:** `useGetPaginatedParticipantsByEvent({ eventId, page, limit: 20, search })`.
 
 **Renders:**
+
 - Search `Input` (debounced 300ms, resets `page` to 1 on change)
 - Paginated table; columns:
   - Avatar (initials) + displayName + role
@@ -239,7 +251,7 @@ All under `client/src/features/admin/event-detail/components/`.
   - Action: `<Button size="sm">Attacher</Button>` when `bracelet === null` → opens `<AttachBraceletDialog>`
 - Pagination footer (reused `<Pagination>` primitive)
 
-Empty state (when `total === 0` AND no search): shadcn `Card` "Aucun participant inscrit." + hint *"Lien public : /events/<slug>"*.
+Empty state (when `total === 0` AND no search): shadcn `Card` "Aucun participant inscrit." + hint _"Lien public : /events/<slug>"_.
 
 ### 4.3 `attach-bracelet-dialog.vue`
 
@@ -247,6 +259,7 @@ Empty state (when `total === 0` AND no search): shadcn `Card` "Aucun participant
 **Emits:** `close`, `confirm: { participantId, braceletId }`
 
 shadcn `Dialog` + `Select` over `availableBracelets` (already filtered server-side via `GET /bracelets/available`).
+
 - Confirm disabled when no bracelet selected
 - Empty available list → "Aucun bracelet disponible. Créez-en depuis Bracelets > Stock."
 - Toast on success; invalidate `['participants', 'event', eventId]`, `['bracelets', 'event', eventId]`, `['bracelets', 'available']`, `['analytics', 'event', eventId]`
@@ -258,6 +271,7 @@ shadcn `Dialog` + `Select` over `availableBracelets` (already filtered server-si
 **Hook:** `useGetPaginatedBraceletsByEvent({ eventId, page, limit: 20, search })`.
 
 **Renders:**
+
 - Search `Input` (debounced, on nfcId)
 - Paginated table:
   - NFC ID (monospace) — clickable → `/p/:nfcId` (new tab)
@@ -276,6 +290,7 @@ Empty state (no search): "Aucun bracelet attribué à cet événement."
 **Hook:** `useGetPaginatedCheckInsByEvent({ eventId, page, limit: 20 })`.
 
 **Renders:**
+
 - KPI strip (3 cards) from `stats`: Total `checkInCount`, Uniques `uniqueParticipantsCheckedIn`, Dernier `lastCheckInAt`
 - Paginated table:
   - Timestamp (relative)
@@ -293,13 +308,13 @@ All under `client/src/modules/<module>/ui/hooks/queries/`.
 
 ### 5.1 Query hooks (5)
 
-| Hook | Module | Route | Params | QueryKey |
-|---|---|---|---|---|
+| Hook                                      | Module      | Route                                        | Params                             | QueryKey                                                               |
+| ----------------------------------------- | ----------- | -------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- |
 | `use-get-paginated-participants-by-event` | participant | `GET /participants/event/:eventId/paginated` | `{ eventId, page, limit, search }` | `['participants', 'event', eventId, 'paginated', page, limit, search]` |
-| `use-get-paginated-bracelets-by-event` | bracelet | `GET /bracelets/event/:eventId/paginated` | same | `['bracelets', 'event', eventId, 'paginated', ...]` |
-| `use-get-available-bracelets` | bracelet | `GET /bracelets/available` | — | `['bracelets', 'available']` |
-| `use-get-paginated-check-ins-by-event` | check-in | `GET /check-ins/event/:eventId/paginated` | `{ eventId, page, limit }` | `['check-ins', 'event', eventId, 'paginated', page, limit]` |
-| `use-get-event-detail-stats` | analytics | `GET /analytics/events/:eventId` | `{ eventId }` | `['analytics', 'event', eventId]` |
+| `use-get-paginated-bracelets-by-event`    | bracelet    | `GET /bracelets/event/:eventId/paginated`    | same                               | `['bracelets', 'event', eventId, 'paginated', ...]`                    |
+| `use-get-available-bracelets`             | bracelet    | `GET /bracelets/available`                   | —                                  | `['bracelets', 'available']`                                           |
+| `use-get-paginated-check-ins-by-event`    | check-in    | `GET /check-ins/event/:eventId/paginated`    | `{ eventId, page, limit }`         | `['check-ins', 'event', eventId, 'paginated', page, limit]`            |
+| `use-get-event-detail-stats`              | analytics   | `GET /analytics/events/:eventId`             | `{ eventId }`                      | `['analytics', 'event', eventId]`                                      |
 
 Refs in `params` are passed by ref (mirror `useGetPaginatedEvents` shape). `enabled` flag wired to active tab for the 3 paginated hooks.
 
@@ -307,14 +322,14 @@ Refs in `params` are passed by ref (mirror `useGetPaginatedEvents` shape). `enab
 
 ### 5.2 Mutation hooks (6)
 
-| Hook | Route | Invalidates |
-|---|---|---|
-| `use-publish-event` | `POST /events/:id/publish` | `['events', id]`, `['events']`, `['analytics', 'event', id]`, `['analytics', 'eventPageStats']` |
-| `use-start-event` | `POST /events/:id/start` | same |
-| `use-complete-event` | `POST /events/:id/complete` | same |
-| `use-cancel-event` | `POST /events/:id/cancel` | same |
-| `use-attach-bracelet` | `PATCH /participants/:id/bracelet` | `['participants', 'event', eventId, 'paginated']`, `['bracelets', 'event', eventId, 'paginated']`, `['bracelets', 'available']`, `['analytics', 'event', eventId]` |
-| `use-disable-bracelet` | `PATCH /bracelets/:id/disable` | `['bracelets', 'event', eventId, 'paginated']`, `['bracelets', 'available']`, `['analytics', 'event', eventId]` |
+| Hook                   | Route                              | Invalidates                                                                                                                                                        |
+| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `use-publish-event`    | `POST /events/:id/publish`         | `['events', id]`, `['events']`, `['analytics', 'event', id]`, `['analytics', 'eventPageStats']`                                                                    |
+| `use-start-event`      | `POST /events/:id/start`           | same                                                                                                                                                               |
+| `use-complete-event`   | `POST /events/:id/complete`        | same                                                                                                                                                               |
+| `use-cancel-event`     | `POST /events/:id/cancel`          | same                                                                                                                                                               |
+| `use-attach-bracelet`  | `PATCH /participants/:id/bracelet` | `['participants', 'event', eventId, 'paginated']`, `['bracelets', 'event', eventId, 'paginated']`, `['bracelets', 'available']`, `['analytics', 'event', eventId]` |
+| `use-disable-bracelet` | `PATCH /bracelets/:id/disable`     | `['bracelets', 'event', eventId, 'paginated']`, `['bracelets', 'available']`, `['analytics', 'event', eventId]`                                                    |
 
 > Status transitions: if a single parameterized `use-event-status-transition(action)` reads cleaner than 4 hooks, prefer it.
 
@@ -327,6 +342,7 @@ Refs in `params` are passed by ref (mirror `useGetPaginatedEvents` shape). `enab
 ### 6.1 Events list page
 
 In `client/src/features/admin/events/events.page.vue`:
+
 - Remove `EventViewModal` import, `viewOpen`/`viewEventId` state, `handleView` handler, and the `<EventViewModal>` render.
 - Row click (and "Voir" action button if separate) → `router.push(\`/admin/events/\${id}\`)`.
 - "Éditer" modal stays.

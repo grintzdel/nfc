@@ -14,11 +14,11 @@ Concept retenu : **Event Pass** (option 2 des consignes). Un bracelet = un passe
 
 ## Stack technique
 
-| Couche | Outils |
-|---|---|
-| Frontend | Vue 3 · Vue Router · TanStack Query · shadcn-vue · Tailwind CSS · Vite |
-| Backend | Node.js · Express · Mongoose · MongoDB · JWT · bcryptjs |
-| Tests | Vitest + Vue Testing Library (front) · Jest + Supertest (back) · Playwright (E2E) · mongodb-memory-server |
+| Couche   | Outils                                                                                                    |
+| -------- | --------------------------------------------------------------------------------------------------------- |
+| Frontend | Vue 3 · Vue Router · TanStack Query · shadcn-vue · Tailwind CSS · Vite                                    |
+| Backend  | Node.js · Express · Mongoose · MongoDB · JWT · bcryptjs                                                   |
+| Tests    | Vitest + Vue Testing Library (front) · Jest + Supertest (back) · Playwright (E2E) · mongodb-memory-server |
 
 ---
 

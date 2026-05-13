@@ -1,5 +1,5 @@
-import { SupplyOrderEntity, SupplyOrderEntityProps } from '../domain/entity/supply-order.entity'
 import { SupplyOrderStatus } from '../domain/constants/supply-order-status.constant'
+import { SupplyOrderEntity, SupplyOrderEntityProps } from '../domain/entity/supply-order.entity'
 
 let counter = 0
 

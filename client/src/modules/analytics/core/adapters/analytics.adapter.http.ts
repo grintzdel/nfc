@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IAnalyticsPort } from '../ports/analytics.port'
+
 import type { AnalyticsDomainModel } from '../model/analytics.domain-model'
+import type { IAnalyticsPort } from '../ports/analytics.port'
 
 export class AnalyticsHttpAdapter implements IAnalyticsPort {
   constructor(private readonly httpClient: HttpClient) {}
@@ -37,7 +38,9 @@ export class AnalyticsHttpAdapter implements IAnalyticsPort {
 
   async getActivations(year?: number): Promise<AnalyticsDomainModel.ActivationsByYearDto> {
     const params = year ? `?year=${year}` : ''
-    const result = await this.httpClient.get<AnalyticsDomainModel.ActivationsByYearDto>(`/admin-stats/bracelets/activations${params}`)
+    const result = await this.httpClient.get<AnalyticsDomainModel.ActivationsByYearDto>(
+      `/admin-stats/bracelets/activations${params}`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }

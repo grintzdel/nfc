@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import { useGetFaqs } from '@/modules/marketing/ui/hooks/queries/query/use-get-faqs'
 import { Skeleton } from '@/ui/skeleton'
 
@@ -31,7 +32,9 @@ const columns = computed(() => {
         <span class="text-xs font-semibold text-slate-800">FAQ</span>
       </div>
 
-      <h2 class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent">
+      <h2
+        class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent"
+      >
         Questions frequentes
       </h2>
 
@@ -49,9 +52,7 @@ const columns = computed(() => {
         </div>
       </div>
 
-      <p v-else-if="isError" class="text-sm text-red-400">
-        Impossible de charger la FAQ pour le moment.
-      </p>
+      <p v-else-if="isError" class="text-sm text-red-400">Impossible de charger la FAQ pour le moment.</p>
 
       <div v-else-if="(faqs ?? []).length > 0" class="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
         <div class="flex flex-col gap-5">

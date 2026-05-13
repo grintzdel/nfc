@@ -1,14 +1,15 @@
-import { ParticipantEntity } from '../../../domain/entity/participant.entity'
-import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
-import { ParticipantNotFoundError } from '../../../domain/errors/participant.error'
-import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { BraceletNotFoundError } from '@modules/bracelet/domain/errors/bracelet.error'
+import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { AppError } from '@shared/errors/app.error'
+
+import { ParticipantEntity } from '../../../domain/entity/participant.entity'
+import { ParticipantNotFoundError } from '../../../domain/errors/participant.error'
+import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 
 export class AttachBraceletUseCase {
   constructor(
     private readonly participantRepository: IParticipantRepository,
-    private readonly braceletRepository: IBraceletRepository,
+    private readonly braceletRepository: IBraceletRepository
   ) {}
 
   async execute(participantId: string, braceletId: string): Promise<ParticipantEntity> {

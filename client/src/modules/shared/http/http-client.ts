@@ -68,7 +68,7 @@ export class HttpClient {
         headers,
         ...(config.body ? { body: JSON.stringify(config.body) } : {}),
         signal: config.signal ?? controller.signal,
-      }),
+      })
     )
 
     if (timeoutId) clearTimeout(timeoutId)
@@ -86,7 +86,7 @@ export class HttpClient {
     }
 
     const jsonResult = await tryCatch<{ success: boolean; data: T; error?: string }>(
-      response.json() as Promise<{ success: boolean; data: T; error?: string }>,
+      response.json() as Promise<{ success: boolean; data: T; error?: string }>
     )
 
     if (jsonResult.error) {

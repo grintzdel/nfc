@@ -54,6 +54,7 @@
 ### Task 1.1: Backend — `GetEventDetailStatsUseCase`
 
 **Module:** analytics. **Files:**
+
 - `application/use-cases/get-event-detail-stats/{use-case.ts, .spec.ts}`
 - modify `application/services/analytics.service.ts`, `presentation/controllers/analytics.controller.ts`, `analytics.module.ts`
 - modify `presentation/dto/event-detail-stats.response.dto.ts` (new)
@@ -92,6 +93,7 @@ Decide between 4 hooks vs 1 parameterized hook. Recommended: **1 parameterized**
 **Path:** `client/src/features/admin/event-detail/components/event-detail-header.vue`
 
 **Architecture notes:**
+
 - Props: `event`, `stats`. Emits: `action`.
 - State machine map declared as a `Record<EventStatus, Array<{ action, label, variant }>>` const. Render via `v-for` — keeps the template short and the logic testable.
 - KPI strip = 4 shadcn `<Card>` items in a `grid grid-cols-2 md:grid-cols-4 gap-3`.

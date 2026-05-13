@@ -45,19 +45,43 @@ export class TeamMemberEntity {
     return new TeamMemberEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get userId(): string { return this.props.userId }
-  get eventId(): string { return this.props.eventId }
-  get role(): TeamRole { return this.props.role }
-  get invitedAt(): Date { return this.props.invitedAt }
-  get invitedBy(): string { return this.props.invitedBy }
-  get acceptedAt(): Nullable<Date> { return this.props.acceptedAt }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get userId(): string {
+    return this.props.userId
+  }
+  get eventId(): string {
+    return this.props.eventId
+  }
+  get role(): TeamRole {
+    return this.props.role
+  }
+  get invitedAt(): Date {
+    return this.props.invitedAt
+  }
+  get invitedBy(): string {
+    return this.props.invitedBy
+  }
+  get acceptedAt(): Nullable<Date> {
+    return this.props.acceptedAt
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
-  isAccepted(): boolean { return this.props.acceptedAt !== null }
-  isDeleted(): boolean { return this.props.deletedAt !== null }
+  isAccepted(): boolean {
+    return this.props.acceptedAt !== null
+  }
+  isDeleted(): boolean {
+    return this.props.deletedAt !== null
+  }
 
   accept(): this {
     if (this.props.acceptedAt !== null) throw new TeamMemberAlreadyAcceptedError(this.props.id)
@@ -82,5 +106,7 @@ export class TeamMemberEntity {
     }
   }
 
-  toJSON(): TeamMemberEntityProps { return { ...this.props } }
+  toJSON(): TeamMemberEntityProps {
+    return { ...this.props }
+  }
 }

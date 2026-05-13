@@ -83,20 +83,46 @@ export class ParticipantEntity {
     return new ParticipantEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get userId(): string { return this.props.userId }
-  get eventId(): string { return this.props.eventId }
-  get braceletId(): Nullable<string> { return this.props.braceletId }
-  get profile(): ParticipantProfile { return { ...this.props.profile, links: [...this.props.profile.links] } }
-  get registeredAt(): Date { return this.props.registeredAt }
-  get checkedInAt(): Nullable<Date> { return this.props.checkedInAt }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get userId(): string {
+    return this.props.userId
+  }
+  get eventId(): string {
+    return this.props.eventId
+  }
+  get braceletId(): Nullable<string> {
+    return this.props.braceletId
+  }
+  get profile(): ParticipantProfile {
+    return { ...this.props.profile, links: [...this.props.profile.links] }
+  }
+  get registeredAt(): Date {
+    return this.props.registeredAt
+  }
+  get checkedInAt(): Nullable<Date> {
+    return this.props.checkedInAt
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
-  isDeleted(): boolean { return this.props.deletedAt !== null }
-  hasBracelet(): boolean { return this.props.braceletId !== null }
-  isCheckedIn(): boolean { return this.props.checkedInAt !== null }
+  isDeleted(): boolean {
+    return this.props.deletedAt !== null
+  }
+  hasBracelet(): boolean {
+    return this.props.braceletId !== null
+  }
+  isCheckedIn(): boolean {
+    return this.props.checkedInAt !== null
+  }
 
   attachBracelet(braceletId: string): this {
     this.props.braceletId = braceletId

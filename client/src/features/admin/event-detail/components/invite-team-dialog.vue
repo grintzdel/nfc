@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
+
 import { TeamRole } from '@/modules/team/core/model/team.domain-model'
 import type { UserDomainModel } from '@/modules/user/core/model/user.domain-model'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 
 const props = defineProps<{
   open: boolean
@@ -27,7 +28,7 @@ watch(
       selectedUserId.value = ''
       selectedRole.value = 'staff'
     }
-  },
+  }
 )
 
 const availableUsers = computed(() => {
@@ -61,7 +62,7 @@ function handleConfirm(): void {
       <div v-else class="flex flex-col gap-3">
         <div class="flex flex-col gap-1.5">
           <label class="text-xs uppercase tracking-wider text-slate-400">Utilisateur</label>
-          <Select :model-value="selectedUserId" @update:model-value="(v) => selectedUserId = String(v)">
+          <Select :model-value="selectedUserId" @update:model-value="(v) => (selectedUserId = String(v))">
             <SelectTrigger>
               <SelectValue placeholder="Choisir un utilisateur…" />
             </SelectTrigger>
@@ -75,7 +76,7 @@ function handleConfirm(): void {
 
         <div class="flex flex-col gap-1.5">
           <label class="text-xs uppercase tracking-wider text-slate-400">Rôle</label>
-          <Select :model-value="selectedRole" @update:model-value="(v) => selectedRole = v as 'manager' | 'staff'">
+          <Select :model-value="selectedRole" @update:model-value="(v) => (selectedRole = v as 'manager' | 'staff')">
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>

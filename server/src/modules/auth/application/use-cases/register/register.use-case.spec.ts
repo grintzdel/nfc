@@ -1,9 +1,9 @@
-import { RegisterUseCase } from './register.use-case'
-import { UserAlreadyExistsError } from '../../../domain/errors/auth.error'
 import { UserEntity } from '../../../domain/entity/user.entity'
+import { UserAlreadyExistsError } from '../../../domain/errors/auth.error'
 import { IUserRepository } from '../../../domain/repository/user.repository.interface'
 import { HashServiceSecurity } from '../../services/security/hash.service-security'
 import { JwtServiceSecurity } from '../../services/security/jwt.service-security'
+import { RegisterUseCase } from './register.use-case'
 
 describe('RegisterUseCase', () => {
   let useCase: RegisterUseCase

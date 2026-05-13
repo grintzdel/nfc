@@ -1,13 +1,14 @@
-import { Router } from 'express'
 import { JwtServiceSecurity } from '@modules/auth/application/services/security/jwt.service-security'
 import { createAuthMiddleware } from '@shared/middlewares/auth.middleware'
-import { CartItemRepositoryMongooseMongo } from './infrastructure/repository/cart-item.repository.mongoose-mongo'
-import { AddToCartUseCase } from './application/use-cases/add-to-cart/add-to-cart.use-case'
-import { GetCartUseCase } from './application/use-cases/get-cart/get-cart.use-case'
-import { UpdateCartItemUseCase } from './application/use-cases/update-cart-item/update-cart-item.use-case'
-import { RemoveCartItemUseCase } from './application/use-cases/remove-cart-item/remove-cart-item.use-case'
-import { ClearCartUseCase } from './application/use-cases/clear-cart/clear-cart.use-case'
+import { Router } from 'express'
+
 import { CartService } from './application/services/cart.service'
+import { AddToCartUseCase } from './application/use-cases/add-to-cart/add-to-cart.use-case'
+import { ClearCartUseCase } from './application/use-cases/clear-cart/clear-cart.use-case'
+import { GetCartUseCase } from './application/use-cases/get-cart/get-cart.use-case'
+import { RemoveCartItemUseCase } from './application/use-cases/remove-cart-item/remove-cart-item.use-case'
+import { UpdateCartItemUseCase } from './application/use-cases/update-cart-item/update-cart-item.use-case'
+import { CartItemRepositoryMongooseMongo } from './infrastructure/repository/cart-item.repository.mongoose-mongo'
 import { CartController } from './presentation/controllers/cart.controller'
 
 export function createCartModule(jwtService: JwtServiceSecurity) {

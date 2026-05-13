@@ -1,15 +1,16 @@
-import { IOrderRepository } from '../../../domain/repository/order.repository.interface'
+import { AppError } from '@shared/errors/app.error'
+
+import { OrderStatus } from '../../../domain/constants/order.constant'
 import { OrderEntity } from '../../../domain/entity/order.entity'
 import { OrderNotFoundError } from '../../../domain/errors/order.error'
-import { OrderStatus } from '../../../domain/constants/order.constant'
-import { AppError } from '@shared/errors/app.error'
+import { IOrderRepository } from '../../../domain/repository/order.repository.interface'
 
 export type OnOrderConfirmed = (order: OrderEntity) => Promise<void>
 
 export class UpdateOrderStatusUseCase {
   constructor(
     private readonly orderRepository: IOrderRepository,
-    private readonly onOrderConfirmed?: OnOrderConfirmed,
+    private readonly onOrderConfirmed?: OnOrderConfirmed
   ) {}
 
   async execute(id: string, newStatus: OrderStatus): Promise<OrderEntity> {
@@ -19,11 +20,20 @@ export class UpdateOrderStatusUseCase {
     const wasPending = order.isPending()
 
     switch (newStatus) {
-      case OrderStatus.CONFIRMED: order.confirm(); break
-      case OrderStatus.SHIPPED: order.ship(); break
-      case OrderStatus.DELIVERED: order.deliver(); break
-      case OrderStatus.CANCELLED: order.cancel(); break
-      default: throw new AppError(400, `Invalid status: ${newStatus}`)
+      case OrderStatus.CONFIRMED:
+        order.confirm()
+        break
+      case OrderStatus.SHIPPED:
+        order.ship()
+        break
+      case OrderStatus.DELIVERED:
+        order.deliver()
+        break
+      case OrderStatus.CANCELLED:
+        order.cancel()
+        break
+      default:
+        throw new AppError(400, `Invalid status: ${newStatus}`)
     }
 
     const saved = await this.orderRepository.update(order)

@@ -1,8 +1,8 @@
-import { CreateBraceletUseCase } from './create-bracelet.use-case'
-import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
-import { BraceletNfcIdAlreadyTakenError } from '../../../domain/errors/bracelet.error'
 import { createBraceletFixture } from '../../../__tests__/bracelet.factory'
+import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
 import { BraceletStatus } from '../../../domain/constants/bracelet-status.constant'
+import { BraceletNfcIdAlreadyTakenError } from '../../../domain/errors/bracelet.error'
+import { CreateBraceletUseCase } from './create-bracelet.use-case'
 
 describe('CreateBraceletUseCase', () => {
   let useCase: CreateBraceletUseCase

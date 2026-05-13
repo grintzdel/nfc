@@ -153,6 +153,7 @@ server/
 ## Task 1: Project Scaffold
 
 **Files:**
+
 - Create: `server/package.json`
 - Create: `server/tsconfig.json`
 - Create: `server/jest.config.ts`
@@ -280,6 +281,7 @@ PORT=3001
 - [ ] **Step 6: Install dependencies**
 
 Run from project root:
+
 ```bash
 cd server && pnpm install
 cd .. && pnpm install
@@ -297,6 +299,7 @@ git commit -m "chore: scaffold server project with dependencies and config"
 ## Task 2: Global Types + Shared Infrastructure
 
 **Files:**
+
 - Create: `server/src/@types/global.d.ts`
 - Create: `server/src/shared/errors/app.error.ts`
 - Create: `server/src/shared/middlewares/logger.middleware.ts`
@@ -344,11 +347,7 @@ File: `server/src/shared/middlewares/logger.middleware.ts`
 ```typescript
 import { Request, Response, NextFunction } from 'express'
 
-export function loggerMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function loggerMiddleware(req: Request, res: Response, next: NextFunction): void {
   const start = Date.now()
 
   const originalJson = res.json.bind(res)
@@ -366,15 +365,10 @@ export function loggerMiddleware(
     const url = req.originalUrl
 
     const statusColor =
-      status >= 500 ? '\x1b[31m' :
-      status >= 400 ? '\x1b[33m' :
-      status >= 300 ? '\x1b[36m' :
-      '\x1b[32m'
+      status >= 500 ? '\x1b[31m' : status >= 400 ? '\x1b[33m' : status >= 300 ? '\x1b[36m' : '\x1b[32m'
     const reset = '\x1b[0m'
 
-    console.log(
-      `${method.padEnd(7)} ${statusColor}${status}${reset} ${url} ${duration}ms`
-    )
+    console.log(`${method.padEnd(7)} ${statusColor}${status}${reset} ${url} ${duration}ms`)
 
     if (['POST', 'PATCH', 'PUT'].includes(method) && req.body) {
       const sanitized = { ...req.body }
@@ -402,12 +396,7 @@ File: `server/src/shared/middlewares/error-handler.middleware.ts`
 import { Request, Response, NextFunction } from 'express'
 import { AppError } from '../errors/app.error'
 
-export function errorHandlerMiddleware(
-  err: Error,
-  _req: Request,
-  res: Response,
-  _next: NextFunction
-): void {
+export function errorHandlerMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction): void {
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       success: false,
@@ -488,6 +477,7 @@ git commit -m "feat: add global types, shared errors, middlewares and database c
 ## Task 3: Auth Module — Domain Layer
 
 **Files:**
+
 - Create: `server/src/modules/auth/domain/constants/auth.constant.ts`
 - Create: `server/src/modules/auth/domain/entity/user.entity.ts`
 - Create: `server/src/modules/auth/domain/errors/auth.error.ts`
@@ -586,15 +576,33 @@ export class UserEntity {
     return new UserEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get email(): string { return this.props.email }
-  get password(): string { return this.props.password }
-  get firstName(): string { return this.props.firstName }
-  get lastName(): string { return this.props.lastName }
-  get role(): UserRole { return this.props.role }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get email(): string {
+    return this.props.email
+  }
+  get password(): string {
+    return this.props.password
+  }
+  get firstName(): string {
+    return this.props.firstName
+  }
+  get lastName(): string {
+    return this.props.lastName
+  }
+  get role(): UserRole {
+    return this.props.role
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
   get fullName(): string {
     return `${this.props.firstName} ${this.props.lastName}`.trim()
@@ -663,6 +671,7 @@ git commit -m "feat(auth): add domain layer — entity, repository interface, er
 ## Task 4: Auth Module — Infrastructure Layer
 
 **Files:**
+
 - Create: `server/src/modules/auth/infrastructure/schema/user.schema.ts`
 - Create: `server/src/modules/auth/infrastructure/repository/user.repository.mongoose-mongo.ts`
 
@@ -782,6 +791,7 @@ git commit -m "feat(auth): add infrastructure layer — mongoose schema and repo
 ## Task 5: Auth Module — Application Layer
 
 **Files:**
+
 - Create: `server/src/modules/auth/application/services/security/hash.service-security.ts`
 - Create: `server/src/modules/auth/application/services/security/jwt.service-security.ts`
 - Create: `server/src/modules/auth/application/use-cases/register/register.use-case.ts`
@@ -1002,6 +1012,7 @@ git commit -m "feat(auth): add application layer — use-cases, services, securi
 ## Task 6: Auth Module — Presentation Layer + Module Wiring
 
 **Files:**
+
 - Create: `server/src/modules/auth/presentation/dto/register.request.dto.ts`
 - Create: `server/src/modules/auth/presentation/dto/login.request.dto.ts`
 - Create: `server/src/modules/auth/presentation/dto/auth.response.dto.ts`
@@ -1084,7 +1095,10 @@ export class AuthResponseDto {
     role: string
   }
 
-  constructor(data: { token: string; user: { id: string; email: string; firstName: string; lastName: string; role: string } }) {
+  constructor(data: {
+    token: string
+    user: { id: string; email: string; firstName: string; lastName: string; role: string }
+  }) {
     this.token = data.token
     this.user = data.user
   }
@@ -1178,6 +1192,7 @@ git commit -m "feat(auth): add presentation layer, DTOs, controller and module w
 ## Task 7: User Module
 
 **Files:**
+
 - Create: `server/src/modules/user/application/use-cases/get-me/get-me.use-case.ts`
 - Create: `server/src/modules/user/application/use-cases/update-me/update-me.use-case.ts`
 - Create: `server/src/modules/user/application/use-cases/get-all-users/get-all-users.use-case.ts`
@@ -1416,6 +1431,7 @@ git commit -m "feat(user): add user module — get me, update me, get all (admin
 ## Task 8: Product Module
 
 **Files:**
+
 - Create: all files under `server/src/modules/product/`
 
 - [ ] **Step 1: Create product constants**
@@ -1489,7 +1505,12 @@ export class ProductEntity {
     if (props.price === undefined || props.price < 0) throw new Error('Valid price is required')
 
     const now = new Date()
-    const slug = props.slug ?? props.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    const slug =
+      props.slug ??
+      props.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
 
     return new ProductEntity({
       id: props.id ?? '',
@@ -1512,19 +1533,45 @@ export class ProductEntity {
     return new ProductEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get name(): string { return this.props.name }
-  get slug(): string { return this.props.slug }
-  get description(): string { return this.props.description }
-  get price(): number { return this.props.price }
-  get images(): string[] { return this.props.images }
-  get category(): ProductCategory { return this.props.category }
-  get variants(): ProductVariant[] { return this.props.variants }
-  get stock(): number { return this.props.stock }
-  get featured(): boolean { return this.props.featured }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get name(): string {
+    return this.props.name
+  }
+  get slug(): string {
+    return this.props.slug
+  }
+  get description(): string {
+    return this.props.description
+  }
+  get price(): number {
+    return this.props.price
+  }
+  get images(): string[] {
+    return this.props.images
+  }
+  get category(): ProductCategory {
+    return this.props.category
+  }
+  get variants(): ProductVariant[] {
+    return this.props.variants
+  }
+  get stock(): number {
+    return this.props.stock
+  }
+  get featured(): boolean {
+    return this.props.featured
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
   isInStock(): boolean {
     return this.props.stock > 0
@@ -1929,7 +1976,8 @@ export class CreateProductRequestDto {
 
   constructor(body: Record<string, unknown>) {
     if (!body.name || typeof body.name !== 'string') throw new AppError(400, 'Product name is required')
-    if (body.price === undefined || typeof body.price !== 'number' || body.price < 0) throw new AppError(400, 'Valid price is required')
+    if (body.price === undefined || typeof body.price !== 'number' || body.price < 0)
+      throw new AppError(400, 'Valid price is required')
 
     this.name = body.name as string
     this.price = body.price as number
@@ -2015,28 +2063,36 @@ export class ProductController {
       const dto = new CreateProductRequestDto(req.body)
       const product = await this.productService.create(dto)
       res.status(201).json({ success: true, data: new ProductResponseDto(product) })
-    } catch (error) { next(error) }
+    } catch (error) {
+      next(error)
+    }
   }
 
   async getAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const products = await this.productService.getAll()
       res.status(200).json({ success: true, data: products.map((p) => new ProductResponseDto(p)) })
-    } catch (error) { next(error) }
+    } catch (error) {
+      next(error)
+    }
   }
 
   async getBySlug(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const product = await this.productService.getBySlug(req.params.slug)
       res.status(200).json({ success: true, data: new ProductResponseDto(product) })
-    } catch (error) { next(error) }
+    } catch (error) {
+      next(error)
+    }
   }
 
   async getFeatured(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const products = await this.productService.getFeatured()
       res.status(200).json({ success: true, data: products.map((p) => new ProductResponseDto(p)) })
-    } catch (error) { next(error) }
+    } catch (error) {
+      next(error)
+    }
   }
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -2044,14 +2100,18 @@ export class ProductController {
       const dto = new UpdateProductRequestDto(req.body)
       const product = await this.productService.update(req.params.id, dto)
       res.status(200).json({ success: true, data: new ProductResponseDto(product) })
-    } catch (error) { next(error) }
+    } catch (error) {
+      next(error)
+    }
   }
 
   async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       await this.productService.delete(req.params.id)
       res.status(200).json({ success: true, data: null })
-    } catch (error) { next(error) }
+    } catch (error) {
+      next(error)
+    }
   }
 }
 ```
@@ -2080,7 +2140,14 @@ export function createProductModule(jwtService: JwtServiceSecurity) {
   const getFeaturedUseCase = new GetFeaturedProductsUseCase(repository)
   const updateUseCase = new UpdateProductUseCase(repository)
   const deleteUseCase = new DeleteProductUseCase(repository)
-  const service = new ProductService(createUseCase, getAllUseCase, getBySlugUseCase, getFeaturedUseCase, updateUseCase, deleteUseCase)
+  const service = new ProductService(
+    createUseCase,
+    getAllUseCase,
+    getBySlugUseCase,
+    getFeaturedUseCase,
+    updateUseCase,
+    deleteUseCase
+  )
   const controller = new ProductController(service)
 
   const authMiddleware = createAuthMiddleware(jwtService)
@@ -2110,6 +2177,7 @@ git commit -m "feat(product): add complete product module — CRUD with admin pr
 ## Task 9: Cart Module
 
 **Files:**
+
 - Create: all files under `server/src/modules/cart/`
 
 - [ ] **Step 1: Create cart domain (constants, errors, entity, repository interface)**
@@ -2173,13 +2241,27 @@ export class CartItemEntity {
     return new CartItemEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get userId(): string { return this.props.userId }
-  get productId(): string { return this.props.productId }
-  get variantName(): Nullable<string> { return this.props.variantName }
-  get quantity(): number { return this.props.quantity }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get userId(): string {
+    return this.props.userId
+  }
+  get productId(): string {
+    return this.props.productId
+  }
+  get variantName(): Nullable<string> {
+    return this.props.variantName
+  }
+  get quantity(): number {
+    return this.props.quantity
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
 
   updateQuantity(quantity: number): this {
     if (quantity < 1) throw new Error('Quantity must be at least 1')
@@ -2208,7 +2290,11 @@ import { CartItemEntity } from '../entity/cart-item.entity'
 export interface ICartItemRepository {
   findByUserId(userId: string): Promise<CartItemEntity[]>
   findById(id: string): Promise<Nullable<CartItemEntity>>
-  findByUserAndProduct(userId: string, productId: string, variantName: Nullable<string>): Promise<Nullable<CartItemEntity>>
+  findByUserAndProduct(
+    userId: string,
+    productId: string,
+    variantName: Nullable<string>
+  ): Promise<Nullable<CartItemEntity>>
   create(item: CartItemEntity): Promise<CartItemEntity>
   update(item: CartItemEntity): Promise<CartItemEntity>
   delete(id: string): Promise<void>
@@ -2275,7 +2361,11 @@ export class CartItemRepositoryMongooseMongo implements ICartItemRepository {
     return doc ? this.toEntity(doc) : null
   }
 
-  async findByUserAndProduct(userId: string, productId: string, variantName: Nullable<string>): Promise<Nullable<CartItemEntity>> {
+  async findByUserAndProduct(
+    userId: string,
+    productId: string,
+    variantName: Nullable<string>
+  ): Promise<Nullable<CartItemEntity>> {
     const doc = await CartItemModel.findOne({ userId, productId, variantName })
     return doc ? this.toEntity(doc) : null
   }
@@ -2325,6 +2415,7 @@ git commit -m "feat(cart): add cart module — add/update/remove items, clear ca
 ## Task 10: Order Module
 
 **Files:**
+
 - Create: all files under `server/src/modules/order/`
 
 - [ ] **Step 1: Create order domain**
@@ -2412,20 +2503,46 @@ export class OrderEntity {
     return new OrderEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get userId(): string { return this.props.userId }
-  get items(): OrderItem[] { return this.props.items }
-  get totalAmount(): number { return this.props.totalAmount }
-  get status(): OrderStatus { return this.props.status }
-  get shippingAddress(): string { return this.props.shippingAddress }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get userId(): string {
+    return this.props.userId
+  }
+  get items(): OrderItem[] {
+    return this.props.items
+  }
+  get totalAmount(): number {
+    return this.props.totalAmount
+  }
+  get status(): OrderStatus {
+    return this.props.status
+  }
+  get shippingAddress(): string {
+    return this.props.shippingAddress
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
 
-  isPending(): boolean { return this.props.status === OrderStatus.PENDING }
-  isConfirmed(): boolean { return this.props.status === OrderStatus.CONFIRMED }
-  isShipped(): boolean { return this.props.status === OrderStatus.SHIPPED }
-  isDelivered(): boolean { return this.props.status === OrderStatus.DELIVERED }
-  isCancelled(): boolean { return this.props.status === OrderStatus.CANCELLED }
+  isPending(): boolean {
+    return this.props.status === OrderStatus.PENDING
+  }
+  isConfirmed(): boolean {
+    return this.props.status === OrderStatus.CONFIRMED
+  }
+  isShipped(): boolean {
+    return this.props.status === OrderStatus.SHIPPED
+  }
+  isDelivered(): boolean {
+    return this.props.status === OrderStatus.DELIVERED
+  }
+  isCancelled(): boolean {
+    return this.props.status === OrderStatus.CANCELLED
+  }
 
   confirm(): this {
     if (!this.isPending()) throw new Error('Only pending orders can be confirmed')
@@ -2479,6 +2596,7 @@ export interface IOrderRepository {
 - [ ] **Step 2: Create order infrastructure, use-cases, service, controller, DTOs, module**
 
 Follow the exact same pattern as product module. Key points:
+
 - `create-order.use-case.ts` receives cart items + shipping address, builds OrderItems, creates order, clears cart
 - `get-my-orders.use-case.ts` filters by userId
 - `get-all-orders.use-case.ts` for admin
@@ -2497,6 +2615,7 @@ git commit -m "feat(order): add order module — create from cart, status transi
 ## Task 11: Main Entry Point + Seed
 
 **Files:**
+
 - Create: `server/src/main.ts`
 - Create: `server/src/seed.ts`
 
@@ -2522,12 +2641,14 @@ dotenv.config()
 const app: Express = express()
 const PORT = process.env.PORT || 3001
 
-app.use(cors({
-  origin: true,
-  credentials: true,
-  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}))
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+)
 app.use(express.json())
 app.use(loggerMiddleware)
 
@@ -2666,6 +2787,7 @@ git commit -m "feat: add main entry point and seed script with PULSE products"
 ## Task 12: Tests
 
 **Files:**
+
 - Create: `server/src/modules/auth/application/use-cases/register/register.use-case.spec.ts`
 - Create: `server/src/modules/auth/application/use-cases/login/login.use-case.spec.ts`
 - Create: `server/src/modules/product/domain/entity/product.entity.spec.ts`
@@ -2829,9 +2951,9 @@ describe('LoginUseCase', () => {
   it('should throw InvalidCredentialsError if user not found', async () => {
     mockUserRepository.findByEmail.mockResolvedValue(null)
 
-    await expect(
-      useCase.execute({ email: 'unknown@pulse.io', password: 'password123' })
-    ).rejects.toThrow(InvalidCredentialsError)
+    await expect(useCase.execute({ email: 'unknown@pulse.io', password: 'password123' })).rejects.toThrow(
+      InvalidCredentialsError
+    )
   })
 
   it('should throw InvalidCredentialsError if password is wrong', async () => {
@@ -2850,9 +2972,9 @@ describe('LoginUseCase', () => {
     )
     mockHashService.compare.mockResolvedValue(false)
 
-    await expect(
-      useCase.execute({ email: 'test@pulse.io', password: 'wrong-password' })
-    ).rejects.toThrow(InvalidCredentialsError)
+    await expect(useCase.execute({ email: 'test@pulse.io', password: 'wrong-password' })).rejects.toThrow(
+      InvalidCredentialsError
+    )
   })
 })
 ```

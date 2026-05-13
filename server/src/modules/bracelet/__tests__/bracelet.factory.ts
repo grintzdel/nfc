@@ -1,5 +1,5 @@
-import { BraceletEntity, BraceletEntityProps } from '../domain/entity/bracelet.entity'
 import { BraceletStatus } from '../domain/constants/bracelet-status.constant'
+import { BraceletEntity, BraceletEntityProps } from '../domain/entity/bracelet.entity'
 
 let counter = 0
 

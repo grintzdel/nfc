@@ -1,7 +1,8 @@
-import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
-import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
-import { BraceletNfcIdAlreadyTakenError } from '../../../domain/errors/bracelet.error'
 import { generateId } from '@shared/utils/generate-id'
+
+import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
+import { BraceletNfcIdAlreadyTakenError } from '../../../domain/errors/bracelet.error'
+import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 
 export interface CreateBraceletInput {
   nfcId?: Nullable<string>

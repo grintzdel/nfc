@@ -1,8 +1,8 @@
-import { UpdateOrderStatusUseCase, OnOrderConfirmed } from './update-order-status.use-case'
-import { IOrderRepository } from '../../../domain/repository/order.repository.interface'
-import { OrderEntity } from '../../../domain/entity/order.entity'
 import { OrderStatus } from '../../../domain/constants/order.constant'
+import { OrderEntity } from '../../../domain/entity/order.entity'
 import { OrderNotFoundError } from '../../../domain/errors/order.error'
+import { IOrderRepository } from '../../../domain/repository/order.repository.interface'
+import { UpdateOrderStatusUseCase, OnOrderConfirmed } from './update-order-status.use-case'
 
 const makePendingOrder = () =>
   OrderEntity.fromProps({
@@ -89,7 +89,7 @@ describe('UpdateOrderStatusUseCase', () => {
     expect(consoleSpy).toHaveBeenCalledWith(
       '[order→bracelet bridge] failed to create bracelets from order',
       'order-1',
-      expect.any(Error),
+      expect.any(Error)
     )
 
     consoleSpy.mockRestore()

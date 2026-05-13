@@ -33,20 +33,44 @@ export class SupplyOrderEntity {
     })
   }
 
-  static fromProps(props: SupplyOrderEntityProps): SupplyOrderEntity { return new SupplyOrderEntity(props) }
+  static fromProps(props: SupplyOrderEntityProps): SupplyOrderEntity {
+    return new SupplyOrderEntity(props)
+  }
 
-  get id(): string { return this.props.id }
-  get units(): number { return this.props.units }
-  get orderedAt(): Date { return this.props.orderedAt }
-  get estimatedDeliveryDate(): Date { return this.props.estimatedDeliveryDate }
-  get status(): SupplyOrderStatus { return this.props.status }
-  get receivedAt(): Nullable<Date> { return this.props.receivedAt }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get units(): number {
+    return this.props.units
+  }
+  get orderedAt(): Date {
+    return this.props.orderedAt
+  }
+  get estimatedDeliveryDate(): Date {
+    return this.props.estimatedDeliveryDate
+  }
+  get status(): SupplyOrderStatus {
+    return this.props.status
+  }
+  get receivedAt(): Nullable<Date> {
+    return this.props.receivedAt
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
 
-  isPending(): boolean { return this.props.status === SupplyOrderStatus.PENDING }
-  isReceived(): boolean { return this.props.status === SupplyOrderStatus.RECEIVED }
-  isCancelled(): boolean { return this.props.status === SupplyOrderStatus.CANCELLED }
+  isPending(): boolean {
+    return this.props.status === SupplyOrderStatus.PENDING
+  }
+  isReceived(): boolean {
+    return this.props.status === SupplyOrderStatus.RECEIVED
+  }
+  isCancelled(): boolean {
+    return this.props.status === SupplyOrderStatus.CANCELLED
+  }
 
   markReceived(): this {
     if (!this.isPending()) throw new SupplyOrderInvalidStatusError(this.props.status, 'receive')
@@ -63,5 +87,7 @@ export class SupplyOrderEntity {
     return this
   }
 
-  toJSON(): SupplyOrderEntityProps { return { ...this.props } }
+  toJSON(): SupplyOrderEntityProps {
+    return { ...this.props }
+  }
 }

@@ -1,8 +1,9 @@
-import { GetPaginatedParticipantsUseCase } from './get-paginated-participants.use-case'
-import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
-import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
-import { createParticipantFixture } from '../../../__tests__/participant.factory'
 import { createEventFixture } from '@modules/event/__tests__/event.factory'
+import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
+
+import { createParticipantFixture } from '../../../__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
+import { GetPaginatedParticipantsUseCase } from './get-paginated-participants.use-case'
 
 describe('GetPaginatedParticipantsUseCase', () => {
   let participantRepo: ParticipantRepositoryMock
@@ -30,7 +31,10 @@ describe('GetPaginatedParticipantsUseCase', () => {
     await useCase.execute({ page: 2, limit: 50, checkedIn: true, search: 'marie' })
 
     expect(participantRepo.findPaginated_calledWith).toEqual({
-      page: 2, limit: 50, checkedIn: true, search: 'marie',
+      page: 2,
+      limit: 50,
+      checkedIn: true,
+      search: 'marie',
     })
   })
 

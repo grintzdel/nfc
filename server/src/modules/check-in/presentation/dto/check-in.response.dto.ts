@@ -1,5 +1,5 @@
-import { CheckInEntity } from '../../domain/entity/check-in.entity'
 import type { InteractionType } from '../../domain/constants/interaction-type.constant'
+import { CheckInEntity } from '../../domain/entity/check-in.entity'
 
 export class CheckInResponseDto {
   id: string

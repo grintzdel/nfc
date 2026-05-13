@@ -9,7 +9,8 @@ const features = [
     borderGradient: 'from-violet-600/40 via-orange-500/25 to-violet-500/25',
     bgGradient: 'from-pulse-surface to-[#1a1535]',
     title: 'Acces instantane',
-    description: 'Un simple tap de ton bracelet NFC et tu es a l\'interieur. Plus de tickets papier, plus de QR codes, plus d\'attente.',
+    description:
+      "Un simple tap de ton bracelet NFC et tu es a l'interieur. Plus de tickets papier, plus de QR codes, plus d'attente.",
   },
   {
     icon: Users,
@@ -18,7 +19,8 @@ const features = [
     borderGradient: 'from-orange-500/40 via-violet-500/25 to-orange-500/25',
     bgGradient: 'from-pulse-surface to-[#1f1a2a]',
     title: 'Connecte-toi',
-    description: 'Echange tes reseaux, partage tes photos et retrouve les personnes croisees en soiree. Ton bracelet devient ta carte de visite.',
+    description:
+      'Echange tes reseaux, partage tes photos et retrouve les personnes croisees en soiree. Ton bracelet devient ta carte de visite.',
   },
   {
     icon: BarChart3,
@@ -27,7 +29,8 @@ const features = [
     borderGradient: 'from-blue-500/40 via-cyan-400/25 to-blue-500/25',
     bgGradient: 'from-pulse-surface to-[#162030]',
     title: 'Dashboard live',
-    description: 'Les organisateurs suivent en temps reel les flux, les zones chaudes et l\'engagement. Tout est pilote depuis le dashboard PULSE.',
+    description:
+      "Les organisateurs suivent en temps reel les flux, les zones chaudes et l'engagement. Tout est pilote depuis le dashboard PULSE.",
   },
 ]
 </script>
@@ -35,15 +38,15 @@ const features = [
 <template>
   <section id="features" class="relative bg-pulse-bg">
     <div class="absolute inset-0 opacity-40">
-      <div class="absolute bottom-0 left-1/2 h-full w-full -translate-x-1/2 bg-[radial-gradient(ellipse_at_bottom,#2d1055_0%,transparent_60%)]" />
+      <div
+        class="absolute bottom-0 left-1/2 h-full w-full -translate-x-1/2 bg-[radial-gradient(ellipse_at_bottom,#2d1055_0%,transparent_60%)]"
+      />
     </div>
 
     <div class="relative mx-auto flex max-w-7xl flex-col items-center gap-14 px-6 py-24 lg:px-20">
       <div class="text-center">
         <p class="mb-4 text-sm font-semibold tracking-[2px] text-slate-500">EXPERIENCE</p>
-        <h2 class="max-w-[800px] text-4xl font-bold text-slate-50">
-          Ton bracelet fait tout
-        </h2>
+        <h2 class="max-w-[800px] text-4xl font-bold text-slate-50">Ton bracelet fait tout</h2>
         <p class="mx-auto mt-4 max-w-[600px] text-lg leading-relaxed text-slate-400">
           En festival, en concert ou en soiree — ton poignet remplace ton telephone.
         </p>

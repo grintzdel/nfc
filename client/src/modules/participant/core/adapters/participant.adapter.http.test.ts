@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { ParticipantHttpAdapter } from './participant.adapter.http'
+
 import type { HttpClient } from '@/modules/shared/http/http-client'
+
+import { ParticipantHttpAdapter } from './participant.adapter.http'
 
 function makeClient(get: ReturnType<typeof vi.fn>): HttpClient {
   return { get } as unknown as HttpClient

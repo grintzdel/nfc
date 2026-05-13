@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { Globe, Apple } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useRouter, useRoute, RouterLink } from 'vue-router'
-import { Globe, Apple } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
-import { getSharedHttpClient } from '@/modules/shared/http/http-client'
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
+import { getSharedHttpClient } from '@/modules/shared/http/http-client'
 
 const router = useRouter()
 const route = useRoute()
@@ -47,7 +48,10 @@ async function handleSubmit() {
 
 <template>
   <div class="flex min-h-screen">
-    <div class="relative hidden w-1/2 overflow-hidden lg:block" style="background: linear-gradient(180deg, #0F172A 0%, #1E1B4B 100%)">
+    <div
+      class="relative hidden w-1/2 overflow-hidden lg:block"
+      style="background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%)"
+    >
       <span class="absolute left-12 top-10 text-[28px] font-extrabold tracking-[2px] text-white">PULSE</span>
       <div class="absolute left-[160px] top-[300px] h-[300px] w-[400px] rounded-full bg-violet-600/20 blur-[80px]" />
       <img
@@ -80,7 +84,9 @@ async function handleSubmit() {
           >
             <Globe class="h-[18px] w-[18px]" />
             Continuer avec Google
-            <span class="ml-1 rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+            <span
+              class="ml-1 rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500"
+            >
               Soon
             </span>
           </button>
@@ -92,7 +98,9 @@ async function handleSubmit() {
           >
             <Apple class="h-[18px] w-[18px]" />
             Continuer avec Apple
-            <span class="ml-1 rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">
+            <span
+              class="ml-1 rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500"
+            >
               Soon
             </span>
           </button>

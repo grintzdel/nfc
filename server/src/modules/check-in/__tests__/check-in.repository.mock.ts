@@ -1,6 +1,6 @@
-import { ICheckInRepository } from '../domain/repository/check-in.repository.interface'
-import { CheckInEntity } from '../domain/entity/check-in.entity'
 import { InteractionType } from '../domain/constants/interaction-type.constant'
+import { CheckInEntity } from '../domain/entity/check-in.entity'
+import { ICheckInRepository } from '../domain/repository/check-in.repository.interface'
 
 export class CheckInRepositoryMock implements ICheckInRepository {
   create_result: CheckInEntity | null = null
@@ -10,7 +10,13 @@ export class CheckInRepositoryMock implements ICheckInRepository {
   findAllByBraceletId_result: CheckInEntity[] = []
   findOneByBraceletEventType_result: Nullable<CheckInEntity> = null
   findOneByBraceletEventType_calledWith: { braceletId: string; eventId: string; type: InteractionType } | null = null
-  findPaginatedByEventId_result: PaginatedResult<CheckInEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  findPaginatedByEventId_result: PaginatedResult<CheckInEntity> = {
+    items: [],
+    total: 0,
+    page: 1,
+    limit: 20,
+    totalPages: 0,
+  }
   findPaginatedByEventId_calledWith: { eventId: string; page: number; limit: number } | null = null
   countByInteractionType_result: { type: InteractionType; count: number }[] = []
   countByEventIdAndType_result = 0
@@ -21,13 +27,23 @@ export class CheckInRepositoryMock implements ICheckInRepository {
     return this.create_result ?? e
   }
 
-  async findById(_id: string): Promise<Nullable<CheckInEntity>> { return this.findById_result }
+  async findById(_id: string): Promise<Nullable<CheckInEntity>> {
+    return this.findById_result
+  }
 
-  async findAllByEventId(_eventId: string): Promise<CheckInEntity[]> { return this.findAllByEventId_result }
+  async findAllByEventId(_eventId: string): Promise<CheckInEntity[]> {
+    return this.findAllByEventId_result
+  }
 
-  async findAllByBraceletId(_braceletId: string): Promise<CheckInEntity[]> { return this.findAllByBraceletId_result }
+  async findAllByBraceletId(_braceletId: string): Promise<CheckInEntity[]> {
+    return this.findAllByBraceletId_result
+  }
 
-  async findOneByBraceletEventType(braceletId: string, eventId: string, type: InteractionType): Promise<Nullable<CheckInEntity>> {
+  async findOneByBraceletEventType(
+    braceletId: string,
+    eventId: string,
+    type: InteractionType
+  ): Promise<Nullable<CheckInEntity>> {
     this.findOneByBraceletEventType_calledWith = { braceletId, eventId, type }
     return this.findOneByBraceletEventType_result
   }
@@ -49,5 +65,7 @@ export class CheckInRepositoryMock implements ICheckInRepository {
     return this.countByEventIdAndType_result
   }
 
-  async countByEventId(_eventId: string): Promise<number> { return this.countByEventId_result }
+  async countByEventId(_eventId: string): Promise<number> {
+    return this.countByEventId_result
+  }
 }

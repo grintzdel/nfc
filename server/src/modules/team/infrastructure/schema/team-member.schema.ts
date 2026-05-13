@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose'
+
 import { TeamRole } from '../../domain/constants/team-role.constant'
 
 export interface TeamMemberDocument extends Document {
@@ -23,12 +24,9 @@ const teamMemberSchema = new Schema<TeamMemberDocument>(
     acceptedAt: { type: Date, default: null },
     deletedAt: { type: Date, default: null },
   },
-  { timestamps: true },
+  { timestamps: true }
 )
 
-teamMemberSchema.index(
-  { userId: 1, eventId: 1 },
-  { unique: true, partialFilterExpression: { deletedAt: null } },
-)
+teamMemberSchema.index({ userId: 1, eventId: 1 }, { unique: true, partialFilterExpression: { deletedAt: null } })
 
 export const TeamMemberModel = mongoose.model<TeamMemberDocument>('TeamMember', teamMemberSchema)

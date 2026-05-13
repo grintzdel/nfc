@@ -1,11 +1,12 @@
-import { Router } from 'express'
-import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
 import { JwtServiceSecurity } from '@modules/auth/application/services/security/jwt.service-security'
+import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
 import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
+import { Router } from 'express'
+
+import { UserService } from './application/services/user.service'
+import { GetAllUsersUseCase } from './application/use-cases/get-all-users/get-all-users.use-case'
 import { GetMeUseCase } from './application/use-cases/get-me/get-me.use-case'
 import { UpdateMeUseCase } from './application/use-cases/update-me/update-me.use-case'
-import { GetAllUsersUseCase } from './application/use-cases/get-all-users/get-all-users.use-case'
-import { UserService } from './application/services/user.service'
 import { UserController } from './presentation/controllers/user.controller'
 
 export function createUserModule(userRepository: IUserRepository, jwtService: JwtServiceSecurity) {

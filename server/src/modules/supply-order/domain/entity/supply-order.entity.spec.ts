@@ -1,6 +1,6 @@
-import { SupplyOrderEntity } from './supply-order.entity'
 import { SupplyOrderStatus } from '../constants/supply-order-status.constant'
 import { SupplyOrderInvalidStatusError } from '../errors/supply-order.error'
+import { SupplyOrderEntity } from './supply-order.entity'
 
 describe('SupplyOrderEntity', () => {
   const validProps = {

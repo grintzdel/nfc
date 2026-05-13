@@ -1,9 +1,9 @@
 import { CreateProductUseCase } from '../use-cases/create-product/create-product.use-case'
-import { GetAllProductsUseCase } from '../use-cases/get-all-products/get-all-products.use-case'
-import { GetProductBySlugUseCase } from '../use-cases/get-product-by-slug/get-product-by-slug.use-case'
-import { GetFeaturedProductsUseCase } from '../use-cases/get-featured-products/get-featured-products.use-case'
-import { UpdateProductUseCase } from '../use-cases/update-product/update-product.use-case'
 import { DeleteProductUseCase } from '../use-cases/delete-product/delete-product.use-case'
+import { GetAllProductsUseCase } from '../use-cases/get-all-products/get-all-products.use-case'
+import { GetFeaturedProductsUseCase } from '../use-cases/get-featured-products/get-featured-products.use-case'
+import { GetProductBySlugUseCase } from '../use-cases/get-product-by-slug/get-product-by-slug.use-case'
+import { UpdateProductUseCase } from '../use-cases/update-product/update-product.use-case'
 
 export class ProductService {
   constructor(

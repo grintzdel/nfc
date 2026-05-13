@@ -1,9 +1,10 @@
-import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
-import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
+import { BraceletStatus } from '@modules/bracelet/domain/constants/bracelet-status.constant'
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { ICheckInRepository } from '@modules/check-in/domain/repository/check-in.repository.interface'
 import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
-import { BraceletStatus } from '@modules/bracelet/domain/constants/bracelet-status.constant'
+import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
+
 import { AnalyticsDomainModel } from '../../../domain/model/analytics.domain-model'
 
 export class GetEventDetailStatsUseCase {
@@ -11,7 +12,7 @@ export class GetEventDetailStatsUseCase {
     private readonly eventRepository: IEventRepository,
     private readonly participantRepository: IParticipantRepository,
     private readonly braceletRepository: IBraceletRepository,
-    private readonly checkInRepository: ICheckInRepository,
+    private readonly checkInRepository: ICheckInRepository
   ) {}
 
   async execute(eventId: string): Promise<AnalyticsDomainModel.EventDetailStatsDto> {

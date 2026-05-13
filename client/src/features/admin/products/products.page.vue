@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import { Plus, Star, Pencil, Trash2, Package } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
-import { Plus, Star, Pencil, Trash2, Package } from 'lucide-vue-next'
-import AdminLayout from '@/ui/layout/admin-layout.vue'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
-import { useCreateProduct } from '@/modules/product/ui/hooks/queries/mutation/use-create-product'
-import { useUpdateProduct } from '@/modules/product/ui/hooks/queries/mutation/use-update-product'
-import { useDeleteProduct } from '@/modules/product/ui/hooks/queries/mutation/use-delete-product'
+
 import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
-import ProductFormDialog from './components/product-form-dialog.vue'
+import { useCreateProduct } from '@/modules/product/ui/hooks/queries/mutation/use-create-product'
+import { useDeleteProduct } from '@/modules/product/ui/hooks/queries/mutation/use-delete-product'
+import { useUpdateProduct } from '@/modules/product/ui/hooks/queries/mutation/use-update-product'
+import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
+import { EmptyState } from '@/ui/empty-state'
+import AdminLayout from '@/ui/layout/admin-layout.vue'
 import { TableSkeleton } from '@/ui/skeleton'
+
+import ProductFormDialog from './components/product-form-dialog.vue'
 
 const { data: products, isLoading } = useGetProducts()
 const createMutation = useCreateProduct()
@@ -49,7 +51,7 @@ function handleConfirm(payload: {
           dialogOpen.value = false
         },
         onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la mise à jour'),
-      },
+      }
     )
   } else {
     createMutation.mutate(payload, {
@@ -106,46 +108,61 @@ function formatEur(value: number): string {
           <div class="overflow-x-auto">
             <div class="flex min-w-[640px] flex-col">
               <div class="flex items-center bg-slate-800">
-                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Produit</span></div>
-                <div class="w-[110px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Prix</span></div>
-                <div class="w-[110px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Stock</span></div>
-                <div class="w-[100px] shrink-0 px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Featured</span></div>
-                <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Actions</span></div>
+                <div class="flex-1 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Produit</span>
+                </div>
+                <div class="w-[110px] shrink-0 px-4 py-3 text-right">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Prix</span>
+                </div>
+                <div class="w-[110px] shrink-0 px-4 py-3 text-right">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Stock</span>
+                </div>
+                <div class="w-[100px] shrink-0 px-4 py-3 text-center">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Featured</span>
+                </div>
+                <div class="w-[140px] shrink-0 px-4 py-3 text-right">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Actions</span>
+                </div>
               </div>
 
               <div v-for="p in items" :key="p.id" class="flex items-center border-t border-white/10">
-            <div class="flex flex-1 flex-col px-4 py-3">
-              <span class="text-sm font-medium text-slate-50">{{ p.name }}</span>
-              <span class="font-mono text-xs text-slate-500">{{ p.slug }}</span>
-            </div>
-            <div class="w-[110px] shrink-0 px-4 py-3 text-right text-sm text-slate-50">{{ formatEur(p.price) }}</div>
-            <div class="w-[110px] shrink-0 px-4 py-3 text-right text-sm" :class="p.stock === 0 ? 'text-red-300' : 'text-slate-50'">
-              {{ p.stock }}
-            </div>
-            <div class="w-[100px] shrink-0 px-4 py-3 text-center">
-              <Star v-if="p.featured" class="mx-auto h-4 w-4 fill-amber-400 text-amber-400" />
-              <span v-else class="text-slate-600">—</span>
-            </div>
-            <div class="flex w-[140px] shrink-0 items-center justify-end gap-1 px-4 py-3">
-              <button
-                type="button"
-                class="rounded-md border border-white/10 p-1.5 text-slate-300 hover:bg-white/5"
-                title="Modifier"
-                @click="openEdit(p)"
-              >
-                <Pencil class="h-3.5 w-3.5" />
-              </button>
-              <button
-                type="button"
-                :disabled="deleteMutation.isPending.value"
-                class="rounded-md border border-red-500/40 p-1.5 text-red-300 hover:bg-red-500/10 disabled:opacity-50"
-                title="Supprimer"
-                @click="handleDelete(p)"
-              >
-                <Trash2 class="h-3.5 w-3.5" />
-              </button>
-            </div>
-          </div>
+                <div class="flex flex-1 flex-col px-4 py-3">
+                  <span class="text-sm font-medium text-slate-50">{{ p.name }}</span>
+                  <span class="font-mono text-xs text-slate-500">{{ p.slug }}</span>
+                </div>
+                <div class="w-[110px] shrink-0 px-4 py-3 text-right text-sm text-slate-50">
+                  {{ formatEur(p.price) }}
+                </div>
+                <div
+                  class="w-[110px] shrink-0 px-4 py-3 text-right text-sm"
+                  :class="p.stock === 0 ? 'text-red-300' : 'text-slate-50'"
+                >
+                  {{ p.stock }}
+                </div>
+                <div class="w-[100px] shrink-0 px-4 py-3 text-center">
+                  <Star v-if="p.featured" class="mx-auto h-4 w-4 fill-amber-400 text-amber-400" />
+                  <span v-else class="text-slate-600">—</span>
+                </div>
+                <div class="flex w-[140px] shrink-0 items-center justify-end gap-1 px-4 py-3">
+                  <button
+                    type="button"
+                    class="rounded-md border border-white/10 p-1.5 text-slate-300 hover:bg-white/5"
+                    title="Modifier"
+                    @click="openEdit(p)"
+                  >
+                    <Pencil class="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    :disabled="deleteMutation.isPending.value"
+                    class="rounded-md border border-red-500/40 p-1.5 text-red-300 hover:bg-red-500/10 disabled:opacity-50"
+                    title="Supprimer"
+                    @click="handleDelete(p)"
+                  >
+                    <Trash2 class="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
 
               <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
             </div>
@@ -158,7 +175,7 @@ function formatEur(value: number): string {
       :open="dialogOpen"
       :loading="createMutation.isPending.value || updateMutation.isPending.value"
       :product="editing"
-      @update:open="(v) => dialogOpen = v"
+      @update:open="(v) => (dialogOpen = v)"
       @confirm="handleConfirm"
     />
   </AdminLayout>

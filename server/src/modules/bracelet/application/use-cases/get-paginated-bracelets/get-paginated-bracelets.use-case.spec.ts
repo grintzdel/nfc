@@ -1,6 +1,6 @@
-import { GetPaginatedBraceletsUseCase } from './get-paginated-bracelets.use-case'
 import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
 import { BraceletStatus } from '../../../domain/constants/bracelet-status.constant'
+import { GetPaginatedBraceletsUseCase } from './get-paginated-bracelets.use-case'
 
 describe('GetPaginatedBraceletsUseCase', () => {
   let braceletRepo: BraceletRepositoryMock

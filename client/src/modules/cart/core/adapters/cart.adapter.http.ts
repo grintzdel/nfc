@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { ICartPort } from '../ports/cart.port'
+
 import type { CartDomainModel } from '../model/cart.domain-model'
+import type { ICartPort } from '../ports/cart.port'
 
 export class CartHttpAdapter implements ICartPort {
   constructor(private readonly httpClient: HttpClient) {}

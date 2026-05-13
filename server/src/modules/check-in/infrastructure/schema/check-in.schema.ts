@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose'
+
 import { InteractionType } from '../../domain/constants/interaction-type.constant'
 
 export interface CheckInDocument extends Document {
@@ -27,7 +28,7 @@ const checkInSchema = new Schema<CheckInDocument>(
     amount: { type: Number, default: null },
     metadata: { type: Schema.Types.Mixed, default: {} },
   },
-  { timestamps: { createdAt: true, updatedAt: false } },
+  { timestamps: { createdAt: true, updatedAt: false } }
 )
 
 export const CheckInModel = mongoose.model<CheckInDocument>('CheckIn', checkInSchema)

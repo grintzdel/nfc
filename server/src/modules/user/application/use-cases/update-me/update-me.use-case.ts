@@ -1,8 +1,12 @@
-import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
-import { UserNotFoundError } from '@modules/auth/domain/errors/auth.error'
 import { UserEntity } from '@modules/auth/domain/entity/user.entity'
+import { UserNotFoundError } from '@modules/auth/domain/errors/auth.error'
+import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
 
-interface UpdateMeInput { firstName?: string; lastName?: string; email?: string }
+interface UpdateMeInput {
+  firstName?: string
+  lastName?: string
+  email?: string
+}
 
 export class UpdateMeUseCase {
   constructor(private readonly userRepository: IUserRepository) {}

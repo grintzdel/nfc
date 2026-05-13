@@ -1,6 +1,6 @@
-import { ICheckInRepository } from '../../domain/repository/check-in.repository.interface'
-import { CheckInEntity } from '../../domain/entity/check-in.entity'
 import { InteractionType } from '../../domain/constants/interaction-type.constant'
+import { CheckInEntity } from '../../domain/entity/check-in.entity'
+import { ICheckInRepository } from '../../domain/repository/check-in.repository.interface'
 import { CheckInModel, CheckInDocument } from '../schema/check-in.schema'
 
 function toEntity(doc: CheckInDocument): CheckInEntity {
@@ -39,7 +39,11 @@ export class CheckInRepositoryMongooseMongo implements ICheckInRepository {
     return docs.map(toEntity)
   }
 
-  async findOneByBraceletEventType(braceletId: string, eventId: string, type: InteractionType): Promise<Nullable<CheckInEntity>> {
+  async findOneByBraceletEventType(
+    braceletId: string,
+    eventId: string,
+    type: InteractionType
+  ): Promise<Nullable<CheckInEntity>> {
     const doc = await CheckInModel.findOne({ braceletId, eventId, interactionType: type })
     return doc ? toEntity(doc) : null
   }
@@ -71,7 +75,10 @@ export class CheckInRepositoryMongooseMongo implements ICheckInRepository {
     const { eventId, page, limit } = params
     const filter = { eventId }
     const [docs, total] = await Promise.all([
-      CheckInModel.find(filter).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit),
+      CheckInModel.find(filter)
+        .toSorted({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
       CheckInModel.countDocuments(filter),
     ])
     return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }

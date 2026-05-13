@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import AppNav from './app-nav.vue'
-import AppFooter from './app-footer.vue'
-import CartDrawer from '@/modules/cart/ui/components/cart-drawer.vue'
 import { Toaster } from 'vue-sonner'
+
+import CartDrawer from '@/modules/cart/ui/components/cart-drawer.vue'
+
+import AppFooter from './app-footer.vue'
+import AppNav from './app-nav.vue'
 </script>
 
 <template>

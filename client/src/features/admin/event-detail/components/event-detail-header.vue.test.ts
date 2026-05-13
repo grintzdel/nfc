@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest'
 import { mount, RouterLinkStub } from '@vue/test-utils'
-import EventDetailHeader from './event-detail-header.vue'
+import { describe, it, expect } from 'vitest'
+
+import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
-import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
+
+import EventDetailHeader from './event-detail-header.vue'
 
 function makeEvent(status: EventStatus): EventDomainModel.EventOverviewDto {
   return {

@@ -1,6 +1,7 @@
 import QRCode from 'qrcode'
-import type { IQrCodePort } from '../ports/qrcode.port'
+
 import type { QrCodeDomainModel } from '../model/qrcode.domain-model'
+import type { IQrCodePort } from '../ports/qrcode.port'
 
 export class QrCodeLibAdapter implements IQrCodePort {
   async generateDataUrl(value: string, options?: QrCodeDomainModel.GenerateOptions): Promise<string> {

@@ -1,7 +1,7 @@
-import { IProductRepository } from '../../domain/repository/product.repository.interface'
-import { ProductEntity } from '../../domain/entity/product.entity'
-import { ProductModel, ProductDocument } from '../schema/product.schema'
 import { ProductCategory } from '../../domain/constants/product.constant'
+import { ProductEntity } from '../../domain/entity/product.entity'
+import { IProductRepository } from '../../domain/repository/product.repository.interface'
+import { ProductModel, ProductDocument } from '../schema/product.schema'
 
 export class ProductRepositoryMongooseMongo implements IProductRepository {
   private toEntity(doc: ProductDocument): ProductEntity {
@@ -23,7 +23,7 @@ export class ProductRepositoryMongooseMongo implements IProductRepository {
   }
 
   async findAll(): Promise<ProductEntity[]> {
-    const docs = await ProductModel.find({ deletedAt: null }).sort({ createdAt: -1 })
+    const docs = await ProductModel.find({ deletedAt: null }).toSorted({ createdAt: -1 })
     return docs.map((doc) => this.toEntity(doc))
   }
 

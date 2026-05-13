@@ -1,6 +1,6 @@
-import { IBraceletRepository } from '../domain/repository/bracelet.repository.interface'
-import { BraceletEntity } from '../domain/entity/bracelet.entity'
 import { BraceletStatus } from '../domain/constants/bracelet-status.constant'
+import { BraceletEntity } from '../domain/entity/bracelet.entity'
+import { IBraceletRepository } from '../domain/repository/bracelet.repository.interface'
 
 export class BraceletRepositoryMock implements IBraceletRepository {
   create_result: BraceletEntity | null = null
@@ -16,7 +16,13 @@ export class BraceletRepositoryMock implements IBraceletRepository {
   findAllByEventId_result: BraceletEntity[] = []
   findAllByEventIdAndStatus_result: BraceletEntity[] = []
   findAllByEventIdAndStatus_calledWith: { eventId: string; status: BraceletStatus } | null = null
-  findPaginatedByEventId_result: PaginatedResult<BraceletEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
+  findPaginatedByEventId_result: PaginatedResult<BraceletEntity> = {
+    items: [],
+    total: 0,
+    page: 1,
+    limit: 20,
+    totalPages: 0,
+  }
   findPaginatedByEventId_calledWith: { eventId: string; page: number; limit: number; search?: string } | null = null
   findPaginated_result: PaginatedResult<BraceletEntity> = { items: [], total: 0, page: 1, limit: 20, totalPages: 0 }
   findPaginated_calledWith: { page: number; limit: number; status?: BraceletStatus; search?: string } | null = null
@@ -48,16 +54,22 @@ export class BraceletRepositoryMock implements IBraceletRepository {
     return this.findByNfcId_result
   }
 
-  async findAll(): Promise<BraceletEntity[]> { return this.findAll_result }
+  async findAll(): Promise<BraceletEntity[]> {
+    return this.findAll_result
+  }
 
   async findAllByIds(ids: string[]): Promise<BraceletEntity[]> {
     this.findAllByIds_calledWith = ids
     return this.findAllByIds_result
   }
 
-  async findAllByStatus(_status: BraceletStatus): Promise<BraceletEntity[]> { return this.findAllByStatus_result }
+  async findAllByStatus(_status: BraceletStatus): Promise<BraceletEntity[]> {
+    return this.findAllByStatus_result
+  }
 
-  async findAllByEventId(_eventId: string): Promise<BraceletEntity[]> { return this.findAllByEventId_result }
+  async findAllByEventId(_eventId: string): Promise<BraceletEntity[]> {
+    return this.findAllByEventId_result
+  }
 
   async findAllByEventIdAndStatus(eventId: string, status: BraceletStatus): Promise<BraceletEntity[]> {
     this.findAllByEventIdAndStatus_calledWith = { eventId, status }
@@ -84,17 +96,25 @@ export class BraceletRepositoryMock implements IBraceletRepository {
     return this.findPaginated_result
   }
 
-  async findAllByUserId(_userId: string): Promise<BraceletEntity[]> { return this.findAllByUserId_result }
+  async findAllByUserId(_userId: string): Promise<BraceletEntity[]> {
+    return this.findAllByUserId_result
+  }
 
-  async countByStatus(_status: BraceletStatus): Promise<number> { return this.countByStatus_result }
+  async countByStatus(_status: BraceletStatus): Promise<number> {
+    return this.countByStatus_result
+  }
 
-  async countByEventId(_eventId: string): Promise<number> { return this.countByEventId_result }
+  async countByEventId(_eventId: string): Promise<number> {
+    return this.countByEventId_result
+  }
 
   async countByEventIdAndStatus(_eventId: string, _status: BraceletStatus): Promise<number> {
     return this.countByEventIdAndStatus_result
   }
 
-  async countInRange(_from: Date, _to: Date): Promise<number> { return this.countInRange_result }
+  async countInRange(_from: Date, _to: Date): Promise<number> {
+    return this.countInRange_result
+  }
 
   async countActivationsByMonthInYear(_year: number): Promise<{ month: number; count: number }[]> {
     return this.countActivationsByMonthInYear_result
@@ -105,5 +125,7 @@ export class BraceletRepositoryMock implements IBraceletRepository {
     return this.update_result ?? entity
   }
 
-  async softDelete(id: string): Promise<void> { this.softDelete_calledWith = id }
+  async softDelete(id: string): Promise<void> {
+    this.softDelete_calledWith = id
+  }
 }

@@ -2,16 +2,17 @@
 import { computed, ref } from 'vue'
 import { useRouter, useRoute, RouterLink } from 'vue-router'
 import { toast } from 'vue-sonner'
+
+import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
+import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import ProfileLinksEditor from '@/modules/participant/ui/components/profile-links-editor.vue'
+import { getSharedHttpClient } from '@/modules/shared/http/http-client'
+import { Button } from '@/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 import { Input } from '@/ui/input'
 import { Label } from '@/ui/label'
 import { Textarea } from '@/ui/textarea'
-import { Button } from '@/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
-import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
-import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
-import { getSharedHttpClient } from '@/modules/shared/http/http-client'
-import ProfileLinksEditor from '@/modules/participant/ui/components/profile-links-editor.vue'
-import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
 
 const props = defineProps<{ eventId: string }>()
 const router = useRouter()
@@ -129,7 +130,10 @@ async function handleSubmit(): Promise<void> {
             <Label for="pw">Mot de passe</Label>
             <Input id="pw" v-model="accountFields.password" type="password" placeholder="8+ caractères" />
           </div>
-          <RouterLink :to="{ path: '/login', query: { redirect: route.fullPath } }" class="text-xs text-primary hover:underline">
+          <RouterLink
+            :to="{ path: '/login', query: { redirect: route.fullPath } }"
+            class="text-xs text-primary hover:underline"
+          >
             J'ai déjà un compte
           </RouterLink>
         </template>
@@ -140,11 +144,20 @@ async function handleSubmit(): Promise<void> {
         </div>
         <div class="flex flex-col gap-1.5">
           <Label for="ro">Rôle (optionnel)</Label>
-          <Input id="ro" :model-value="profileFields.role ?? ''" @update:model-value="(v) => (profileFields.role = String(v) || null)" />
+          <Input
+            id="ro"
+            :model-value="profileFields.role ?? ''"
+            @update:model-value="(v) => (profileFields.role = String(v) || null)"
+          />
         </div>
         <div class="flex flex-col gap-1.5">
           <Label for="bi">Bio (optionnel)</Label>
-          <Textarea id="bi" :model-value="profileFields.bio ?? ''" :rows="3" @update:model-value="(v) => (profileFields.bio = String(v) || null)" />
+          <Textarea
+            id="bi"
+            :model-value="profileFields.bio ?? ''"
+            :rows="3"
+            @update:model-value="(v) => (profileFields.bio = String(v) || null)"
+          />
         </div>
         <div class="flex flex-col gap-2">
           <Label>Liens (optionnel)</Label>

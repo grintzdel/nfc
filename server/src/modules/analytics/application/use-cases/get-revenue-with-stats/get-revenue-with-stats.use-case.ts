@@ -1,6 +1,7 @@
-import { IOrderRepository } from '@modules/order/domain/repository/order.repository.interface'
 import { OrderStatus } from '@modules/order/domain/constants/order.constant'
+import { IOrderRepository } from '@modules/order/domain/repository/order.repository.interface'
 import { getMonthRange } from '@shared/utils/month-range'
+
 import { AnalyticsDomainModel } from '../../../domain/model/analytics.domain-model'
 
 export class GetRevenueWithStatsUseCase {

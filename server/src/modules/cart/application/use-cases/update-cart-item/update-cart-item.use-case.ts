@@ -1,6 +1,6 @@
-import { ICartItemRepository } from '../../../domain/repository/cart-item.repository.interface'
 import { CartItemEntity } from '../../../domain/entity/cart-item.entity'
 import { CartItemNotFoundError } from '../../../domain/errors/cart.error'
+import { ICartItemRepository } from '../../../domain/repository/cart-item.repository.interface'
 
 export class UpdateCartItemUseCase {
   constructor(private readonly cartItemRepository: ICartItemRepository) {}

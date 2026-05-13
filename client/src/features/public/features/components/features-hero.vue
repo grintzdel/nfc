@@ -4,22 +4,32 @@ import { Zap } from 'lucide-vue-next'
 
 <template>
   <section class="relative overflow-hidden bg-pulse-bg">
-    <div class="absolute left-[30%] top-[-10%] h-[600px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.25)_0%,transparent_70%)] opacity-60" />
-    <div class="absolute right-[10%] top-[25%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.2)_0%,transparent_70%)] opacity-50" />
-    <div class="absolute left-[7%] top-[40%] h-[300px] w-[300px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(167,139,250,0.15)_0%,transparent_70%)] opacity-40" />
+    <div
+      class="absolute left-[30%] top-[-10%] h-[600px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.25)_0%,transparent_70%)] opacity-60"
+    />
+    <div
+      class="absolute right-[10%] top-[25%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.2)_0%,transparent_70%)] opacity-50"
+    />
+    <div
+      class="absolute left-[7%] top-[40%] h-[300px] w-[300px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(167,139,250,0.15)_0%,transparent_70%)] opacity-40"
+    />
 
     <div class="relative mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 pb-24 pt-32 lg:px-20">
-      <div class="flex items-center gap-2 rounded-full border border-violet-500/40 bg-gradient-to-b from-violet-600/20 to-violet-600/5 px-4 py-1.5">
+      <div
+        class="flex items-center gap-2 rounded-full border border-violet-500/40 bg-gradient-to-b from-violet-600/20 to-violet-600/5 px-4 py-1.5"
+      >
         <Zap class="h-3.5 w-3.5 text-violet-400" />
         <span class="text-xs font-semibold tracking-[2px] text-violet-400">FONCTIONNALITES</span>
       </div>
 
-      <h1 class="max-w-[900px] bg-gradient-to-b from-slate-50 to-slate-400 bg-clip-text text-center text-5xl font-extrabold leading-[1.1] text-transparent md:text-6xl lg:text-[64px]">
-        Trois super-pouvoirs<br>dans un bracelet
+      <h1
+        class="max-w-[900px] bg-gradient-to-b from-slate-50 to-slate-400 bg-clip-text text-center text-5xl font-extrabold leading-[1.1] text-transparent md:text-6xl lg:text-[64px]"
+      >
+        Trois super-pouvoirs<br />dans un bracelet
       </h1>
 
       <p class="max-w-[700px] text-center text-lg leading-relaxed text-slate-400 md:text-xl">
-        PULSE transforme chaque tap NFC en experience digitale.<br>
+        PULSE transforme chaque tap NFC en experience digitale.<br />
         Acces, paiement, networking — tout dans un bracelet.
       </p>
 

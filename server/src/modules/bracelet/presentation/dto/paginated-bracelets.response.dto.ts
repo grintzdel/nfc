@@ -1,6 +1,7 @@
-import { BraceletEntity } from '../../domain/entity/bracelet.entity'
-import { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
 import { ParticipantEntity } from '@modules/participant/domain/entity/participant.entity'
+
+import { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
+import { BraceletEntity } from '../../domain/entity/bracelet.entity'
 
 type ParticipantSummary = { id: string; displayName: string }
 

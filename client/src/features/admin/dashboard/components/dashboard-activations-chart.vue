@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { VisXYContainer, VisStackedBar, VisAxis, VisTooltip, VisStackedBarSelectors } from '@unovis/vue'
 import { BarChart3 } from 'lucide-vue-next'
+import { computed } from 'vue'
+
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 import { EmptyState } from '@/ui/empty-state'
 
@@ -41,13 +42,7 @@ const barTooltipTriggers = {
 
     <div v-else class="h-56">
       <VisXYContainer :data="chartData" :height="224">
-        <VisStackedBar
-          :x="xAccessor"
-          :y="yAccessor"
-          :color="colorAccessor"
-          :rounded-corners="4"
-          :bar-padding="0.3"
-        />
+        <VisStackedBar :x="xAccessor" :y="yAccessor" :color="colorAccessor" :rounded-corners="4" :bar-padding="0.3" />
         <VisTooltip :triggers="barTooltipTriggers" />
         <VisAxis
           type="x"

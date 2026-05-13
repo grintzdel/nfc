@@ -1,8 +1,9 @@
-import { GetMyParticipationsUseCase } from './get-my-participations.use-case'
-import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
-import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
-import { createParticipantFixture } from '../../../__tests__/participant.factory'
 import { createEventFixture } from '@modules/event/__tests__/event.factory'
+import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
+
+import { createParticipantFixture } from '../../../__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
+import { GetMyParticipationsUseCase } from './get-my-participations.use-case'
 
 describe('GetMyParticipationsUseCase', () => {
   let participantRepo: ParticipantRepositoryMock

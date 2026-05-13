@@ -1,9 +1,9 @@
-import { LoginUseCase } from './login.use-case'
-import { InvalidCredentialsError } from '../../../domain/errors/auth.error'
 import { UserEntity } from '../../../domain/entity/user.entity'
+import { InvalidCredentialsError } from '../../../domain/errors/auth.error'
 import { IUserRepository } from '../../../domain/repository/user.repository.interface'
 import { HashServiceSecurity } from '../../services/security/hash.service-security'
 import { JwtServiceSecurity } from '../../services/security/jwt.service-security'
+import { LoginUseCase } from './login.use-case'
 
 describe('LoginUseCase', () => {
   let useCase: LoginUseCase
@@ -59,9 +59,9 @@ describe('LoginUseCase', () => {
   it('should throw InvalidCredentialsError if user not found', async () => {
     mockUserRepository.findByEmail.mockResolvedValue(null)
 
-    await expect(
-      useCase.execute({ email: 'unknown@pulse.io', password: 'password123' })
-    ).rejects.toThrow(InvalidCredentialsError)
+    await expect(useCase.execute({ email: 'unknown@pulse.io', password: 'password123' })).rejects.toThrow(
+      InvalidCredentialsError
+    )
   })
 
   it('should throw InvalidCredentialsError if password is wrong', async () => {
@@ -80,8 +80,8 @@ describe('LoginUseCase', () => {
     )
     mockHashService.compare.mockResolvedValue(false)
 
-    await expect(
-      useCase.execute({ email: 'test@pulse.io', password: 'wrong-password' })
-    ).rejects.toThrow(InvalidCredentialsError)
+    await expect(useCase.execute({ email: 'test@pulse.io', password: 'wrong-password' })).rejects.toThrow(
+      InvalidCredentialsError
+    )
   })
 })

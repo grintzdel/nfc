@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Package } from 'lucide-vue-next'
+
 import type { OrderDomainModel } from '@/modules/order/core/model/order.domain-model'
 import type { OrderStatus } from '@/modules/order/core/model/order.domain-model'
 
@@ -30,18 +31,16 @@ function totalItems(order: OrderDomainModel.OrderOverviewDto): number {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div
-      v-for="order in orders"
-      :key="order.id"
-      class="rounded-xl border border-slate-700/50 bg-pulse-surface p-5"
-    >
+    <div v-for="order in orders" :key="order.id" class="rounded-xl border border-slate-700/50 bg-pulse-surface p-5">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-600/20">
             <Package class="h-5 w-5 text-violet-400" />
           </div>
           <div>
-            <p class="text-sm font-semibold text-slate-50">{{ totalItems(order) }} article{{ totalItems(order) > 1 ? 's' : '' }}</p>
+            <p class="text-sm font-semibold text-slate-50">
+              {{ totalItems(order) }} article{{ totalItems(order) > 1 ? 's' : '' }}
+            </p>
             <p class="text-xs text-slate-400">{{ formatDate(order.createdAt) }}</p>
           </div>
         </div>

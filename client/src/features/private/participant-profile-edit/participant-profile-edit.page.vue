@@ -1,18 +1,19 @@
 <script setup lang="ts">
+import { ScanLine } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toast } from 'vue-sonner'
-import { ScanLine } from 'lucide-vue-next'
+
+import { useGetBraceletById } from '@/modules/bracelet/ui/hooks/queries/query/use-get-bracelet-by-id'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import ProfileFieldsForm from '@/modules/participant/ui/components/profile-fields-form.vue'
+import ProfileLinksEditor from '@/modules/participant/ui/components/profile-links-editor.vue'
+import { useUpdateParticipantProfile } from '@/modules/participant/ui/hooks/queries/mutation/use-update-participant-profile'
+import { useGetParticipantById } from '@/modules/participant/ui/hooks/queries/query/use-get-participant-by-id'
+import QrCodeDisplay from '@/modules/qrcode/ui/components/qrcode-display.vue'
 import { Button } from '@/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card'
 import { Skeleton } from '@/ui/skeleton'
-import { useGetParticipantById } from '@/modules/participant/ui/hooks/queries/query/use-get-participant-by-id'
-import { useGetBraceletById } from '@/modules/bracelet/ui/hooks/queries/query/use-get-bracelet-by-id'
-import { useUpdateParticipantProfile } from '@/modules/participant/ui/hooks/queries/mutation/use-update-participant-profile'
-import ProfileFieldsForm from '@/modules/participant/ui/components/profile-fields-form.vue'
-import ProfileLinksEditor from '@/modules/participant/ui/components/profile-links-editor.vue'
-import QrCodeDisplay from '@/modules/qrcode/ui/components/qrcode-display.vue'
-import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
 
 const route = useRoute()
 const router = useRouter()
@@ -38,7 +39,7 @@ watch(
     fields.value = { displayName: p.profile.displayName, role: p.profile.role, bio: p.profile.bio }
     links.value = [...p.profile.links]
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 watch(error, (e) => {
@@ -100,9 +101,7 @@ async function handleSave(): Promise<void> {
     <div class="mx-auto flex w-full max-w-2xl flex-col gap-8">
       <header class="flex flex-col gap-1">
         <h1 class="text-2xl font-bold">Modifier mon profil</h1>
-        <p class="text-sm text-muted-foreground">
-          Ces informations seront visibles lorsque votre bracelet est scanné.
-        </p>
+        <p class="text-sm text-muted-foreground">Ces informations seront visibles lorsque votre bracelet est scanné.</p>
       </header>
 
       <Card v-if="isLoading">

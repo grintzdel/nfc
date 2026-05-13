@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
+
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 
 type FormPayload = EventDomainModel.CreateEventDto
 
@@ -38,7 +39,7 @@ watch(
     endsAt.value = toLocalInputValue(end)
     capacity.value = 100
     staffCount.value = 0
-  },
+  }
 )
 
 function toLocalInputValue(d: Date): string {
@@ -61,7 +62,7 @@ const isValid = computed(
     Boolean(startsAt.value) &&
     Boolean(endsAt.value) &&
     new Date(endsAt.value) > new Date(startsAt.value) &&
-    capacity.value > 0,
+    capacity.value > 0
 )
 
 function handleConfirm(): void {
@@ -87,7 +88,8 @@ function handleConfirm(): void {
       <DialogHeader>
         <DialogTitle>Nouvel événement</DialogTitle>
         <DialogDescription class="text-slate-400">
-          L'événement est créé en statut <strong class="text-slate-200">Brouillon</strong>. Vous pourrez le publier depuis sa page de détail.
+          L'événement est créé en statut <strong class="text-slate-200">Brouillon</strong>. Vous pourrez le publier
+          depuis sa page de détail.
         </DialogDescription>
       </DialogHeader>
 
@@ -98,7 +100,7 @@ function handleConfirm(): void {
             v-model="name"
             type="text"
             placeholder="Pulse Demo 2026…"
-            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
           />
         </div>
 
@@ -108,7 +110,7 @@ function handleConfirm(): void {
             v-model="description"
             rows="2"
             placeholder="Description courte de l'événement…"
-            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
           />
         </div>
 
@@ -119,7 +121,7 @@ function handleConfirm(): void {
               v-model="venueName"
               type="text"
               placeholder="Station F"
-              class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+              class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
             />
           </div>
           <div class="flex flex-col gap-1.5">
@@ -128,7 +130,7 @@ function handleConfirm(): void {
               v-model="city"
               type="text"
               placeholder="Paris"
-              class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+              class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
             />
           </div>
         </div>
@@ -139,7 +141,7 @@ function handleConfirm(): void {
             v-model="venueAddress"
             type="text"
             placeholder="5 Parvis Alan Turing, Paris"
-            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
           />
         </div>
 

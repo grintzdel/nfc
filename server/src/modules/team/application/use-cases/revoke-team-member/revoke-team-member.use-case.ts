@@ -1,12 +1,13 @@
-import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
-import { TeamMemberNotFoundError, TeamMemberNotAuthorizedError } from '../../../domain/errors/team.error'
-import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
+
+import { TeamMemberNotFoundError, TeamMemberNotAuthorizedError } from '../../../domain/errors/team.error'
+import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
 
 export class RevokeTeamMemberUseCase {
   constructor(
     private readonly teamMemberRepository: ITeamMemberRepository,
-    private readonly eventRepository: IEventRepository,
+    private readonly eventRepository: IEventRepository
   ) {}
 
   async execute(teamMemberId: string, callerUserId: string): Promise<void> {

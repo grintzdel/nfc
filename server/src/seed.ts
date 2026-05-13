@@ -1,19 +1,21 @@
 import { randomUUID } from 'crypto'
+
+import bcrypt from 'bcryptjs'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
-import bcrypt from 'bcryptjs'
+
 import { connectDatabase } from './config/database'
 import { UserModel } from './modules/auth/infrastructure/schema/user.schema'
-import { ProductModel } from './modules/product/infrastructure/schema/product.schema'
-import { EventModel } from './modules/event/infrastructure/schema/event.schema'
-import { BraceletModel } from './modules/bracelet/infrastructure/schema/bracelet.schema'
-import { ParticipantModel } from './modules/participant/infrastructure/schema/participant.schema'
-import { CheckInModel } from './modules/check-in/infrastructure/schema/check-in.schema'
-import { SupplyOrderModel } from './modules/supply-order/infrastructure/schema/supply-order.schema'
-import { OrderModel } from './modules/order/infrastructure/schema/order.schema'
-import { FaqModel } from './modules/marketing/infrastructure/schema/faq.schema'
-import { EventStatus } from './modules/event/domain/constants/event-status.constant'
 import { BraceletStatus } from './modules/bracelet/domain/constants/bracelet-status.constant'
+import { BraceletModel } from './modules/bracelet/infrastructure/schema/bracelet.schema'
+import { CheckInModel } from './modules/check-in/infrastructure/schema/check-in.schema'
+import { EventStatus } from './modules/event/domain/constants/event-status.constant'
+import { EventModel } from './modules/event/infrastructure/schema/event.schema'
+import { FaqModel } from './modules/marketing/infrastructure/schema/faq.schema'
+import { OrderModel } from './modules/order/infrastructure/schema/order.schema'
+import { ParticipantModel } from './modules/participant/infrastructure/schema/participant.schema'
+import { ProductModel } from './modules/product/infrastructure/schema/product.schema'
+import { SupplyOrderModel } from './modules/supply-order/infrastructure/schema/supply-order.schema'
 
 dotenv.config()
 
@@ -137,7 +139,7 @@ async function seed(): Promise<void> {
       firstName: `Participant`,
       lastName: `${i + 1}`,
       role: 'customer',
-    })),
+    }))
   )
 
   const events = await EventModel.create([
@@ -341,7 +343,7 @@ async function seed(): Promise<void> {
       profile: {
         displayName: 'Marie Dubois',
         role: 'Product Designer @ Pulse',
-        bio: 'Product Designer passionnée par les interfaces et l\'innovation. J\'aime connecter les gens via des expériences mémorables.',
+        bio: "Product Designer passionnée par les interfaces et l'innovation. J'aime connecter les gens via des expériences mémorables.",
         links: [
           { type: 'linkedin', url: 'https://linkedin.com/in/marie-dubois', label: null },
           { type: 'github', url: 'https://github.com/mariedubois', label: null },
@@ -421,9 +423,7 @@ async function seed(): Promise<void> {
         displayName: 'Admin Pulse',
         role: 'Organisateur',
         bio: "Je teste l'expérience de l'autre côté du bracelet.",
-        links: [
-          { type: 'linkedin', url: 'https://linkedin.com/in/pulse-admin', label: null },
-        ],
+        links: [{ type: 'linkedin', url: 'https://linkedin.com/in/pulse-admin', label: null }],
       },
       registeredAt: daysAgo(2),
       checkedInAt: null,
@@ -464,12 +464,60 @@ async function seed(): Promise<void> {
 
   // 6 check-ins on the demo event using Marie's bracelet + a few pre-activated ones (so unique > 1)
   await CheckInModel.create([
-    { braceletId: String(demoBracelet!._id), eventId: String(demoEvent!._id), interactionType: 'check_in', zoneName: 'Entrée principale', targetBraceletId: null, amount: null, metadata: {} },
-    { braceletId: String(demoBracelet!._id), eventId: String(demoEvent!._id), interactionType: 'networking', zoneName: null, targetBraceletId: null, amount: null, metadata: {} },
-    { braceletId: String(demoExtraBracelets[0]!._id), eventId: String(demoEvent!._id), interactionType: 'check_in', zoneName: 'Entrée VIP', targetBraceletId: null, amount: null, metadata: {} },
-    { braceletId: String(demoExtraBracelets[1]!._id), eventId: String(demoEvent!._id), interactionType: 'check_in', zoneName: 'Entrée principale', targetBraceletId: null, amount: null, metadata: {} },
-    { braceletId: String(demoExtraBracelets[2]!._id), eventId: String(demoEvent!._id), interactionType: 'cashless', zoneName: 'Bar 1', targetBraceletId: null, amount: 12.5, metadata: {} },
-    { braceletId: String(demoExtraBracelets[0]!._id), eventId: String(demoEvent!._id), interactionType: 'vote', zoneName: null, targetBraceletId: null, amount: null, metadata: {} },
+    {
+      braceletId: String(demoBracelet!._id),
+      eventId: String(demoEvent!._id),
+      interactionType: 'check_in',
+      zoneName: 'Entrée principale',
+      targetBraceletId: null,
+      amount: null,
+      metadata: {},
+    },
+    {
+      braceletId: String(demoBracelet!._id),
+      eventId: String(demoEvent!._id),
+      interactionType: 'networking',
+      zoneName: null,
+      targetBraceletId: null,
+      amount: null,
+      metadata: {},
+    },
+    {
+      braceletId: String(demoExtraBracelets[0]!._id),
+      eventId: String(demoEvent!._id),
+      interactionType: 'check_in',
+      zoneName: 'Entrée VIP',
+      targetBraceletId: null,
+      amount: null,
+      metadata: {},
+    },
+    {
+      braceletId: String(demoExtraBracelets[1]!._id),
+      eventId: String(demoEvent!._id),
+      interactionType: 'check_in',
+      zoneName: 'Entrée principale',
+      targetBraceletId: null,
+      amount: null,
+      metadata: {},
+    },
+    {
+      braceletId: String(demoExtraBracelets[2]!._id),
+      eventId: String(demoEvent!._id),
+      interactionType: 'cashless',
+      zoneName: 'Bar 1',
+      targetBraceletId: null,
+      amount: 12.5,
+      metadata: {},
+    },
+    {
+      braceletId: String(demoExtraBracelets[0]!._id),
+      eventId: String(demoEvent!._id),
+      interactionType: 'vote',
+      zoneName: null,
+      targetBraceletId: null,
+      amount: null,
+      metadata: {},
+    },
   ])
 
   // Extra draft event so the "Publier" state-machine button is reachable from the admin demo
@@ -615,8 +663,12 @@ async function seed(): Promise<void> {
   await ParticipantModel.create([...thisMonthParticipants, ...lastMonthParticipants])
 
   const interactionTypes = [
-    'check_in', 'check_in', 'check_in', 'check_in',
-    'networking', 'networking',
+    'check_in',
+    'check_in',
+    'check_in',
+    'check_in',
+    'networking',
+    'networking',
     'vote',
     'cashless',
   ]
@@ -637,9 +689,7 @@ async function seed(): Promise<void> {
     const amount = 400 + Math.floor(Math.random() * 400)
     return {
       userId: String(participantUsers[i % participantUsers.length]!._id),
-      items: [
-        { productId: 'prod1', productName: 'PULSE Classic', quantity: Math.ceil(amount / 30), unitPrice: 29.99 },
-      ],
+      items: [{ productId: 'prod1', productName: 'PULSE Classic', quantity: Math.ceil(amount / 30), unitPrice: 29.99 }],
       totalAmount: amount,
       status: ['confirmed', 'shipped', 'delivered'][Math.floor(Math.random() * 3)],
       shippingAddress: `${i + 1} rue de la Paix, Paris`,
@@ -651,9 +701,7 @@ async function seed(): Promise<void> {
     const amount = 500 + Math.floor(Math.random() * 500)
     return {
       userId: String(participantUsers[i % participantUsers.length]!._id),
-      items: [
-        { productId: 'prod2', productName: 'PULSE Pro', quantity: Math.ceil(amount / 50), unitPrice: 49.99 },
-      ],
+      items: [{ productId: 'prod2', productName: 'PULSE Pro', quantity: Math.ceil(amount / 50), unitPrice: 49.99 }],
       totalAmount: amount,
       status: ['confirmed', 'shipped', 'delivered'][Math.floor(Math.random() * 3)],
       shippingAddress: `${i + 1} avenue des Champs Elysees, Paris`,
@@ -682,12 +730,42 @@ async function seed(): Promise<void> {
 
   await FaqModel.deleteMany({})
   await FaqModel.insertMany([
-    { order: 1, question: 'Combien coute un bracelet PULSE ?', answer: 'Les packs demarrent a partir de 2,50€ par bracelet pour les commandes de +500 unites. Contactez-nous pour un devis personnalise adapte a la taille de votre evenement.' },
-    { order: 2, question: 'Quel est le delai de livraison ?', answer: 'Les bracelets sont livres sous 5 jours ouvrables en France metropolitaine. Pour les commandes urgentes, nous proposons une option express 48h.' },
-    { order: 3, question: 'Les bracelets sont-ils reutilisables ?', answer: "Oui ! Les bracelets PULSE sont concus pour etre reprogrammes et reutilises sur plusieurs evenements, reduisant les couts et l'impact environnemental." },
-    { order: 4, question: 'Faut-il une app pour les participants ?', answer: "Non ! C'est tout l'interet de PULSE. Le bracelet NFC fonctionne sans application, sans batterie et sans connexion internet du cote participant." },
-    { order: 5, question: 'Comment configurer les bracelets ?', answer: 'Tout se fait depuis le dashboard PULSE. Creez votre evenement, definissez les interactions et assignez les bracelets en quelques clics. Aucune competence technique requise.' },
-    { order: 6, question: 'Proposez-vous un accompagnement ?', answer: 'Absolument. Notre equipe vous accompagne de A a Z : configuration, formation de vos equipes sur place, et support technique le jour J.' },
+    {
+      order: 1,
+      question: 'Combien coute un bracelet PULSE ?',
+      answer:
+        'Les packs demarrent a partir de 2,50€ par bracelet pour les commandes de +500 unites. Contactez-nous pour un devis personnalise adapte a la taille de votre evenement.',
+    },
+    {
+      order: 2,
+      question: 'Quel est le delai de livraison ?',
+      answer:
+        'Les bracelets sont livres sous 5 jours ouvrables en France metropolitaine. Pour les commandes urgentes, nous proposons une option express 48h.',
+    },
+    {
+      order: 3,
+      question: 'Les bracelets sont-ils reutilisables ?',
+      answer:
+        "Oui ! Les bracelets PULSE sont concus pour etre reprogrammes et reutilises sur plusieurs evenements, reduisant les couts et l'impact environnemental.",
+    },
+    {
+      order: 4,
+      question: 'Faut-il une app pour les participants ?',
+      answer:
+        "Non ! C'est tout l'interet de PULSE. Le bracelet NFC fonctionne sans application, sans batterie et sans connexion internet du cote participant.",
+    },
+    {
+      order: 5,
+      question: 'Comment configurer les bracelets ?',
+      answer:
+        'Tout se fait depuis le dashboard PULSE. Creez votre evenement, definissez les interactions et assignez les bracelets en quelques clics. Aucune competence technique requise.',
+    },
+    {
+      order: 6,
+      question: 'Proposez-vous un accompagnement ?',
+      answer:
+        'Absolument. Notre equipe vous accompagne de A a Z : configuration, formation de vos equipes sur place, et support technique le jour J.',
+    },
   ])
 
   const totalBracelets = allBracelets.length
@@ -695,7 +773,9 @@ async function seed(): Promise<void> {
   console.log(`  Users: 2 + 30 participants`)
   console.log(`  Products: 5`)
   console.log(`  Events: ${events.length} (2 upcoming, 2 in_progress, 3 completed, 1 cancelled)`)
-  console.log(`  Bracelets: ${totalBracelets} (240 stock, 1300 pre-activated, ${activatedBracelets.length} activated, 300 this/last month)`)
+  console.log(
+    `  Bracelets: ${totalBracelets} (240 stock, 1300 pre-activated, ${activatedBracelets.length} activated, 300 this/last month)`
+  )
   console.log(`  Participants: 43 (25 this month, 18 last month)`)
   console.log(`  Check-ins: 400`)
   console.log(`  Orders: 75 (40 this month, 35 last month)`)

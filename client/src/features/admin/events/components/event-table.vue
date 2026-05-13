@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Search, SlidersHorizontal, Download, Plus, Eye, Pencil, MoreHorizontal, Calendar } from 'lucide-vue-next'
-import { Pagination } from '@/ui/pagination'
-import { EmptyState } from '@/ui/empty-state'
+
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
+import { EmptyState } from '@/ui/empty-state'
+import { Pagination } from '@/ui/pagination'
 
 const props = defineProps<{
   data?: EventDomainModel.PaginatedEventsDto
@@ -54,7 +55,6 @@ function statusClass(status: string): string {
   }
   return map[status] ?? 'bg-slate-500/20 text-slate-400'
 }
-
 </script>
 
 <template>
@@ -67,7 +67,7 @@ function statusClass(status: string): string {
           class="rounded px-3 py-1.5 text-[13px] font-medium transition-colors"
           :class="
             currentStatus === tab.key
-              ? 'bg-[#0F172A] text-slate-50 border border-white/10'
+              ? 'border border-white/10 bg-[#0F172A] text-slate-50'
               : 'text-slate-400 hover:text-slate-200'
           "
           @click="emit('update:status', tab.key)"
@@ -84,7 +84,7 @@ function statusClass(status: string): string {
           type="text"
           :value="search"
           placeholder="Rechercher par nom, lieu, organisateur..."
-          class="w-full bg-transparent text-[13px] text-slate-50 placeholder:text-slate-400 outline-none"
+          class="w-full bg-transparent text-[13px] text-slate-50 outline-none placeholder:text-slate-400"
           @input="emit('update:search', ($event.target as HTMLInputElement).value)"
         />
       </div>
@@ -96,7 +96,9 @@ function statusClass(status: string): string {
       >
         <SlidersHorizontal class="h-3.5 w-3.5 text-slate-500" />
         <span class="text-[13px] font-medium text-slate-500">Filtres</span>
-        <span class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+        <span
+          class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400"
+        >
           Soon
         </span>
       </button>
@@ -108,7 +110,9 @@ function statusClass(status: string): string {
       >
         <Download class="h-3.5 w-3.5 text-slate-500" />
         <span class="text-[13px] font-medium text-slate-500">Export</span>
-        <span class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+        <span
+          class="ml-1 rounded-full bg-slate-700 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-400"
+        >
           Soon
         </span>
       </button>
@@ -145,11 +149,7 @@ function statusClass(status: string): string {
           </div>
         </div>
 
-        <div
-          v-for="row in data?.items"
-          :key="row.id"
-          class="flex items-center border-t border-white/10"
-        >
+        <div v-for="row in data?.items" :key="row.id" class="flex items-center border-t border-white/10">
           <div class="flex flex-1 flex-col gap-0.5 px-4 py-3">
             <span class="text-sm font-semibold text-slate-50">{{ row.name }}</span>
             <span class="text-xs text-slate-400">{{ row.venueName || row.city }}</span>
@@ -200,7 +200,9 @@ function statusClass(status: string): string {
           v-if="data && data.items.length === 0"
           :icon="Calendar"
           title="Aucun événement trouvé"
-          :description="search ? 'Essayez une autre recherche ou un autre filtre.' : 'Créez votre premier événement pour démarrer.'"
+          :description="
+            search ? 'Essayez une autre recherche ou un autre filtre.' : 'Créez votre premier événement pour démarrer.'
+          "
           size="sm"
         />
       </div>

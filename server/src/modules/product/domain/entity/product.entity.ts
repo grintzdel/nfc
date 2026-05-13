@@ -30,7 +30,12 @@ export class ProductEntity {
     if (props.price === undefined || props.price < 0) throw new Error('Valid price is required')
 
     const now = new Date()
-    const slug = props.slug ?? props.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    const slug =
+      props.slug ??
+      props.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
 
     return new ProductEntity({
       id: props.id ?? '',

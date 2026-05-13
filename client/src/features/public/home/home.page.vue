@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useHead } from '@unhead/vue'
-import HeroSection from './components/hero-section.vue'
-import TrustStrip from './components/trust-strip.vue'
-import ProblemSolution from './components/problem-solution.vue'
-import FeaturesSection from './components/features-section.vue'
-import StatsSection from './components/stats-section.vue'
-import DashboardPreview from './components/dashboard-preview.vue'
-import FinalCta from './components/final-cta.vue'
+
 import FadeInOnScroll from '@/components/fade-in-on-scroll.vue'
+
+import DashboardPreview from './components/dashboard-preview.vue'
+import FeaturesSection from './components/features-section.vue'
+import FinalCta from './components/final-cta.vue'
+import HeroSection from './components/hero-section.vue'
+import ProblemSolution from './components/problem-solution.vue'
+import StatsSection from './components/stats-section.vue'
+import TrustStrip from './components/trust-strip.vue'
 
 useHead({
   title: 'PULSE Event Pass — Bracelets NFC pour festivals et événements',

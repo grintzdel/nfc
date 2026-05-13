@@ -1,5 +1,5 @@
-import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 import { BraceletNotFoundError } from '../../../domain/errors/bracelet.error'
+import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 
 export class DeleteBraceletUseCase {
   constructor(private readonly braceletRepository: IBraceletRepository) {}

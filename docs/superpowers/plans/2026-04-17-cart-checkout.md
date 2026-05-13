@@ -16,35 +16,36 @@
 
 ### New files
 
-| Category | Files |
-|----------|-------|
-| shadcn setup | `src/ui/lib/utils.ts` + generated components in `src/ui/` (sheet, button, badge, sonner) |
-| Cart core | `modules/cart/core/model/cart.domain-model.ts`, `modules/cart/core/ports/cart.port.ts`, `modules/cart/core/adapters/cart.adapter.http.ts` |
-| Cart hooks | `modules/cart/ui/hooks/queries/query/use-get-cart.ts`, `modules/cart/ui/hooks/queries/mutation/use-add-to-cart.ts`, `use-update-cart-item.ts`, `use-remove-cart-item.ts`, `use-clear-cart.ts` |
-| Cart UI | `modules/cart/ui/components/cart-drawer.vue`, `modules/cart/ui/components/cart-item-row.vue`, `modules/cart/ui/hooks/use-cart-drawer.ts` |
-| Order core | `modules/order/core/model/order.domain-model.ts`, `modules/order/core/ports/order.port.ts`, `modules/order/core/adapters/order.adapter.http.ts` |
-| Order hooks | `modules/order/ui/hooks/queries/query/use-get-my-orders.ts`, `use-get-order-by-id.ts`, `modules/order/ui/hooks/queries/mutation/use-create-order.ts` |
-| Order UI | `modules/order/ui/components/order-list.vue` |
-| Feature + Page | `features/public/orders/orders.page.vue`, `pages/orders/page.vue` |
+| Category       | Files                                                                                                                                                                                         |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| shadcn setup   | `src/ui/lib/utils.ts` + generated components in `src/ui/` (sheet, button, badge, sonner)                                                                                                      |
+| Cart core      | `modules/cart/core/model/cart.domain-model.ts`, `modules/cart/core/ports/cart.port.ts`, `modules/cart/core/adapters/cart.adapter.http.ts`                                                     |
+| Cart hooks     | `modules/cart/ui/hooks/queries/query/use-get-cart.ts`, `modules/cart/ui/hooks/queries/mutation/use-add-to-cart.ts`, `use-update-cart-item.ts`, `use-remove-cart-item.ts`, `use-clear-cart.ts` |
+| Cart UI        | `modules/cart/ui/components/cart-drawer.vue`, `modules/cart/ui/components/cart-item-row.vue`, `modules/cart/ui/hooks/use-cart-drawer.ts`                                                      |
+| Order core     | `modules/order/core/model/order.domain-model.ts`, `modules/order/core/ports/order.port.ts`, `modules/order/core/adapters/order.adapter.http.ts`                                               |
+| Order hooks    | `modules/order/ui/hooks/queries/query/use-get-my-orders.ts`, `use-get-order-by-id.ts`, `modules/order/ui/hooks/queries/mutation/use-create-order.ts`                                          |
+| Order UI       | `modules/order/ui/components/order-list.vue`                                                                                                                                                  |
+| Feature + Page | `features/public/orders/orders.page.vue`, `pages/orders/page.vue`                                                                                                                             |
 
 ### Modified files
 
-| File | Change |
-|------|--------|
-| `modules/app/core/dependencies.ts` | Add cartPort + orderPort |
-| `modules/product/ui/components/product-card.vue` | Wire "Ajouter" button |
-| `components/layout/app-nav.vue` | Cart icon + badge + drawer trigger |
-| `components/layout/app-layout.vue` | Render cart drawer + Toaster |
-| `main.ts` | Add /orders route |
-| `package.json` | Add shadcn deps (class-variance-authority, clsx, tailwind-merge, radix-vue, sonner) |
-| `components.json` | shadcn-vue config |
-| `tailwind.config.js` | Add animate plugin if needed |
+| File                                             | Change                                                                              |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| `modules/app/core/dependencies.ts`               | Add cartPort + orderPort                                                            |
+| `modules/product/ui/components/product-card.vue` | Wire "Ajouter" button                                                               |
+| `components/layout/app-nav.vue`                  | Cart icon + badge + drawer trigger                                                  |
+| `components/layout/app-layout.vue`               | Render cart drawer + Toaster                                                        |
+| `main.ts`                                        | Add /orders route                                                                   |
+| `package.json`                                   | Add shadcn deps (class-variance-authority, clsx, tailwind-merge, radix-vue, sonner) |
+| `components.json`                                | shadcn-vue config                                                                   |
+| `tailwind.config.js`                             | Add animate plugin if needed                                                        |
 
 ---
 
 ## Task 1: Install shadcn-vue + base components
 
 **Files:**
+
 - Create: `client/components.json`
 - Create: `client/src/ui/lib/utils.ts`
 - Modify: `client/package.json`
@@ -178,6 +179,7 @@ ls -R src/ui/
 ```
 
 Expected structure:
+
 ```
 src/ui/
 ├── lib/
@@ -210,6 +212,7 @@ git commit -m "feat(client): install shadcn-vue with sheet, button, badge, sonne
 ## Task 2: Cart Core Module (model + port + adapter + hooks)
 
 **Files:**
+
 - Create: `client/src/modules/cart/core/model/cart.domain-model.ts`
 - Create: `client/src/modules/cart/core/ports/cart.port.ts`
 - Create: `client/src/modules/cart/core/adapters/cart.adapter.http.ts`
@@ -417,6 +420,7 @@ git commit -m "feat(client): add cart core module — domain model, port, HTTP a
 ## Task 3: Order Core Module (model + port + adapter + hooks)
 
 **Files:**
+
 - Create: `client/src/modules/order/core/model/order.domain-model.ts`
 - Create: `client/src/modules/order/core/ports/order.port.ts`
 - Create: `client/src/modules/order/core/adapters/order.adapter.http.ts`
@@ -581,6 +585,7 @@ git commit -m "feat(client): add order core module — domain model, port, HTTP 
 ## Task 4: Wire cart + order ports into dependencies.ts
 
 **Files:**
+
 - Modify: `client/src/modules/app/core/dependencies.ts`
 
 - [ ] **Step 1: Update dependencies.ts**
@@ -597,8 +602,8 @@ import { OrderHttpAdapter } from '@/modules/order/core/adapters/order.adapter.ht
 Add to the `Dependencies` type:
 
 ```typescript
-  cartPort: ICartPort
-  orderPort: IOrderPort
+cartPort: ICartPort
+orderPort: IOrderPort
 ```
 
 Add to the `return` block in `createDependencies()`:
@@ -626,6 +631,7 @@ git commit -m "feat(client): wire cart + order ports into dependencies.ts"
 ## Task 5: Cart Drawer UI Components
 
 **Files:**
+
 - Create: `client/src/modules/cart/ui/hooks/use-cart-drawer.ts`
 - Create: `client/src/modules/cart/ui/components/cart-item-row.vue`
 - Create: `client/src/modules/cart/ui/components/cart-drawer.vue`
@@ -685,12 +691,7 @@ function increment() {
 <template>
   <div class="flex gap-3.5 border-b border-slate-700/50 py-4">
     <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-[10px] bg-pulse-surface md:h-20 md:w-20">
-      <img
-        v-if="product?.imageUrl"
-        :src="product.imageUrl"
-        :alt="product?.name"
-        class="h-full w-full object-cover"
-      />
+      <img v-if="product?.imageUrl" :src="product.imageUrl" :alt="product?.name" class="h-full w-full object-cover" />
     </div>
     <div class="flex flex-1 flex-col gap-1">
       <div class="flex items-center justify-between">
@@ -701,13 +702,23 @@ function increment() {
       </div>
       <span class="text-xs text-slate-400">{{ product?.description ?? '' }}</span>
       <div class="mt-auto flex items-center justify-between">
-        <span class="text-base font-bold text-violet-400">{{ product ? (product.price * item.quantity).toFixed(2) : '0' }}&#8364;</span>
+        <span class="text-base font-bold text-violet-400"
+          >{{ product ? (product.price * item.quantity).toFixed(2) : '0' }}&#8364;</span
+        >
         <div class="flex items-center rounded-md border border-slate-700/50 bg-pulse-surface">
-          <button class="flex h-8 w-8 items-center justify-center text-slate-400 transition-colors hover:text-slate-200" @click="decrement">
+          <button
+            class="flex h-8 w-8 items-center justify-center text-slate-400 transition-colors hover:text-slate-200"
+            @click="decrement"
+          >
             <Minus class="h-3.5 w-3.5" />
           </button>
-          <span class="flex h-8 w-8 items-center justify-center text-sm font-semibold text-slate-50">{{ item.quantity }}</span>
-          <button class="flex h-8 w-8 items-center justify-center text-slate-50 transition-colors hover:text-white" @click="increment">
+          <span class="flex h-8 w-8 items-center justify-center text-sm font-semibold text-slate-50">{{
+            item.quantity
+          }}</span>
+          <button
+            class="flex h-8 w-8 items-center justify-center text-slate-50 transition-colors hover:text-white"
+            @click="increment"
+          >
             <Plus class="h-3.5 w-3.5" />
           </button>
         </div>
@@ -778,7 +789,7 @@ function handleCheckout() {
       onError: (error) => {
         toast.error(error.message)
       },
-    },
+    }
   )
 }
 </script>
@@ -790,7 +801,10 @@ function handleCheckout() {
       <SheetHeader class="flex-row items-center justify-between border-b border-slate-700/50 px-6 py-5">
         <div class="flex items-center gap-3">
           <SheetTitle class="text-xl font-bold text-slate-50">Votre panier</SheetTitle>
-          <Badge v-if="totalQuantity > 0" class="rounded-full bg-pulse-violet px-2.5 py-0.5 text-xs font-bold text-white">
+          <Badge
+            v-if="totalQuantity > 0"
+            class="rounded-full bg-pulse-violet px-2.5 py-0.5 text-xs font-bold text-white"
+          >
             {{ totalQuantity }}
           </Badge>
         </div>
@@ -832,7 +846,9 @@ function handleCheckout() {
           <div class="my-1 h-px bg-slate-700/50" />
           <div class="flex items-center justify-between">
             <span class="text-lg font-bold text-slate-50">Total</span>
-            <span class="bg-gradient-to-r from-violet-400 to-pink-500 bg-clip-text text-2xl font-extrabold text-transparent">
+            <span
+              class="bg-gradient-to-r from-violet-400 to-pink-500 bg-clip-text text-2xl font-extrabold text-transparent"
+            >
               {{ subtotal.toFixed(2) }}&#8364;
             </span>
           </div>
@@ -848,7 +864,10 @@ function handleCheckout() {
             <Lock class="h-4 w-4" />
             Paiement securise
           </button>
-          <button class="w-full py-1 text-center text-[13px] font-medium text-violet-400 transition-colors hover:text-violet-300" @click="close">
+          <button
+            class="w-full py-1 text-center text-[13px] font-medium text-violet-400 transition-colors hover:text-violet-300"
+            @click="close"
+          >
             Continuer mes achats
           </button>
         </div>
@@ -876,6 +895,7 @@ git commit -m "feat(client): add cart drawer UI — item rows, quantity controls
 ## Task 6: Wire Cart Drawer + Toaster into App Layout
 
 **Files:**
+
 - Modify: `client/src/components/layout/app-layout.vue`
 
 - [ ] **Step 1: Update app-layout.vue**
@@ -914,6 +934,7 @@ git commit -m "feat(client): render cart drawer + sonner toaster in app layout"
 ## Task 7: Header Cart Icon + Badge
 
 **Files:**
+
 - Modify: `client/src/components/layout/app-nav.vue`
 
 - [ ] **Step 1: Update app-nav.vue**
@@ -946,9 +967,7 @@ const navLinks = [
 <template>
   <nav class="sticky top-0 z-50 border-b border-slate-700/50 bg-[#0F172AEE] backdrop-blur-xl">
     <div class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-20">
-      <RouterLink to="/" class="text-2xl font-extrabold tracking-[2px] text-slate-50">
-        PULSE
-      </RouterLink>
+      <RouterLink to="/" class="text-2xl font-extrabold tracking-[2px] text-slate-50"> PULSE </RouterLink>
 
       <div class="hidden items-center gap-8 lg:flex">
         <a
@@ -968,7 +987,9 @@ const navLinks = [
           @click="openCartDrawer"
         >
           <ShoppingCart class="h-5 w-5" />
-          <span class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-pulse-violet text-[11px] font-bold text-white">
+          <span
+            class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-pulse-violet text-[11px] font-bold text-white"
+          >
             {{ totalQuantity }}
           </span>
         </button>
@@ -993,7 +1014,9 @@ const navLinks = [
           @click="openCartDrawer"
         >
           <ShoppingCart class="h-5 w-5" />
-          <span class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-pulse-violet text-[11px] font-bold text-white">
+          <span
+            class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-pulse-violet text-[11px] font-bold text-white"
+          >
             {{ totalQuantity }}
           </span>
         </button>
@@ -1016,10 +1039,16 @@ const navLinks = [
           {{ link.label }}
         </a>
         <div class="flex flex-col gap-2 pt-4">
-          <RouterLink to="/login" class="rounded-md border border-slate-600 px-6 py-2 text-center text-sm font-medium text-slate-300">
+          <RouterLink
+            to="/login"
+            class="rounded-md border border-slate-600 px-6 py-2 text-center text-sm font-medium text-slate-300"
+          >
             Connexion
           </RouterLink>
-          <RouterLink to="/shop" class="rounded-md bg-pulse-violet px-6 py-2 text-center text-sm font-medium text-white">
+          <RouterLink
+            to="/shop"
+            class="rounded-md bg-pulse-violet px-6 py-2 text-center text-sm font-medium text-white"
+          >
             Commander
           </RouterLink>
         </div>
@@ -1030,6 +1059,7 @@ const navLinks = [
 ```
 
 Key changes:
+
 - Import `ShoppingCart` from lucide, `useGetCart`, `useCartDrawer`
 - Compute `totalQuantity` from cart items
 - Cart icon with badge visible only when `totalQuantity > 0` (desktop + mobile)
@@ -1047,6 +1077,7 @@ git commit -m "feat(client): add cart icon + badge to header, opens cart drawer"
 ## Task 8: Wire Product Card "Ajouter" Button
 
 **Files:**
+
 - Modify: `client/src/modules/product/ui/components/product-card.vue`
 
 - [ ] **Step 1: Update product-card.vue**
@@ -1077,7 +1108,7 @@ function handleAddToCart() {
       onError: (error) => {
         toast.error(error.message)
       },
-    },
+    }
   )
 }
 </script>
@@ -1133,9 +1164,7 @@ function handleAddToCart() {
       </p>
 
       <div class="mt-auto flex items-center justify-between pt-2">
-        <span class="text-2xl font-extrabold text-violet-400">
-          {{ product.price.toFixed(2) }}&#8364;
-        </span>
+        <span class="text-2xl font-extrabold text-violet-400"> {{ product.price.toFixed(2) }}&#8364; </span>
 
         <button
           class="flex items-center gap-2 rounded-lg bg-violet-600/20 px-4 py-2 text-sm font-medium text-violet-300 transition-colors hover:bg-violet-600/30 disabled:opacity-40"
@@ -1152,6 +1181,7 @@ function handleAddToCart() {
 ```
 
 Key changes:
+
 - Import `toast` from vue-sonner, `useAddToCart`
 - `handleAddToCart()` calls mutation with `{ productId, quantity: 1 }`
 - Toast on success/error
@@ -1170,6 +1200,7 @@ git commit -m "feat(client): wire product card 'Ajouter' button to add-to-cart m
 ## Task 9: Orders Page (component + feature + page + route)
 
 **Files:**
+
 - Create: `client/src/modules/order/ui/components/order-list.vue`
 - Create: `client/src/features/public/orders/orders.page.vue`
 - Create: `client/src/pages/orders/page.vue`
@@ -1211,18 +1242,16 @@ function totalItems(order: OrderDomainModel.OrderOverviewDto): number {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div
-      v-for="order in orders"
-      :key="order.id"
-      class="rounded-xl border border-slate-700/50 bg-pulse-surface p-5"
-    >
+    <div v-for="order in orders" :key="order.id" class="rounded-xl border border-slate-700/50 bg-pulse-surface p-5">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3">
           <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-600/20">
             <Package class="h-5 w-5 text-violet-400" />
           </div>
           <div>
-            <p class="text-sm font-semibold text-slate-50">{{ totalItems(order) }} article{{ totalItems(order) > 1 ? 's' : '' }}</p>
+            <p class="text-sm font-semibold text-slate-50">
+              {{ totalItems(order) }} article{{ totalItems(order) > 1 ? 's' : '' }}
+            </p>
             <p class="text-xs text-slate-400">{{ formatDate(order.createdAt) }}</p>
           </div>
         </div>
@@ -1272,7 +1301,10 @@ const { data: orders, isLoading, isError } = useGetMyOrders()
     <div v-else-if="!orders?.length" class="flex flex-col items-center justify-center gap-4 py-20">
       <ShoppingBag class="h-12 w-12 text-slate-600" />
       <p class="text-sm text-slate-400">Aucune commande pour le moment</p>
-      <RouterLink to="/shop" class="rounded-md bg-pulse-violet px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-pulse-violet-dark">
+      <RouterLink
+        to="/shop"
+        class="rounded-md bg-pulse-violet px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-pulse-violet-dark"
+      >
         Decouvrir le catalogue
       </RouterLink>
     </div>

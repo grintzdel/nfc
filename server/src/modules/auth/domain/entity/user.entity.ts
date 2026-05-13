@@ -42,15 +42,33 @@ export class UserEntity {
     return new UserEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get email(): string { return this.props.email }
-  get password(): string { return this.props.password }
-  get firstName(): string { return this.props.firstName }
-  get lastName(): string { return this.props.lastName }
-  get role(): UserRole { return this.props.role }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get email(): string {
+    return this.props.email
+  }
+  get password(): string {
+    return this.props.password
+  }
+  get firstName(): string {
+    return this.props.firstName
+  }
+  get lastName(): string {
+    return this.props.lastName
+  }
+  get role(): UserRole {
+    return this.props.role
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
   get fullName(): string {
     return `${this.props.firstName} ${this.props.lastName}`.trim()

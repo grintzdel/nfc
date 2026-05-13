@@ -6,11 +6,7 @@ withDefaults(defineProps<{ count?: number }>(), { count: 3 })
 
 <template>
   <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-    <div
-      v-for="i in count"
-      :key="i"
-      class="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0F172A] p-5"
-    >
+    <div v-for="i in count" :key="i" class="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0F172A] p-5">
       <div class="flex items-start justify-between gap-2">
         <Skeleton class="h-5 w-2/3" />
         <Skeleton class="h-5 w-16 rounded-full" />

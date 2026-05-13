@@ -1,6 +1,7 @@
-import { ParticipantEntity, ParticipantProfile } from '../../domain/entity/participant.entity'
-import { EventEntity } from '@modules/event/domain/entity/event.entity'
 import { EventStatus } from '@modules/event/domain/constants/event-status.constant'
+import { EventEntity } from '@modules/event/domain/entity/event.entity'
+
+import { ParticipantEntity, ParticipantProfile } from '../../domain/entity/participant.entity'
 
 type EventSummary = {
   id: string

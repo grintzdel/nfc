@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Linkedin, Twitter, Github, Instagram, Globe, Mail, Link as LinkIcon } from 'lucide-vue-next'
+import { computed } from 'vue'
+
 import { ProfileLinkType } from '@/modules/participant/core/constants/profile-link-type.constant'
 
 const props = defineProps<{ type: string }>()

@@ -1,5 +1,5 @@
-import { EventEntity, EventEntityProps } from '../domain/entity/event.entity'
 import { EventStatus } from '../domain/constants/event-status.constant'
+import { EventEntity, EventEntityProps } from '../domain/entity/event.entity'
 
 let counter = 0
 

@@ -12,27 +12,28 @@
 
 ## File Map
 
-| File | Responsibility |
-|------|---------------|
-| **Create:** `src/ui/layout/admin-layout.vue` | Flex row: sidebar + vertical(header + slot) + Toaster |
-| **Create:** `src/ui/layout/admin-sidebar.vue` | Fixed 256px sidebar with 5 sections, nav items, user footer |
-| **Create:** `src/ui/layout/admin-header.vue` | Top bar: title/subtitle + search + bell + avatar |
-| **Create:** `src/ui/components/stat-card.vue` | Reusable stat card (icon, title, value, badge) |
-| **Create:** `src/features/admin/dashboard/components/dashboard-stats.vue` | 4 stat cards row |
-| **Create:** `src/features/admin/dashboard/components/dashboard-activations-chart.vue` | Bar chart with Unovis |
-| **Create:** `src/features/admin/dashboard/components/dashboard-interactions-chart.vue` | Donut chart with Unovis |
-| **Create:** `src/features/admin/dashboard/components/dashboard-next-event.vue` | Next event card with KPIs + timeline |
-| **Create:** `src/features/admin/dashboard/components/dashboard-stock.vue` | Stock card with gauge + details |
-| **Create:** `src/features/admin/dashboard/dashboard.page.vue` | Orchestrator: queries + wires components |
-| **Create:** `src/pages/admin/dashboard/page.vue` | Shell page |
-| **Modify:** `src/main.ts` | Add admin routes + beforeEach guard |
-| **Modify:** `tailwind.config.js` | Add `pulse-surface-dark` color |
+| File                                                                                   | Responsibility                                              |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| **Create:** `src/ui/layout/admin-layout.vue`                                           | Flex row: sidebar + vertical(header + slot) + Toaster       |
+| **Create:** `src/ui/layout/admin-sidebar.vue`                                          | Fixed 256px sidebar with 5 sections, nav items, user footer |
+| **Create:** `src/ui/layout/admin-header.vue`                                           | Top bar: title/subtitle + search + bell + avatar            |
+| **Create:** `src/ui/components/stat-card.vue`                                          | Reusable stat card (icon, title, value, badge)              |
+| **Create:** `src/features/admin/dashboard/components/dashboard-stats.vue`              | 4 stat cards row                                            |
+| **Create:** `src/features/admin/dashboard/components/dashboard-activations-chart.vue`  | Bar chart with Unovis                                       |
+| **Create:** `src/features/admin/dashboard/components/dashboard-interactions-chart.vue` | Donut chart with Unovis                                     |
+| **Create:** `src/features/admin/dashboard/components/dashboard-next-event.vue`         | Next event card with KPIs + timeline                        |
+| **Create:** `src/features/admin/dashboard/components/dashboard-stock.vue`              | Stock card with gauge + details                             |
+| **Create:** `src/features/admin/dashboard/dashboard.page.vue`                          | Orchestrator: queries + wires components                    |
+| **Create:** `src/pages/admin/dashboard/page.vue`                                       | Shell page                                                  |
+| **Modify:** `src/main.ts`                                                              | Add admin routes + beforeEach guard                         |
+| **Modify:** `tailwind.config.js`                                                       | Add `pulse-surface-dark` color                              |
 
 ---
 
 ### Task 1: Install Unovis + add Tailwind color
 
 **Files:**
+
 - Modify: `package.json` (via pnpm add)
 - Modify: `tailwind.config.js:9`
 
@@ -91,6 +92,7 @@ git commit -m "feat(admin): install unovis + add pulse-surface-dark color"
 ### Task 2: Admin Sidebar
 
 **Files:**
+
 - Create: `src/ui/layout/admin-sidebar.vue`
 
 - [ ] **Step 1: Create the sidebar component**
@@ -238,6 +240,7 @@ git commit -m "feat(admin): add admin sidebar component"
 ### Task 3: Admin Header
 
 **Files:**
+
 - Create: `src/ui/layout/admin-header.vue`
 
 - [ ] **Step 1: Create the header component**
@@ -271,7 +274,9 @@ defineProps<{
         />
       </div>
 
-      <button class="rounded-md border border-white/10 bg-[#020617] p-2 text-slate-400 transition-colors hover:text-slate-200">
+      <button
+        class="rounded-md border border-white/10 bg-[#020617] p-2 text-slate-400 transition-colors hover:text-slate-200"
+      >
         <Bell class="h-4 w-4" />
       </button>
 
@@ -303,6 +308,7 @@ git commit -m "feat(admin): add admin header component"
 ### Task 4: Admin Layout
 
 **Files:**
+
 - Create: `src/ui/layout/admin-layout.vue`
 
 - [ ] **Step 1: Create the layout component**
@@ -355,6 +361,7 @@ git commit -m "feat(admin): add admin layout component"
 ### Task 5: Stat Card Component
 
 **Files:**
+
 - Create: `src/ui/components/stat-card.vue`
 
 - [ ] **Step 1: Create the reusable stat card**
@@ -391,11 +398,7 @@ defineProps<{
       <span
         v-if="badge"
         class="inline-flex w-fit items-center rounded-full px-2 py-0.5 text-xs font-semibold"
-        :class="
-          badgeVariant === 'negative'
-            ? 'bg-red-500/20 text-red-500'
-            : 'bg-emerald-500/20 text-emerald-500'
-        "
+        :class="badgeVariant === 'negative' ? 'bg-red-500/20 text-red-500' : 'bg-emerald-500/20 text-emerald-500'"
       >
         {{ badge }}
       </span>
@@ -424,6 +427,7 @@ git commit -m "feat(ui): add reusable stat-card component"
 ### Task 6: Dashboard Stats Section
 
 **Files:**
+
 - Create: `src/features/admin/dashboard/components/dashboard-stats.vue`
 
 - [ ] **Step 1: Create the stats row component**
@@ -519,6 +523,7 @@ git commit -m "feat(admin): add dashboard stats section"
 ### Task 7: Dashboard Activations Bar Chart
 
 **Files:**
+
 - Create: `src/features/admin/dashboard/components/dashboard-activations-chart.vue`
 
 - [ ] **Step 1: Create the bar chart component**
@@ -593,6 +598,7 @@ git commit -m "feat(admin): add dashboard activations bar chart"
 ### Task 8: Dashboard Interactions Donut Chart
 
 **Files:**
+
 - Create: `src/features/admin/dashboard/components/dashboard-interactions-chart.vue`
 
 - [ ] **Step 1: Create the donut chart component**
@@ -660,11 +666,7 @@ const bottomLabel = computed(() => {
       </div>
 
       <div class="flex flex-col gap-2">
-        <div
-          v-for="(item, index) in chartData"
-          :key="item.label"
-          class="flex items-center gap-2"
-        >
+        <div v-for="(item, index) in chartData" :key="item.label" class="flex items-center gap-2">
           <span
             class="h-2 w-2 rounded-full"
             :style="{ backgroundColor: InteractionColors[index % InteractionColors.length] }"
@@ -698,6 +700,7 @@ git commit -m "feat(admin): add dashboard interactions donut chart"
 ### Task 9: Dashboard Next Event Card
 
 **Files:**
+
 - Create: `src/features/admin/dashboard/components/dashboard-next-event.vue`
 
 - [ ] **Step 1: Create the next event card**
@@ -744,7 +747,9 @@ function formatDate(dateStr: string): string {
           <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Prochain evenement</span>
           <div class="flex items-center gap-3">
             <span class="text-lg font-bold text-slate-50">{{ data.event.name }}</span>
-            <span class="inline-flex items-center gap-1.5 rounded-full border border-pulse-violet/30 bg-pulse-violet/15 px-2.5 py-0.5">
+            <span
+              class="inline-flex items-center gap-1.5 rounded-full border border-pulse-violet/30 bg-pulse-violet/15 px-2.5 py-0.5"
+            >
               <Timer class="h-3 w-3 text-pulse-violet-light" />
               <span class="text-xs font-semibold text-pulse-violet-light">
                 J-{{ data.event.daysUntil }} · {{ formatDate(data.event.startsAt) }}
@@ -760,21 +765,27 @@ function formatDate(dateStr: string): string {
           <span class="text-[11px] font-medium text-slate-400">Bracelets commandes</span>
           <div class="flex items-center gap-1.5">
             <Package class="h-3.5 w-3.5 text-pulse-violet-light" />
-            <span class="text-lg font-bold text-slate-50">{{ data.event.braceletsOrdered.toLocaleString('fr-FR') }}</span>
+            <span class="text-lg font-bold text-slate-50">{{
+              data.event.braceletsOrdered.toLocaleString('fr-FR')
+            }}</span>
           </div>
         </div>
         <div class="flex flex-col gap-1 rounded-md bg-slate-800 p-3">
           <span class="text-[11px] font-medium text-slate-400">Livres</span>
           <div class="flex items-center gap-1.5">
             <Truck class="h-3.5 w-3.5 text-emerald-500" />
-            <span class="text-lg font-bold text-slate-50">{{ data.event.braceletsOrdered.toLocaleString('fr-FR') }}</span>
+            <span class="text-lg font-bold text-slate-50">{{
+              data.event.braceletsOrdered.toLocaleString('fr-FR')
+            }}</span>
           </div>
         </div>
         <div class="flex flex-col gap-1 rounded-md bg-slate-800 p-3">
           <span class="text-[11px] font-medium text-slate-400">Pre-actives</span>
           <div class="flex items-center gap-1.5">
             <CircleCheck class="h-3.5 w-3.5 text-orange-500" />
-            <span class="text-lg font-bold text-slate-50">{{ data.event.braceletsPreActivated.toLocaleString('fr-FR') }}</span>
+            <span class="text-lg font-bold text-slate-50">{{
+              data.event.braceletsPreActivated.toLocaleString('fr-FR')
+            }}</span>
           </div>
         </div>
         <div class="flex flex-col gap-1 rounded-md bg-slate-800 p-3">
@@ -837,7 +848,9 @@ function formatDate(dateStr: string): string {
       </div>
 
       <!-- CTA -->
-      <button class="flex w-full items-center justify-center gap-2 rounded-md bg-pulse-violet px-3.5 py-2.5 text-[13px] font-semibold text-violet-50 transition-colors hover:bg-pulse-violet-dark">
+      <button
+        class="flex w-full items-center justify-center gap-2 rounded-md bg-pulse-violet px-3.5 py-2.5 text-[13px] font-semibold text-violet-50 transition-colors hover:bg-pulse-violet-dark"
+      >
         <MonitorPlay class="h-3.5 w-3.5" />
         Ouvrir le centre de controle
       </button>
@@ -866,6 +879,7 @@ git commit -m "feat(admin): add dashboard next event card"
 ### Task 10: Dashboard Stock Card
 
 **Files:**
+
 - Create: `src/features/admin/dashboard/components/dashboard-stock.vue`
 
 - [ ] **Step 1: Create the stock card**
@@ -899,7 +913,9 @@ function formatDate(dateStr: string): string {
 </script>
 
 <template>
-  <div class="flex w-full flex-col justify-between gap-4 rounded-lg border border-white/10 bg-[#0F172A] p-5 xl:w-[380px]">
+  <div
+    class="flex w-full flex-col justify-between gap-4 rounded-lg border border-white/10 bg-[#0F172A] p-5 xl:w-[380px]"
+  >
     <div v-if="!data" class="flex h-60 items-center justify-center">
       <p class="text-sm text-slate-500">Aucune donnee de stock</p>
     </div>
@@ -926,7 +942,9 @@ function formatDate(dateStr: string): string {
           <div class="flex flex-col gap-0.5">
             <span class="text-xs text-slate-400">Bracelets en stock</span>
             <div class="flex items-end gap-1.5">
-              <span class="text-[28px] font-bold leading-tight text-slate-50">{{ data.current.toLocaleString('fr-FR') }}</span>
+              <span class="text-[28px] font-bold leading-tight text-slate-50">{{
+                data.current.toLocaleString('fr-FR')
+              }}</span>
               <span class="pb-1 text-sm text-slate-400">/ {{ data.maxCapacity.toLocaleString('fr-FR') }}</span>
             </div>
           </div>
@@ -935,10 +953,7 @@ function formatDate(dateStr: string): string {
 
         <!-- Progress bar -->
         <div class="relative h-2 w-full overflow-hidden rounded-full bg-slate-800">
-          <div
-            class="h-full rounded-full transition-all"
-            :style="{ width: barWidth, backgroundColor: barColor }"
-          />
+          <div class="h-full rounded-full transition-all" :style="{ width: barWidth, backgroundColor: barColor }" />
         </div>
 
         <div class="flex items-center justify-between text-[10px] text-slate-400">
@@ -955,19 +970,25 @@ function formatDate(dateStr: string): string {
             <Truck class="h-3.5 w-3.5 text-pulse-violet-light" />
             <span class="text-xs text-slate-400">Commande en cours</span>
           </div>
-          <span class="text-xs font-semibold text-slate-50">{{ data.pendingOrder.units.toLocaleString('fr-FR') }} unites</span>
+          <span class="text-xs font-semibold text-slate-50"
+            >{{ data.pendingOrder.units.toLocaleString('fr-FR') }} unites</span
+          >
         </div>
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <CalendarClock class="h-3.5 w-3.5 text-pulse-violet-light" />
             <span class="text-xs text-slate-400">Livraison estimee</span>
           </div>
-          <span class="text-xs font-semibold text-slate-50">{{ formatDate(data.pendingOrder.estimatedDeliveryDate) }}</span>
+          <span class="text-xs font-semibold text-slate-50">{{
+            formatDate(data.pendingOrder.estimatedDeliveryDate)
+          }}</span>
         </div>
       </div>
 
       <!-- CTA -->
-      <button class="flex w-full items-center justify-center gap-2 rounded-md bg-pulse-violet px-3.5 py-2.5 text-[13px] font-semibold text-violet-50 transition-colors hover:bg-pulse-violet-dark">
+      <button
+        class="flex w-full items-center justify-center gap-2 rounded-md bg-pulse-violet px-3.5 py-2.5 text-[13px] font-semibold text-violet-50 transition-colors hover:bg-pulse-violet-dark"
+      >
         <Plus class="h-3.5 w-3.5" />
         Commander des packs
       </button>
@@ -996,6 +1017,7 @@ git commit -m "feat(admin): add dashboard stock card"
 ### Task 11: Dashboard Orchestrator + Shell Page
 
 **Files:**
+
 - Create: `src/features/admin/dashboard/dashboard.page.vue`
 - Create: `src/pages/admin/dashboard/page.vue`
 
@@ -1091,6 +1113,7 @@ git commit -m "feat(admin): add dashboard orchestrator and shell page"
 ### Task 12: Admin Routes + Guard
 
 **Files:**
+
 - Modify: `src/main.ts`
 
 - [ ] **Step 1: Add admin routes and guard to main.ts**
@@ -1145,7 +1168,12 @@ const router = createRouter({
     { path: '/shop', name: 'shop', component: () => import('./pages/shop/page.vue') },
     { path: '/product/:slug', name: 'product', component: () => import('./pages/product-detail/page.vue') },
     { path: '/login', name: 'login', component: () => import('./pages/login/page.vue'), meta: { noLayout: true } },
-    { path: '/register', name: 'register', component: () => import('./pages/register/page.vue'), meta: { noLayout: true } },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./pages/register/page.vue'),
+      meta: { noLayout: true },
+    },
     { path: '/orders', name: 'orders', component: () => import('./pages/orders/page.vue') },
     { path: '/admin', redirect: '/admin/dashboard' },
     {

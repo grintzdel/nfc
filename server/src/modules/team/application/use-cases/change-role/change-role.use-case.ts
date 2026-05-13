@@ -1,14 +1,15 @@
-import { TeamMemberEntity } from '../../../domain/entity/team-member.entity'
-import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
-import { TeamRole } from '../../../domain/constants/team-role.constant'
-import { TeamMemberNotFoundError, TeamMemberNotAuthorizedError } from '../../../domain/errors/team.error'
-import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
 import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
+
+import { TeamRole } from '../../../domain/constants/team-role.constant'
+import { TeamMemberEntity } from '../../../domain/entity/team-member.entity'
+import { TeamMemberNotFoundError, TeamMemberNotAuthorizedError } from '../../../domain/errors/team.error'
+import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
 
 export class ChangeRoleUseCase {
   constructor(
     private readonly teamMemberRepository: ITeamMemberRepository,
-    private readonly eventRepository: IEventRepository,
+    private readonly eventRepository: IEventRepository
   ) {}
 
   async execute(teamMemberId: string, callerUserId: string, newRole: TeamRole): Promise<TeamMemberEntity> {

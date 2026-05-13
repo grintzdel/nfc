@@ -1,4 +1,5 @@
 import { useRouter } from 'vue-router'
+
 import { getSharedHttpClient } from '@/modules/shared/http/http-client'
 
 export function useAuth() {

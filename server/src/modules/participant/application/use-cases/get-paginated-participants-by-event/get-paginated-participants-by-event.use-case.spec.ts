@@ -1,8 +1,9 @@
-import { GetPaginatedParticipantsByEventUseCase } from './get-paginated-participants-by-event.use-case'
-import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
-import { BraceletRepositoryMock } from '@modules/bracelet/__tests__/bracelet.repository.mock'
-import { createParticipantFixture } from '../../../__tests__/participant.factory'
 import { createBraceletFixture } from '@modules/bracelet/__tests__/bracelet.factory'
+import { BraceletRepositoryMock } from '@modules/bracelet/__tests__/bracelet.repository.mock'
+
+import { createParticipantFixture } from '../../../__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
+import { GetPaginatedParticipantsByEventUseCase } from './get-paginated-participants-by-event.use-case'
 
 describe('GetPaginatedParticipantsByEventUseCase', () => {
   let participantRepo: ParticipantRepositoryMock
@@ -30,7 +31,10 @@ describe('GetPaginatedParticipantsByEventUseCase', () => {
     await useCase.execute({ eventId: 'e1', page: 2, limit: 50, search: 'marie' })
 
     expect(participantRepo.findPaginatedByEventId_calledWith).toEqual({
-      eventId: 'e1', page: 2, limit: 50, search: 'marie',
+      eventId: 'e1',
+      page: 2,
+      limit: 50,
+      search: 'marie',
     })
   })
 
@@ -60,7 +64,10 @@ describe('GetPaginatedParticipantsByEventUseCase', () => {
 
     participantRepo.findPaginatedByEventId_result = {
       items: [p1, p2, p3],
-      total: 3, page: 1, limit: 20, totalPages: 1,
+      total: 3,
+      page: 1,
+      limit: 20,
+      totalPages: 1,
     }
     braceletRepo.findAllByIds_result = [b1, b3]
 

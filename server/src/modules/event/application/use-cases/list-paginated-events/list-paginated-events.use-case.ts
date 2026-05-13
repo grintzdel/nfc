@@ -1,6 +1,7 @@
-import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
 import { ICheckInRepository } from '@modules/check-in/domain/repository/check-in.repository.interface'
+
+import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 
 export interface PaginatedEventRow {
   id: string
@@ -21,7 +22,7 @@ export class ListPaginatedEventsUseCase {
   constructor(
     private readonly eventRepository: IEventRepository,
     private readonly braceletRepository: IBraceletRepository,
-    private readonly checkInRepository: ICheckInRepository,
+    private readonly checkInRepository: ICheckInRepository
   ) {}
 
   async execute(params: PaginationParams): Promise<PaginatedResult<PaginatedEventRow>> {
@@ -44,7 +45,7 @@ export class ListPaginatedEventsUseCase {
           checkInsCount,
           checkInsRate: braceletsCount > 0 ? Math.round((checkInsCount / braceletsCount) * 100) : 0,
         }
-      }),
+      })
     )
     return { items: rows, total: result.total, page: result.page, limit: result.limit, totalPages: result.totalPages }
   }

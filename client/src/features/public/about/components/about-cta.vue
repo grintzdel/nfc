@@ -5,10 +5,10 @@ import { RouterLink } from 'vue-router'
 <template>
   <section class="relative bg-pulse-bg">
     <div class="relative mx-auto flex max-w-7xl flex-col items-center px-6 py-24 lg:px-20">
-      <div class="flex w-full max-w-[900px] flex-col items-center gap-8 rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-600/20 to-pink-500/20 px-10 py-16 shadow-[0_20px_80px_rgba(124,58,237,0.27)] md:px-20">
-        <h2 class="max-w-[700px] text-center text-4xl font-bold text-slate-50">
-          Envie de rejoindre l'aventure ?
-        </h2>
+      <div
+        class="flex w-full max-w-[900px] flex-col items-center gap-8 rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-600/20 to-pink-500/20 px-10 py-16 shadow-[0_20px_80px_rgba(124,58,237,0.27)] md:px-20"
+      >
+        <h2 class="max-w-[700px] text-center text-4xl font-bold text-slate-50">Envie de rejoindre l'aventure ?</h2>
         <p class="max-w-[600px] text-center text-lg leading-relaxed text-slate-400">
           Que vous soyez organisateur, partenaire ou simplement curieux, on a hate de vous rencontrer.
         </p>

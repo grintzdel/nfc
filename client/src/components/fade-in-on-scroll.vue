@@ -8,7 +8,7 @@ withDefaults(
     /** Optional CSS animation-delay in ms — useful when staggering siblings. */
     delay?: number
   }>(),
-  { threshold: 0.15, delay: 0 },
+  { threshold: 0.15, delay: 0 }
 )
 
 const wrapper = ref<HTMLElement | null>(null)
@@ -31,7 +31,7 @@ onMounted(() => {
         }
       }
     },
-    { threshold: 0.15, rootMargin: '0px 0px -10% 0px' },
+    { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
   )
   observer.observe(wrapper.value)
 })
@@ -55,7 +55,9 @@ onBeforeUnmount(() => {
 .fade-in-on-scroll {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 600ms ease-out, transform 600ms ease-out;
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
   transition-delay: inherit;
 }
 .fade-in-on-scroll.is-visible {

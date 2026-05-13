@@ -38,13 +38,29 @@ The endpoint already exists in `server/src/routes/nfc.routes.ts`:
   "success": true,
   "data": {
     "bracelet": { "nfcId": "...", "status": "active" },
-    "participant": { "id": "...", "profile": { /* extended with links[] from Spec 3 */ }, "checkedInAt": null },
-    "event": { "id": "...", "name": "...", "slug": "...", "venueName": "...", "venueAddress": "...", "startsAt": "...", "endsAt": "...", "status": "upcoming" }
-  }
+    "participant": {
+      "id": "...",
+      "profile": {
+        /* extended with links[] from Spec 3 */
+      },
+      "checkedInAt": null,
+    },
+    "event": {
+      "id": "...",
+      "name": "...",
+      "slug": "...",
+      "venueName": "...",
+      "venueAddress": "...",
+      "startsAt": "...",
+      "endsAt": "...",
+      "status": "upcoming",
+    },
+  },
 }
 ```
 
 Returns 404 if:
+
 - bracelet not found, soft-deleted, or status === `stock`
 - no participant attached to that bracelet
 - event not found / soft-deleted
@@ -165,27 +181,27 @@ import NfcProfilePage from '@/features/public/nfc-profile/nfc-profile.page.vue'
 
 ### 4.3 Components (in `client/src/modules/nfc/ui/components/`)
 
-| Component | Role |
-|---|---|
+| Component              | Role                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------- |
 | `nfc-profile-hero.vue` | Avatar (initials from `displayName`), `displayName`, `role`, event name + dates |
-| `nfc-bio-section.vue` | Bio paragraph in a styled card; hidden if `bio` is null/empty |
-| `nfc-link-card.vue` | Clickable card per link: icon + label + chevron-right |
-| `link-icon.vue` | Maps a `ProfileLinkType` to a `lucide-vue-next` icon |
-| `nfc-error-state.vue` | 404 state with explanatory copy |
+| `nfc-bio-section.vue`  | Bio paragraph in a styled card; hidden if `bio` is null/empty                   |
+| `nfc-link-card.vue`    | Clickable card per link: icon + label + chevron-right                           |
+| `link-icon.vue`        | Maps a `ProfileLinkType` to a `lucide-vue-next` icon                            |
+| `nfc-error-state.vue`  | 404 state with explanatory copy                                                 |
 
 ### 4.4 Link icon mapping
 
 In `link-icon.vue`:
 
-| `type` | Icon |
-|---|---|
-| `linkedin` | `Linkedin` |
-| `twitter` | `Twitter` |
-| `github` | `Github` |
+| `type`      | Icon        |
+| ----------- | ----------- |
+| `linkedin`  | `Linkedin`  |
+| `twitter`   | `Twitter`   |
+| `github`    | `Github`    |
 | `instagram` | `Instagram` |
-| `website` | `Globe` |
-| `email` | `Mail` |
-| `custom` | `Link` |
+| `website`   | `Globe`     |
+| `email`     | `Mail`      |
+| `custom`    | `Link`      |
 
 ### 4.5 Link card behavior
 
@@ -195,8 +211,8 @@ In `link-icon.vue`:
 
 ### 4.6 Error states
 
-- **404 from API** (bracelet not active / not found): `<NfcErrorState>` with copy: *"Ce bracelet n'est pas activé. Adressez-vous à l'organisateur de l'événement."*
-- **Network error**: same component, generic copy: *"Impossible de joindre le serveur. Réessayez dans un instant."*
+- **404 from API** (bracelet not active / not found): `<NfcErrorState>` with copy: _"Ce bracelet n'est pas activé. Adressez-vous à l'organisateur de l'événement."_
+- **Network error**: same component, generic copy: _"Impossible de joindre le serveur. Réessayez dans un instant."_
 
 ---
 

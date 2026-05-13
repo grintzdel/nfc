@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { Lock, Truck, X } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Lock, Truck, X } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
-import CartItemRow from './cart-item-row.vue'
-import { useCart } from '@/modules/cart/ui/hooks/use-cart'
-import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
-import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
+import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
+import { useCart } from '@/modules/cart/ui/hooks/use-cart'
+import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
+
+import CartItemRow from './cart-item-row.vue'
 
 const router = useRouter()
 const { isAuthenticated } = useAuth()
@@ -78,11 +80,7 @@ async function handleCheckout() {
     leave-from-class="opacity-100"
     leave-to-class="opacity-0"
   >
-    <div
-      v-if="cartOpen"
-      class="fixed inset-0 z-40 bg-black/60"
-      @click="closeCart"
-    />
+    <div v-if="cartOpen" class="fixed inset-0 z-40 bg-black/60" @click="closeCart" />
   </Transition>
 
   <Transition
@@ -136,7 +134,13 @@ async function handleCheckout() {
           <CartItemRow
             v-for="item in cartItems"
             :key="item.productId"
-            :item="{ id: item.productId, productId: item.productId, variantName: item.variantName ?? null, quantity: item.quantity, createdAt: '' }"
+            :item="{
+              id: item.productId,
+              productId: item.productId,
+              variantName: item.variantName ?? null,
+              quantity: item.quantity,
+              createdAt: '',
+            }"
             :product="getProduct(item.productId)"
             @update-quantity="handleUpdateQuantity"
             @remove="handleRemove"
@@ -156,7 +160,9 @@ async function handleCheckout() {
             <div class="my-2 h-px bg-slate-700/50" />
             <div class="flex items-center justify-between">
               <span class="text-lg font-bold text-slate-50">Total</span>
-              <span class="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-2xl font-extrabold text-transparent">
+              <span
+                class="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-2xl font-extrabold text-transparent"
+              >
                 {{ subtotal.toFixed(2) }}&#8364;
               </span>
             </div>

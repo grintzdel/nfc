@@ -1,16 +1,17 @@
-import { BraceletEntity } from '../../domain/entity/bracelet.entity'
+import { OrderEntity } from '@modules/order/domain/entity/order.entity'
+
 import { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
-import { CreateBraceletUseCase, CreateBraceletInput } from '../use-cases/create-bracelet/create-bracelet.use-case'
+import { BraceletEntity } from '../../domain/entity/bracelet.entity'
+import { ActivateBraceletUseCase } from '../use-cases/activate-bracelet/activate-bracelet.use-case'
+import { AssignBraceletUseCase } from '../use-cases/assign-bracelet/assign-bracelet.use-case'
 import { CreateBraceletFromOrderUseCase } from '../use-cases/create-bracelet-from-order/create-bracelet-from-order.use-case'
+import { CreateBraceletUseCase, CreateBraceletInput } from '../use-cases/create-bracelet/create-bracelet.use-case'
+import { DeleteBraceletUseCase } from '../use-cases/delete-bracelet/delete-bracelet.use-case'
+import { DisableBraceletUseCase } from '../use-cases/disable-bracelet/disable-bracelet.use-case'
 import { GetAllBraceletsUseCase } from '../use-cases/get-all-bracelets/get-all-bracelets.use-case'
 import { GetBraceletByIdUseCase } from '../use-cases/get-bracelet-by-id/get-bracelet-by-id.use-case'
 import { GetBraceletByNfcIdUseCase } from '../use-cases/get-bracelet-by-nfc-id/get-bracelet-by-nfc-id.use-case'
-import { AssignBraceletUseCase } from '../use-cases/assign-bracelet/assign-bracelet.use-case'
-import { ActivateBraceletUseCase } from '../use-cases/activate-bracelet/activate-bracelet.use-case'
-import { DisableBraceletUseCase } from '../use-cases/disable-bracelet/disable-bracelet.use-case'
-import { DeleteBraceletUseCase } from '../use-cases/delete-bracelet/delete-bracelet.use-case'
 import { GetPaginatedBraceletsUseCase } from '../use-cases/get-paginated-bracelets/get-paginated-bracelets.use-case'
-import { OrderEntity } from '@modules/order/domain/entity/order.entity'
 
 export class BraceletService {
   constructor(
@@ -23,7 +24,7 @@ export class BraceletService {
     private readonly activateBraceletUseCase: ActivateBraceletUseCase,
     private readonly disableBraceletUseCase: DisableBraceletUseCase,
     private readonly deleteBraceletUseCase: DeleteBraceletUseCase,
-    private readonly getPaginatedBraceletsUseCase: GetPaginatedBraceletsUseCase,
+    private readonly getPaginatedBraceletsUseCase: GetPaginatedBraceletsUseCase
   ) {}
 
   create(input: CreateBraceletInput): Promise<BraceletEntity> {
@@ -38,7 +39,12 @@ export class BraceletService {
     return this.getAllBraceletsUseCase.execute(status)
   }
 
-  getPaginated(params: { page: number; limit: number; status?: BraceletStatus; search?: string }): Promise<PaginatedResult<BraceletEntity>> {
+  getPaginated(params: {
+    page: number
+    limit: number
+    status?: BraceletStatus
+    search?: string
+  }): Promise<PaginatedResult<BraceletEntity>> {
     return this.getPaginatedBraceletsUseCase.execute(params)
   }
 

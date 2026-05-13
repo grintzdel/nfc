@@ -1,5 +1,5 @@
-import { IParticipantRepository } from '../../domain/repository/participant.repository.interface'
 import { ParticipantEntity, ProfileLink } from '../../domain/entity/participant.entity'
+import { IParticipantRepository } from '../../domain/repository/participant.repository.interface'
 import { ParticipantModel, ParticipantDocument } from '../schema/participant.schema'
 
 function toEntity(doc: ParticipantDocument): ParticipantEntity {
@@ -67,7 +67,10 @@ export class ParticipantRepositoryMongooseMongo implements IParticipantRepositor
       filter['$or'] = [{ 'profile.displayName': regex }, { 'profile.role': regex }]
     }
     const [docs, total] = await Promise.all([
-      ParticipantModel.find(filter).sort({ registeredAt: -1 }).skip((page - 1) * limit).limit(limit),
+      ParticipantModel.find(filter)
+        .toSorted({ registeredAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
       ParticipantModel.countDocuments(filter),
     ])
     return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -88,7 +91,10 @@ export class ParticipantRepositoryMongooseMongo implements IParticipantRepositor
       filter['$or'] = [{ 'profile.displayName': regex }, { 'profile.role': regex }]
     }
     const [docs, total] = await Promise.all([
-      ParticipantModel.find(filter).sort({ registeredAt: -1 }).skip((page - 1) * limit).limit(limit),
+      ParticipantModel.find(filter)
+        .toSorted({ registeredAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
       ParticipantModel.countDocuments(filter),
     ])
     return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -107,7 +113,7 @@ export class ParticipantRepositoryMongooseMongo implements IParticipantRepositor
     const doc = await ParticipantModel.findByIdAndUpdate(
       entity.id,
       { userId, eventId, braceletId, profile, registeredAt, checkedInAt, deletedAt },
-      { new: true },
+      { new: true }
     )
     if (!doc) throw new Error(`Participant ${entity.id} not found in DB during update`)
     return toEntity(doc)

@@ -1,5 +1,6 @@
-import request from 'supertest'
 import type { Express } from 'express'
+import request from 'supertest'
+
 import { UserModel } from '../../modules/auth/infrastructure/schema/user.schema'
 import { setupTestApp, teardownTestApp, clearDatabase } from './setup'
 
@@ -15,9 +16,7 @@ describe('Products CRUD integration', () => {
 
     await UserModel.updateOne({ email: 'admin@example.com' }, { $set: { role: 'admin' } })
 
-    const login = await request(app)
-      .post('/api/auth/login')
-      .send({ email: 'admin@example.com', password: 'secret123' })
+    const login = await request(app).post('/api/auth/login').send({ email: 'admin@example.com', password: 'secret123' })
     return login.body.data.token as string
   }
 

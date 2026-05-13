@@ -1,9 +1,10 @@
-import { GetAvailableBraceletsUseCase } from './get-available-bracelets.use-case'
-import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
-import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
-import { createBraceletFixture } from '../../../__tests__/bracelet.factory'
 import { createParticipantFixture } from '@modules/participant/__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
+
+import { createBraceletFixture } from '../../../__tests__/bracelet.factory'
+import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
 import { BraceletStatus } from '../../../domain/constants/bracelet-status.constant'
+import { GetAvailableBraceletsUseCase } from './get-available-bracelets.use-case'
 
 describe('GetAvailableBraceletsUseCase', () => {
   let braceletRepo: BraceletRepositoryMock
@@ -20,7 +21,8 @@ describe('GetAvailableBraceletsUseCase', () => {
     braceletRepo.findAllByEventIdAndStatus_result = []
     await useCase.execute({ eventId: 'e1' })
     expect(braceletRepo.findAllByEventIdAndStatus_calledWith).toEqual({
-      eventId: 'e1', status: BraceletStatus.PRE_ACTIVATED,
+      eventId: 'e1',
+      status: BraceletStatus.PRE_ACTIVATED,
     })
   })
 
@@ -42,7 +44,7 @@ describe('GetAvailableBraceletsUseCase', () => {
 
   it('caps the result at 100', async () => {
     braceletRepo.findAllByEventIdAndStatus_result = Array.from({ length: 150 }, (_, i) =>
-      createBraceletFixture({ id: `b${i}`, status: BraceletStatus.PRE_ACTIVATED }),
+      createBraceletFixture({ id: `b${i}`, status: BraceletStatus.PRE_ACTIVATED })
     )
     participantRepo.findAllByEventId_result = []
 

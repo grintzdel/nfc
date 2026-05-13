@@ -1,6 +1,6 @@
 import { ParticipantEntity } from '../../../domain/entity/participant.entity'
-import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 import { ParticipantNotFoundError } from '../../../domain/errors/participant.error'
+import { IParticipantRepository } from '../../../domain/repository/participant.repository.interface'
 
 export class GetParticipantByIdUseCase {
   constructor(private readonly participantRepository: IParticipantRepository) {}

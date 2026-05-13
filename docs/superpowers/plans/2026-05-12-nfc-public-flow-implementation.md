@@ -19,11 +19,13 @@
 ### Phase 1 — Model Extension (Spec 3)
 
 **Backend — Create:**
+
 - `server/src/modules/participant/domain/constants/profile-link-type.constant.ts` — 7-type whitelist
 - `server/src/modules/participant/presentation/dto/profile-link.parser.ts` — shared `parseProfileLinks(raw)` (DRY)
 - `server/src/modules/participant/application/use-cases/update-participant-profile/update-participant-profile.use-case.spec.ts` — covers 403 + validation
 
 **Backend — Modify:**
+
 - `server/src/modules/participant/domain/entity/participant.entity.ts` — `linkedinUrl` → `links: ProfileLink[]` + URL/type/count validation
 - `server/src/modules/participant/domain/entity/participant.entity.spec.ts` — rewrite cases for `links`
 - `server/src/modules/participant/domain/model/participant.domain-model.ts` — DTO shape sync
@@ -34,6 +36,7 @@
 - `server/src/seed.ts` — replace linkedinUrl with seeded links
 
 **Frontend — Create:**
+
 - `client/src/modules/participant/core/constants/profile-link-type.constant.ts`
 - `client/src/modules/participant/ui/components/profile-fields-form.vue`
 - `client/src/modules/participant/ui/components/profile-links-editor.vue`
@@ -44,6 +47,7 @@
 - `client/src/pages/me/events/page.vue`
 
 **Frontend — Modify:**
+
 - `client/src/modules/participant/core/model/participant.domain-model.ts`
 - `client/src/main.ts` — `/me/events/:participantId` + extend guard for `requiresAuth`
 - `client/src/features/public/login/login.page.vue` — honor `?redirect=`
@@ -52,31 +56,37 @@
 ### Phase 2 — Event Public Registration (Spec 1)
 
 **Backend — Create:**
+
 - `get-event-by-slug-public.use-case.ts` + `.spec.ts`
 
 **Backend — Modify:**
+
 - Event repo interface + mock + Mongoose impl: add `findBySlug(slug)`
 - Event service + controller: add `getPublicBySlug` method
 - `event.module.ts`: wire UC + register **public** route `GET /events/public/:slug` (no auth middleware, declared **before** `/`)
 
 **Frontend — Create:**
+
 - `use-get-event-public-by-slug.ts`
 - `event-public-hero.vue`, `event-public-description.vue`, `event-not-available.vue`, `event-registration-form.vue`
 - `event-public.page.vue` + `pages/events-public/page.vue`
 
 **Frontend — Modify:**
+
 - Event port + adapter: add `getPublicBySlug(slug)` method
 - `main.ts`: add `/events/:slug` route
 
 ### Phase 3 — NFC Public Page (Spec 2)
 
 **Frontend — Create (entirely new module):**
+
 - `modules/nfc/core/{model,ports,adapters,errors}/...`
 - `modules/nfc/ui/hooks/queries/query/use-get-nfc-by-id.ts`
 - `modules/nfc/ui/components/{nfc-profile-hero,nfc-bio-section,nfc-link-card,link-icon,nfc-error-state}.vue`
 - `features/public/nfc-profile/nfc-profile.page.vue` + `pages/p/page.vue`
 
 **Frontend — Modify:**
+
 - `dependencies.ts`: add `nfcPort`
 - `main.ts`: add `/p/:nfcId` with `noLayout`
 
@@ -171,7 +181,12 @@ export default defineConfig({
       dependencies: ['setup'],
     },
   ],
-  webServer: { command: 'cd .. && pnpm dev', url: 'http://localhost:5173', reuseExistingServer: !process.env.CI, timeout: 60_000 },
+  webServer: {
+    command: 'cd .. && pnpm dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 60_000,
+  },
 })
 ```
 
@@ -194,8 +209,10 @@ import { signUpUser } from './fixtures/seed'
 setup('seed baseline user + save auth state', async () => {
   if (process.env.E2E_SKIP_AUTH_SEED === '1') return
   const { token } = await signUpUser({
-    firstName: 'E2E', lastName: 'User',
-    email: 'e2e-baseline@pulse.test', password: 'Pulse2026Test!',
+    firstName: 'E2E',
+    lastName: 'User',
+    email: 'e2e-baseline@pulse.test',
+    password: 'Pulse2026Test!',
   })
   const authDir = resolve(process.cwd(), 'src/e2e/.auth')
   mkdirSync(authDir, { recursive: true })
@@ -204,7 +221,7 @@ setup('seed baseline user + save auth state', async () => {
     JSON.stringify({
       cookies: [],
       origins: [{ origin: 'http://localhost:5173', localStorage: [{ name: 'token', value: token }] }],
-    }),
+    })
   )
 })
 ```
@@ -246,8 +263,13 @@ cd client && cat src/ui/input/index.ts
 
 ```ts
 export const ProfileLinkType = {
-  LINKEDIN: 'linkedin', TWITTER: 'twitter', GITHUB: 'github', INSTAGRAM: 'instagram',
-  WEBSITE: 'website', EMAIL: 'email', CUSTOM: 'custom',
+  LINKEDIN: 'linkedin',
+  TWITTER: 'twitter',
+  GITHUB: 'github',
+  INSTAGRAM: 'instagram',
+  WEBSITE: 'website',
+  EMAIL: 'email',
+  CUSTOM: 'custom',
 } as const
 export type ProfileLinkType = (typeof ProfileLinkType)[keyof typeof ProfileLinkType]
 ```
@@ -257,6 +279,7 @@ export type ProfileLinkType = (typeof ProfileLinkType)[keyof typeof ProfileLinkT
 **Files:** Modify `server/src/modules/participant/domain/entity/participant.entity.spec.ts`.
 
 Rewrite the spec to cover the new `links[]` field. Cases to assert:
+
 - `create()` with empty `links: []` works; defaults to `[]` when omitted
 - `updateProfile({ links: [valid 3-link array] })` accepts
 - Each invalid case **throws with a specific message**:
@@ -364,22 +387,50 @@ export class ParticipantEntity {
     })
   }
 
-  static fromProps(props: ParticipantEntityProps): ParticipantEntity { return new ParticipantEntity(props) }
+  static fromProps(props: ParticipantEntityProps): ParticipantEntity {
+    return new ParticipantEntity(props)
+  }
 
-  get id(): string { return this.props.id }
-  get userId(): string { return this.props.userId }
-  get eventId(): string { return this.props.eventId }
-  get braceletId(): Nullable<string> { return this.props.braceletId }
-  get profile(): ParticipantProfile { return { ...this.props.profile, links: [...this.props.profile.links] } }
-  get registeredAt(): Date { return this.props.registeredAt }
-  get checkedInAt(): Nullable<Date> { return this.props.checkedInAt }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get userId(): string {
+    return this.props.userId
+  }
+  get eventId(): string {
+    return this.props.eventId
+  }
+  get braceletId(): Nullable<string> {
+    return this.props.braceletId
+  }
+  get profile(): ParticipantProfile {
+    return { ...this.props.profile, links: [...this.props.profile.links] }
+  }
+  get registeredAt(): Date {
+    return this.props.registeredAt
+  }
+  get checkedInAt(): Nullable<Date> {
+    return this.props.checkedInAt
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
-  isDeleted(): boolean { return this.props.deletedAt !== null }
-  hasBracelet(): boolean { return this.props.braceletId !== null }
-  isCheckedIn(): boolean { return this.props.checkedInAt !== null }
+  isDeleted(): boolean {
+    return this.props.deletedAt !== null
+  }
+  hasBracelet(): boolean {
+    return this.props.braceletId !== null
+  }
+  isCheckedIn(): boolean {
+    return this.props.checkedInAt !== null
+  }
 
   attachBracelet(braceletId: string): this {
     this.props.braceletId = braceletId
@@ -494,6 +545,7 @@ export namespace ParticipantDomainModel {
 - [ ] **Step 1: Replace `linkedinUrl` field with a `links` subdoc array**
 
 Key changes:
+
 - Add `profileLinkSchema` with `type` (enum from `ProfileLinkType`), `url` (required string), `label` (string, default null), `_id: false`
 - In `profileSchema`: drop `linkedinUrl`, add `links: { type: [profileLinkSchema], default: [] }`
 
@@ -542,6 +594,7 @@ Expected: all green. If unrelated tests break (likely `register-participant.use-
 ### Task 1.11: Frontend — Domain sync (constant + model)
 
 **Files:**
+
 - Create: `client/src/modules/participant/core/constants/profile-link-type.constant.ts` (mirror of server constant)
 - Modify: `client/src/modules/participant/core/model/participant.domain-model.ts` — replace `linkedinUrl: string | null` with `links: ProfileLinkDto[]` everywhere; add `ProfileLinkDto` type.
 
@@ -554,18 +607,32 @@ import type { ProfileLinkType } from '../constants/profile-link-type.constant'
 
 export namespace ParticipantDomainModel {
   export type ProfileLinkDto = { type: ProfileLinkType; url: string; label: string | null }
-  export type ParticipantProfileDto = { displayName: string; role: string | null; bio: string | null; links: ProfileLinkDto[] }
+  export type ParticipantProfileDto = {
+    displayName: string
+    role: string | null
+    bio: string | null
+    links: ProfileLinkDto[]
+  }
   export type ParticipantOverviewDto = {
-    id: string; userId: string; eventId: string; braceletId: string | null
+    id: string
+    userId: string
+    eventId: string
+    braceletId: string | null
     profile: ParticipantProfileDto
-    registeredAt: string; checkedInAt: string | null; createdAt: string; updatedAt: string
+    registeredAt: string
+    checkedInAt: string | null
+    createdAt: string
+    updatedAt: string
   }
   export type RegisterParticipantDto = {
     eventId: string
     profile: { displayName: string; role?: string | null; bio?: string | null; links?: ProfileLinkDto[] }
   }
   export type UpdateParticipantProfileDto = {
-    displayName?: string; role?: string | null; bio?: string | null; links?: ProfileLinkDto[]
+    displayName?: string
+    role?: string | null
+    bio?: string | null
+    links?: ProfileLinkDto[]
   }
   export type AttachBraceletDto = { braceletId: string }
 }
@@ -623,10 +690,19 @@ function update<K extends keyof Link>(field: K, value: Link[K]): void {
         <SelectItem v-for="t in linkTypes" :key="t" :value="t">{{ t }}</SelectItem>
       </SelectContent>
     </Select>
-    <Input :model-value="link.url" placeholder="https://..." class="flex-1"
-      @update:model-value="(v) => update('url', String(v))" />
-    <Input v-if="isCustom" :model-value="link.label ?? ''" placeholder="Label" class="w-32"
-      @update:model-value="(v) => update('label', String(v) || null)" />
+    <Input
+      :model-value="link.url"
+      placeholder="https://..."
+      class="flex-1"
+      @update:model-value="(v) => update('url', String(v))"
+    />
+    <Input
+      v-if="isCustom"
+      :model-value="link.label ?? ''"
+      placeholder="Label"
+      class="w-32"
+      @update:model-value="(v) => update('label', String(v) || null)"
+    />
     <Button type="button" variant="outline" size="icon" aria-label="Supprimer" @click="emit('remove')">
       <Trash2 class="h-4 w-4" />
     </Button>
@@ -649,8 +725,10 @@ router.beforeEach((to) => {
     if (!token) return { path: '/login', query: { redirect: to.fullPath } }
     try {
       const payload = JSON.parse(atob(token.split('.')[1]))
-      if (payload.role !== 'admin') return '/'   // was '/login' — loops for authed non-admin
-    } catch { return '/login' }
+      if (payload.role !== 'admin') return '/' // was '/login' — loops for authed non-admin
+    } catch {
+      return '/login'
+    }
   }
   if (to.meta.requiresAuth && !token) {
     return { path: '/login', query: { redirect: to.fullPath } }
@@ -670,10 +748,12 @@ router.push(redirect ?? (isAdmin() ? '/admin/dashboard' : '/'))
 ### Task 1.15: Frontend — Page wrapper + feature page
 
 **Files:**
+
 - Create: `client/src/pages/me/events/page.vue` — minimal wrapper that imports + renders the feature page
 - Create: `client/src/features/private/participant-profile-edit/participant-profile-edit.page.vue`
 
 **Feature page behavior:**
+
 - Read `participantId` from route
 - `useGetParticipantById(participantId)` — handle loading / error / success
 - Local refs for `fields` (displayName/role/bio) and `links`; `watch(data, …, { immediate: true })` to hydrate on success
@@ -689,6 +769,7 @@ router.push(redirect ?? (isAdmin() ? '/admin/dashboard' : '/'))
 **Files:** Create `client/src/features/private/participant-profile-edit/participant-profile-edit.test.e2e.ts`.
 
 **Cases to cover:**
+
 - Anonymous user → `/me/events/some-id` → redirects to `/login?redirect=…` (URL-encoded path).
 - Authenticated baseline user fetches `/api/participants/me`; if list is empty, `test.skip()` with a clear message (seed must populate a participation for E2E coverage).
 - Authenticated user edits `displayName`, adds 1 LinkedIn link, saves → toast "Profil mis à jour" visible.
@@ -729,6 +810,7 @@ async findBySlug(slug: string): Promise<Nullable<EventEntity>> {
 **Files:** Create `server/src/modules/event/application/use-cases/get-event-by-slug-public/get-event-by-slug-public.use-case.spec.ts`.
 
 **Cases:**
+
 - `status: UPCOMING` → returns event
 - `status: IN_PROGRESS` → returns event
 - `status: DRAFT` → throws `AppError`
@@ -821,6 +903,7 @@ curl -i http://localhost:3001/api/events/public/does-not-exist  # → 404
 ### Task 2.8: Frontend — Display components
 
 **Files:** Create under `client/src/modules/event/ui/components/`:
+
 - `event-public-hero.vue` — gradient banner. Props: `name | startsAt | endsAt | city | venueName`. Date range via `Intl.DateTimeFormat('fr-FR', { day, month, year })`. Uses `Calendar` + `MapPin` icons from lucide. Custom gradient is OK here (it's a hero, no shadcn equivalent).
 - `event-public-description.vue` — shadcn `Card` with `CardHeader/CardTitle` "À propos" + `CardContent` containing the description text (`whitespace-pre-line`).
 - `event-not-available.vue` — centered shadcn `Card` with friendly error copy.
@@ -830,6 +913,7 @@ curl -i http://localhost:3001/api/events/public/does-not-exist  # → 404
 **Files:** Create `client/src/modules/event/ui/components/event-registration-form.vue`.
 
 **Behavior:**
+
 - Reads auth state via `useAuth().isAuthenticated()` (verify the hook exists; if not, read `use-auth.ts` and add the method — returns `Boolean(localStorage.getItem('token'))`)
 - Branch UI on `isLoggedIn`:
   - **Anonymous**: shows account fields (firstName, lastName, email, password) + `RouterLink` to `/login?redirect=route.fullPath`
@@ -869,26 +953,50 @@ const { isAuthenticated } = useAuth()
 const isLoggedIn = computed(() => isAuthenticated())
 const accountFields = ref({ firstName: '', lastName: '', email: '', password: '' })
 const profileFields = ref<{
-  displayName: string; role: string | null; bio: string | null
+  displayName: string
+  role: string | null
+  bio: string | null
   links: ParticipantDomainModel.ProfileLinkDto[]
 }>({ displayName: '', role: null, bio: null, links: [] })
 const isLoading = ref(false)
 
 function validate(): boolean {
-  if (!profileFields.value.displayName.trim()) { toast.error('Le nom affiché est obligatoire'); return false }
+  if (!profileFields.value.displayName.trim()) {
+    toast.error('Le nom affiché est obligatoire')
+    return false
+  }
   if (!isLoggedIn.value) {
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(accountFields.value.email)) { toast.error('Email invalide'); return false }
-    if (accountFields.value.password.length < 8) { toast.error('Mot de passe ≥ 8 caractères'); return false }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(accountFields.value.email)) {
+      toast.error('Email invalide')
+      return false
+    }
+    if (accountFields.value.password.length < 8) {
+      toast.error('Mot de passe ≥ 8 caractères')
+      return false
+    }
     if (!accountFields.value.firstName.trim() || !accountFields.value.lastName.trim()) {
-      toast.error('Prénom et nom obligatoires'); return false
+      toast.error('Prénom et nom obligatoires')
+      return false
     }
   }
   for (const link of profileFields.value.links) {
-    if (link.type === 'email' && !/^mailto:.+@.+\..+$/.test(link.url)) { toast.error('Email mailto: requis'); return false }
-    if (link.type !== 'email' && !/^https?:\/\/.+/.test(link.url)) { toast.error('URL http(s)// requise'); return false }
-    if (link.type === 'custom' && (!link.label || !link.label.trim())) { toast.error('Custom: label requis'); return false }
+    if (link.type === 'email' && !/^mailto:.+@.+\..+$/.test(link.url)) {
+      toast.error('Email mailto: requis')
+      return false
+    }
+    if (link.type !== 'email' && !/^https?:\/\/.+/.test(link.url)) {
+      toast.error('URL http(s)// requise')
+      return false
+    }
+    if (link.type === 'custom' && (!link.label || !link.label.trim())) {
+      toast.error('Custom: label requis')
+      return false
+    }
   }
-  if (profileFields.value.links.length > 10) { toast.error('Maximum 10 liens'); return false }
+  if (profileFields.value.links.length > 10) {
+    toast.error('Maximum 10 liens')
+    return false
+  }
   return true
 }
 
@@ -910,8 +1018,14 @@ async function handleSubmit(): Promise<void> {
       try {
         const mine = await participantPort.getMyParticipations()
         const existing = mine.find((p) => p.eventId === props.eventId)
-        if (existing) { toast.info('Vous êtes déjà inscrit'); router.push(`/me/events/${existing.id}`); return }
-      } catch { /* fall through */ }
+        if (existing) {
+          toast.info('Vous êtes déjà inscrit')
+          router.push(`/me/events/${existing.id}`)
+          return
+        }
+      } catch {
+        /* fall through */
+      }
     }
     toast.error(message || "Erreur lors de l'inscription")
   } finally {
@@ -929,24 +1043,51 @@ async function handleSubmit(): Promise<void> {
       <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
         <template v-if="!isLoggedIn">
           <div class="grid grid-cols-2 gap-3">
-            <div class="flex flex-col gap-1.5"><Label for="fn">Prénom</Label><Input id="fn" v-model="accountFields.firstName" /></div>
-            <div class="flex flex-col gap-1.5"><Label for="ln">Nom</Label><Input id="ln" v-model="accountFields.lastName" /></div>
+            <div class="flex flex-col gap-1.5">
+              <Label for="fn">Prénom</Label><Input id="fn" v-model="accountFields.firstName" />
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <Label for="ln">Nom</Label><Input id="ln" v-model="accountFields.lastName" />
+            </div>
           </div>
-          <div class="flex flex-col gap-1.5"><Label for="em">Email</Label><Input id="em" v-model="accountFields.email" type="email" /></div>
-          <div class="flex flex-col gap-1.5"><Label for="pw">Mot de passe</Label><Input id="pw" v-model="accountFields.password" type="password" placeholder="8+ caractères" /></div>
-          <RouterLink :to="{ path: '/login', query: { redirect: route.fullPath } }" class="text-xs text-primary hover:underline">
+          <div class="flex flex-col gap-1.5">
+            <Label for="em">Email</Label><Input id="em" v-model="accountFields.email" type="email" />
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <Label for="pw">Mot de passe</Label
+            ><Input id="pw" v-model="accountFields.password" type="password" placeholder="8+ caractères" />
+          </div>
+          <RouterLink
+            :to="{ path: '/login', query: { redirect: route.fullPath } }"
+            class="text-xs text-primary hover:underline"
+          >
             J'ai déjà un compte
           </RouterLink>
         </template>
 
-        <div class="flex flex-col gap-1.5"><Label for="dn">Nom affiché</Label><Input id="dn" v-model="profileFields.displayName" /></div>
-        <div class="flex flex-col gap-1.5"><Label for="ro">Rôle (optionnel)</Label>
-          <Input id="ro" :model-value="profileFields.role ?? ''" @update:model-value="(v) => profileFields.role = String(v) || null" />
+        <div class="flex flex-col gap-1.5">
+          <Label for="dn">Nom affiché</Label><Input id="dn" v-model="profileFields.displayName" />
         </div>
-        <div class="flex flex-col gap-1.5"><Label for="bi">Bio (optionnel)</Label>
-          <Textarea id="bi" :model-value="profileFields.bio ?? ''" rows="3" @update:model-value="(v) => profileFields.bio = String(v) || null" />
+        <div class="flex flex-col gap-1.5">
+          <Label for="ro">Rôle (optionnel)</Label>
+          <Input
+            id="ro"
+            :model-value="profileFields.role ?? ''"
+            @update:model-value="(v) => (profileFields.role = String(v) || null)"
+          />
         </div>
-        <div class="flex flex-col gap-2"><Label>Liens (optionnel)</Label><ProfileLinksEditor v-model="profileFields.links" /></div>
+        <div class="flex flex-col gap-1.5">
+          <Label for="bi">Bio (optionnel)</Label>
+          <Textarea
+            id="bi"
+            :model-value="profileFields.bio ?? ''"
+            rows="3"
+            @update:model-value="(v) => (profileFields.bio = String(v) || null)"
+          />
+        </div>
+        <div class="flex flex-col gap-2">
+          <Label>Liens (optionnel)</Label><ProfileLinksEditor v-model="profileFields.links" />
+        </div>
 
         <Button type="submit" :disabled="isLoading">{{ isLoading ? 'Inscription…' : "S'inscrire" }}</Button>
       </form>
@@ -958,11 +1099,13 @@ async function handleSubmit(): Promise<void> {
 ### Task 2.10: Frontend — Feature page + wrapper + route
 
 **Files:**
+
 - Create `client/src/pages/events-public/page.vue` — wrapper importing the feature page (3 lines).
 - Create `client/src/features/public/event-public/event-public.page.vue`.
 - Modify `client/src/main.ts` — add `{ path: '/events/:slug', name: 'event-public', component: () => import('./pages/events-public/page.vue') }` (default layout, no auth).
 
 **Feature page behavior:** read `route.params.slug`, call `useGetEventPublicBySlug(slug)`. States:
+
 - `isLoading` → loading card
 - `isError || !data` → `<EventNotAvailable />`
 - success → `<EventPublicHero />` on top, 2-col grid below with `<EventPublicDescription>` left + `<EventRegistrationForm :event-id="data.id">` right
@@ -972,6 +1115,7 @@ async function handleSubmit(): Promise<void> {
 **Files:** Create `client/src/features/public/event-public/event-public.test.e2e.ts`.
 
 **Cases (anonymous context, fresh `browser.newContext`):**
+
 - `/events/pulse-demo-2026` → hero `<h1>` visible, "À propos" visible, "S'inscrire" button visible
 - `/events/does-not-exist` → "n'est pas disponible" text visible
 
@@ -989,6 +1133,7 @@ async function handleSubmit(): Promise<void> {
 ### Task 3.1: Frontend — NFC module (core)
 
 **Files:** Create under `client/src/modules/nfc/core/`:
+
 - `model/nfc.domain-model.ts` — `NfcDomainModel.NfcTapResponseDto` (matches the server's response shape: bracelet/participant/event tri-object; participant reuses `ParticipantProfileDto` from the participant module — links flow through here).
 - `ports/nfc.port.ts` — `INfcPort.getByNfcId(nfcId): Promise<NfcTapResponseDto>`.
 - `errors/nfc.error.ts` — `NfcBraceletNotActiveError extends DomainError` with code `NFC_BRACELET_NOT_ACTIVE`. (Check if a `DomainError` base class exists in `modules/shared/errors/`; if not, create one — `class DomainError extends Error { constructor(message: string, public readonly code: string) { super(message); this.name = this.constructor.name } }`.)
@@ -1023,6 +1168,7 @@ async function handleSubmit(): Promise<void> {
 ### Task 3.5: Frontend — Feature page + wrapper + route
 
 **Files:**
+
 - Create `client/src/pages/p/page.vue` — wrapper.
 - Create `client/src/features/public/nfc-profile/nfc-profile.page.vue` — reads `route.params.nfcId`, calls `useGetNfcByNfcId(nfcId)`, branches loading / `<NfcErrorState :variant="error instanceof NfcBraceletNotActiveError ? 'not-active' : 'network'">` / success layout (hero + bio + N `<NfcLinkCard>` per link). Dark gradient background, max-w-md centered.
 - Modify `client/src/main.ts` — add route `{ path: '/p/:nfcId', name: 'nfc-profile', component: () => import('./pages/p/page.vue'), meta: { noLayout: true } }`.
@@ -1030,6 +1176,7 @@ async function handleSubmit(): Promise<void> {
 ### Task 3.6: Frontend — Unit tests
 
 **Files:**
+
 - `nfc.adapter.http.test.ts` — mock `HttpClient.get`, assert: returns the DTO on success; throws `NfcBraceletNotActiveError` on 404 error response.
 - `link-icon.vue.test.ts` — for each `(type, expected lucide component)` pair, mount and assert the right icon is rendered.
 
@@ -1040,6 +1187,7 @@ async function handleSubmit(): Promise<void> {
 **Files:** Create `client/src/features/public/nfc-profile/nfc-profile.test.e2e.ts`.
 
 **Cases (anonymous context):**
+
 - `/p/demo-nfc-001` → `getByText('Marie Dubois')` visible; 3 `<a>` link cards visible (LinkedIn / GitHub / Calendly labels).
 - `/p/does-not-exist` → "n'est pas activé" text visible.
 

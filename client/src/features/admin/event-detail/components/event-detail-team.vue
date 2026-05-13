@@ -1,14 +1,16 @@
 <script setup lang="ts">
+import { UserPlus, CheckCircle2, Clock, Users } from 'lucide-vue-next'
 import { computed, ref, toRef } from 'vue'
 import { toast } from 'vue-sonner'
-import { UserPlus, CheckCircle2, Clock, Users } from 'lucide-vue-next'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetTeamByEvent } from '@/modules/team/ui/hooks/queries/query/use-get-team-by-event'
-import { useGetAllUsers } from '@/modules/user/ui/hooks/queries/query/use-get-all-users'
+
+import { TeamRole } from '@/modules/team/core/model/team.domain-model'
 import { useInviteTeamMember } from '@/modules/team/ui/hooks/queries/mutation/use-invite-team-member'
 import { useRevokeTeamMember } from '@/modules/team/ui/hooks/queries/mutation/use-revoke-team-member'
-import { TeamRole } from '@/modules/team/core/model/team.domain-model'
+import { useGetTeamByEvent } from '@/modules/team/ui/hooks/queries/query/use-get-team-by-event'
+import { useGetAllUsers } from '@/modules/user/ui/hooks/queries/query/use-get-all-users'
+import { EmptyState } from '@/ui/empty-state'
 import { TableSkeleton } from '@/ui/skeleton'
+
 import InviteTeamDialog from './invite-team-dialog.vue'
 
 const props = defineProps<{ eventId: string }>()
@@ -52,7 +54,7 @@ function handleInvite(payload: { userId: string; role: 'manager' | 'staff' }): v
         inviteOpen.value = false
       },
       onError: (e) => toast.error(e instanceof Error ? e.message : "Erreur lors de l'invitation"),
-    },
+    }
   )
 }
 
@@ -78,7 +80,12 @@ function formatDate(dateStr: string): string {
 }
 
 function initials(name: string): string {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join('')
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]!.toUpperCase())
+    .join('')
 }
 </script>
 
@@ -111,16 +118,28 @@ function initials(name: string): string {
       <div class="overflow-x-auto">
         <div class="flex min-w-[760px] flex-col">
           <div class="flex items-center bg-slate-800">
-            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Membre</span></div>
-            <div class="w-[130px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Rôle</span></div>
-            <div class="w-[140px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
-            <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Invité le</span></div>
-            <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
+            <div class="flex-1 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Membre</span>
+            </div>
+            <div class="w-[130px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Rôle</span>
+            </div>
+            <div class="w-[140px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span>
+            </div>
+            <div class="w-[120px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Invité le</span>
+            </div>
+            <div class="w-[140px] shrink-0 px-4 py-3 text-right">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Action</span>
+            </div>
           </div>
 
           <div v-for="m in memberRows" :key="m.id" class="flex items-center border-t border-white/10">
             <div class="flex flex-1 items-center gap-3 px-4 py-3">
-              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
+              <div
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white"
+              >
                 {{ initials(displayNameOf(m.userId)) }}
               </div>
               <div class="flex flex-col">
@@ -170,7 +189,7 @@ function initials(name: string): string {
       :loading="inviteMutation.isPending.value"
       :users="users ?? []"
       :already-member-user-ids="alreadyMemberUserIds"
-      @update:open="(v) => inviteOpen = v"
+      @update:open="(v) => (inviteOpen = v)"
       @confirm="handleInvite"
     />
   </div>

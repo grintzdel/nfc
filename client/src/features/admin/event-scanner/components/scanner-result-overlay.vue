@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { CheckCircle2, XCircle, AlertTriangle } from 'lucide-vue-next'
+import { computed } from 'vue'
 
 export type ScannerResultKind = 'success' | 'unknown' | 'duplicate' | 'error'
 

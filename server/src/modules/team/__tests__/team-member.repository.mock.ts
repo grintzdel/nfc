@@ -1,5 +1,5 @@
-import { ITeamMemberRepository } from '../domain/repository/team-member.repository.interface'
 import { TeamMemberEntity } from '../domain/entity/team-member.entity'
+import { ITeamMemberRepository } from '../domain/repository/team-member.repository.interface'
 
 export class TeamMemberRepositoryMock implements ITeamMemberRepository {
   create_result: TeamMemberEntity | null = null

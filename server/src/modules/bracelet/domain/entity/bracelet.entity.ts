@@ -1,6 +1,7 @@
+import { generateId } from '@shared/utils/generate-id'
+
 import { BraceletStatus } from '../constants/bracelet-status.constant'
 import { BraceletInvalidStatusError } from '../errors/bracelet.error'
-import { generateId } from '@shared/utils/generate-id'
 
 export interface BraceletEntityProps {
   id: string
@@ -40,23 +41,55 @@ export class BraceletEntity {
     return new BraceletEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get nfcId(): string { return this.props.nfcId }
-  get status(): BraceletStatus { return this.props.status }
-  get userId(): Nullable<string> { return this.props.userId }
-  get eventId(): Nullable<string> { return this.props.eventId }
-  get productId(): Nullable<string> { return this.props.productId }
-  get orderId(): Nullable<string> { return this.props.orderId }
-  get activatedAt(): Nullable<Date> { return this.props.activatedAt }
-  get createdAt(): Date { return this.props.createdAt }
-  get updatedAt(): Date { return this.props.updatedAt }
-  get deletedAt(): Nullable<Date> { return this.props.deletedAt }
+  get id(): string {
+    return this.props.id
+  }
+  get nfcId(): string {
+    return this.props.nfcId
+  }
+  get status(): BraceletStatus {
+    return this.props.status
+  }
+  get userId(): Nullable<string> {
+    return this.props.userId
+  }
+  get eventId(): Nullable<string> {
+    return this.props.eventId
+  }
+  get productId(): Nullable<string> {
+    return this.props.productId
+  }
+  get orderId(): Nullable<string> {
+    return this.props.orderId
+  }
+  get activatedAt(): Nullable<Date> {
+    return this.props.activatedAt
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt
+  }
+  get deletedAt(): Nullable<Date> {
+    return this.props.deletedAt
+  }
 
-  isInStock(): boolean { return this.props.status === BraceletStatus.STOCK }
-  isPreActivated(): boolean { return this.props.status === BraceletStatus.PRE_ACTIVATED }
-  isActive(): boolean { return this.props.status === BraceletStatus.ACTIVE }
-  isDisabled(): boolean { return this.props.status === BraceletStatus.DISABLED }
-  isDeleted(): boolean { return this.props.deletedAt !== null }
+  isInStock(): boolean {
+    return this.props.status === BraceletStatus.STOCK
+  }
+  isPreActivated(): boolean {
+    return this.props.status === BraceletStatus.PRE_ACTIVATED
+  }
+  isActive(): boolean {
+    return this.props.status === BraceletStatus.ACTIVE
+  }
+  isDisabled(): boolean {
+    return this.props.status === BraceletStatus.DISABLED
+  }
+  isDeleted(): boolean {
+    return this.props.deletedAt !== null
+  }
 
   assignTo(userId: string, eventId: string): this {
     if (!this.isInStock()) throw new BraceletInvalidStatusError(this.props.status, 'assign')
@@ -89,5 +122,7 @@ export class BraceletEntity {
     }
   }
 
-  toJSON(): BraceletEntityProps { return { ...this.props } }
+  toJSON(): BraceletEntityProps {
+    return { ...this.props }
+  }
 }

@@ -1,4 +1,5 @@
 import { AppError } from '@shared/errors/app.error'
+
 import { TeamRole } from '../../domain/constants/team-role.constant'
 
 export class ChangeRoleRequestDto {

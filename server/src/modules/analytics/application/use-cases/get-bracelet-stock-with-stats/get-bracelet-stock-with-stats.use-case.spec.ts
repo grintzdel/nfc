@@ -1,7 +1,8 @@
 import { IBraceletRepository } from '@modules/bracelet/domain/repository/bracelet.repository.interface'
-import { ISupplyOrderRepository } from '@modules/supply-order/domain/repository/supply-order.repository.interface'
-import { GetBraceletStockWithStatsUseCase } from './get-bracelet-stock-with-stats.use-case'
 import { SupplyOrderEntity } from '@modules/supply-order/domain/entity/supply-order.entity'
+import { ISupplyOrderRepository } from '@modules/supply-order/domain/repository/supply-order.repository.interface'
+
+import { GetBraceletStockWithStatsUseCase } from './get-bracelet-stock-with-stats.use-case'
 
 const mockBraceletRepo: jest.Mocked<IBraceletRepository> = {
   create: jest.fn(),

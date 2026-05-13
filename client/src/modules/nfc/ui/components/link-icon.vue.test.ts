@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import LinkIcon from './link-icon.vue'
 import { Linkedin, Twitter, Github, Globe, Mail, Link as LinkIconLucide } from 'lucide-vue-next'
+import { describe, it, expect } from 'vitest'
+
+import LinkIcon from './link-icon.vue'
 
 describe('LinkIcon', () => {
   const cases: Array<[string, unknown]> = [

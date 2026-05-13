@@ -1,10 +1,13 @@
-import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { createHead } from '@unhead/vue/client'
-import App from './App.vue'
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+
 import { createDependencies } from '@/modules/app/core/dependencies'
 import { DEPENDENCIES_KEY } from '@/modules/app/ui/hooks/use-dependencies'
+
+import App from './App.vue'
+
 import './assets/main.css'
 
 const router = createRouter({
@@ -17,7 +20,12 @@ const router = createRouter({
     { path: '/shop', name: 'shop', component: () => import('./pages/shop/page.vue') },
     { path: '/product/:slug', name: 'product', component: () => import('./pages/product-detail/page.vue') },
     { path: '/login', name: 'login', component: () => import('./pages/login/page.vue'), meta: { noLayout: true } },
-    { path: '/register', name: 'register', component: () => import('./pages/register/page.vue'), meta: { noLayout: true } },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./pages/register/page.vue'),
+      meta: { noLayout: true },
+    },
     { path: '/orders', name: 'orders', component: () => import('./pages/orders/page.vue') },
     {
       path: '/me/events',

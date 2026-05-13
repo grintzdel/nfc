@@ -1,14 +1,15 @@
 <script setup lang="ts">
+import { Search, Users, CheckCircle2 } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Search, Users, CheckCircle2 } from 'lucide-vue-next'
-import AdminLayout from '@/ui/layout/admin-layout.vue'
+
+import { useGetParticipantsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-participants-count'
+import { useGetPaginatedParticipants } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants'
 import StatCard from '@/ui/components/stat-card.vue'
+import { EmptyState } from '@/ui/empty-state'
+import AdminLayout from '@/ui/layout/admin-layout.vue'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetPaginatedParticipants } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants'
-import { useGetParticipantsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-participants-count'
 
 const TABS = [
   { key: 'all', label: 'Tous', checkedIn: undefined as boolean | undefined },
@@ -17,9 +18,7 @@ const TABS = [
 ]
 
 const activeTab = ref<'all' | 'in' | 'not'>('all')
-const checkedIn = computed<boolean | undefined>(
-  () => TABS.find((t) => t.key === activeTab.value)?.checkedIn,
-)
+const checkedIn = computed<boolean | undefined>(() => TABS.find((t) => t.key === activeTab.value)?.checkedIn)
 
 const page = ref(1)
 const limit = ref(20)
@@ -35,7 +34,9 @@ watch(searchInput, (value) => {
   }, 300)
 })
 
-watch(activeTab, () => { page.value = 1 })
+watch(activeTab, () => {
+  page.value = 1
+})
 
 const { data: paged, isLoading } = useGetPaginatedParticipants({ page, limit, checkedIn, search })
 const { data: countStats } = useGetParticipantsCount()
@@ -47,7 +48,12 @@ function formatDate(dateStr: string): string {
 }
 
 function initials(name: string): string {
-  return name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]!.toUpperCase()).join('')
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]!.toUpperCase())
+    .join('')
 }
 </script>
 
@@ -60,9 +66,11 @@ function initials(name: string): string {
           icon-color="#3B82F6"
           title="Participants total"
           :value="countStats?.count?.toLocaleString('fr-FR') ?? '—'"
-          :badge="countStats?.rateVsLastMonth != null
-            ? `${countStats.rateVsLastMonth >= 0 ? '+' : ''}${parseFloat(countStats.rateVsLastMonth.toFixed(2))}% vs mois dernier`
-            : undefined"
+          :badge="
+            countStats?.rateVsLastMonth != null
+              ? `${countStats.rateVsLastMonth >= 0 ? '+' : ''}${parseFloat(countStats.rateVsLastMonth.toFixed(2))}% vs mois dernier`
+              : undefined
+          "
           :badge-variant="(countStats?.rateVsLastMonth ?? 0) >= 0 ? 'positive' : 'negative'"
         />
         <StatCard
@@ -70,7 +78,13 @@ function initials(name: string): string {
           icon-color="#22C55E"
           title="Sur cette vue"
           :value="paged?.total?.toLocaleString('fr-FR') ?? '—'"
-          :badge="activeTab === 'in' ? 'Checked-in uniquement' : activeTab === 'not' ? 'Non checked-in uniquement' : 'Toutes participations'"
+          :badge="
+            activeTab === 'in'
+              ? 'Checked-in uniquement'
+              : activeTab === 'not'
+                ? 'Non checked-in uniquement'
+                : 'Toutes participations'
+          "
           badge-variant="positive"
         />
       </div>
@@ -85,7 +99,7 @@ function initials(name: string): string {
               class="rounded px-3 py-1.5 text-[13px] font-medium transition-colors"
               :class="
                 activeTab === tab.key
-                  ? 'bg-[#0F172A] text-slate-50 border border-white/10'
+                  ? 'border border-white/10 bg-[#0F172A] text-slate-50'
                   : 'text-slate-400 hover:text-slate-200'
               "
               @click="activeTab = tab.key as 'all' | 'in' | 'not'"
@@ -102,7 +116,7 @@ function initials(name: string): string {
               v-model="searchInput"
               type="text"
               placeholder="Rechercher par nom ou rôle…"
-              class="w-full bg-transparent text-[13px] text-slate-50 placeholder:text-slate-400 outline-none"
+              class="w-full bg-transparent text-[13px] text-slate-50 outline-none placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -111,7 +125,9 @@ function initials(name: string): string {
           v-if="paged && paged.total === 0"
           :icon="Users"
           title="Aucun participant trouvé"
-          :description="search ? 'Essayez une autre recherche.' : 'Les participants apparaîtront ici dès leur première inscription.'"
+          :description="
+            search ? 'Essayez une autre recherche.' : 'Les participants apparaîtront ici dès leur première inscription.'
+          "
           size="sm"
         />
 
@@ -119,15 +135,25 @@ function initials(name: string): string {
           <div class="overflow-x-auto">
             <div class="flex min-w-[720px] flex-col">
               <div class="flex items-center bg-slate-800">
-                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
-                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Événement</span></div>
-                <div class="w-[110px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span></div>
-                <div class="w-[110px] shrink-0 px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span></div>
+                <div class="flex-1 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span>
+                </div>
+                <div class="flex-1 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Événement</span>
+                </div>
+                <div class="w-[110px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span>
+                </div>
+                <div class="w-[110px] shrink-0 px-4 py-3 text-center">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span>
+                </div>
               </div>
 
               <div v-for="p in items" :key="p.id" class="flex items-center border-t border-white/10">
                 <div class="flex flex-1 items-center gap-3 px-4 py-3">
-                  <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
+                  <div
+                    class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white"
+                  >
                     {{ initials(p.profile.displayName) }}
                   </div>
                   <div class="flex flex-col">
@@ -166,7 +192,7 @@ function initials(name: string): string {
             :total="paged.total"
             :limit="paged.limit"
             item-label="participants"
-            @update:page="(p) => page = p"
+            @update:page="(p) => (page = p)"
           />
         </template>
       </div>

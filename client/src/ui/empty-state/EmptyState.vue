@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
 import { Inbox } from 'lucide-vue-next'
+import type { Component } from 'vue'
 
 withDefaults(
   defineProps<{
@@ -9,7 +9,7 @@ withDefaults(
     description?: string
     size?: 'sm' | 'md' | 'lg'
   }>(),
-  { size: 'md' },
+  { size: 'md' }
 )
 </script>
 

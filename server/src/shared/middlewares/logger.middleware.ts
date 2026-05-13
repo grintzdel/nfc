@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-export function loggerMiddleware(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void {
+export function loggerMiddleware(req: Request, res: Response, next: NextFunction): void {
   if (process.env.NODE_ENV === 'test') {
     next()
     return
@@ -27,15 +23,10 @@ export function loggerMiddleware(
     const url = req.originalUrl
 
     const statusColor =
-      status >= 500 ? '\x1b[31m' :
-      status >= 400 ? '\x1b[33m' :
-      status >= 300 ? '\x1b[36m' :
-      '\x1b[32m'
+      status >= 500 ? '\x1b[31m' : status >= 400 ? '\x1b[33m' : status >= 300 ? '\x1b[36m' : '\x1b[32m'
     const reset = '\x1b[0m'
 
-    console.log(
-      `${method.padEnd(7)} ${statusColor}${status}${reset} ${url} ${duration}ms`
-    )
+    console.log(`${method.padEnd(7)} ${statusColor}${status}${reset} ${url} ${duration}ms`)
 
     if (['POST', 'PATCH', 'PUT'].includes(method) && req.body) {
       const sanitized = { ...req.body }

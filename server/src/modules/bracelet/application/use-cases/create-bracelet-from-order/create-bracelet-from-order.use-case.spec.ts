@@ -1,8 +1,9 @@
-import { CreateBraceletFromOrderUseCase } from './create-bracelet-from-order.use-case'
-import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
-import { OrderEntity } from '@modules/order/domain/entity/order.entity'
-import { BraceletStatus } from '../../../domain/constants/bracelet-status.constant'
 import { OrderStatus } from '@modules/order/domain/constants/order.constant'
+import { OrderEntity } from '@modules/order/domain/entity/order.entity'
+
+import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
+import { BraceletStatus } from '../../../domain/constants/bracelet-status.constant'
+import { CreateBraceletFromOrderUseCase } from './create-bracelet-from-order.use-case'
 
 describe('CreateBraceletFromOrderUseCase', () => {
   let useCase: CreateBraceletFromOrderUseCase

@@ -85,28 +85,29 @@ Full-screen flex row: sidebar (fixed 256px) + main area (flex-1, vertical: heade
 Fixed width 256px, full height, dark surface (`bg-pulse-surface-dark`), right border `border-slate-700/50`.
 
 **Header:**
+
 - PULSE logo text (font-bold, tracking-[1px]) + Radio icon in purple circle (`bg-pulse-violet`)
 
 **Content — 5 sections with items:**
 
-| Section | Items (icon → label → route) |
-|---------|------------------------------|
-| Principal | `layout-dashboard` Dashboard → `/admin/dashboard` (active) |
-| | `calendar` Evenements → `/admin/events` (disabled) |
-| | `watch` Bracelets → `/admin/bracelets` (disabled) |
-| | `users` Participants → `/admin/participants` (disabled) |
-| E-commerce | `package` Catalogue → `/admin/catalog` (disabled) |
-| | `shopping-bag` Commandes → `/admin/orders` (disabled) |
-| | `truck` Livraisons → `/admin/deliveries` (disabled) |
-| | `file-text` Factures → `/admin/invoices` (disabled) |
-| Analytique | `chart-bar` Statistiques → `/admin/stats` (disabled) |
-| | `map` Heatmap → `/admin/heatmap` (disabled) |
-| | `file-bar-chart` Rapports → `/admin/reports` (disabled) |
-| Communication | `mail` Campagnes email → `/admin/emails` (disabled) |
-| | `bell` Notifications → `/admin/notifications` (disabled) |
-| Parametres | `users-round` Equipe → `/admin/team` (disabled) |
-| | `plug` Integrations → `/admin/integrations` (disabled) |
-| | `settings` Parametres → `/admin/settings` (disabled) |
+| Section       | Items (icon → label → route)                               |
+| ------------- | ---------------------------------------------------------- |
+| Principal     | `layout-dashboard` Dashboard → `/admin/dashboard` (active) |
+|               | `calendar` Evenements → `/admin/events` (disabled)         |
+|               | `watch` Bracelets → `/admin/bracelets` (disabled)          |
+|               | `users` Participants → `/admin/participants` (disabled)    |
+| E-commerce    | `package` Catalogue → `/admin/catalog` (disabled)          |
+|               | `shopping-bag` Commandes → `/admin/orders` (disabled)      |
+|               | `truck` Livraisons → `/admin/deliveries` (disabled)        |
+|               | `file-text` Factures → `/admin/invoices` (disabled)        |
+| Analytique    | `chart-bar` Statistiques → `/admin/stats` (disabled)       |
+|               | `map` Heatmap → `/admin/heatmap` (disabled)                |
+|               | `file-bar-chart` Rapports → `/admin/reports` (disabled)    |
+| Communication | `mail` Campagnes email → `/admin/emails` (disabled)        |
+|               | `bell` Notifications → `/admin/notifications` (disabled)   |
+| Parametres    | `users-round` Equipe → `/admin/team` (disabled)            |
+|               | `plug` Integrations → `/admin/integrations` (disabled)     |
+|               | `settings` Parametres → `/admin/settings` (disabled)       |
 
 - Section titles: `text-xs font-medium text-slate-500 uppercase tracking-wide`
 - Active item: `bg-slate-800 rounded-md` with white text
@@ -115,6 +116,7 @@ Fixed width 256px, full height, dark surface (`bg-pulse-surface-dark`), right bo
 - Items have `padding: [6px, 8px]`, icon 16px + label text-sm
 
 **Footer:**
+
 - User info: "Admin PULSE" (font-medium text-slate-50) + "admin@pulse.io" (text-xs text-slate-500)
 - Uses `useAuth().getUserFromToken()` to show actual user email if available
 
@@ -134,6 +136,7 @@ Top bar with bottom border (`border-slate-700/50`), padding `py-4 px-8`.
 Wraps content in `<AdminLayout>`. Passes `title="Dashboard"` and `subtitle="Vue d'ensemble de votre activite"` to the header.
 
 Uses the following existing hooks (all already implemented):
+
 - `useGetActiveEvents()` → stat card 1 (count + diffVsLastMonth)
 - `useGetParticipantsCount()` → stat card 2 (count + rateVsLastMonth)
 - `useGetBraceletsCount()` → stat card 3 (count + rateVsLastMonth)
@@ -146,6 +149,7 @@ Uses the following existing hooks (all already implemented):
 ### `stat-card.vue` (Generic, in `src/ui/components/`)
 
 Props:
+
 - `icon`: Lucide icon component
 - `iconColor`: string (hex color for icon and circle background)
 - `title`: string
@@ -164,6 +168,7 @@ Props: the 4 query results (activeEvents, participantsCount, braceletsCount, rev
 Props: `data: AnalyticsDomainModel.ActivationsByYearDto | undefined`
 
 Bar chart card using Unovis (`@unovis/vue`):
+
 - `VisXYContainer` + `VisStackedBar` + `VisAxis`
 - Purple bars (`#8b5cf6`), month labels on x-axis
 - Card wrapper: same dark card style as stat cards
@@ -174,6 +179,7 @@ Bar chart card using Unovis (`@unovis/vue`):
 Props: `data: AnalyticsDomainModel.InteractionsStatsDto | undefined`
 
 Donut chart card using Unovis:
+
 - `VisSingleContainer` + `VisDonut`
 - Colors: Check-in `#7C3AED`, Reseau `#F97316`, Votes `#3B82F6`, Cashless `#22C55E`
 - Center label: top percentage + type name
@@ -186,6 +192,7 @@ Donut chart card using Unovis:
 Props: `data: AnalyticsDomainModel.NextEventStatsDto | undefined`
 
 Card with:
+
 - Header: "Prochain evenement" label + event name + countdown pill ("J-X")
 - KPI row: 4 mini cards (bracelets commandes, livres, pre-actives, taux remplissage)
 - Meta info: lieu, horaires, staff (hardcoded labels from design since backend doesn't provide these yet — display only if data exists)
@@ -199,6 +206,7 @@ Note: Some fields (lieu, horaires, staff, timeline) are not in the current `Next
 Props: `data: AnalyticsDomainModel.BraceletStockStatsDto | undefined`
 
 Card with:
+
 - Header: "Stock bracelets" + "Inventaire global" + alert badge if `level === 'low'`
 - Main: current count / maxCapacity, percentage, progress bar (orange if low, purple otherwise)
 - Threshold row: "0" — "Seuil · 500" — "2,000" (labels)
@@ -219,5 +227,6 @@ pnpm dlx shadcn-vue@latest add chart
 All data hooks already exist in `src/modules/analytics/ui/hooks/queries/query/`. No new ports, adapters, or backend work needed.
 
 Lucide icons needed (all already available via `lucide-vue-next`):
+
 - Sidebar: LayoutDashboard, Calendar, Watch, Users, Package, ShoppingBag, Truck, FileText, BarChart3, Map, FileBarChart, Mail, Bell, UsersRound, Plug, Settings, Radio
 - Dashboard: Calendar, Users, Watch, TrendingUp, Search, Bell, TriangleAlert, MapPin, Timer, Package, CircleCheck, MonitorPlay, CalendarClock, Ticket, Sparkles, Plus

@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 
 export type EventStatusAction = 'publish' | 'start' | 'complete' | 'cancel'
@@ -19,10 +20,14 @@ export function useEventStatusTransition() {
     mutationKey: ['eventStatusTransition'],
     mutationFn: ({ id, action }: { id: string; action: EventStatusAction }) => {
       switch (action) {
-        case 'publish': return eventPort.publish(id)
-        case 'start': return eventPort.start(id)
-        case 'complete': return eventPort.complete(id)
-        case 'cancel': return eventPort.cancel(id)
+        case 'publish':
+          return eventPort.publish(id)
+        case 'start':
+          return eventPort.start(id)
+        case 'complete':
+          return eventPort.complete(id)
+        case 'cancel':
+          return eventPort.cancel(id)
       }
     },
     onSuccess: (_data, variables) => {

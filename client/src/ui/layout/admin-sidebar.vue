@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
 import { Calendar, LayoutDashboard, Package, Radio, ShoppingBag, Users, Watch, X } from 'lucide-vue-next'
+import type { Component } from 'vue'
 import { useRoute } from 'vue-router'
 import { RouterLink } from 'vue-router'
+
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
 
 defineProps<{ open: boolean }>()
@@ -110,7 +111,9 @@ const sections: NavSection[] = [
             >
               <component :is="item.icon" class="h-4 w-4" />
               <span class="flex-1">{{ item.label }}</span>
-              <span class="rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-slate-500">
+              <span
+                class="rounded-full bg-slate-800 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-slate-500"
+              >
                 Soon
               </span>
             </div>

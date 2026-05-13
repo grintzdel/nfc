@@ -1,6 +1,6 @@
 import { SupplyOrderEntity } from '../../../domain/entity/supply-order.entity'
-import { ISupplyOrderRepository } from '../../../domain/repository/supply-order.repository.interface'
 import { SupplyOrderDomainModel } from '../../../domain/model/supply-order.domain-model'
+import { ISupplyOrderRepository } from '../../../domain/repository/supply-order.repository.interface'
 
 export class CreateSupplyOrderUseCase {
   constructor(private readonly supplyOrderRepository: ISupplyOrderRepository) {}

@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { QrCodeLibAdapter } from './qrcode.adapter.lib'
 
 describe('QrCodeLibAdapter', () => {

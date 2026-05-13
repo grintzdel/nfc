@@ -2,16 +2,21 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toast } from 'vue-sonner'
-import AdminLayout from '@/ui/layout/admin-layout.vue'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs'
-import { Skeleton, TableSkeleton } from '@/ui/skeleton'
-import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
+
 import { useGetEventDetailStats } from '@/modules/analytics/ui/hooks/queries/query/use-get-event-detail-stats'
-import { useEventStatusTransition, type EventStatusAction } from '@/modules/event/ui/hooks/queries/mutation/use-event-status-transition'
-import EventDetailHeader from './components/event-detail-header.vue'
-import EventDetailParticipants from './components/event-detail-participants.vue'
+import {
+  useEventStatusTransition,
+  type EventStatusAction,
+} from '@/modules/event/ui/hooks/queries/mutation/use-event-status-transition'
+import { useGetEventById } from '@/modules/event/ui/hooks/queries/query/use-get-event-by-id'
+import AdminLayout from '@/ui/layout/admin-layout.vue'
+import { Skeleton, TableSkeleton } from '@/ui/skeleton'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/tabs'
+
 import EventDetailBracelets from './components/event-detail-bracelets.vue'
 import EventDetailCheckIns from './components/event-detail-check-ins.vue'
+import EventDetailHeader from './components/event-detail-header.vue'
+import EventDetailParticipants from './components/event-detail-participants.vue'
 import EventDetailTeam from './components/event-detail-team.vue'
 
 const route = useRoute()
@@ -22,7 +27,7 @@ watch(
   () => route.params.eventId,
   (id) => {
     eventId.value = typeof id === 'string' ? id : null
-  },
+  }
 )
 
 const { data: event, isError: eventError } = useGetEventById(eventId)
@@ -65,11 +70,7 @@ function handleStatusAction(action: EventStatusAction): void {
           <Skeleton class="h-4 w-1/2" />
         </div>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div
-            v-for="i in 4"
-            :key="i"
-            class="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0F172A] p-5"
-          >
+          <div v-for="i in 4" :key="i" class="flex flex-col gap-3 rounded-lg border border-white/10 bg-[#0F172A] p-5">
             <Skeleton class="h-3 w-1/2" />
             <Skeleton class="h-7 w-2/3" />
             <Skeleton class="h-3 w-1/3" />
@@ -90,15 +91,9 @@ function handleStatusAction(action: EventStatusAction): void {
 
         <Tabs v-model="activeTab" default-value="participants">
           <TabsList>
-            <TabsTrigger value="participants">
-              Participants ({{ stats.participantCount }})
-            </TabsTrigger>
-            <TabsTrigger value="bracelets">
-              Bracelets ({{ stats.braceletsAttachedCount }})
-            </TabsTrigger>
-            <TabsTrigger value="check-ins">
-              Check-ins ({{ stats.checkInCount }})
-            </TabsTrigger>
+            <TabsTrigger value="participants"> Participants ({{ stats.participantCount }}) </TabsTrigger>
+            <TabsTrigger value="bracelets"> Bracelets ({{ stats.braceletsAttachedCount }}) </TabsTrigger>
+            <TabsTrigger value="check-ins"> Check-ins ({{ stats.checkInCount }}) </TabsTrigger>
             <TabsTrigger value="team">Équipe</TabsTrigger>
           </TabsList>
           <TabsContent value="participants">

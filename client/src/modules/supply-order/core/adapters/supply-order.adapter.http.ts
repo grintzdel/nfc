@@ -1,11 +1,14 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { ISupplyOrderPort } from '../ports/supply-order.port'
+
 import type { SupplyOrderDomainModel } from '../model/supply-order.domain-model'
+import type { ISupplyOrderPort } from '../ports/supply-order.port'
 
 export class SupplyOrderHttpAdapter implements ISupplyOrderPort {
   constructor(private readonly httpClient: HttpClient) {}
 
-  async create(dto: SupplyOrderDomainModel.CreateSupplyOrderDto): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
+  async create(
+    dto: SupplyOrderDomainModel.CreateSupplyOrderDto
+  ): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
     const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>('/supply-orders', dto)
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -24,13 +27,17 @@ export class SupplyOrderHttpAdapter implements ISupplyOrderPort {
   }
 
   async markReceived(id: string): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
-    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(`/supply-orders/${id}/receive`)
+    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(
+      `/supply-orders/${id}/receive`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }
 
   async cancel(id: string): Promise<SupplyOrderDomainModel.SupplyOrderOverviewDto> {
-    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(`/supply-orders/${id}/cancel`)
+    const result = await this.httpClient.post<SupplyOrderDomainModel.SupplyOrderOverviewDto>(
+      `/supply-orders/${id}/cancel`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }

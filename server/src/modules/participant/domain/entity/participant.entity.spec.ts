@@ -48,7 +48,7 @@ describe('ParticipantEntity', () => {
         ParticipantEntity.create({
           eventId: 'event-1',
           profile: { displayName: 'Alice', role: null, bio: null, links: [] },
-        }),
+        })
       ).toThrow('userId is required')
     })
 
@@ -57,7 +57,7 @@ describe('ParticipantEntity', () => {
         ParticipantEntity.create({
           userId: 'user-1',
           profile: { displayName: 'Alice', role: null, bio: null, links: [] },
-        }),
+        })
       ).toThrow('eventId is required')
     })
 
@@ -67,7 +67,7 @@ describe('ParticipantEntity', () => {
           userId: 'user-1',
           eventId: 'event-1',
           profile: { displayName: '', role: null, bio: null, links: [] },
-        }),
+        })
       ).toThrow('displayName is required')
     })
   })
@@ -75,7 +75,12 @@ describe('ParticipantEntity', () => {
   describe('attachBracelet()', () => {
     it('should set braceletId and update updatedAt', () => {
       const before = new Date(Date.now() - 1000)
-      const p = ParticipantEntity.fromProps({ ...baseProps, updatedAt: before, createdAt: before, registeredAt: before })
+      const p = ParticipantEntity.fromProps({
+        ...baseProps,
+        updatedAt: before,
+        createdAt: before,
+        registeredAt: before,
+      })
       p.attachBracelet('bracelet-1')
       expect(p.braceletId).toBe('bracelet-1')
       expect(p.updatedAt.getTime()).toBeGreaterThan(before.getTime())
@@ -86,7 +91,12 @@ describe('ParticipantEntity', () => {
   describe('checkIn()', () => {
     it('should set checkedInAt and update updatedAt', () => {
       const before = new Date(Date.now() - 1000)
-      const p = ParticipantEntity.fromProps({ ...baseProps, updatedAt: before, createdAt: before, registeredAt: before })
+      const p = ParticipantEntity.fromProps({
+        ...baseProps,
+        updatedAt: before,
+        createdAt: before,
+        registeredAt: before,
+      })
       expect(p.isCheckedIn()).toBe(false)
       p.checkIn()
       expect(p.checkedInAt).toBeInstanceOf(Date)
@@ -142,7 +152,7 @@ describe('ParticipantEntity', () => {
         p.updateProfile({
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           links: [{ type: 'fax' as any, url: 'https://example.com', label: null }],
-        }),
+        })
       ).toThrow('Invalid link type')
     })
 
@@ -155,7 +165,7 @@ describe('ParticipantEntity', () => {
       expect(() =>
         p.updateProfile({
           links: [{ type: ProfileLinkType.WEBSITE, url: 'ftp://bad.com', label: null }],
-        }),
+        })
       ).toThrow('Invalid link URL')
     })
 
@@ -168,7 +178,7 @@ describe('ParticipantEntity', () => {
       expect(() =>
         p.updateProfile({
           links: [{ type: ProfileLinkType.EMAIL, url: 'https://example.com', label: null }],
-        }),
+        })
       ).toThrow('Invalid link URL')
     })
 
@@ -195,7 +205,7 @@ describe('ParticipantEntity', () => {
       expect(() =>
         p.updateProfile({
           links: [{ type: ProfileLinkType.CUSTOM, url: 'https://custom.com', label: null }],
-        }),
+        })
       ).toThrow('Custom link requires a label')
     })
   })

@@ -1,5 +1,6 @@
-import type { Ref } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
+import type { Ref } from 'vue'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 
 export function useGetBraceletById(id: Ref<string>) {

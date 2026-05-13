@@ -9,6 +9,7 @@ This spec also introduces the **model extension** required by Specs 1 and 2: `Pa
 ## Scope
 
 ### Backend
+
 - New constant `ProfileLinkType` (`linkedin`, `twitter`, `github`, `instagram`, `website`, `email`, `custom`)
 - Extend `ParticipantProfile`: replace `linkedinUrl: string | null` with `links: ProfileLink[]`
 - Update Mongoose schema and DTOs
@@ -17,6 +18,7 @@ This spec also introduces the **model extension** required by Specs 1 and 2: `Pa
 - Update unit tests
 
 ### Frontend
+
 - New route `/me/events/:participantId` with new `requiresAuth` meta + guard
 - New page `participant-profile-edit.page.vue`
 - New components: `profile-fields-form.vue`, `profile-links-editor.vue`, `profile-link-row.vue`
@@ -179,6 +181,7 @@ export namespace ParticipantDomainModel {
 ### 2.4 Hooks
 
 Both hooks **already exist** in the codebase:
+
 - `use-get-participant-by-id.ts` — query on `GET /api/participants/:id`
 - `use-update-participant-profile.ts` — mutation on `PATCH /api/participants/:id/profile`
 
@@ -257,11 +260,11 @@ import ParticipantProfileEditPage from '@/features/private/participant-profile-e
 
 `client/src/modules/participant/ui/components/`:
 
-| Component | Props | Role |
-|---|---|---|
-| `profile-fields-form.vue` | `v-model: { displayName, role, bio }` | 3 inputs |
-| `profile-links-editor.vue` | `v-model: ProfileLinkDto[]` | Lists `<ProfileLinkRow>` + "Add" button; disables Add at 10 |
-| `profile-link-row.vue` | `link, @update, @remove` | `<select type>` + `<input url>` + `<input label>` (shown if `type === 'custom'`) + trash button |
+| Component                  | Props                                 | Role                                                                                            |
+| -------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `profile-fields-form.vue`  | `v-model: { displayName, role, bio }` | 3 inputs                                                                                        |
+| `profile-links-editor.vue` | `v-model: ProfileLinkDto[]`           | Lists `<ProfileLinkRow>` + "Add" button; disables Add at 10                                     |
+| `profile-link-row.vue`     | `link, @update, @remove`              | `<select type>` + `<input url>` + `<input label>` (shown if `type === 'custom'`) + trash button |
 
 **Reusable**: `profile-links-editor.vue` is consumed both here AND in Spec 2's registration form.
 

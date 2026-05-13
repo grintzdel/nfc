@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 
 const props = defineProps<{ open: boolean; loading?: boolean }>()
@@ -18,7 +19,7 @@ watch(
       nfcId.value = ''
       productId.value = ''
     }
-  },
+  }
 )
 
 function handleConfirm(): void {
@@ -36,7 +37,8 @@ function handleConfirm(): void {
       <DialogHeader>
         <DialogTitle>Créer un bracelet</DialogTitle>
         <DialogDescription class="text-slate-400">
-          Le bracelet sera créé en statut <strong class="text-slate-200">Stock</strong>. Vous pourrez l'assigner à un événement depuis la page de l'événement.
+          Le bracelet sera créé en statut <strong class="text-slate-200">Stock</strong>. Vous pourrez l'assigner à un
+          événement depuis la page de l'événement.
         </DialogDescription>
       </DialogHeader>
 
@@ -49,7 +51,7 @@ function handleConfirm(): void {
             type="text"
             placeholder="nfc-001 ou laissez vide pour auto-générer"
             autocomplete="off"
-            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 font-mono text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 font-mono text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
           />
         </div>
         <div class="flex flex-col gap-1.5">
@@ -60,7 +62,7 @@ function handleConfirm(): void {
             type="text"
             placeholder="ID du produit lié (optionnel)"
             autocomplete="off"
-            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 font-mono text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 font-mono text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
           />
         </div>
       </div>

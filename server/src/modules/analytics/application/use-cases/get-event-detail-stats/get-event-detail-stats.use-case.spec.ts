@@ -1,11 +1,12 @@
-import { GetEventDetailStatsUseCase } from './get-event-detail-stats.use-case'
-import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
-import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
 import { BraceletRepositoryMock } from '@modules/bracelet/__tests__/bracelet.repository.mock'
+import { createCheckInFixture } from '@modules/check-in/__tests__/check-in.factory'
 import { CheckInRepositoryMock } from '@modules/check-in/__tests__/check-in.repository.mock'
 import { createEventFixture } from '@modules/event/__tests__/event.factory'
-import { createCheckInFixture } from '@modules/check-in/__tests__/check-in.factory'
+import { EventRepositoryMock } from '@modules/event/__tests__/event.repository.mock'
 import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
+
+import { GetEventDetailStatsUseCase } from './get-event-detail-stats.use-case'
 
 describe('GetEventDetailStatsUseCase', () => {
   let eventRepo: EventRepositoryMock

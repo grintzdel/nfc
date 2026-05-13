@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+
+import type { BraceletDomainModel } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
-import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
-import type { BraceletDomainModel } from '@/modules/bracelet/core/model/bracelet.domain-model'
 
 const props = defineProps<{
   participant: ParticipantDomainModel.ParticipantOverviewDto | null
@@ -23,7 +24,7 @@ watch(
   () => props.open,
   (open) => {
     if (open) selectedBraceletId.value = ''
-  },
+  }
 )
 
 function handleConfirm(): void {
@@ -39,18 +40,27 @@ function handleConfirm(): void {
         <DialogTitle>Attacher un bracelet</DialogTitle>
         <DialogDescription class="text-slate-400">
           <template v-if="participant">
-            Sélectionnez un bracelet à attacher à <strong class="text-slate-200">{{ participant.profile.displayName }}</strong>.
+            Sélectionnez un bracelet à attacher à
+            <strong class="text-slate-200">{{ participant.profile.displayName }}</strong
+            >.
           </template>
         </DialogDescription>
       </DialogHeader>
 
-      <div v-if="availableBracelets.length === 0" class="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
+      <div
+        v-if="availableBracelets.length === 0"
+        class="rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-200"
+      >
         Aucun bracelet disponible. Créez-en depuis Bracelets &gt; Stock.
       </div>
 
       <div v-else class="flex flex-col gap-2">
         <label for="bracelet-select" class="text-sm text-slate-300">Bracelet</label>
-        <Select id="bracelet-select" :model-value="selectedBraceletId" @update:model-value="(v) => selectedBraceletId = String(v)">
+        <Select
+          id="bracelet-select"
+          :model-value="selectedBraceletId"
+          @update:model-value="(v) => (selectedBraceletId = String(v))"
+        >
           <SelectTrigger>
             <SelectValue placeholder="Choisir un bracelet…" />
           </SelectTrigger>

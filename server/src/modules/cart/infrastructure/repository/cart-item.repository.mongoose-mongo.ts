@@ -1,5 +1,5 @@
-import { ICartItemRepository } from '../../domain/repository/cart-item.repository.interface'
 import { CartItemEntity } from '../../domain/entity/cart-item.entity'
+import { ICartItemRepository } from '../../domain/repository/cart-item.repository.interface'
 import { CartItemModel, CartItemDocument } from '../schema/cart-item.schema'
 
 export class CartItemRepositoryMongooseMongo implements ICartItemRepository {

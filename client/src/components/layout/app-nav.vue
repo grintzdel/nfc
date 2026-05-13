@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { Menu, X, ShoppingCart, LogOut, User, Calendar } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Menu, X, ShoppingCart, LogOut, User, Calendar } from 'lucide-vue-next'
-import { useCart } from '@/modules/cart/ui/hooks/use-cart'
+
 import { useAuth } from '@/modules/auth/ui/hooks/use-auth'
+import { useCart } from '@/modules/cart/ui/hooks/use-cart'
 
 const mobileMenuOpen = ref(false)
 const { totalQuantity, openCart: openCartDrawer } = useCart()
@@ -22,9 +23,7 @@ const navLinks: NavLink[] = [
 <template>
   <nav class="sticky top-0 z-50 border-b border-slate-700/50 bg-[#0F172AEE] backdrop-blur-xl">
     <div class="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-20">
-      <RouterLink to="/" class="text-2xl font-extrabold tracking-[2px] text-slate-50">
-        PULSE
-      </RouterLink>
+      <RouterLink to="/" class="text-2xl font-extrabold tracking-[2px] text-slate-50"> PULSE </RouterLink>
 
       <div class="hidden items-center gap-8 lg:flex">
         <RouterLink
@@ -137,7 +136,10 @@ const navLinks: NavLink[] = [
           {{ link.label }}
         </RouterLink>
         <div v-if="!isAuthenticated()" class="flex flex-col gap-2 pt-4">
-          <RouterLink to="/login" class="rounded-md border border-slate-600 px-6 py-2 text-center text-sm font-medium text-slate-300">
+          <RouterLink
+            to="/login"
+            class="rounded-md border border-slate-600 px-6 py-2 text-center text-sm font-medium text-slate-300"
+          >
             Connexion
           </RouterLink>
         </div>

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Trash2 } from 'lucide-vue-next'
-import { Input } from '@/ui/input'
-import { Button } from '@/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
-import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import { computed } from 'vue'
+
 import { ProfileLinkType } from '@/modules/participant/core/constants/profile-link-type.constant'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import { Button } from '@/ui/button'
+import { Input } from '@/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select'
 
 type Link = ParticipantDomainModel.ProfileLinkDto
 const props = defineProps<{ link: Link }>()

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+
 import AppLayout from './components/layout/app-layout.vue'
 
 const route = useRoute()
@@ -25,7 +26,9 @@ const noLayout = computed(() => route.meta.noLayout === true)
 <style>
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 160ms ease-out, transform 160ms ease-out;
+  transition:
+    opacity 160ms ease-out,
+    transform 160ms ease-out;
 }
 .page-enter-from {
   opacity: 0;

@@ -24,19 +24,19 @@ function saveToStorage(items: LocalCartItem[]) {
 const items = ref<LocalCartItem[]>(loadFromStorage())
 const cartOpen = ref(false)
 
-watch(items, (val) => {
-  saveToStorage(val)
-}, { deep: true })
+watch(
+  items,
+  (val) => {
+    saveToStorage(val)
+  },
+  { deep: true }
+)
 
 export function useCart() {
-  const totalQuantity = computed(() =>
-    items.value.reduce((sum, item) => sum + item.quantity, 0),
-  )
+  const totalQuantity = computed(() => items.value.reduce((sum, item) => sum + item.quantity, 0))
 
   function addItem(productId: string, quantity = 1, variantName?: string) {
-    const existing = items.value.find(
-      (i) => i.productId === productId && i.variantName === variantName,
-    )
+    const existing = items.value.find((i) => i.productId === productId && i.variantName === variantName)
     if (existing) {
       existing.quantity += quantity
     } else {

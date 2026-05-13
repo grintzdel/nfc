@@ -1,20 +1,22 @@
-import { Router } from 'express'
 import { JwtServiceSecurity } from '@modules/auth/application/services/security/jwt.service-security'
 import { createAuthMiddleware, createAdminMiddleware } from '@shared/middlewares/auth.middleware'
-import { SupplyOrderRepositoryMongooseMongo } from './infrastructure/repository/supply-order.repository.mongoose-mongo'
-import { ISupplyOrderRepository } from './domain/repository/supply-order.repository.interface'
+import { Router } from 'express'
+
+import { SupplyOrderService } from './application/services/supply-order.service'
+import { CancelSupplyOrderUseCase } from './application/use-cases/cancel-supply-order/cancel-supply-order.use-case'
 import { CreateSupplyOrderUseCase } from './application/use-cases/create-supply-order/create-supply-order.use-case'
 import { GetAllSupplyOrdersUseCase } from './application/use-cases/get-all-supply-orders/get-all-supply-orders.use-case'
-import { GetSupplyOrderByIdUseCase } from './application/use-cases/get-supply-order-by-id/get-supply-order-by-id.use-case'
 import { GetPendingSupplyOrderUseCase } from './application/use-cases/get-pending-supply-order/get-pending-supply-order.use-case'
+import { GetSupplyOrderByIdUseCase } from './application/use-cases/get-supply-order-by-id/get-supply-order-by-id.use-case'
 import { MarkSupplyOrderReceivedUseCase } from './application/use-cases/mark-supply-order-received/mark-supply-order-received.use-case'
-import { CancelSupplyOrderUseCase } from './application/use-cases/cancel-supply-order/cancel-supply-order.use-case'
-import { SupplyOrderService } from './application/services/supply-order.service'
+import { ISupplyOrderRepository } from './domain/repository/supply-order.repository.interface'
+import { SupplyOrderRepositoryMongooseMongo } from './infrastructure/repository/supply-order.repository.mongoose-mongo'
 import { SupplyOrderController } from './presentation/controllers/supply-order.controller'
 
-export function createSupplyOrderModule(
-  jwtService: JwtServiceSecurity,
-): { router: Router; supplyOrderRepository: ISupplyOrderRepository } {
+export function createSupplyOrderModule(jwtService: JwtServiceSecurity): {
+  router: Router
+  supplyOrderRepository: ISupplyOrderRepository
+} {
   const supplyOrderRepository = new SupplyOrderRepositoryMongooseMongo()
   const createUC = new CreateSupplyOrderUseCase(supplyOrderRepository)
   const getAllUC = new GetAllSupplyOrdersUseCase(supplyOrderRepository)

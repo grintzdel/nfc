@@ -1,6 +1,6 @@
-import { IOrderRepository } from '../../../domain/repository/order.repository.interface'
 import { OrderEntity } from '../../../domain/entity/order.entity'
 import { OrderNotFoundError } from '../../../domain/errors/order.error'
+import { IOrderRepository } from '../../../domain/repository/order.repository.interface'
 
 export class GetOrderByIdUseCase {
   constructor(private readonly orderRepository: IOrderRepository) {}

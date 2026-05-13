@@ -1,9 +1,10 @@
-import { UpdateParticipantProfileUseCase } from './update-participant-profile.use-case'
-import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
-import { ParticipantEntity } from '../../../domain/entity/participant.entity'
-import { ProfileLinkType } from '../../../domain/constants/profile-link-type.constant'
-import { ParticipantNotFoundError } from '../../../domain/errors/participant.error'
 import { AppError } from '@shared/errors/app.error'
+
+import { ParticipantRepositoryMock } from '../../../__tests__/participant.repository.mock'
+import { ProfileLinkType } from '../../../domain/constants/profile-link-type.constant'
+import { ParticipantEntity } from '../../../domain/entity/participant.entity'
+import { ParticipantNotFoundError } from '../../../domain/errors/participant.error'
+import { UpdateParticipantProfileUseCase } from './update-participant-profile.use-case'
 
 function makeParticipant(userId = 'owner-1'): ParticipantEntity {
   return ParticipantEntity.fromProps({
@@ -50,7 +51,7 @@ describe('UpdateParticipantProfileUseCase', () => {
   it('should throw ParticipantNotFoundError when participant missing', async () => {
     mockRepository.findById_result = null
     await expect(useCase.execute('p-1', 'owner-1', { displayName: 'Bob' })).rejects.toBeInstanceOf(
-      ParticipantNotFoundError,
+      ParticipantNotFoundError
     )
   })
 })

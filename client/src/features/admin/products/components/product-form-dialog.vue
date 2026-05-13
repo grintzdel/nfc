@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
+
 import type { ProductDomainModel } from '@/modules/product/core/model/product.domain-model'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog'
 
 type FormPayload = {
   name: string
@@ -52,7 +53,7 @@ watch(
       stock.value = 0
       featured.value = false
     }
-  },
+  }
 )
 
 function handleConfirm(): void {
@@ -73,9 +74,7 @@ function handleConfirm(): void {
     <DialogContent class="bg-[#0F172A] text-slate-50 sm:max-w-lg">
       <DialogHeader>
         <DialogTitle>{{ isEdit() ? 'Modifier le produit' : 'Nouveau produit' }}</DialogTitle>
-        <DialogDescription class="text-slate-400">
-          Renseignez au minimum un nom et un prix.
-        </DialogDescription>
+        <DialogDescription class="text-slate-400"> Renseignez au minimum un nom et un prix. </DialogDescription>
       </DialogHeader>
 
       <div class="flex flex-col gap-3">
@@ -85,7 +84,7 @@ function handleConfirm(): void {
             v-model="name"
             type="text"
             placeholder="PULSE Classic…"
-            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
           />
         </div>
 
@@ -96,7 +95,7 @@ function handleConfirm(): void {
               v-model="slug"
               type="text"
               placeholder="auto-généré du nom"
-              class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 font-mono text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+              class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 font-mono text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
             />
           </div>
           <div class="flex flex-col gap-1.5">
@@ -138,7 +137,7 @@ function handleConfirm(): void {
             v-model="description"
             rows="3"
             placeholder="Description du produit…"
-            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 placeholder:text-slate-500 outline-none focus:border-violet-400"
+            class="rounded-md border border-white/10 bg-[#020617] px-3 py-2 text-sm text-slate-50 outline-none placeholder:text-slate-500 focus:border-violet-400"
           />
         </div>
 

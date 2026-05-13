@@ -1,17 +1,18 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { ITeamPort } from '../ports/team.port'
+
 import type { TeamDomainModel } from '../model/team.domain-model'
+import type { ITeamPort } from '../ports/team.port'
 
 export class TeamHttpAdapter implements ITeamPort {
   constructor(private readonly httpClient: HttpClient) {}
 
   async invite(
     eventId: string,
-    dto: TeamDomainModel.InviteTeamMemberDto,
+    dto: TeamDomainModel.InviteTeamMemberDto
   ): Promise<TeamDomainModel.TeamMemberOverviewDto> {
     const result = await this.httpClient.post<TeamDomainModel.TeamMemberOverviewDto>(
       `/teams/events/${eventId}/invite`,
-      dto,
+      dto
     )
     if (result.error) throw new Error(result.error.message)
     return result.data.data

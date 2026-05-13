@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IBraceletPort } from '../ports/bracelet.port'
+
 import type { BraceletDomainModel } from '../model/bracelet.domain-model'
+import type { IBraceletPort } from '../ports/bracelet.port'
 
 export class BraceletHttpAdapter implements IBraceletPort {
   constructor(private readonly httpClient: HttpClient) {}
@@ -20,7 +21,7 @@ export class BraceletHttpAdapter implements IBraceletPort {
 
   async getAvailable(eventId: string): Promise<BraceletDomainModel.BraceletOverviewDto[]> {
     const result = await this.httpClient.get<BraceletDomainModel.BraceletOverviewDto[]>(
-      `/bracelets/available?eventId=${encodeURIComponent(eventId)}`,
+      `/bracelets/available?eventId=${encodeURIComponent(eventId)}`
     )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -35,7 +36,7 @@ export class BraceletHttpAdapter implements IBraceletPort {
     const qs = new URLSearchParams({ page: String(params.page), limit: String(params.limit) })
     if (params.search && params.search.trim()) qs.append('search', params.search.trim())
     const result = await this.httpClient.get<BraceletDomainModel.PaginatedBraceletsDto>(
-      `/bracelets/event/${params.eventId}/paginated?${qs.toString()}`,
+      `/bracelets/event/${params.eventId}/paginated?${qs.toString()}`
     )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -51,7 +52,7 @@ export class BraceletHttpAdapter implements IBraceletPort {
     if (params.status) qs.append('status', params.status)
     if (params.search && params.search.trim()) qs.append('search', params.search.trim())
     const result = await this.httpClient.get<BraceletDomainModel.PaginatedAllBraceletsDto>(
-      `/bracelets/paginated?${qs.toString()}`,
+      `/bracelets/paginated?${qs.toString()}`
     )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
@@ -63,7 +64,10 @@ export class BraceletHttpAdapter implements IBraceletPort {
     return result.data.data
   }
 
-  async assign(id: string, dto: BraceletDomainModel.AssignBraceletDto): Promise<BraceletDomainModel.BraceletOverviewDto> {
+  async assign(
+    id: string,
+    dto: BraceletDomainModel.AssignBraceletDto
+  ): Promise<BraceletDomainModel.BraceletOverviewDto> {
     const result = await this.httpClient.patch<BraceletDomainModel.BraceletOverviewDto>(`/bracelets/${id}/assign`, dto)
     if (result.error) throw new Error(result.error.message)
     return result.data.data

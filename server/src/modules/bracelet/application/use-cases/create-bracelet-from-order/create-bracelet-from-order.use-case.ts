@@ -1,7 +1,8 @@
-import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
-import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 import { OrderEntity } from '@modules/order/domain/entity/order.entity'
 import { generateId } from '@shared/utils/generate-id'
+
+import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
+import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 
 export class CreateBraceletFromOrderUseCase {
   constructor(private readonly braceletRepository: IBraceletRepository) {}

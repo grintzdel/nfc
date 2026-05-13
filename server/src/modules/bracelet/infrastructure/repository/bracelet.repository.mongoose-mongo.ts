@@ -1,6 +1,6 @@
-import { IBraceletRepository } from '../../domain/repository/bracelet.repository.interface'
-import { BraceletEntity } from '../../domain/entity/bracelet.entity'
 import { BraceletStatus } from '../../domain/constants/bracelet-status.constant'
+import { BraceletEntity } from '../../domain/entity/bracelet.entity'
+import { IBraceletRepository } from '../../domain/repository/bracelet.repository.interface'
 import { BraceletModel, BraceletDocument } from '../schema/bracelet.schema'
 
 function toEntity(doc: BraceletDocument): BraceletEntity {
@@ -75,7 +75,10 @@ export class BraceletRepositoryMongooseMongo implements IBraceletRepository {
       filter['nfcId'] = regex
     }
     const [docs, total] = await Promise.all([
-      BraceletModel.find(filter).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit),
+      BraceletModel.find(filter)
+        .toSorted({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
       BraceletModel.countDocuments(filter),
     ])
     return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -95,7 +98,10 @@ export class BraceletRepositoryMongooseMongo implements IBraceletRepository {
       filter['nfcId'] = regex
     }
     const [docs, total] = await Promise.all([
-      BraceletModel.find(filter).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit),
+      BraceletModel.find(filter)
+        .toSorted({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
       BraceletModel.countDocuments(filter),
     ])
     return { items: docs.map(toEntity), total, page, limit, totalPages: Math.ceil(total / limit) }
@@ -138,7 +144,7 @@ export class BraceletRepositoryMongooseMongo implements IBraceletRepository {
     const doc = await BraceletModel.findByIdAndUpdate(
       entity.id,
       { nfcId, status, userId, eventId, productId, orderId, activatedAt, deletedAt },
-      { new: true },
+      { new: true }
     )
     if (!doc) throw new Error(`Bracelet ${entity.id} not found in DB during update`)
     return toEntity(doc)

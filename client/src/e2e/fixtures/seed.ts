@@ -39,9 +39,7 @@ export async function signInAdmin(): Promise<{ token: string }> {
   })
   if (!loginRes.ok) {
     const body = await loginRes.text()
-    throw new Error(
-      `Admin seed login failed (${loginRes.status}): ${body}. Did you run \`pnpm seed\` first?`,
-    )
+    throw new Error(`Admin seed login failed (${loginRes.status}): ${body}. Did you run \`pnpm seed\` first?`)
   }
   return ((await loginRes.json()) as { data: { token: string } }).data
 }

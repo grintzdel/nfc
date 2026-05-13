@@ -1,5 +1,5 @@
-import { CheckInEntity } from './check-in.entity'
 import { InteractionType } from '../constants/interaction-type.constant'
+import { CheckInEntity } from './check-in.entity'
 
 describe('CheckInEntity', () => {
   const minimalProps = {
@@ -29,13 +29,15 @@ describe('CheckInEntity', () => {
   })
 
   it('should throw when interactionType is missing', () => {
-    expect(() => CheckInEntity.create({ ...minimalProps, interactionType: undefined })).toThrow('interactionType is required')
+    expect(() => CheckInEntity.create({ ...minimalProps, interactionType: undefined })).toThrow(
+      'interactionType is required'
+    )
   })
 
   it('should throw when interactionType is invalid', () => {
-    expect(() =>
-      CheckInEntity.create({ ...minimalProps, interactionType: 'foo' as never }),
-    ).toThrow('Invalid interactionType: foo')
+    expect(() => CheckInEntity.create({ ...minimalProps, interactionType: 'foo' as never })).toThrow(
+      'Invalid interactionType: foo'
+    )
   })
 
   it('should create with all fields populated', () => {

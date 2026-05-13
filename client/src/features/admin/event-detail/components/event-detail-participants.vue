@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import { Search, ExternalLink, Link as LinkIcon, Users } from 'lucide-vue-next'
 import { computed, ref, toRef, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { Search, ExternalLink, Link as LinkIcon, Users } from 'lucide-vue-next'
+
+import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import { useGetAvailableBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-available-bracelets'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import { useAttachBracelet } from '@/modules/participant/ui/hooks/queries/mutation/use-attach-bracelet'
+import { useGetPaginatedParticipantsByEvent } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants-by-event'
+import { EmptyState } from '@/ui/empty-state'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetPaginatedParticipantsByEvent } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants-by-event'
-import { useGetAvailableBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-available-bracelets'
-import { useAttachBracelet } from '@/modules/participant/ui/hooks/queries/mutation/use-attach-bracelet'
-import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
-import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+
 import AttachBraceletDialog from './attach-bracelet-dialog.vue'
 
 const props = defineProps<{ eventId: string }>()
@@ -84,7 +86,7 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
           v-model="searchInput"
           type="text"
           placeholder="Rechercher par nom ou rôle…"
-          class="w-full bg-transparent text-[13px] text-slate-50 placeholder:text-slate-400 outline-none"
+          class="w-full bg-transparent text-[13px] text-slate-50 outline-none placeholder:text-slate-400"
         />
       </div>
     </div>
@@ -101,20 +103,28 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
       <div class="overflow-x-auto">
         <div class="flex min-w-[820px] flex-col">
           <div class="flex items-center bg-slate-800">
-            <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span></div>
-            <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span></div>
-            <div class="w-[180px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Bracelet</span></div>
-            <div class="w-[100px] shrink-0 px-4 py-3 text-center"><span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span></div>
-            <div class="w-[160px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
+            <div class="flex-1 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span>
+            </div>
+            <div class="w-[120px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span>
+            </div>
+            <div class="w-[180px] shrink-0 px-4 py-3">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Bracelet</span>
+            </div>
+            <div class="w-[100px] shrink-0 px-4 py-3 text-center">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span>
+            </div>
+            <div class="w-[160px] shrink-0 px-4 py-3 text-right">
+              <span class="text-xs font-semibold tracking-wide text-slate-400">Action</span>
+            </div>
           </div>
 
-          <div
-            v-for="row in items"
-            :key="row.id"
-            class="flex items-center border-t border-white/10"
-          >
+          <div v-for="row in items" :key="row.id" class="flex items-center border-t border-white/10">
             <div class="flex flex-1 items-center gap-3 px-4 py-3">
-              <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white">
+              <div
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-orange-400 text-[11px] font-semibold text-white"
+              >
                 {{ initials(row.profile.displayName) }}
               </div>
               <div class="flex flex-col">
@@ -178,7 +188,7 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
         :total="paged.total"
         :limit="paged.limit"
         item-label="participants"
-        @update:page="(p) => page = p"
+        @update:page="(p) => (page = p)"
       />
     </template>
 
@@ -187,7 +197,7 @@ const hasNoResults = computed(() => paged.value !== undefined && paged.value.tot
       :available-bracelets="availableBracelets ?? []"
       :open="dialogOpen"
       :loading="attachMutation.isPending.value"
-      @update:open="(v) => dialogOpen = v"
+      @update:open="(v) => (dialogOpen = v)"
       @confirm="handleConfirmAttach"
     />
   </div>

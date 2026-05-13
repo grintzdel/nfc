@@ -1,5 +1,6 @@
-import type { Ref } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
+import type { Ref } from 'vue'
+
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 
 export function useGetPaginatedBracelets(params: {
@@ -12,11 +13,12 @@ export function useGetPaginatedBracelets(params: {
 
   return useQuery({
     queryKey: ['bracelets', 'paginated', params.page, params.limit, params.status, params.search],
-    queryFn: () => braceletPort.getPaginated({
-      page: params.page.value,
-      limit: params.limit.value,
-      status: params.status.value || undefined,
-      search: params.search.value,
-    }),
+    queryFn: () =>
+      braceletPort.getPaginated({
+        page: params.page.value,
+        limit: params.limit.value,
+        status: params.status.value || undefined,
+        search: params.search.value,
+      }),
   })
 }

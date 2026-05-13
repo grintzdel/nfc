@@ -1,15 +1,16 @@
-import { TeamMemberEntity } from '../../../domain/entity/team-member.entity'
-import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
+import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
+import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
+import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
+import { AppError } from '@shared/errors/app.error'
+
 import { TeamRole } from '../../../domain/constants/team-role.constant'
+import { TeamMemberEntity } from '../../../domain/entity/team-member.entity'
 import {
   TeamMemberAlreadyExistsError,
   TeamMemberInvalidRoleError,
   TeamMemberNotAuthorizedError,
 } from '../../../domain/errors/team.error'
-import { IEventRepository } from '@modules/event/domain/repository/event.repository.interface'
-import { EventNotFoundError } from '@modules/event/domain/errors/event.error'
-import { IUserRepository } from '@modules/auth/domain/repository/user.repository.interface'
-import { AppError } from '@shared/errors/app.error'
+import { ITeamMemberRepository } from '../../../domain/repository/team-member.repository.interface'
 
 export interface InviteTeamMemberInput {
   inviterUserId: string
@@ -22,7 +23,7 @@ export class InviteTeamMemberUseCase {
   constructor(
     private readonly teamMemberRepository: ITeamMemberRepository,
     private readonly eventRepository: IEventRepository,
-    private readonly userRepository: IUserRepository,
+    private readonly userRepository: IUserRepository
   ) {}
 
   async execute(input: InviteTeamMemberInput): Promise<TeamMemberEntity> {
@@ -32,7 +33,10 @@ export class InviteTeamMemberUseCase {
     if (event.ownerId !== input.inviterUserId) {
       const inviterMember = await this.teamMemberRepository.findByUserAndEvent(input.inviterUserId, input.eventId)
       const isAcceptedManager =
-        inviterMember !== null && !inviterMember.isDeleted() && inviterMember.isAccepted() && inviterMember.role === TeamRole.MANAGER
+        inviterMember !== null &&
+        !inviterMember.isDeleted() &&
+        inviterMember.isAccepted() &&
+        inviterMember.role === TeamRole.MANAGER
       if (!isAcceptedManager) {
         throw new TeamMemberNotAuthorizedError('Only event owner or managers can invite')
       }

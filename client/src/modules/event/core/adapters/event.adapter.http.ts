@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IEventPort } from '../ports/event.port'
+
 import type { EventDomainModel } from '../model/event.domain-model'
+import type { IEventPort } from '../ports/event.port'
 
 export class EventHttpAdapter implements IEventPort {
   constructor(private readonly httpClient: HttpClient) {}
@@ -23,11 +24,18 @@ export class EventHttpAdapter implements IEventPort {
     return result.data.data
   }
 
-  async getPaginated(params: { page: number; limit: number; search?: string; status?: string }): Promise<EventDomainModel.PaginatedEventsDto> {
+  async getPaginated(params: {
+    page: number
+    limit: number
+    search?: string
+    status?: string
+  }): Promise<EventDomainModel.PaginatedEventsDto> {
     const query = new URLSearchParams({ page: String(params.page), limit: String(params.limit) })
     if (params.search) query.set('search', params.search)
     if (params.status) query.set('status', params.status)
-    const result = await this.httpClient.get<EventDomainModel.PaginatedEventsDto>(`/events/admin/paginated?${query.toString()}`)
+    const result = await this.httpClient.get<EventDomainModel.PaginatedEventsDto>(
+      `/events/admin/paginated?${query.toString()}`
+    )
     if (result.error) throw new Error(result.error.message)
     return result.data.data
   }

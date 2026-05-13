@@ -41,11 +41,13 @@ export class UpdateEventRequestDto {
       this.endsAt = body.endsAt
     }
     if (body.capacity !== undefined) {
-      if (typeof body.capacity !== 'number' || body.capacity < 0) throw new AppError(400, 'capacity must be a non-negative number')
+      if (typeof body.capacity !== 'number' || body.capacity < 0)
+        throw new AppError(400, 'capacity must be a non-negative number')
       this.capacity = body.capacity
     }
     if (body.staffCount !== undefined) {
-      if (typeof body.staffCount !== 'number' || body.staffCount < 0) throw new AppError(400, 'staffCount must be a non-negative number')
+      if (typeof body.staffCount !== 'number' || body.staffCount < 0)
+        throw new AppError(400, 'staffCount must be a non-negative number')
       this.staffCount = body.staffCount
     }
   }

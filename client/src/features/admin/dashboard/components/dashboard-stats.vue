@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Calendar, Users, Watch, TrendingUp } from 'lucide-vue-next'
-import StatCard from '@/ui/components/stat-card.vue'
+
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
+import StatCard from '@/ui/components/stat-card.vue'
 
 defineProps<{
   activeEvents?: AnalyticsDomainModel.ActiveEventsStatsDto

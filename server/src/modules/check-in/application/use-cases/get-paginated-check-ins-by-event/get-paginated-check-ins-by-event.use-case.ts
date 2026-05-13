@@ -1,7 +1,8 @@
+import { ParticipantEntity } from '@modules/participant/domain/entity/participant.entity'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
+
 import { CheckInEntity } from '../../../domain/entity/check-in.entity'
 import { ICheckInRepository } from '../../../domain/repository/check-in.repository.interface'
-import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
-import { ParticipantEntity } from '@modules/participant/domain/entity/participant.entity'
 
 export type CheckInWithParticipant = {
   checkIn: CheckInEntity
@@ -11,7 +12,7 @@ export type CheckInWithParticipant = {
 export class GetPaginatedCheckInsByEventUseCase {
   constructor(
     private readonly checkInRepository: ICheckInRepository,
-    private readonly participantRepository: IParticipantRepository,
+    private readonly participantRepository: IParticipantRepository
   ) {}
 
   async execute(params: {

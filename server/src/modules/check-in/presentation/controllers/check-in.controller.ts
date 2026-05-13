@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
+
 import { CheckInService } from '../../application/services/check-in.service'
-import { RecordCheckInRequestDto } from '../dto/record-check-in.request.dto'
 import { CheckInResponseDto } from '../dto/check-in.response.dto'
 import { PaginatedCheckInsResponseDto } from '../dto/paginated-check-ins.response.dto'
+import { RecordCheckInRequestDto } from '../dto/record-check-in.request.dto'
 
 export class CheckInController {
   constructor(private readonly service: CheckInService) {}

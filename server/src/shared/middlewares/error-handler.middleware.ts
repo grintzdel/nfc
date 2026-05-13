@@ -1,12 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
+
 import { AppError } from '../errors/app.error'
 
-export function errorHandlerMiddleware(
-  err: Error,
-  _req: Request,
-  res: Response,
-  _next: NextFunction
-): void {
+export function errorHandlerMiddleware(err: Error, _req: Request, res: Response, _next: NextFunction): void {
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       success: false,

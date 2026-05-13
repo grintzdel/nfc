@@ -1,5 +1,5 @@
-import { SupplyOrderEntity } from '../../domain/entity/supply-order.entity'
 import { SupplyOrderStatus } from '../../domain/constants/supply-order-status.constant'
+import { SupplyOrderEntity } from '../../domain/entity/supply-order.entity'
 
 export class SupplyOrderResponseDto {
   id: string

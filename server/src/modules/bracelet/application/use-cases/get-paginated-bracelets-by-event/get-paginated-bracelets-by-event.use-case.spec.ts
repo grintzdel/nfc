@@ -1,8 +1,9 @@
-import { GetPaginatedBraceletsByEventUseCase } from './get-paginated-bracelets-by-event.use-case'
-import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
-import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
-import { createBraceletFixture } from '../../../__tests__/bracelet.factory'
 import { createParticipantFixture } from '@modules/participant/__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
+
+import { createBraceletFixture } from '../../../__tests__/bracelet.factory'
+import { BraceletRepositoryMock } from '../../../__tests__/bracelet.repository.mock'
+import { GetPaginatedBraceletsByEventUseCase } from './get-paginated-bracelets-by-event.use-case'
 
 describe('GetPaginatedBraceletsByEventUseCase', () => {
   let braceletRepo: BraceletRepositoryMock
@@ -29,7 +30,10 @@ describe('GetPaginatedBraceletsByEventUseCase', () => {
     await useCase.execute({ eventId: 'e1', page: 3, limit: 50, search: 'nfc-' })
 
     expect(braceletRepo.findPaginatedByEventId_calledWith).toEqual({
-      eventId: 'e1', page: 3, limit: 50, search: 'nfc-',
+      eventId: 'e1',
+      page: 3,
+      limit: 50,
+      search: 'nfc-',
     })
   })
 

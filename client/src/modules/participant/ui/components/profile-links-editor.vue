@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Plus } from 'lucide-vue-next'
-import { Button } from '@/ui/button'
-import ProfileLinkRow from './profile-link-row.vue'
-import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import { computed } from 'vue'
+
 import { ProfileLinkType } from '@/modules/participant/core/constants/profile-link-type.constant'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import { Button } from '@/ui/button'
+
+import ProfileLinkRow from './profile-link-row.vue'
 
 type Link = ParticipantDomainModel.ProfileLinkDto
 const MAX_LINKS = 10
@@ -26,7 +28,10 @@ function updateAt(index: number, link: Link): void {
 }
 
 function removeAt(index: number): void {
-  emit('update:modelValue', props.modelValue.filter((_, i) => i !== index))
+  emit(
+    'update:modelValue',
+    props.modelValue.filter((_, i) => i !== index)
+  )
 }
 </script>
 
@@ -39,13 +44,7 @@ function removeAt(index: number): void {
       @update="(l) => updateAt(i, l)"
       @remove="() => removeAt(i)"
     />
-    <Button
-      type="button"
-      variant="outline"
-      :disabled="isAtMax"
-      class="border-dashed"
-      @click="add"
-    >
+    <Button type="button" variant="outline" :disabled="isAtMax" class="border-dashed" @click="add">
       <Plus class="mr-2 h-4 w-4" />
       Ajouter un lien ({{ modelValue.length }}/{{ MAX_LINKS }})
     </Button>

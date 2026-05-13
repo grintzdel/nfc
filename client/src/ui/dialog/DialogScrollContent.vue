@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import type { DialogContentEmits, DialogContentProps } from "reka-ui"
-import type { HTMLAttributes } from "vue"
-import { reactiveOmit } from "@vueuse/core"
-import { X } from "lucide-vue-next"
-import {
-  DialogClose,
-  DialogContent,
-  DialogOverlay,
-  DialogPortal,
-  useForwardPropsEmits,
-} from "reka-ui"
+import { reactiveOmit } from '@vueuse/core'
+import { X } from 'lucide-vue-next'
+import type { DialogContentEmits, DialogContentProps } from 'reka-ui'
+import { DialogClose, DialogContent, DialogOverlay, DialogPortal, useForwardPropsEmits } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+
 import { cn } from '@/ui/lib/utils'
 
-const props = defineProps<DialogContentProps & { class?: HTMLAttributes["class"] }>()
+const props = defineProps<DialogContentProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<DialogContentEmits>()
 
-const delegatedProps = reactiveOmit(props, "class")
+const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
@@ -28,25 +23,25 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       <DialogContent
         :class="
           cn(
-            'relative z-50 grid w-full max-w-lg my-8 gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full',
-            props.class,
+            'relative z-50 my-8 grid w-full max-w-lg gap-4 border border-border bg-background p-6 shadow-lg duration-200 sm:rounded-lg md:w-full',
+            props.class
           )
         "
         v-bind="forwarded"
-        @pointer-down-outside="(event) => {
-          const originalEvent = event.detail.originalEvent;
-          const target = originalEvent.target as HTMLElement;
-          if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
-            event.preventDefault();
+        @pointer-down-outside="
+          (event) => {
+            const originalEvent = event.detail.originalEvent
+            const target = originalEvent.target as HTMLElement
+            if (originalEvent.offsetX > target.clientWidth || originalEvent.offsetY > target.clientHeight) {
+              event.preventDefault()
+            }
           }
-        }"
+        "
       >
         <slot />
 
-        <DialogClose
-          class="absolute top-3 right-3 p-0.5 transition-colors rounded-md hover:bg-secondary"
-        >
-          <X class="w-4 h-4" />
+        <DialogClose class="absolute right-3 top-3 rounded-md p-0.5 transition-colors hover:bg-secondary">
+          <X class="h-4 w-4" />
           <span class="sr-only">Close</span>
         </DialogClose>
       </DialogContent>

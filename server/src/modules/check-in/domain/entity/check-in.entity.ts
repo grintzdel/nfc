@@ -40,15 +40,35 @@ export class CheckInEntity {
     return new CheckInEntity(props)
   }
 
-  get id(): string { return this.props.id }
-  get braceletId(): string { return this.props.braceletId }
-  get eventId(): string { return this.props.eventId }
-  get interactionType(): InteractionType { return this.props.interactionType }
-  get zoneName(): Nullable<string> { return this.props.zoneName }
-  get targetBraceletId(): Nullable<string> { return this.props.targetBraceletId }
-  get amount(): Nullable<number> { return this.props.amount }
-  get metadata(): Record<string, unknown> { return this.props.metadata }
-  get createdAt(): Date { return this.props.createdAt }
+  get id(): string {
+    return this.props.id
+  }
+  get braceletId(): string {
+    return this.props.braceletId
+  }
+  get eventId(): string {
+    return this.props.eventId
+  }
+  get interactionType(): InteractionType {
+    return this.props.interactionType
+  }
+  get zoneName(): Nullable<string> {
+    return this.props.zoneName
+  }
+  get targetBraceletId(): Nullable<string> {
+    return this.props.targetBraceletId
+  }
+  get amount(): Nullable<number> {
+    return this.props.amount
+  }
+  get metadata(): Record<string, unknown> {
+    return this.props.metadata
+  }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
 
-  toJSON(): CheckInEntityProps { return { ...this.props } }
+  toJSON(): CheckInEntityProps {
+    return { ...this.props }
+  }
 }

@@ -1,7 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
-import { NfcHttpAdapter } from './nfc.adapter.http'
-import { NfcBraceletNotActiveError } from '../errors/nfc.error'
+
 import type { HttpClient } from '@/modules/shared/http/http-client'
+
+import { NfcBraceletNotActiveError } from '../errors/nfc.error'
+import { NfcHttpAdapter } from './nfc.adapter.http'
 
 function makeClient(get: ReturnType<typeof vi.fn>): HttpClient {
   return { get } as unknown as HttpClient

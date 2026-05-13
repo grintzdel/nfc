@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { MarketingMongooseRepository } from './infrastructure/repository/marketing.repository.mongoose-mongo'
-import { GetFaqsUseCase } from './application/use-cases/get-faqs/get-faqs.use-case'
+
 import { MarketingService } from './application/services/marketing.service'
+import { GetFaqsUseCase } from './application/use-cases/get-faqs/get-faqs.use-case'
+import { MarketingMongooseRepository } from './infrastructure/repository/marketing.repository.mongoose-mongo'
 import { MarketingController } from './presentation/controllers/marketing.controller'
 
 export function createMarketingModule() {

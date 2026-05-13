@@ -1,6 +1,7 @@
-import { ParticipantEntity, ParticipantProfile } from '../../domain/entity/participant.entity'
-import { BraceletEntity } from '@modules/bracelet/domain/entity/bracelet.entity'
 import { BraceletStatus } from '@modules/bracelet/domain/constants/bracelet-status.constant'
+import { BraceletEntity } from '@modules/bracelet/domain/entity/bracelet.entity'
+
+import { ParticipantEntity, ParticipantProfile } from '../../domain/entity/participant.entity'
 
 type BraceletSummary = { id: string; nfcId: string; status: BraceletStatus }
 

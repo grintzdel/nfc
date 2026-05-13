@@ -1,15 +1,7 @@
 <script setup lang="ts">
+import { Timer, Package, CircleCheck, Users, MapPin, Calendar, UsersRound, MonitorPlay } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
-import {
-  Timer,
-  Package,
-  CircleCheck,
-  Users,
-  MapPin,
-  Calendar,
-  UsersRound,
-  MonitorPlay,
-} from 'lucide-vue-next'
+
 import type { AnalyticsDomainModel } from '@/modules/analytics/core/model/analytics.domain-model'
 import { EmptyState } from '@/ui/empty-state'
 
@@ -24,9 +16,7 @@ function formatDate(dateStr: string): string {
 </script>
 
 <template>
-  <div
-    class="flex flex-col gap-4 overflow-hidden rounded-lg border border-white/10 bg-[#0F172A] p-5"
-  >
+  <div class="flex flex-col gap-4 overflow-hidden rounded-lg border border-white/10 bg-[#0F172A] p-5">
     <div v-if="!data?.event" class="flex h-60 items-center justify-center">
       <EmptyState
         :icon="Calendar"
@@ -38,17 +28,14 @@ function formatDate(dateStr: string): string {
 
     <template v-else>
       <div class="flex flex-col gap-1.5">
-        <p class="text-xs font-medium uppercase tracking-wider text-slate-400">
-          Prochain événement
-        </p>
+        <p class="text-xs font-medium uppercase tracking-wider text-slate-400">Prochain événement</p>
         <p class="text-lg font-bold text-slate-50">{{ data.event.name }}</p>
         <span
           class="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#7C3AED]/30 bg-[#7C3AED]/15 px-2.5 py-0.5"
         >
           <Timer class="h-3 w-3 text-[#A78BFA]" />
           <span class="text-xs font-semibold text-[#A78BFA]"
-            >J-{{ data.event.daysUntil }} ·
-            {{ formatDate(data.event.startsAt) }}</span
+            >J-{{ data.event.daysUntil }} · {{ formatDate(data.event.startsAt) }}</span
           >
         </span>
       </div>

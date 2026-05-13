@@ -1,5 +1,5 @@
-import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
 import { BraceletStatus } from '../../../domain/constants/bracelet-status.constant'
+import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
 import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 
 export class GetPaginatedBraceletsUseCase {

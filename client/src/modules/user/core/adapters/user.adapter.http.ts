@@ -1,6 +1,7 @@
 import type { HttpClient } from '@/modules/shared/http/http-client'
-import type { IUserPort } from '../ports/user.port'
+
 import type { UserDomainModel } from '../model/user.domain-model'
+import type { IUserPort } from '../ports/user.port'
 
 export class UserHttpAdapter implements IUserPort {
   constructor(private readonly httpClient: HttpClient) {}

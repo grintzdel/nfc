@@ -1,8 +1,8 @@
-import { PublishEventUseCase } from './publish-event.use-case'
-import { EventRepositoryMock } from '../../../__tests__/event.repository.mock'
 import { createEventFixture } from '../../../__tests__/event.factory'
+import { EventRepositoryMock } from '../../../__tests__/event.repository.mock'
 import { EventStatus } from '../../../domain/constants/event-status.constant'
 import { EventNotFoundError, EventNotOwnerError } from '../../../domain/errors/event.error'
+import { PublishEventUseCase } from './publish-event.use-case'
 
 describe('PublishEventUseCase', () => {
   it('publishes draft event', async () => {

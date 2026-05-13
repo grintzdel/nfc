@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import ProductCard from '@/modules/product/ui/components/product-card.vue'
 import { useGetProducts } from '@/modules/product/ui/hooks/queries/query/use-get-products'
 
@@ -23,11 +24,7 @@ const relatedProducts = computed(() => {
       <h2 class="text-[28px] font-bold text-slate-50">Vous pourriez aussi aimer</h2>
 
       <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-3">
-        <ProductCard
-          v-for="product in relatedProducts"
-          :key="product.id"
-          :product="product"
-        />
+        <ProductCard v-for="product in relatedProducts" :key="product.id" :product="product" />
       </div>
     </div>
   </section>

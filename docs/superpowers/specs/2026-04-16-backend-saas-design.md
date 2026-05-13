@@ -19,6 +19,7 @@ Build the 7 SaaS backend modules for PULSE's Event Pass platform:
 7. `supply-order` — supplier replenishment orders (bracelet inventory)
 
 Plus:
+
 - Bridge between e-commerce `order` and SaaS `bracelet` (auto-creation on order confirmation + manual admin creation)
 - Public NFC simulation endpoints (`GET /api/nfc/:nfcId` and `POST /api/check-ins`)
 - Env var `BRACELET_MAX_CAPACITY` for stock ceiling
@@ -30,6 +31,7 @@ Plus:
 **Current backend state:** `auth`, `user`, `product`, `cart`, `order` modules complete. Clean Architecture, Express + Mongoose, JWT auth, entity pattern with private constructor / readonly `props` / factory methods / business methods returning `this`.
 
 **What the SaaS side powers:**
+
 - **Admin dashboard** (Pencil refs: `ZG9oI` Dashboard Admin, `YLysT` Événements, `iO7Hg` Bracelets) — KPI cards, charts, next event card, stock card, tables with filters
 - **NFC experience** for participants — `GET /api/nfc/:nfcId` renders a public profile when a bracelet is tapped against a phone
 - **Organizer flows** — check-in scans during events, cashless payments, networking taps
@@ -77,9 +79,11 @@ modules/<name>/
 ## Module 1 — `event`
 
 ### Purpose
+
 Organizers create and manage events. An event has a location, dates, capacity, and a status that drives the dashboard tabs (Tous / À venir / En cours / Terminés / Brouillons).
 
 ### `EventEntity`
+
 ```
 EventEntityProps {
   id: string
@@ -100,6 +104,7 @@ EventEntityProps {
 ```
 
 ### Constants
+
 ```
 EventStatus = {
   DRAFT:       'draft',
@@ -113,6 +118,7 @@ EventStatus = {
 ```
 
 ### Business methods
+
 - `publish()` → DRAFT → UPCOMING
 - `start()` → UPCOMING → IN_PROGRESS
 - `complete()` → IN_PROGRESS → COMPLETED
@@ -122,6 +128,7 @@ EventStatus = {
 - `isActive()` → `UPCOMING || IN_PROGRESS` (used by analytics)
 
 ### Repository methods
+
 - `create(entity)` / `findById(id)` / `findAll()` / `findAllByOwner(ownerId)` / `update(entity)` / `softDelete(id)`
 - `findAllByStatusIn(statuses: EventStatus[])` → used by analytics
 - `countByStatusInRange(statuses, from, to)` → used by analytics
@@ -129,6 +136,7 @@ EventStatus = {
 - `countByOwner(ownerId)`
 
 ### Routes (`/api/events`)
+
 - `POST /` — create (auth required, any role)
 - `GET /` — list my events (auth, filtered by `ownerId = req.user.userId`, or all if admin)
 - `GET /:id` — detail (auth)
@@ -144,9 +152,11 @@ EventStatus = {
 ## Module 2 — `bracelet`
 
 ### Purpose
+
 The NFC object **after purchase**. It lives through 4 states: bought (`STOCK`), assigned to a participant (`PRE_ACTIVATED`), tapped for the first time (`ACTIVE`), retired (`DISABLED`). Independent from the e-commerce `ProductEntity` — the product is what you sell, the bracelet is what the user owns.
 
 ### `BraceletEntity`
+
 ```
 BraceletEntityProps {
   id: string
@@ -164,6 +174,7 @@ BraceletEntityProps {
 ```
 
 ### Constants
+
 ```
 BraceletStatus = {
   STOCK:         'stock',          // unassigned, counted by getBraceletStockWithStats
@@ -174,6 +185,7 @@ BraceletStatus = {
 ```
 
 ### Business methods
+
 - `assignTo(userId, eventId)` → STOCK → PRE_ACTIVATED (throws if not STOCK)
 - `activate()` → PRE_ACTIVATED → ACTIVE (sets `activatedAt = now`; throws if not PRE_ACTIVATED)
 - `disable()` → any except DISABLED → DISABLED
@@ -182,6 +194,7 @@ BraceletStatus = {
 - `isInStock()` / `isPreActivated()` / `isActive()` / `isDisabled()`
 
 ### Repository methods
+
 - `create(entity)` / `findById(id)` / `findByNfcId(nfcId)` / `findAll()` / `update(entity)` / `softDelete(id)`
 - `findAllByStatus(status)` / `findAllByEventId(eventId)` / `findAllByUserId(userId)`
 - `countByStatus(status)` → used by `getBraceletStockWithStats`
@@ -191,6 +204,7 @@ BraceletStatus = {
 - `countActivationsByMonthInYear(year)` → used by `listBraceletsActivationByYear` (Mongo aggregation `$group` by month of `activatedAt`)
 
 ### Routes (`/api/bracelets`)
+
 - `POST /` — admin manual creation (body: `{ nfcId, productId? }`)
 - `POST /from-order/:orderId` — internal use-case, called by `order` module on confirmation (not a public route, wired via service injection)
 - `GET /` — admin list with optional `?status=stock|pre_activated|...`
@@ -206,9 +220,11 @@ BraceletStatus = {
 ## Module 3 — `participant`
 
 ### Purpose
+
 Binds a `user` to an `event` via a `bracelet`. Distinct from `user`: a user can be a participant in many events (one record per event).
 
 ### `ParticipantEntity`
+
 ```
 ParticipantEntityProps {
   id: string
@@ -232,21 +248,25 @@ ParticipantProfile {
 ```
 
 ### Business methods
+
 - `attachBracelet(braceletId)` — set braceletId once
 - `checkIn()` — set `checkedInAt = now` (called by check-in use-case)
 - `updateProfile(partial)` — patch `profile` fields
 - `softDelete()`
 
 ### Constraints
+
 - Unique `(userId, eventId)` in Mongo (composite index)
 
 ### Repository methods
+
 - `create(entity)` / `findById(id)` / `findByUserAndEvent(userId, eventId)` / `findByBraceletId(braceletId)` / `update(entity)` / `softDelete(id)`
 - `findAllByEventId(eventId)`
 - `countInRange(from, to)` → used by `getParticipantsCountWithStats`
 - `countByEventId(eventId)`
 
 ### Routes (`/api/participants`)
+
 - `POST /` — register me to an event (auth, body: `{ eventId, profile }`)
 - `GET /me` — my participations (auth)
 - `GET /event/:eventId` — list participants for an event (auth + owner or admin)
@@ -259,9 +279,11 @@ ParticipantProfile {
 ## Module 4 — `check-in`
 
 ### Purpose
+
 Append-only log of NFC scan events. Each entry is one tap. Fuels the donut chart, the heatmap, and the per-event real-time stats.
 
 ### `CheckInEntity`
+
 ```
 CheckInEntityProps {
   id: string
@@ -279,6 +301,7 @@ CheckInEntityProps {
 **No `updatedAt` / `deletedAt` — append-only log.**
 
 ### Constants
+
 ```
 InteractionType = {
   CHECK_IN:   'check_in',      // first tap at event entrance
@@ -289,16 +312,19 @@ InteractionType = {
 ```
 
 ### Business methods
+
 - `static create(props)` — validates `braceletId`, `eventId`, `interactionType`
 - No mutations (append-only)
 
 ### Repository methods
+
 - `create(entity)` / `findById(id)`
 - `findAllByEventId(eventId)` / `findAllByBraceletId(braceletId)`
 - `countByInteractionType()` → aggregation returning `[{ type, count }, ...]` → used by `listInteractionTypesWithStats`
 - `countByEventIdAndType(eventId, type)`
 
 ### Routes (`/api/check-ins`)
+
 - `POST /` — record a scan (organizer staff auth, body: `{ nfcId, eventId, interactionType, zoneName?, targetNfcId?, amount?, metadata? }`)
   - Looks up bracelet by `nfcId`, validates status (must be PRE_ACTIVATED or ACTIVE)
   - If status == PRE_ACTIVATED and type == CHECK_IN, **also triggers `bracelet.activate()`** (first tap)
@@ -311,9 +337,11 @@ InteractionType = {
 ## Module 5 — `team`
 
 ### Purpose
+
 Multi-organizer support: several users can manage the same event. Role-based (OWNER / MANAGER / STAFF).
 
 ### `TeamMemberEntity`
+
 ```
 TeamMemberEntityProps {
   id: string
@@ -330,6 +358,7 @@ TeamMemberEntityProps {
 ```
 
 ### Constants
+
 ```
 TeamRole = {
   OWNER:   'owner',     // created the event, full control
@@ -339,20 +368,24 @@ TeamRole = {
 ```
 
 ### Business methods
+
 - `accept()` — set `acceptedAt = now` (throws if already accepted)
 - `changeRole(newRole)` — (not OWNER → OWNER, enforced by service)
 - `softDelete()` — revoke membership
 
 ### Constraints
+
 - Unique `(userId, eventId)` composite index
 - An event always has exactly one OWNER (enforced at service level: `createEvent` auto-creates the OWNER TeamMember)
 
 ### Repository methods
+
 - `create(entity)` / `findById(id)` / `findByUserAndEvent(userId, eventId)` / `update(entity)` / `softDelete(id)`
 - `findAllByEventId(eventId)` / `findAllByUserId(userId)`
 - `findOwnerByEventId(eventId)`
 
 ### Routes (`/api/teams`)
+
 - `POST /events/:eventId/invite` — invite a user (auth + event OWNER/MANAGER, body: `{ userId, role }`)
 - `GET /events/:eventId` — list team members (auth + member of event)
 - `POST /:id/accept` — accept invitation (auth + invitee)
@@ -364,9 +397,11 @@ TeamRole = {
 ## Module 6 — `supply-order`
 
 ### Purpose
+
 Mini-module tracking **supplier purchase orders** for bracelet inventory replenishment. **NOT the e-commerce `order`** — this is the admin placing an internal PO to restock.
 
 ### `SupplyOrderEntity`
+
 ```
 SupplyOrderEntityProps {
   id: string
@@ -381,6 +416,7 @@ SupplyOrderEntityProps {
 ```
 
 ### Constants
+
 ```
 SupplyOrderStatus = {
   PENDING:   'pending',
@@ -390,14 +426,17 @@ SupplyOrderStatus = {
 ```
 
 ### Business methods
+
 - `markReceived()` → PENDING → RECEIVED, sets `receivedAt = now`
 - `cancel()` → PENDING → CANCELLED
 
 ### Repository methods
+
 - `create(entity)` / `findById(id)` / `findAll()` / `update(entity)`
 - `findPending()` → first `PENDING` sorted by `estimatedDeliveryDate ASC`, limit 1 → used by `getBraceletStockWithStats`
 
 ### Routes (`/api/supply-orders`) — admin only
+
 - `POST /` — create PO (body: `{ units, estimatedDeliveryDate }`)
 - `GET /` — list all
 - `GET /:id` — detail
@@ -409,9 +448,11 @@ SupplyOrderStatus = {
 ## Module 7 — `analytics`
 
 ### Purpose
+
 Read-only aggregation module for the admin dashboard. **No entity, no repository, no Mongo writes.** Only use-cases that inject other modules' repos and compose response DTOs.
 
 ### Structure
+
 ```
 modules/analytics/
 ├── analytics.module.ts
@@ -435,29 +476,33 @@ modules/analytics/
 ```
 
 ### Shared helper
+
 A tiny pure function `getMonthRange(offsetMonths: number): { from: Date, to: Date }` in `shared/utils/month-range.ts` that returns the calendar month boundaries (offset 0 = current month, -1 = last month). Used by 4 use-cases.
 
 ### Use-case 1 — `listActiveEventsWithStats`
+
 - **Reads:** `IEventRepository`
 - **Logic:**
   1. `events = eventRepo.findAllByStatusIn([UPCOMING, IN_PROGRESS])`
   2. `currentMonthCount = eventRepo.countByStatusInRange([UPCOMING, IN_PROGRESS], thisMonthFrom, thisMonthTo)`
   3. `lastMonthCount = eventRepo.countByStatusInRange([UPCOMING, IN_PROGRESS], lastMonthFrom, lastMonthTo)`
-  4. `diffVsLastMonth = currentMonthCount - lastMonthCount`  *(absolute, can be negative)*
+  4. `diffVsLastMonth = currentMonthCount - lastMonthCount` _(absolute, can be negative)_
 - **Response DTO:** `{ events: EventDto[], count: number, diffVsLastMonth: number }`
 - **Route:** `GET /api/analytics/events/active`
 
 ### Use-case 2 — `getParticipantsCountWithStats`
+
 - **Reads:** `IParticipantRepository`
 - **Logic:**
   1. `currentMonth = participantRepo.countInRange(thisMonthFrom, thisMonthTo)`
   2. `lastMonth = participantRepo.countInRange(lastMonthFrom, lastMonthTo)`
   3. `rateVsLastMonth = lastMonth === 0 ? null : ((currentMonth - lastMonth) / lastMonth) * 100`
 - **Response DTO:** `{ count: number, rateVsLastMonth: Nullable<number> }`
-  *(Nullable to handle zero-division: "no previous data" ≠ "0% growth".)*
+  _(Nullable to handle zero-division: "no previous data" ≠ "0% growth".)_
 - **Route:** `GET /api/analytics/participants/count`
 
 ### Use-case 3 — `getBraceletsCountWithStats`
+
 - **Reads:** `IBraceletRepository`
 - **Semantics:** "bracelets created this month" (decision Q4=A — counts entries into inventory, not activations or assignments)
 - **Logic:** identical to use-case 2 but on `braceletRepo.countInRange()` (filtered by `createdAt`, `deletedAt === null`)
@@ -465,6 +510,7 @@ A tiny pure function `getMonthRange(offsetMonths: number): { from: Date, to: Dat
 - **Route:** `GET /api/analytics/bracelets/count`
 
 ### Use-case 4 — `getRevenueWithStats`
+
 - **Reads:** `IOrderRepository` (e-commerce order module, already exists)
 - **Logic:**
   1. `currentMonth = orderRepo.sumRevenueInRange(thisMonthFrom, thisMonthTo, statusFilter = [CONFIRMED, SHIPPED, DELIVERED])`
@@ -475,12 +521,14 @@ A tiny pure function `getMonthRange(offsetMonths: number): { from: Date, to: Dat
 - **Note:** requires **adding `sumRevenueInRange(from, to, statuses)` to `IOrderRepository`** (does not exist yet — plan will cover this modification to the existing order module).
 
 ### Use-case 5 — `listBraceletsActivationByYear`
+
 - **Reads:** `IBraceletRepository`
 - **Logic:** `braceletRepo.countActivationsByMonthInYear(year)` → Mongo `$group` on `{ $month: "$activatedAt" }`, filtered by `$year: year` and `activatedAt != null`
 - **Response DTO:** `{ year: number, months: { month: number, monthName: string, activations: number }[] }` (always 12 entries, zero-filled)
 - **Route:** `GET /api/analytics/bracelets/activations?year=2026` (year optional, defaults to current year)
 
 ### Use-case 6 — `listInteractionTypesWithStats`
+
 - **Reads:** `ICheckInRepository`
 - **Logic:**
   1. `rows = checkInRepo.countByInteractionType()` → `[{ type, count }, ...]` (all 4 types zero-filled)
@@ -490,6 +538,7 @@ A tiny pure function `getMonthRange(offsetMonths: number): { from: Date, to: Dat
 - **Route:** `GET /api/analytics/interactions`
 
 ### Use-case 7 — `getNextEventWithStats`
+
 - **Reads:** `IEventRepository`, `IBraceletRepository`
 - **Logic:**
   1. `event = eventRepo.findNextUpcoming()` (returns `null` if none)
@@ -504,6 +553,7 @@ A tiny pure function `getMonthRange(offsetMonths: number): { from: Date, to: Dat
 - **Naming note:** the user initially used `startHour` / `endHour`. We standardize on `startsAt` / `endsAt` (`Date` objects) — the frontend formats display. If the user wants separate hour fields, they can be derived client-side.
 
 ### Use-case 8 — `getBraceletStockWithStats`
+
 - **Reads:** `IBraceletRepository`, `ISupplyOrderRepository`
 - **Env:** `process.env.BRACELET_MAX_CAPACITY` (default 5000 if unset, logged as warn)
 - **Logic:**
@@ -517,6 +567,7 @@ A tiny pure function `getMonthRange(offsetMonths: number): { from: Date, to: Dat
 - **Route:** `GET /api/analytics/bracelets/stock`
 
 ### Constants
+
 ```
 StockLevel = {
   LOW:  'low',
@@ -533,6 +584,7 @@ function fromFillPercent(pct: number): StockLevel {
 ```
 
 ### Auth on `/api/analytics/*`
+
 All 8 routes require `authMiddleware + adminMiddleware` (or `organizer` role if we split admin/organizer — for MVP: admin only).
 
 ---
@@ -546,6 +598,7 @@ All 8 routes require `authMiddleware + adminMiddleware` (or `organizer` role if 
 ### Implementation approach — direct injection, no event bus
 
 YAGNI. A full event bus is overkill for 2 days. Instead:
+
 - `CreateBraceletFromOrderUseCase(braceletRepo)` is created inside `bracelet.module.ts` and **exported**.
 - `order.module.ts` accepts an optional callback `onOrderConfirmed?: (order: OrderEntity) => Promise<void>` in its factory signature.
 - `main.ts` wires: `const { router: orderRouter } = createOrderModule(..., async (order) => { await createBraceletFromOrderUseCase.execute(order) })`.
@@ -576,6 +629,7 @@ YAGNI. A full event bus is overkill for 2 days. Instead:
 **Auth:** **none** (public by design — the URL IS the auth, like a shared calendar link)
 
 **Logic:**
+
 1. `bracelet = braceletRepo.findByNfcId(nfcId)` → 404 if not found or `deletedAt !== null`
 2. If `bracelet.status === 'stock'` → 404 (not activated, no profile)
 3. `participant = participantRepo.findByBraceletId(bracelet.id)` → 404 if none
@@ -586,6 +640,7 @@ YAGNI. A full event bus is overkill for 2 days. Instead:
 **Location:** new file `src/routes/nfc.routes.ts` wired in `main.ts`, takes `braceletRepo + participantRepo + eventRepo` as deps. Not a full module (no domain, just a thin route handler — YAGNI).
 
 ### `POST /api/check-ins` — organizer scan
+
 Already covered in module 4. Auth required (staff minimum).
 
 ---
@@ -593,26 +648,33 @@ Already covered in module 4. Auth required (staff minimum).
 ## Updates to existing modules
 
 ### `order` module
+
 - **Add method to `IOrderRepository`:** `sumRevenueInRange(from: Date, to: Date, statuses: OrderStatus[]): Promise<number>` — Mongo aggregation `$match + $group { _id: null, sum: { $sum: '$totalAmount' } }`
 - **Add callback param to `createOrderModule`:** `(jwtService, cartItemRepo, productRepo, onOrderConfirmed?)`
 - **Modify `UpdateOrderStatusUseCase`:** accept optional `onOrderConfirmed` callback, invoke after successful `confirm()` transition
 
 ### `product` module
+
 - No changes. `productRepository` already exported, consumed as-is.
 
 ### `cart` module
+
 - No changes.
 
 ### `user` module
+
 - No changes. `userRepository` is needed by `team` (to validate invited userIds exist) — consume via existing export.
 
 ### `shared/`
+
 - **New util:** `shared/utils/month-range.ts`
 - **New util:** `shared/utils/generate-id.ts` (wraps `crypto.randomUUID()`, used for nfcId generation)
 - **No middleware changes** (existing `authMiddleware`, `adminMiddleware`, `errorHandlerMiddleware`, `loggerMiddleware` suffice)
 
 ### `main.ts`
+
 Wires everything. Final order:
+
 ```
 createAuthModule → exports { router, jwtService, userRepository }
 createUserModule(userRepository, jwtService)
@@ -649,15 +711,18 @@ Used only by `getBraceletStockWithStats`. Read via `process.env.BRACELET_MAX_CAP
 Follows the existing `testing-rules.md` conventions:
 
 **Per-module `__tests__/` folder:**
+
 - `<module>.factory.ts` — fixture generators with counter-based unique IDs and `overrides` param
 - `<module>.repository.mock.ts` — manual mock implementing the repo interface (properties `findById_result`, `findById_calledWith`, etc.)
 
 **Test files (colocated):**
+
 - Each entity: `<entity>.entity.spec.ts` — factory methods, business methods, state machine transitions, `toJSON`
 - Each use-case: `<use-case>.spec.ts` — happy path + edge cases + errors, using mocks
 - Each controller: `<name>.controller.spec.ts` — lightweight, mocks the service
 
 **Analytics tests:**
+
 - Each use-case gets its own spec, mocking the injected repos
 - Critical edge cases: zero-division (no previous month data), empty result sets, year boundaries
 - `StockLevel.fromFillPercent` unit-tested with 6 values: 0, 44.9, 45, 50, 55, 55.1 (boundary coverage)
@@ -665,6 +730,7 @@ Follows the existing `testing-rules.md` conventions:
 **Integration tests:** deferred — repository implementations tested via in-memory equivalents if needed for CI. MVP doesn't require integration tests.
 
 **Seed:** extend `src/seed.ts` with:
+
 - 3 events (1 UPCOMING, 1 IN_PROGRESS, 1 COMPLETED)
 - 50 bracelets (30 STOCK, 15 PRE_ACTIVATED, 5 ACTIVE with `activatedAt` spread across last 6 months)
 - 10 participants attached to the IN_PROGRESS event
@@ -676,6 +742,7 @@ Follows the existing `testing-rules.md` conventions:
 ## Error handling
 
 Each module defines its own errors extending `AppError`:
+
 - `EventNotFoundError` (404), `EventInvalidStatusTransitionError` (400), `EventNotOwnerError` (403)
 - `BraceletNotFoundError` (404), `BraceletInvalidStatusError` (400), `BraceletNfcIdAlreadyTakenError` (409)
 - `ParticipantNotFoundError` (404), `ParticipantAlreadyRegisteredError` (409)

@@ -1,6 +1,6 @@
 import { EventEntity } from '../../../domain/entity/event.entity'
-import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 import { EventNotFoundError } from '../../../domain/errors/event.error'
+import { IEventRepository } from '../../../domain/repository/event.repository.interface'
 
 export class GetEventByIdUseCase {
   constructor(private readonly eventRepository: IEventRepository) {}

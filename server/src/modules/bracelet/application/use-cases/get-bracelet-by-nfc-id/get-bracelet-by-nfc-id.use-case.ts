@@ -1,6 +1,6 @@
 import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
-import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 import { BraceletNotFoundError } from '../../../domain/errors/bracelet.error'
+import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
 
 export class GetBraceletByNfcIdUseCase {
   constructor(private readonly braceletRepository: IBraceletRepository) {}

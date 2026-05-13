@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { Search, Plus, ExternalLink, Watch, TrendingUp } from 'lucide-vue-next'
+import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { toast } from 'vue-sonner'
-import { Search, Plus, ExternalLink, Watch, TrendingUp } from 'lucide-vue-next'
-import AdminLayout from '@/ui/layout/admin-layout.vue'
-import StatCard from '@/ui/components/stat-card.vue'
-import { Pagination } from '@/ui/pagination'
-import { TableSkeleton } from '@/ui/skeleton'
-import { EmptyState } from '@/ui/empty-state'
-import { useGetPaginatedBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets'
-import { useCreateBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-create-bracelet'
+
 import { useGetBraceletsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-bracelets-count'
 import { useGetStock } from '@/modules/analytics/ui/hooks/queries/query/use-get-stock'
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
 import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import { useCreateBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-create-bracelet'
+import { useGetPaginatedBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets'
+import StatCard from '@/ui/components/stat-card.vue'
+import { EmptyState } from '@/ui/empty-state'
+import AdminLayout from '@/ui/layout/admin-layout.vue'
+import { Pagination } from '@/ui/pagination'
+import { TableSkeleton } from '@/ui/skeleton'
+
 import CreateBraceletDialog from './components/create-bracelet-dialog.vue'
 
 const { braceletPort } = useDependencies()
@@ -57,7 +59,9 @@ watch(searchInput, (value) => {
   }, 300)
 })
 
-watch(status, () => { page.value = 1 })
+watch(status, () => {
+  page.value = 1
+})
 
 const { data: paged, isLoading } = useGetPaginatedBracelets({ page, limit, status, search })
 const { data: braceletsCount } = useGetBraceletsCount()
@@ -108,16 +112,20 @@ function formatDate(dateStr: string): string {
           icon-color="#F97316"
           title="Bracelets NFC"
           :value="braceletsCount?.count?.toLocaleString('fr-FR') ?? '—'"
-          :badge="braceletsCount?.rateVsLastMonth != null
-            ? `${braceletsCount.rateVsLastMonth >= 0 ? '+' : ''}${parseFloat(braceletsCount.rateVsLastMonth.toFixed(2))}% vs mois dernier`
-            : undefined"
+          :badge="
+            braceletsCount?.rateVsLastMonth != null
+              ? `${braceletsCount.rateVsLastMonth >= 0 ? '+' : ''}${parseFloat(braceletsCount.rateVsLastMonth.toFixed(2))}% vs mois dernier`
+              : undefined
+          "
           :badge-variant="(braceletsCount?.rateVsLastMonth ?? 0) >= 0 ? 'positive' : 'negative'"
         />
         <StatCard
           :icon="TrendingUp"
           icon-color="#7C3AED"
           title="Stock disponible"
-          :value="stock ? `${stock.current.toLocaleString('fr-FR')} / ${stock.maxCapacity.toLocaleString('fr-FR')}` : '—'"
+          :value="
+            stock ? `${stock.current.toLocaleString('fr-FR')} / ${stock.maxCapacity.toLocaleString('fr-FR')}` : '—'
+          "
           :badge="stock ? `${parseFloat(stock.fillPercent.toFixed(2))}% du seuil max` : undefined"
           :badge-variant="(stock?.level ?? 'mid') === 'low' ? 'negative' : 'positive'"
         />
@@ -133,7 +141,7 @@ function formatDate(dateStr: string): string {
               class="rounded px-3 py-1.5 text-[13px] font-medium transition-colors"
               :class="
                 status === tab.key
-                  ? 'bg-[#0F172A] text-slate-50 border border-white/10'
+                  ? 'border border-white/10 bg-[#0F172A] text-slate-50'
                   : 'text-slate-400 hover:text-slate-200'
               "
               @click="status = tab.key"
@@ -150,7 +158,7 @@ function formatDate(dateStr: string): string {
               v-model="searchInput"
               type="text"
               placeholder="Rechercher par NFC ID…"
-              class="w-full bg-transparent text-[13px] text-slate-50 placeholder:text-slate-400 outline-none"
+              class="w-full bg-transparent text-[13px] text-slate-50 outline-none placeholder:text-slate-400"
             />
           </div>
           <button
@@ -175,31 +183,37 @@ function formatDate(dateStr: string): string {
           <div class="overflow-x-auto">
             <div class="flex min-w-[800px] flex-col">
               <div class="flex items-center bg-slate-800">
-                <div class="w-[260px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span></div>
-                <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span></div>
-                <div class="flex-1 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Événement</span></div>
-                <div class="w-[120px] shrink-0 px-4 py-3"><span class="text-xs font-semibold tracking-wide text-slate-400">Créé le</span></div>
-                <div class="w-[140px] shrink-0 px-4 py-3 text-right"><span class="text-xs font-semibold tracking-wide text-slate-400">Action</span></div>
+                <div class="w-[260px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span>
+                </div>
+                <div class="w-[120px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Statut</span>
+                </div>
+                <div class="flex-1 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Événement</span>
+                </div>
+                <div class="w-[120px] shrink-0 px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Créé le</span>
+                </div>
+                <div class="w-[140px] shrink-0 px-4 py-3 text-right">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Action</span>
+                </div>
               </div>
 
-              <div
-                v-for="row in items"
-                :key="row.id"
-                class="flex items-center border-t border-white/10"
-              >
+              <div v-for="row in items" :key="row.id" class="flex items-center border-t border-white/10">
                 <div class="w-[260px] shrink-0 px-4 py-3">
-              <RouterLink
-                v-if="row.status === BraceletStatus.ACTIVE"
-                :to="`/p/${row.nfcId}`"
-                target="_blank"
-                rel="noopener"
-                class="inline-flex items-center gap-1 font-mono text-sm text-emerald-300 hover:text-emerald-200"
-              >
-                {{ row.nfcId }}
-                <ExternalLink class="h-3 w-3" />
-              </RouterLink>
-              <span v-else class="font-mono text-sm text-slate-300">{{ row.nfcId }}</span>
-            </div>
+                  <RouterLink
+                    v-if="row.status === BraceletStatus.ACTIVE"
+                    :to="`/p/${row.nfcId}`"
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex items-center gap-1 font-mono text-sm text-emerald-300 hover:text-emerald-200"
+                  >
+                    {{ row.nfcId }}
+                    <ExternalLink class="h-3 w-3" />
+                  </RouterLink>
+                  <span v-else class="font-mono text-sm text-slate-300">{{ row.nfcId }}</span>
+                </div>
                 <div class="w-[120px] shrink-0 px-4 py-3">
                   <span
                     class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold"
@@ -243,7 +257,7 @@ function formatDate(dateStr: string): string {
             :total="paged.total"
             :limit="paged.limit"
             item-label="bracelets"
-            @update:page="(p) => page = p"
+            @update:page="(p) => (page = p)"
           />
         </template>
       </div>
@@ -252,7 +266,7 @@ function formatDate(dateStr: string): string {
     <CreateBraceletDialog
       :open="createOpen"
       :loading="createMutation.isPending.value"
-      @update:open="(v) => createOpen = v"
+      @update:open="(v) => (createOpen = v)"
       @confirm="handleCreate"
     />
   </AdminLayout>

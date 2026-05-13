@@ -1,4 +1,5 @@
 import { AppError } from '@shared/errors/app.error'
+
 import { InteractionType } from '../../domain/constants/interaction-type.constant'
 
 export class RecordCheckInRequestDto {

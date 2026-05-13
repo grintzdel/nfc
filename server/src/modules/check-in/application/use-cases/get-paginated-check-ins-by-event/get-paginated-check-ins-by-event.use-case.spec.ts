@@ -1,8 +1,9 @@
-import { GetPaginatedCheckInsByEventUseCase } from './get-paginated-check-ins-by-event.use-case'
-import { CheckInRepositoryMock } from '../../../__tests__/check-in.repository.mock'
-import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
-import { createCheckInFixture } from '../../../__tests__/check-in.factory'
 import { createParticipantFixture } from '@modules/participant/__tests__/participant.factory'
+import { ParticipantRepositoryMock } from '@modules/participant/__tests__/participant.repository.mock'
+
+import { createCheckInFixture } from '../../../__tests__/check-in.factory'
+import { CheckInRepositoryMock } from '../../../__tests__/check-in.repository.mock'
+import { GetPaginatedCheckInsByEventUseCase } from './get-paginated-check-ins-by-event.use-case'
 
 describe('GetPaginatedCheckInsByEventUseCase', () => {
   let checkInRepo: CheckInRepositoryMock

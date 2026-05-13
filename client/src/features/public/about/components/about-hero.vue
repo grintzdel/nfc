@@ -1,8 +1,12 @@
 <template>
   <section class="relative overflow-hidden bg-pulse-bg">
     <div class="absolute inset-0 opacity-40">
-      <div class="absolute left-[8%] top-[12%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.27)_0%,transparent_70%)] opacity-60" />
-      <div class="absolute right-[10%] top-[30%] h-[400px] w-[400px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.27)_0%,transparent_70%)] opacity-50" />
+      <div
+        class="absolute left-[8%] top-[12%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.27)_0%,transparent_70%)] opacity-60"
+      />
+      <div
+        class="absolute right-[10%] top-[30%] h-[400px] w-[400px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.27)_0%,transparent_70%)] opacity-50"
+      />
     </div>
 
     <div class="pointer-events-none absolute inset-0">
@@ -19,11 +23,12 @@
       </div>
 
       <h1 class="text-center text-5xl font-extrabold leading-[1.1] text-slate-50 md:text-6xl lg:text-[64px]">
-        Ne avec la passion<br>des festivals
+        Ne avec la passion<br />des festivals
       </h1>
 
       <p class="max-w-[700px] text-center text-lg leading-relaxed text-slate-400">
-        PULSE est ne d'un constat simple : les evenements meritent une meilleure technologie. Nous creons des experiences connectees qui rapprochent les gens.
+        PULSE est ne d'un constat simple : les evenements meritent une meilleure technologie. Nous creons des
+        experiences connectees qui rapprochent les gens.
       </p>
     </div>
   </section>

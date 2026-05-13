@@ -1,7 +1,8 @@
+import { ParticipantEntity } from '@modules/participant/domain/entity/participant.entity'
+import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
+
 import { BraceletEntity } from '../../../domain/entity/bracelet.entity'
 import { IBraceletRepository } from '../../../domain/repository/bracelet.repository.interface'
-import { IParticipantRepository } from '@modules/participant/domain/repository/participant.repository.interface'
-import { ParticipantEntity } from '@modules/participant/domain/entity/participant.entity'
 
 export type BraceletWithParticipant = {
   bracelet: BraceletEntity
@@ -11,7 +12,7 @@ export type BraceletWithParticipant = {
 export class GetPaginatedBraceletsByEventUseCase {
   constructor(
     private readonly braceletRepository: IBraceletRepository,
-    private readonly participantRepository: IParticipantRepository,
+    private readonly participantRepository: IParticipantRepository
   ) {}
 
   async execute(params: {

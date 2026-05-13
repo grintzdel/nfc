@@ -1,4 +1,5 @@
 import { ICheckInRepository } from '@modules/check-in/domain/repository/check-in.repository.interface'
+
 import { ListInteractionTypesWithStatsUseCase } from './list-interaction-types-with-stats.use-case'
 
 const mockCheckInRepo: jest.Mocked<ICheckInRepository> = {

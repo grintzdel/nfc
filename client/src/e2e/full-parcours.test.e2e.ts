@@ -34,13 +34,20 @@ test.describe('Full user parcours (signup → SaaS → cart → checkout)', () =
     await page.getByRole('button', { name: /Voir la boutique/ }).click()
     await expect(page).toHaveURL(/\/shop$/)
 
-    await page.getByRole('button', { name: /^Ajouter$/ }).first().click()
+    await page
+      .getByRole('button', { name: /^Ajouter$/ })
+      .first()
+      .click()
     await expect(page.getByText(/Article ajoute au panier/)).toBeVisible()
 
-    await page.getByRole('button', { name: /panier|cart/i }).first().click().catch(async () => {
-      const cartIcon = page.locator('button:has(svg.lucide-shopping-cart)')
-      await cartIcon.first().click()
-    })
+    await page
+      .getByRole('button', { name: /panier|cart/i })
+      .first()
+      .click()
+      .catch(async () => {
+        const cartIcon = page.locator('button:has(svg.lucide-shopping-cart)')
+        await cartIcon.first().click()
+      })
 
     await expect(page.getByRole('heading', { name: 'Votre panier' })).toBeVisible()
     await page.getByRole('button', { name: /Paiement securise/ }).click()

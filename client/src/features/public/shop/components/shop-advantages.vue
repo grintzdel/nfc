@@ -46,7 +46,9 @@ const advantages = [
         <span class="text-xs font-semibold text-slate-800">POURQUOI PULSE</span>
       </div>
 
-      <h2 class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent">
+      <h2
+        class="bg-gradient-to-b from-slate-50 to-violet-400 bg-clip-text text-center text-4xl font-bold text-transparent"
+      >
         Inclus avec chaque bracelet
       </h2>
 

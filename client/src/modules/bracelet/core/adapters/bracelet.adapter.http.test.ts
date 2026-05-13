@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { BraceletHttpAdapter } from './bracelet.adapter.http'
+
 import type { HttpClient } from '@/modules/shared/http/http-client'
+
+import { BraceletHttpAdapter } from './bracelet.adapter.http'
 
 function makeClient(get: ReturnType<typeof vi.fn>): HttpClient {
   return { get } as unknown as HttpClient
