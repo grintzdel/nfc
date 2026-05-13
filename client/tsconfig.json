@@ -15,6 +15,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.vue", "env.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.vue", "env.d.ts", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"],
   "exclude": ["src/e2e/**", "node_modules/**"]
 }
