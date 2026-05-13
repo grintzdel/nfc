@@ -19,7 +19,7 @@ export class GetEventBySlugPublicUseCase {
   async execute(slug: string): Promise<PublicEventOverview> {
     const event = await this.eventRepository.findBySlug(slug)
     if (!event || event.isDeleted()) throw new EventNotFoundError(slug)
-    if (!event.isUpcoming() && !event.isInProgress()) throw new AppError(404, 'Event not available')
+    if (event.isDraft()) throw new AppError(404, 'Event not available')
     const participantCount = await this.participantRepository.countByEventId(event.id)
     return { event, participantCount }
   }

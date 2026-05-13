@@ -42,9 +42,20 @@ describe('GetEventBySlugPublicUseCase', () => {
     await expect(useCase.execute('any-slug')).rejects.toBeInstanceOf(AppError)
   })
 
-  it('throws AppError 404 when status is completed', async () => {
+  it('returns event when status is completed (read-only public view)', async () => {
     eventRepo.findBySlug_result = createEventFixture({ status: EventStatus.COMPLETED })
-    await expect(useCase.execute('any-slug')).rejects.toBeInstanceOf(AppError)
+    participantRepo.countByEventId_result = 120
+    const result = await useCase.execute('any-slug')
+    expect(result.event.isCompleted()).toBe(true)
+    expect(result.participantCount).toBe(120)
+  })
+
+  it('returns event when status is cancelled (read-only public view)', async () => {
+    eventRepo.findBySlug_result = createEventFixture({ status: EventStatus.CANCELLED })
+    participantRepo.countByEventId_result = 5
+    const result = await useCase.execute('any-slug')
+    expect(result.event.isCancelled()).toBe(true)
+    expect(result.participantCount).toBe(5)
   })
 
   it('throws EventNotFoundError when slug not found', async () => {

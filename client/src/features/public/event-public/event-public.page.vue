@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useHead } from '@unhead/vue'
-import { Users } from 'lucide-vue-next'
+import { CalendarCheck2, Users, XCircle } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
+import { EventStatus } from '@/modules/event/core/model/event.domain-model'
 import EventNotAvailable from '@/modules/event/ui/components/event-not-available.vue'
 import EventPublicDescription from '@/modules/event/ui/components/event-public-description.vue'
 import EventPublicHero from '@/modules/event/ui/components/event-public-hero.vue'
@@ -23,6 +24,10 @@ watch(
 
 const { data, isLoading, isError } = useGetEventPublicBySlug(slug)
 
+const isCompleted = computed(() => data.value?.status === EventStatus.COMPLETED)
+const isCancelled = computed(() => data.value?.status === EventStatus.CANCELLED)
+const isOpenForRegistration = computed(() => !isCompleted.value && !isCancelled.value)
+
 const isFull = computed(() => {
   if (!data.value) return false
   return data.value.capacity > 0 && (data.value.participantCount ?? 0) >= data.value.capacity
@@ -31,6 +36,13 @@ const isFull = computed(() => {
 const fillPercent = computed(() => {
   if (!data.value || data.value.capacity === 0) return 0
   return Math.min(100, Math.round(((data.value.participantCount ?? 0) / data.value.capacity) * 100))
+})
+
+const endedDateLabel = computed(() => {
+  if (!data.value) return ''
+  return new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }).format(
+    new Date(data.value.endsAt)
+  )
 })
 
 useHead({
@@ -69,7 +81,33 @@ useHead({
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <EventPublicDescription :description="data.description" />
 
-          <Card v-if="isFull" class="border-amber-500/30 bg-amber-500/10">
+          <Card v-if="isCompleted" class="border-slate-500/30 bg-slate-500/10">
+            <CardHeader>
+              <CardTitle class="flex items-center gap-2 text-slate-200">
+                <CalendarCheck2 class="h-4 w-4" />
+                Événement terminé
+              </CardTitle>
+            </CardHeader>
+            <CardContent class="flex flex-col gap-3 text-sm text-slate-300">
+              <p>Cet événement s'est tenu le {{ endedDateLabel }}. Les inscriptions sont closes.</p>
+              <p class="text-xs text-slate-400">Merci à toutes les personnes qui y ont participé.</p>
+            </CardContent>
+          </Card>
+
+          <Card v-else-if="isCancelled" class="border-red-500/30 bg-red-500/10">
+            <CardHeader>
+              <CardTitle class="flex items-center gap-2 text-red-300">
+                <XCircle class="h-4 w-4" />
+                Événement annulé
+              </CardTitle>
+            </CardHeader>
+            <CardContent class="flex flex-col gap-3 text-sm text-red-100">
+              <p>Cet événement a été annulé par l'organisateur. Les inscriptions sont fermées.</p>
+              <p class="text-xs text-red-200/80">Si vous étiez inscrit, vous serez contacté pour le suivi.</p>
+            </CardContent>
+          </Card>
+
+          <Card v-else-if="isFull" class="border-amber-500/30 bg-amber-500/10">
             <CardHeader>
               <CardTitle class="flex items-center gap-2 text-amber-300">
                 <Users class="h-4 w-4" />
@@ -85,7 +123,7 @@ useHead({
             </CardContent>
           </Card>
 
-          <div v-else class="flex flex-col gap-3">
+          <div v-else-if="isOpenForRegistration" class="flex flex-col gap-3">
             <div
               v-if="data.capacity > 0"
               class="flex items-center gap-2 rounded-md border border-white/10 bg-slate-900/40 px-3 py-2 text-xs text-slate-300"
