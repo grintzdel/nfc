@@ -14,6 +14,7 @@ import { createParticipantModule } from './modules/participant/participant.modul
 import { createCheckInModule } from './modules/check-in/check-in.module'
 import { createTeamModule } from './modules/team/team.module'
 import { createAnalyticsModule } from './modules/analytics/analytics.module'
+import { createMarketingModule } from './modules/marketing/marketing.module'
 import { createNfcRoutes } from './routes/nfc.routes'
 
 export function createApp(): Express {
@@ -72,6 +73,7 @@ export function createApp(): Express {
     checkInRepository,
     supplyOrderRepository,
   })
+  const { router: marketingRouter } = createMarketingModule()
   const nfcRouter = createNfcRoutes(braceletRepository, participantRepository, eventRepository)
 
   app.use('/api/auth', authRouter)
@@ -86,6 +88,7 @@ export function createApp(): Express {
   app.use('/api/teams', teamRouter)
   app.use('/api/supply-orders', supplyOrderRouter)
   app.use('/api/admin-stats', analyticsRouter)
+  app.use('/api/marketing', marketingRouter)
   app.use('/api/nfc', nfcRouter)
 
   app.use(errorHandlerMiddleware)

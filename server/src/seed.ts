@@ -11,6 +11,7 @@ import { ParticipantModel } from './modules/participant/infrastructure/schema/pa
 import { CheckInModel } from './modules/check-in/infrastructure/schema/check-in.schema'
 import { SupplyOrderModel } from './modules/supply-order/infrastructure/schema/supply-order.schema'
 import { OrderModel } from './modules/order/infrastructure/schema/order.schema'
+import { FaqModel } from './modules/marketing/infrastructure/schema/faq.schema'
 import { EventStatus } from './modules/event/domain/constants/event-status.constant'
 import { BraceletStatus } from './modules/bracelet/domain/constants/bracelet-status.constant'
 
@@ -679,6 +680,16 @@ async function seed(): Promise<void> {
     },
   ])
 
+  await FaqModel.deleteMany({})
+  await FaqModel.insertMany([
+    { order: 1, question: 'Combien coute un bracelet PULSE ?', answer: 'Les packs demarrent a partir de 2,50€ par bracelet pour les commandes de +500 unites. Contactez-nous pour un devis personnalise adapte a la taille de votre evenement.' },
+    { order: 2, question: 'Quel est le delai de livraison ?', answer: 'Les bracelets sont livres sous 5 jours ouvrables en France metropolitaine. Pour les commandes urgentes, nous proposons une option express 48h.' },
+    { order: 3, question: 'Les bracelets sont-ils reutilisables ?', answer: "Oui ! Les bracelets PULSE sont concus pour etre reprogrammes et reutilises sur plusieurs evenements, reduisant les couts et l'impact environnemental." },
+    { order: 4, question: 'Faut-il une app pour les participants ?', answer: "Non ! C'est tout l'interet de PULSE. Le bracelet NFC fonctionne sans application, sans batterie et sans connexion internet du cote participant." },
+    { order: 5, question: 'Comment configurer les bracelets ?', answer: 'Tout se fait depuis le dashboard PULSE. Creez votre evenement, definissez les interactions et assignez les bracelets en quelques clics. Aucune competence technique requise.' },
+    { order: 6, question: 'Proposez-vous un accompagnement ?', answer: 'Absolument. Notre equipe vous accompagne de A a Z : configuration, formation de vos equipes sur place, et support technique le jour J.' },
+  ])
+
   const totalBracelets = allBracelets.length
   console.log('Seed complete!')
   console.log(`  Users: 2 + 30 participants`)
@@ -689,6 +700,7 @@ async function seed(): Promise<void> {
   console.log(`  Check-ins: 400`)
   console.log(`  Orders: 75 (40 this month, 35 last month)`)
   console.log(`  Supply orders: 2 (1 pending, 1 received)`)
+  console.log(`  FAQ entries: 6`)
 
   await mongoose.disconnect()
 }

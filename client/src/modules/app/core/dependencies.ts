@@ -12,6 +12,7 @@ import type { IOrderPort } from '@/modules/order/core/ports/order.port'
 import type { INfcPort } from '@/modules/nfc/core/ports/nfc.port'
 import type { IQrCodePort } from '@/modules/qrcode/core/ports/qrcode.port'
 import type { IUserPort } from '@/modules/user/core/ports/user.port'
+import type { IMarketingPort } from '@/modules/marketing/core/ports/marketing.port'
 import { getSharedHttpClient } from '@/modules/shared/http/http-client'
 import { ProductHttpAdapter } from '@/modules/product/core/adapters/product.adapter.http'
 import { AuthHttpAdapter } from '@/modules/auth/core/adapters/auth.adapter.http'
@@ -27,6 +28,7 @@ import { OrderHttpAdapter } from '@/modules/order/core/adapters/order.adapter.ht
 import { NfcHttpAdapter } from '@/modules/nfc/core/adapters/nfc.adapter.http'
 import { QrCodeLibAdapter } from '@/modules/qrcode/core/adapters/qrcode.adapter.lib'
 import { UserHttpAdapter } from '@/modules/user/core/adapters/user.adapter.http'
+import { MarketingHttpAdapter } from '@/modules/marketing/core/adapters/marketing.adapter.http'
 
 export type Dependencies = {
   productPort: IProductPort
@@ -43,6 +45,7 @@ export type Dependencies = {
   nfcPort: INfcPort
   qrCodePort: IQrCodePort
   userPort: IUserPort
+  marketingPort: IMarketingPort
 }
 
 export function createDependencies(): Dependencies {
@@ -68,5 +71,6 @@ export function createDependencies(): Dependencies {
     nfcPort: new NfcHttpAdapter(httpClient),
     qrCodePort: new QrCodeLibAdapter(),
     userPort: new UserHttpAdapter(httpClient),
+    marketingPort: new MarketingHttpAdapter(httpClient),
   }
 }

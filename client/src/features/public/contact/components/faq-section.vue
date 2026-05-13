@@ -1,39 +1,25 @@
 <script setup lang="ts">
-const faqLeft = [
-  {
-    bgGradient: 'from-pulse-surface to-[#1a1040]',
-    question: 'Combien coute un bracelet PULSE ?',
-    answer: 'Les packs demarrent a partir de 2,50€ par bracelet pour les commandes de +500 unites. Contactez-nous pour un devis personnalise adapte a la taille de votre evenement.',
-  },
-  {
-    bgGradient: 'from-pulse-surface to-[#1f1a2a]',
-    question: 'Quel est le delai de livraison ?',
-    answer: 'Les bracelets sont livres sous 5 jours ouvrables en France metropolitaine. Pour les commandes urgentes, nous proposons une option express 48h.',
-  },
-  {
-    bgGradient: 'from-pulse-surface to-[#162030]',
-    question: 'Les bracelets sont-ils reutilisables ?',
-    answer: 'Oui ! Les bracelets PULSE sont concus pour etre reprogrammes et reutilises sur plusieurs evenements, reduisant les couts et l\'impact environnemental.',
-  },
+import { computed } from 'vue'
+import { useGetFaqs } from '@/modules/marketing/ui/hooks/queries/query/use-get-faqs'
+import { Skeleton } from '@/ui/skeleton'
+
+const GRADIENTS = [
+  'from-pulse-surface to-[#1a1040]',
+  'from-pulse-surface to-[#1f1a2a]',
+  'from-pulse-surface to-[#162030]',
+  'from-pulse-surface to-[#1a1535]',
+  'from-pulse-surface to-[#1a2030]',
+  'from-pulse-surface to-[#172030]',
 ]
 
-const faqRight = [
-  {
-    bgGradient: 'from-pulse-surface to-[#1a1535]',
-    question: 'Faut-il une app pour les participants ?',
-    answer: 'Non ! C\'est tout l\'interet de PULSE. Le bracelet NFC fonctionne sans application, sans batterie et sans connexion internet du cote participant.',
-  },
-  {
-    bgGradient: 'from-pulse-surface to-[#1a2030]',
-    question: 'Comment configurer les bracelets ?',
-    answer: 'Tout se fait depuis le dashboard PULSE. Creez votre evenement, definissez les interactions et assignez les bracelets en quelques clics. Aucune competence technique requise.',
-  },
-  {
-    bgGradient: 'from-pulse-surface to-[#172030]',
-    question: 'Proposez-vous un accompagnement ?',
-    answer: 'Absolument. Notre equipe vous accompagne de A a Z : configuration, formation de vos equipes sur place, et support technique le jour J.',
-  },
-]
+const { data: faqs, isLoading, isError } = useGetFaqs()
+
+const columns = computed(() => {
+  const items = faqs.value ?? []
+  const half = Math.ceil(items.length / 2)
+  const styled = items.map((faq, i) => ({ ...faq, bgGradient: GRADIENTS[i % GRADIENTS.length] }))
+  return { left: styled.slice(0, half), right: styled.slice(half) }
+})
 </script>
 
 <template>
@@ -53,11 +39,25 @@ const faqRight = [
         Tout ce que vous devez savoir avant de nous contacter.
       </p>
 
-      <div class="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+      <div v-if="isLoading" class="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+        <div v-for="col in 2" :key="col" class="flex flex-col gap-5">
+          <div v-for="i in 3" :key="i" class="flex flex-col gap-3 rounded-xl border border-slate-700 p-6">
+            <Skeleton class="h-5 w-2/3" />
+            <Skeleton class="h-4 w-full" />
+            <Skeleton class="h-4 w-5/6" />
+          </div>
+        </div>
+      </div>
+
+      <p v-else-if="isError" class="text-sm text-red-400">
+        Impossible de charger la FAQ pour le moment.
+      </p>
+
+      <div v-else-if="(faqs ?? []).length > 0" class="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
         <div class="flex flex-col gap-5">
           <div
-            v-for="faq in faqLeft"
-            :key="faq.question"
+            v-for="faq in columns.left"
+            :key="faq.id"
             class="rounded-xl border border-slate-700 p-6"
             :class="`bg-gradient-to-b ${faq.bgGradient}`"
           >
@@ -68,8 +68,8 @@ const faqRight = [
 
         <div class="flex flex-col gap-5">
           <div
-            v-for="faq in faqRight"
-            :key="faq.question"
+            v-for="faq in columns.right"
+            :key="faq.id"
             class="rounded-xl border border-slate-700 p-6"
             :class="`bg-gradient-to-b ${faq.bgGradient}`"
           >
