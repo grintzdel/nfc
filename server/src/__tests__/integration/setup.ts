@@ -10,6 +10,7 @@ export async function setupTestApp(): Promise<{ app: Express }> {
   process.env.NODE_ENV = 'test'
   process.env.JWT_SECRET = process.env.JWT_SECRET ?? 'test-secret-key'
   process.env.JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? '1h'
+  process.env.BRACELET_MAX_CAPACITY = process.env.BRACELET_MAX_CAPACITY ?? '5000'
 
   mongoServer = await MongoMemoryServer.create()
   await mongoose.connect(mongoServer.getUri())

@@ -134,6 +134,7 @@ describe('RecordCheckInUseCase', () => {
     })
     checkInRepo.create_result = saved
     ;(mockActivate.execute as jest.Mock).mockRejectedValueOnce(new Error('activation failed'))
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
 
     const result = await useCase.execute({
       nfcId: 'nfc-pre-2',
@@ -142,6 +143,8 @@ describe('RecordCheckInUseCase', () => {
     })
 
     expect(result).toBe(saved)
+    expect(errorSpy).toHaveBeenCalledWith('[check-in] failed to activate bracelet', bracelet.id, expect.any(Error))
+    errorSpy.mockRestore()
   })
 
   it('should call participant.checkIn() when interactionType is CHECK_IN', async () => {
