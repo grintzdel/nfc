@@ -6,9 +6,63 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  NODE_VERSION: '22'
+
 jobs:
-  test:
+  quality:
+    name: Lint + Format + Unit/Integration tests
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (oxlint)
+        run: pnpm lint
+
+      - name: Format check (oxfmt)
+        run: pnpm format:check
+
+      - name: Build client
+        run: pnpm --filter pulse-client build
+
+      - name: Build server
+        run: pnpm --filter pulse-server build
+
+      - name: Client unit tests (Vitest)
+        run: pnpm --filter pulse-client test
+
+      - name: Server tests (Jest + Supertest)
+        run: pnpm --filter pulse-server test
+        env:
+          NODE_ENV: test
+
+  e2e:
+    name: Playwright E2E
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    env:
+      MONGODB_URI: mongodb://localhost:27017/pulse
+      JWT_SECRET: ci-e2e-secret
+      PORT: '3001'
+      BRACELET_MAX_CAPACITY: '5000'
 
     steps:
       - uses: actions/checkout@v4
@@ -19,22 +73,25 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build client
-        run: pnpm --filter pulse-client build
+      - name: Install Playwright browsers
+        run: pnpm --filter pulse-client exec playwright install --with-deps chromium
 
-      - name: Build server
-        run: pnpm --filter pulse-server build
+      - name: Seed database
+        run: pnpm --filter pulse-server seed
 
-      - name: Test client (Vitest)
-        run: pnpm --filter pulse-client test
+      - name: Run Playwright E2E
+        run: pnpm --filter pulse-client test:e2e
 
-      - name: Test server (Jest + Supertest)
-        run: pnpm --filter pulse-server test
-        env:
-          NODE_ENV: test
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: client/playwright-report
+          retention-days: 14
