@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { Search, Plus, ExternalLink, Watch, TrendingUp } from 'lucide-vue-next'
+import { ExternalLink, Eye, Plus, PowerOff, Search, TrendingUp, Trash2, Watch } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { toast } from 'vue-sonner'
@@ -8,8 +8,9 @@ import { toast } from 'vue-sonner'
 import { useGetBraceletsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-bracelets-count'
 import { useGetStock } from '@/modules/analytics/ui/hooks/queries/query/use-get-stock'
 import { useDependencies } from '@/modules/app/ui/hooks/use-dependencies'
-import { BraceletStatus } from '@/modules/bracelet/core/model/bracelet.domain-model'
+import { BraceletStatus, type BraceletDomainModel } from '@/modules/bracelet/core/model/bracelet.domain-model'
 import { useCreateBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-create-bracelet'
+import { useDeleteBracelet } from '@/modules/bracelet/ui/hooks/queries/mutation/use-delete-bracelet'
 import { useGetPaginatedBracelets } from '@/modules/bracelet/ui/hooks/queries/query/use-get-paginated-bracelets'
 import StatCard from '@/ui/components/stat-card.vue'
 import { EmptyState } from '@/ui/empty-state'
@@ -17,6 +18,9 @@ import AdminLayout from '@/ui/layout/admin-layout.vue'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
 
+import BraceletDetailDialog from './components/bracelet-detail-dialog.vue'
+import ConfirmDeleteBraceletDialog from './components/confirm-delete-bracelet-dialog.vue'
+import ConfirmDisableBraceletDialog from './components/confirm-disable-bracelet-dialog.vue'
 import CreateBraceletDialog from './components/create-bracelet-dialog.vue'
 
 const { braceletPort } = useDependencies()
@@ -87,15 +91,52 @@ const disableMutation = useMutation({
   mutationFn: (id: string) => braceletPort.disable(id),
   onSuccess: () => {
     toast.success('Bracelet désactivé')
+    disableOpen.value = false
+    selected.value = null
     queryClient.invalidateQueries({ queryKey: ['bracelets'] })
     queryClient.invalidateQueries({ queryKey: ['analytics'] })
   },
   onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la désactivation'),
 })
 
-function handleDisable(id: string, nfcId: string): void {
-  if (!confirm(`Désactiver le bracelet ${nfcId} ?`)) return
-  disableMutation.mutate(id)
+const deleteMutation = useDeleteBracelet()
+
+const detailOpen = ref(false)
+const disableOpen = ref(false)
+const deleteOpen = ref(false)
+const selected = ref<BraceletDomainModel.BraceletOverviewDto | null>(null)
+
+function handleView(row: BraceletDomainModel.BraceletOverviewDto): void {
+  selected.value = row
+  detailOpen.value = true
+}
+
+function handleDisable(row: BraceletDomainModel.BraceletOverviewDto): void {
+  selected.value = row
+  disableOpen.value = true
+}
+
+function handleDisableConfirm(): void {
+  if (!selected.value) return
+  disableMutation.mutate(selected.value.id)
+}
+
+function handleDelete(row: BraceletDomainModel.BraceletOverviewDto): void {
+  selected.value = row
+  deleteOpen.value = true
+}
+
+function handleDeleteConfirm(): void {
+  if (!selected.value) return
+  deleteMutation.mutate(selected.value.id, {
+    onSuccess: () => {
+      toast.success('Bracelet supprimé')
+      deleteOpen.value = false
+      selected.value = null
+      queryClient.invalidateQueries({ queryKey: ['analytics'] })
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la suppression'),
+  })
 }
 
 function formatDate(dateStr: string): string {
@@ -181,7 +222,7 @@ function formatDate(dateStr: string): string {
 
         <template v-else>
           <div class="overflow-x-auto">
-            <div class="flex min-w-[800px] flex-col">
+            <div class="flex min-w-[920px] flex-col">
               <div class="flex items-center bg-slate-800">
                 <div class="w-[260px] shrink-0 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">NFC ID</span>
@@ -195,8 +236,8 @@ function formatDate(dateStr: string): string {
                 <div class="w-[120px] shrink-0 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Créé le</span>
                 </div>
-                <div class="w-[140px] shrink-0 px-4 py-3 text-right">
-                  <span class="text-xs font-semibold tracking-wide text-slate-400">Action</span>
+                <div class="flex w-[160px] shrink-0 items-center justify-end px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Actions</span>
                 </div>
               </div>
 
@@ -233,15 +274,36 @@ function formatDate(dateStr: string): string {
                   <span v-else class="text-slate-500">—</span>
                 </div>
                 <div class="w-[120px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(row.createdAt) }}</div>
-                <div class="flex w-[140px] shrink-0 items-center justify-end px-4 py-3">
+                <div class="flex w-[160px] shrink-0 items-center justify-end gap-1 px-4 py-3">
+                  <button
+                    type="button"
+                    class="rounded-md border border-white/10 p-1.5 text-slate-300 hover:bg-white/5"
+                    title="Voir le détail"
+                    :aria-label="`Voir ${row.nfcId}`"
+                    @click="handleView(row)"
+                  >
+                    <Eye class="h-3.5 w-3.5" />
+                  </button>
                   <button
                     v-if="row.status === BraceletStatus.ACTIVE || row.status === BraceletStatus.PRE_ACTIVATED"
                     type="button"
                     :disabled="disableMutation.isPending.value"
-                    class="rounded-md border border-red-500/40 px-3 py-1.5 text-xs font-medium text-red-300 hover:bg-red-500/10 disabled:opacity-50"
-                    @click="handleDisable(row.id, row.nfcId)"
+                    class="rounded-md border border-orange-500/40 p-1.5 text-orange-300 hover:bg-orange-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+                    title="Désactiver"
+                    :aria-label="`Désactiver ${row.nfcId}`"
+                    @click="handleDisable(row)"
                   >
-                    Désactiver
+                    <PowerOff class="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    :disabled="deleteMutation.isPending.value"
+                    class="rounded-md border border-red-500/40 p-1.5 text-red-300 hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+                    title="Supprimer"
+                    :aria-label="`Supprimer ${row.nfcId}`"
+                    @click="handleDelete(row)"
+                  >
+                    <Trash2 class="h-3.5 w-3.5" />
                   </button>
                 </div>
               </div>
@@ -268,6 +330,24 @@ function formatDate(dateStr: string): string {
       :loading="createMutation.isPending.value"
       @update:open="(v) => (createOpen = v)"
       @confirm="handleCreate"
+    />
+
+    <BraceletDetailDialog :open="detailOpen" :bracelet="selected" @update:open="(v) => (detailOpen = v)" />
+
+    <ConfirmDisableBraceletDialog
+      :open="disableOpen"
+      :nfc-id="selected?.nfcId"
+      :loading="disableMutation.isPending.value"
+      @update:open="(v) => (disableOpen = v)"
+      @confirm="handleDisableConfirm"
+    />
+
+    <ConfirmDeleteBraceletDialog
+      :open="deleteOpen"
+      :nfc-id="selected?.nfcId"
+      :loading="deleteMutation.isPending.value"
+      @update:open="(v) => (deleteOpen = v)"
+      @confirm="handleDeleteConfirm"
     />
   </AdminLayout>
 </template>
