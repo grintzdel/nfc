@@ -1,19 +1,55 @@
 <script setup lang="ts">
-import { X } from 'lucide-vue-next'
-import { ref, watch } from 'vue'
+import { CheckCircle2, Play, Send, X, XCircle } from 'lucide-vue-next'
+import type { Component } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
+import { EventStatus } from '@/modules/event/core/model/event.domain-model'
+import type { EventStatusAction } from '@/modules/event/ui/hooks/queries/mutation/use-event-status-transition'
 
 const props = defineProps<{
   event: EventDomainModel.EventOverviewDto | null
   open: boolean
   loading?: boolean
+  statusLoading?: boolean
 }>()
 
 const emit = defineEmits<{
   close: []
   save: [dto: EventDomainModel.UpdateEventDto]
+  'status-action': [action: EventStatusAction]
 }>()
+
+type ActionDescriptor = { action: EventStatusAction; label: string; icon: Component; variant: 'primary' | 'danger' }
+
+const STATUS_ACTIONS: Record<EventStatus, ActionDescriptor[]> = {
+  [EventStatus.DRAFT]: [{ action: 'publish', label: 'Publier', icon: Send, variant: 'primary' }],
+  [EventStatus.UPCOMING]: [
+    { action: 'start', label: 'Démarrer', icon: Play, variant: 'primary' },
+    { action: 'cancel', label: 'Annuler', icon: XCircle, variant: 'danger' },
+  ],
+  [EventStatus.IN_PROGRESS]: [{ action: 'complete', label: 'Clôturer', icon: CheckCircle2, variant: 'primary' }],
+  [EventStatus.COMPLETED]: [],
+  [EventStatus.CANCELLED]: [],
+}
+
+const STATUS_LABEL: Record<EventStatus, string> = {
+  [EventStatus.DRAFT]: 'Brouillon',
+  [EventStatus.UPCOMING]: 'À venir',
+  [EventStatus.IN_PROGRESS]: 'En cours',
+  [EventStatus.COMPLETED]: 'Terminé',
+  [EventStatus.CANCELLED]: 'Annulé',
+}
+
+const STATUS_CLASS: Record<EventStatus, string> = {
+  [EventStatus.DRAFT]: 'bg-slate-500/20 text-slate-400',
+  [EventStatus.UPCOMING]: 'bg-orange-500/20 text-orange-400',
+  [EventStatus.IN_PROGRESS]: 'bg-[#7C3AED] text-white',
+  [EventStatus.COMPLETED]: 'bg-emerald-500/20 text-emerald-400',
+  [EventStatus.CANCELLED]: 'bg-red-500/20 text-red-400',
+}
+
+const statusActions = computed(() => (props.event ? STATUS_ACTIONS[props.event.status] : []))
 
 const form = ref({
   name: '',
@@ -65,6 +101,37 @@ function handleSave() {
           <button class="rounded-md p-1.5 text-slate-400 hover:bg-white/5" @click="emit('close')">
             <X class="h-5 w-5" />
           </button>
+        </div>
+
+        <div class="flex flex-col gap-3 border-b border-white/10 px-6 py-4">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-medium uppercase tracking-wider text-slate-400">Statut</span>
+            <span
+              class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
+              :class="STATUS_CLASS[event.status]"
+            >
+              {{ STATUS_LABEL[event.status] }}
+            </span>
+          </div>
+          <div v-if="statusActions.length > 0" class="flex flex-wrap items-center gap-2">
+            <button
+              v-for="a in statusActions"
+              :key="a.action"
+              type="button"
+              :disabled="statusLoading"
+              class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-semibold disabled:opacity-50"
+              :class="
+                a.variant === 'primary'
+                  ? 'bg-[#8B5CF6] text-violet-50 hover:bg-violet-500'
+                  : 'border border-red-500/40 text-red-300 hover:bg-red-500/10'
+              "
+              @click="emit('status-action', a.action)"
+            >
+              <component :is="a.icon" class="h-3.5 w-3.5" />
+              {{ a.label }}
+            </button>
+          </div>
+          <p v-else class="text-xs text-slate-500">Aucune transition disponible pour ce statut.</p>
         </div>
 
         <form class="flex flex-col gap-4 px-6 py-5" @submit.prevent="handleSave">

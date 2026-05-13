@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search, SlidersHorizontal, Download, Plus, Eye, Pencil, MoreHorizontal, Calendar } from 'lucide-vue-next'
+import { Search, SlidersHorizontal, Download, Plus, Eye, Pencil, Trash2, Calendar } from 'lucide-vue-next'
 
 import type { EventDomainModel } from '@/modules/event/core/model/event.domain-model'
 import { EventStatus } from '@/modules/event/core/model/event.domain-model'
@@ -188,10 +188,11 @@ function statusClass(status: string): string {
               <Pencil class="h-4 w-4" />
             </button>
             <button
-              class="rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-red-400"
+              class="rounded-md p-2 text-slate-400 hover:bg-red-500/10 hover:text-red-400"
+              :aria-label="`Supprimer ${row.name}`"
               @click="emit('delete', row.id)"
             >
-              <MoreHorizontal class="h-4 w-4" />
+              <Trash2 class="h-4 w-4" />
             </button>
           </div>
         </div>
