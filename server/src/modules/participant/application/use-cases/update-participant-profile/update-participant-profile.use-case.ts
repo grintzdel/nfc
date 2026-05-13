@@ -10,12 +10,13 @@ export class UpdateParticipantProfileUseCase {
   async execute(
     participantId: string,
     callerUserId: string,
-    partial: Partial<ParticipantProfile>
+    partial: Partial<ParticipantProfile>,
+    isAdmin = false
   ): Promise<ParticipantEntity> {
     const participant = await this.participantRepository.findById(participantId)
     if (!participant || participant.isDeleted()) throw new ParticipantNotFoundError(participantId)
 
-    if (participant.userId !== callerUserId) {
+    if (!isAdmin && participant.userId !== callerUserId) {
       throw new AppError(403, 'Only the participant can update their profile')
     }
 

@@ -71,16 +71,17 @@ export class ParticipantService {
   updateProfile(
     participantId: string,
     callerUserId: string,
-    partial: Partial<ParticipantProfile>
+    partial: Partial<ParticipantProfile>,
+    isAdmin = false
   ): Promise<ParticipantEntity> {
-    return this.updateParticipantProfileUseCase.execute(participantId, callerUserId, partial)
+    return this.updateParticipantProfileUseCase.execute(participantId, callerUserId, partial, isAdmin)
   }
 
   attachBracelet(participantId: string, braceletId: string): Promise<ParticipantEntity> {
     return this.attachBraceletUseCase.execute(participantId, braceletId)
   }
 
-  unregister(participantId: string, callerUserId: string): Promise<void> {
-    return this.unregisterParticipantUseCase.execute(participantId, callerUserId)
+  unregister(participantId: string, callerUserId: string, isAdmin = false): Promise<void> {
+    return this.unregisterParticipantUseCase.execute(participantId, callerUserId, isAdmin)
   }
 }

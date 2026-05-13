@@ -1,15 +1,23 @@
 <script setup lang="ts">
-import { Search, Users, CheckCircle2 } from 'lucide-vue-next'
+import { CheckCircle2, Eye, Pencil, Search, Trash2, Users } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
+import { toast } from 'vue-sonner'
 
 import { useGetParticipantsCount } from '@/modules/analytics/ui/hooks/queries/query/use-get-participants-count'
+import type { ParticipantDomainModel } from '@/modules/participant/core/model/participant.domain-model'
+import { useUnregisterParticipant } from '@/modules/participant/ui/hooks/queries/mutation/use-unregister-participant'
+import { useUpdateParticipantProfile } from '@/modules/participant/ui/hooks/queries/mutation/use-update-participant-profile'
 import { useGetPaginatedParticipants } from '@/modules/participant/ui/hooks/queries/query/use-get-paginated-participants'
 import StatCard from '@/ui/components/stat-card.vue'
 import { EmptyState } from '@/ui/empty-state'
 import AdminLayout from '@/ui/layout/admin-layout.vue'
 import { Pagination } from '@/ui/pagination'
 import { TableSkeleton } from '@/ui/skeleton'
+
+import ConfirmDeleteParticipantDialog from './components/confirm-delete-participant-dialog.vue'
+import ParticipantDetailDialog from './components/participant-detail-dialog.vue'
+import ParticipantEditDialog from './components/participant-edit-dialog.vue'
 
 const TABS = [
   { key: 'all', label: 'Tous', checkedIn: undefined as boolean | undefined },
@@ -42,6 +50,55 @@ const { data: paged, isLoading } = useGetPaginatedParticipants({ page, limit, ch
 const { data: countStats } = useGetParticipantsCount()
 
 const items = computed(() => paged.value?.items ?? [])
+
+const updateMutation = useUpdateParticipantProfile()
+const deleteMutation = useUnregisterParticipant()
+
+const detailOpen = ref(false)
+const editOpen = ref(false)
+const deleteOpen = ref(false)
+const selected = ref<ParticipantDomainModel.MyParticipationDto | null>(null)
+
+function handleView(p: ParticipantDomainModel.MyParticipationDto): void {
+  selected.value = p
+  detailOpen.value = true
+}
+
+function handleEdit(p: ParticipantDomainModel.MyParticipationDto): void {
+  selected.value = p
+  editOpen.value = true
+}
+
+function handleEditConfirm(payload: { displayName: string; role: string | null; bio: string | null }): void {
+  if (!selected.value) return
+  updateMutation.mutate(
+    { id: selected.value.id, dto: payload },
+    {
+      onSuccess: () => {
+        toast.success('Participant mis à jour')
+        editOpen.value = false
+      },
+      onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la mise à jour'),
+    }
+  )
+}
+
+function handleDelete(p: ParticipantDomainModel.MyParticipationDto): void {
+  selected.value = p
+  deleteOpen.value = true
+}
+
+function handleDeleteConfirm(): void {
+  if (!selected.value) return
+  deleteMutation.mutate(selected.value.id, {
+    onSuccess: () => {
+      toast.success('Participant supprimé')
+      deleteOpen.value = false
+      selected.value = null
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : 'Erreur lors de la suppression'),
+  })
+}
 
 function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
@@ -133,7 +190,7 @@ function initials(name: string): string {
 
         <template v-else>
           <div class="overflow-x-auto">
-            <div class="flex min-w-[720px] flex-col">
+            <div class="flex min-w-[880px] flex-col">
               <div class="flex items-center bg-slate-800">
                 <div class="flex-1 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Participant</span>
@@ -144,8 +201,11 @@ function initials(name: string): string {
                 <div class="w-[110px] shrink-0 px-4 py-3">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Inscrit le</span>
                 </div>
-                <div class="w-[110px] shrink-0 px-4 py-3 text-center">
+                <div class="w-[90px] shrink-0 px-4 py-3 text-center">
                   <span class="text-xs font-semibold tracking-wide text-slate-400">Check-in</span>
+                </div>
+                <div class="flex w-[140px] shrink-0 items-center justify-end px-4 py-3">
+                  <span class="text-xs font-semibold tracking-wide text-slate-400">Actions</span>
                 </div>
               </div>
 
@@ -172,16 +232,46 @@ function initials(name: string): string {
                   <span v-else class="text-slate-500">Événement supprimé</span>
                 </div>
                 <div class="w-[110px] shrink-0 px-4 py-3 text-sm text-slate-300">{{ formatDate(p.registeredAt) }}</div>
-                <div class="w-[110px] shrink-0 px-4 py-3 text-center">
+                <div class="w-[90px] shrink-0 px-4 py-3 text-center">
                   <span
                     class="inline-block h-2.5 w-2.5 rounded-full"
                     :class="p.checkedInAt ? 'bg-emerald-400' : 'bg-slate-600'"
                     :title="p.checkedInAt ? `Arrivé le ${formatDate(p.checkedInAt)}` : 'Pas encore arrivé'"
                   />
                 </div>
+                <div class="flex w-[140px] shrink-0 items-center justify-end gap-1 px-4 py-3">
+                  <button
+                    type="button"
+                    class="rounded-md border border-white/10 p-1.5 text-slate-300 hover:bg-white/5"
+                    title="Voir le détail"
+                    :aria-label="`Voir ${p.profile.displayName}`"
+                    @click="handleView(p)"
+                  >
+                    <Eye class="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    class="rounded-md border border-white/10 p-1.5 text-slate-300 hover:bg-white/5"
+                    title="Modifier le profil"
+                    :aria-label="`Modifier ${p.profile.displayName}`"
+                    @click="handleEdit(p)"
+                  >
+                    <Pencil class="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    :disabled="deleteMutation.isPending.value"
+                    class="rounded-md border border-red-500/40 p-1.5 text-red-300 hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+                    title="Supprimer"
+                    :aria-label="`Supprimer ${p.profile.displayName}`"
+                    @click="handleDelete(p)"
+                  >
+                    <Trash2 class="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
 
-              <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="4" />
+              <TableSkeleton v-if="isLoading && items.length === 0" :rows="5" :columns="5" />
             </div>
           </div>
 
@@ -197,5 +287,23 @@ function initials(name: string): string {
         </template>
       </div>
     </div>
+
+    <ParticipantDetailDialog :open="detailOpen" :participant="selected" @update:open="(v) => (detailOpen = v)" />
+
+    <ParticipantEditDialog
+      :open="editOpen"
+      :participant="selected"
+      :loading="updateMutation.isPending.value"
+      @update:open="(v) => (editOpen = v)"
+      @confirm="handleEditConfirm"
+    />
+
+    <ConfirmDeleteParticipantDialog
+      :open="deleteOpen"
+      :display-name="selected?.profile.displayName"
+      :loading="deleteMutation.isPending.value"
+      @update:open="(v) => (deleteOpen = v)"
+      @confirm="handleDeleteConfirm"
+    />
   </AdminLayout>
 </template>

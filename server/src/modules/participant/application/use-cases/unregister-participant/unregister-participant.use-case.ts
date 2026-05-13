@@ -6,11 +6,11 @@ import { IParticipantRepository } from '../../../domain/repository/participant.r
 export class UnregisterParticipantUseCase {
   constructor(private readonly participantRepository: IParticipantRepository) {}
 
-  async execute(participantId: string, callerUserId: string): Promise<void> {
+  async execute(participantId: string, callerUserId: string, isAdmin = false): Promise<void> {
     const participant = await this.participantRepository.findById(participantId)
     if (!participant || participant.isDeleted()) throw new ParticipantNotFoundError(participantId)
 
-    if (participant.userId !== callerUserId) {
+    if (!isAdmin && participant.userId !== callerUserId) {
       throw new AppError(403, 'Only the participant can unregister')
     }
 

@@ -94,7 +94,8 @@ export class ParticipantController {
       const participant = await this.participantService.updateProfile(
         req.params.id as string,
         req.user!.userId,
-        dto.toPartialProfile()
+        dto.toPartialProfile(),
+        req.user!.role === 'admin'
       )
       res.json({ success: true, data: new ParticipantResponseDto(participant) })
     } catch (e) {
@@ -114,7 +115,7 @@ export class ParticipantController {
 
   async unregister(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      await this.participantService.unregister(req.params.id as string, req.user!.userId)
+      await this.participantService.unregister(req.params.id as string, req.user!.userId, req.user!.role === 'admin')
       res.status(204).send()
     } catch (e) {
       next(e)

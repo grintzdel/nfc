@@ -48,6 +48,15 @@ describe('UpdateParticipantProfileUseCase', () => {
     await expect(useCase.execute('p-1', 'someone-else', { displayName: 'Bob' })).rejects.toBeInstanceOf(AppError)
   })
 
+  it('should update profile when caller is admin even if not the owner', async () => {
+    const participant = makeParticipant('owner-1')
+    mockRepository.findById_result = participant
+    mockRepository.update_result = participant
+
+    const result = await useCase.execute('p-1', 'admin-1', { displayName: 'Bob' }, true)
+    expect(result.profile.displayName).toBe('Bob')
+  })
+
   it('should throw ParticipantNotFoundError when participant missing', async () => {
     mockRepository.findById_result = null
     await expect(useCase.execute('p-1', 'owner-1', { displayName: 'Bob' })).rejects.toBeInstanceOf(
